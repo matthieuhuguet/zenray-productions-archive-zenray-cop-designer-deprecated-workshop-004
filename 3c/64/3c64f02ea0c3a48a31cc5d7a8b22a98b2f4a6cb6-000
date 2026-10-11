@@ -1,0 +1,56 @@
+# worleynoise
+
+- Label: Worley Noise
+- Category: Copernicus (`Cop`), Houdini 22.0.368
+- Inputs: 0 to 2
+- Parameters: 32 (exact, read from Houdini by hython)
+- Used by the height graph: no
+
+## Feature summary (web, SideFX reference)
+
+- Source: https://www.sidefx.com/docs/houdini/nodes/cop/worleynoise.html
+- Summary (EN): Generates Worley (cellular) noise by measuring distances to a set of points on a grid, useful for cell-like textures. For world-space positions, use Worley Noise 3D. Output: the noise layer.
+- Résumé (FR) : Génère un bruit cellulaire de Worley en 2D à partir de distances à une grille de points, avec taille, gigue, métrique et post-traitement réglables.
+
+- Inputs meaning: ["size_ref: reference layer that sets the output image size and metadata", "pos (optional): UV layer that replaces the pixel's image coordinates as the noise source"]
+
+- Key parameters: ["Type Info: type information for the output layer", "Element Size: size of the basic noise cell in image coordinates; Element Scale adjusts it per axis when Per-Component Controls is on", "Jitter: random offset of each grid point before distances are measured; Jitter Scale adjusts it per axis", "Lattice Type: square (rectangular) grid or simplicial grid (hexagonal cells)", "Metric: Euclidean (circular cells), Manhattan (diamond), Chebyshev (square)", "Round Border: smooths cell borders, Euclidean only", "Offset: shifts the whole noise pattern", "Tile Size: repeat size so the noise can tile", "Post Processing, applied in order: Complement, Bias, Gain, Gamma, Contrast, Clamp Minimum, Clamp Maximum"]
+
+- Caveats: ["The page warns that values greater than 1 may produce artifacts because they jitter past the search radius", "Complement assumes values between 0 and 1, so results can go out of range with other inputs"]
+
+## Parameters (exact, from the installed Houdini)
+
+| parameter | label | type | default | range | menu tokens |
+|---|---|---|---|---|---|
+| `settypeinfo` | Set Type Info | Toggle | false |  |  |
+| `typeinfo` | Type Info | Menu | 0 |  | none, color, position, vector, normal, offsetnormal, texturecoord, id, mask, sdf, height |
+| `elementsize` | Element Size | Float | [0.1] | 0.001 .. 1.0 |  |
+| `elementsizetype` | Element Size Type | Menu | 0 |  | BUTTONS_decompose_transforms |
+| `elementscalex` | Element Scale | Float | 1.0 | -1.0 .. 1.0 |  |
+| `elementscaley` | Element Scale | Float | 1.0 | -1.0 .. 1.0 |  |
+| `jitter` | Jitter | Float | [0.5] | 0.0 .. 1.0 |  |
+| `jittertype` | Jitter Type | Menu | 0 |  | BUTTONS_decompose_transforms |
+| `jitterscalex` | Jitter Scale | Float | 1.0 | -1.0 .. 1.0 |  |
+| `jitterscaley` | Jitter Scale | Float | 1.0 | -1.0 .. 1.0 |  |
+| `lattice` | Lattice Type | Menu | 0 |  | grid, hex |
+| `metric` | Metric | Menu | 0 |  | euclidean, manhattan, chebyshev |
+| `roundborder` | Round Border | Float | [0.0] | 0.0 .. 1.0 |  |
+| `offx` | Offset | Float | 0.0 | 0.0 .. 1.0 |  |
+| `offy` | Offset | Float | 0.0 | 0.0 .. 1.0 |  |
+| `dotiled` | Do Tiling | Toggle | true |  |  |
+| `tilesizex` | Tile Size | Float | 2.0 | 0.0 .. 1.0 |  |
+| `tilesizey` | Tile Size | Float | 2.0 | 0.0 .. 1.0 |  |
+| `folder4` |  | FolderSet |  |  |  |
+| `post_docomplement` | Complement | Toggle | false |  |  |
+| `post_dobias` | Bias | Toggle | false |  |  |
+| `post_bias` | Bias | Float | [0.5] | 0.0 .. 1.0 |  |
+| `post_dogain` | Gain | Toggle | false |  |  |
+| `post_gain` | Gain | Float | [0.5] | 0.0 .. 1.0 |  |
+| `post_dogamma` | Gamma | Toggle | false |  |  |
+| `post_gamma` | Gamma | Float | [2.2] | 0.0 .. 3.0 |  |
+| `post_docontrast` | Contrast | Toggle | false |  |  |
+| `post_contrast` | Contrast | Float | [0.0] | -1.0 .. 1.0 |  |
+| `post_doclampmin` | Clamp Minimum | Toggle | false |  |  |
+| `post_minimum` | Clamp Minimum | Float | [0.0] | 0.0 .. 1.0 |  |
+| `post_doclampmax` | Clamp Maxmimum | Toggle | false |  |  |
+| `post_maximum` | Clamp Maximum | Float | [1.0] | 0.0 .. 1.0 |  |

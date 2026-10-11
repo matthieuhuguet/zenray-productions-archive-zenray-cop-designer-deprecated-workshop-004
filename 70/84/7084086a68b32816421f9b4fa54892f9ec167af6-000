@@ -1,0 +1,24 @@
+# output
+
+- Label: Output
+- Category: Copernicus (`Cop`), Houdini 22.0.368
+- Inputs: 0 to 2048
+- Parameters: 0 (exact, read from Houdini by hython)
+- Used by the height graph: no
+
+## Feature summary (web, SideFX reference)
+
+- Source: https://www.sidefx.com/docs/houdini/nodes/cop/output.html
+- Summary (EN): The Output node defines where a subnetwork hands its results back to the parent network. It forwards whatever reaches its inputs so the parent can use them as its outputs.
+- Résumé (FR) : Le nœud Output renvoie les résultats d'un sous-réseau vers le réseau parent, dans l'ordre de ses entrées.
+
+- Inputs meaning: ["1: first input, becomes the parent subnetwork's first output", "2: second input, becomes the second output", "Each further input maps to the next output, in order"]
+
+- Key parameters: ["No parameters documented on the Output node itself. The Outputs parameter of the parent Subnetwork COP sets the output signature."]
+
+- Caveats: ["Only one Output COP should exist at the same level of a network.", "Inside an HDA, the node signature reflects that of the containing operator."]
+
+## Parameters (exact, from the installed Houdini)
+
+| parameter | label | type | default | range | menu tokens |
+|---|---|---|---|---|---|

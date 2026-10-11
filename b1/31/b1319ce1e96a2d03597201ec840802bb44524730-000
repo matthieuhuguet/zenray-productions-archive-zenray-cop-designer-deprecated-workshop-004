@@ -1,0 +1,40 @@
+# timeshift
+
+- Label: Time Shift
+- Category: Copernicus (`Cop`), Houdini 22.0.368
+- Inputs: 0 to 1
+- Parameters: 16 (exact, read from Houdini by hython)
+- Used by the height graph: no
+
+## Feature summary (web, SideFX reference)
+
+- Source: https://www.sidefx.com/docs/houdini/nodes/cop/timeshift.html
+- Summary (EN): Makes its input cook at a different time than the node itself. You can use it to reach earlier or later frames, or to fetch data from a specific absolute frame.
+- Résumé (FR) : Ce nœud fait cuire son entrée à un autre instant que lui-même, pour lire des images antérieures ou postérieures ou une frame absolue donnée.
+
+- Inputs meaning: ["input1: the only input. The page gives no further description of its content."]
+
+- Key parameters: [{"name": "Method", "meaning": "Whether the input is cooked at a frame number or at a time in seconds."}, {"name": "Mode", "meaning": "Absolute Shift moves an origin to a destination. Relative Shift applies an offset. Custom takes a value meant to be driven by an expression."}, {"name": "Frame / Time", "meaning": "The frame or time to pull (Custom), or the offset (Relative Shift)."}, {"name": "Shift from / to", "meaning": "The anchor and its new position (Absolute Shift)."}, {"name": "Integer Frames", "meaning": "Rounds frame numbers down to integers after the other calculations."}, {"name": "Clamp", "meaning": "Limits the retrieved value to the start, the end, both, or neither."}, {"name": "Start/End Frame or Time", "meaning": "Bounds used by Clamp. Shown only when Clamp is not None."}]
+
+- Caveats: ["In Copernicus blocks, Time Shift cannot be used when block inputs must cook at different times. Suggested workaround: a Time Pack before Block Begin, with the frames wired in as a cable.", "For Relative Shift, a negative offset moves the input forward in time, the opposite of what the name suggests."]
+
+## Parameters (exact, from the installed Houdini)
+
+| parameter | label | type | default | range | menu tokens |
+|---|---|---|---|---|---|
+| `method` | Method | Menu | 0 |  | byframe, bytime |
+| `mode` | Mode | Menu | 0 |  | absolute, relative, custom |
+| `frame` | Frame | Float | [0.0] | 1.0 .. 240.0 |  |
+| `frameoffset` | Frame | Float | [0.0] | -10.0 .. 10.0 |  |
+| `frameshiftfrom` | Shift from | Float | [0.0] | 1.0 .. 240.0 |  |
+| `frameshiftto` | to | Float | [0.0] | 1.0 .. 240.0 |  |
+| `integerframe` | Integer Frames | Toggle | false |  |  |
+| `time` | Time | Float | [0.0] | 0.0 .. 10.0 |  |
+| `timeoffset` | Time | Float | [0.0] | -10.0 .. 10.0 |  |
+| `timeshiftfrom` | Shift from | Float | [0.0] | 0.0 .. 10.0 |  |
+| `timeshiftto` | to | Float | [0.0] | 0.0 .. 10.0 |  |
+| `rangeclamp` | Clamp | Menu | 0 |  | none, first, last, both |
+| `frange1` | Start/End Frame | Float | 0.0 | 0.0 .. 10.0 |  |
+| `frange2` | Start/End Frame | Float | 0.0 | 0.0 .. 10.0 |  |
+| `trange1` | Start/End Time | Float | 0.0 | 0.0 .. 10.0 |  |
+| `trange2` | Start/End Time | Float | 0.0 | 0.0 .. 10.0 |  |

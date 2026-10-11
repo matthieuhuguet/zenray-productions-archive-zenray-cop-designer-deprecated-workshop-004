@@ -1,0 +1,29 @@
+# rasterizeimplicitsurface
+
+- Label: Rasterize Implicit Surface
+- Category: Copernicus (`Cop`), Houdini 22.0.368
+- Inputs: 0 to 6
+- Parameters: 5 (exact, read from Houdini by hython)
+- Used by the height graph: no
+
+## Feature summary (web, SideFX reference)
+
+- Source: https://www.sidefx.com/docs/houdini/nodes/cop/rasterizeimplicitsurface.html
+- Summary (EN): Rasterize Implicit Surface draws an implicit surface into image layers by raymarching from the camera toward the surface, so the output reflects where each ray hits it. Documented as available since Houdini 22.0.
+- Résumé (FR) : Ce nœud dessine une surface implicite en lançant des rayons depuis la caméra jusqu'à la surface, et écrit le résultat dans des calques.
+
+- Inputs meaning: ["camera_ref: optional camera layer that sets camera position, world-to-image projection and imaging plane; without it a default camera at the origin is used", "geometry: implicit surface to rasterize", "vieworigin: per-pixel ray origin; overrides camera_ref", "viewdir: per-pixel ray direction; overrides camera_ref", "mindepth: minimum depth boundary for raymarching", "maxdepth: maximum depth boundary for raymarching"]
+
+- Key parameters: ["Move to Origin: moves the output layers into canonical space", "Depth Conversion: Distance uses mindepth and maxdepth as camera distances; Depth treats them as values along the camera forward direction; Height treats them as offsets from the imaging plane toward the camera", "Max Steps: maximum raymarching steps per ray", "Tolerance: precision used to find the ray-surface intersection", "Number of Samples: samples per pixel; higher values reduce jagged edges"]
+
+- Caveats: ["Without camera_ref, the node falls back to a default orthographic projection (-1 to 1) moving along the Z axis, similar to Rasterize Geometry.", "The vieworigin and viewdir inputs take priority over the camera for ray setup.", "The page recommends the Light COP to add lighting and shading to the output.", "Higher sample counts reduce aliasing but increase cost; the page does not quantify the tradeoff.", "The page gives no default values for the numeric parameters."]
+
+## Parameters (exact, from the installed Houdini)
+
+| parameter | label | type | default | range | menu tokens |
+|---|---|---|---|---|---|
+| `resetorig` | Move to Origin | Toggle | false |  |  |
+| `convertdepth` | Depth Conversion | Menu | 1 |  | dist, depth, height |
+| `maxsteps` | Max Steps | Int | [100] | 0 .. 1000 |  |
+| `tolerance` | Tolerance | Float | [0.001] | 1e-05 .. 0.1 |  |
+| `num_samples` | Number of Samples | Int | [1] | 1 .. 100 (strict) |  |

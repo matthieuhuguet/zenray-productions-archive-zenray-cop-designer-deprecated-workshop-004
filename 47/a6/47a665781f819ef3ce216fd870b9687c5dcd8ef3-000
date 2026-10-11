@@ -1,0 +1,49 @@
+# pixelate
+
+- Label: Pixelate
+- Category: Copernicus (`Cop`), Houdini 22.0.368
+- Inputs: 0 to 4
+- Parameters: 25 (exact, read from Houdini by hython)
+- Used by the height graph: no
+
+## Feature summary (web, SideFX reference)
+
+- Source: https://www.sidefx.com/docs/houdini/nodes/cop/pixelate.html
+- Summary (EN): The Pixelate node enlarges pixels so the individual blocks of an image become visible. It samples the input at quantised positions to produce a blocky effect, useful for pixel art or mosaic looks.
+- Résumé (FR) : Le nœud Pixelate agrandit les pixels en blocs quantifiés, avec masque, décalage et flou préalable optionnels.
+
+- Inputs meaning: ["source: layer to pixelate", "effect (optional): per-pixel scaling of Block Size", "offset (optional): per-pixel addition to Offset", "mask (optional): per-pixel mask amount, scaled by Mask"]
+
+- Key parameters: ["Signature: layer type accepted by the source", "Mask: mix between the new pixelated value and the original (default 1, only the new value)", "Mode: block count set by Block Size or by Number of Blocks", "Units: Image space or Pixels, used when Mode is Block Size", "Block Size and Element Scale: block size, with per-axis scaling through Per-Component Controls", "Number of Blocks: blocks across X and Y", "Tile Size: scales the input's original pixels before pixelating", "Offset: shifts the input before its position is quantised", "Pre-Blur (Units, Size, Scale Size): blurs the input first, via a Blur COP inside the node's subnetwork"]
+
+- Caveats: ["Larger blocks give blurrier results.", "Pre-Blur must be enabled for blurring to apply.", "If the input does not cover the full image, fewer blocks than Number of Blocks are output."]
+
+## Parameters (exact, from the installed Houdini)
+
+| parameter | label | type | default | range | menu tokens |
+|---|---|---|---|---|---|
+| `signature` | Signature | String | ["auto"] |  |  |
+| `mask` | Mask | Float | [1.0] | 0.0 .. 1.0 (strict) |  |
+| `mode` | Mode | Menu | 0 |  | 0, 1 |
+| `units` | Units | Menu | 0 |  | image, pixels |
+| `blocksize` | Block Size | Float | [0.03] | 0.001 .. 0.2 |  |
+| `elementsizetype` | Element Size Type | Menu | 0 |  | BUTTONS_decompose_transforms |
+| `elementscalex` | Element Scale | Float | 1.0 | 0.0 .. 1.0 |  |
+| `elementscaley` | Element Scale | Float | 1.0 | 0.0 .. 1.0 |  |
+| `blocksize_pixel` | Block Size | Float | [10.0] | 0.001 .. 50.0 (strict) |  |
+| `elementsizetype_pixel` | Element Size Type | Menu | 0 |  | BUTTONS_decompose_transforms |
+| `elementscale_pixelx` | Element Scale | Float | 1.0 | 0.0 .. 1.0 |  |
+| `elementscale_pixely` | Element Scale | Float | 1.0 | 0.0 .. 1.0 |  |
+| `numblocksx` | Number of Blocks | Int | 31 | 1 .. 1000 (strict) |  |
+| `numblocksy` | Number of Blocks | Int | 31 | 1 .. 1000 (strict) |  |
+| `tiledsizex` | Tile Size | Float | 1.0 | 0.001 .. 5.0 (strict) |  |
+| `tiledsizey` | Tile Size | Float | 1.0 | 0.001 .. 5.0 (strict) |  |
+| `offsetx` | Offset | Float | 0.0 | 0.0 .. 1.0 |  |
+| `offsety` | Offset | Float | 0.0 | 0.0 .. 1.0 |  |
+| `preblur` |  | FolderSet |  |  |  |
+| `dopreblur` | Do Pre-Blur | Toggle | false |  |  |
+| `blurunits` | Units | Menu | 0 |  | image, pixels |
+| `size` | Size | Float | [0.005] | 0.0 .. 0.05 (strict) |  |
+| `size_pixel` | Size | Float | [3.0] | 0.0 .. 25.0 (strict) |  |
+| `scalesx` | Scale Size | Float | 1.0 | 0.0 .. 1.0 (strict) |  |
+| `scalesy` | Scale Size | Float | 1.0 | 0.0 .. 1.0 (strict) |  |

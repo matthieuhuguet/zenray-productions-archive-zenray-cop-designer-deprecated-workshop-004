@@ -1,0 +1,35 @@
+# sharpen
+
+- Label: Sharpen
+- Category: Copernicus (`Cop`), Houdini 22.0.368
+- Inputs: 1 to 3
+- Parameters: 11 (exact, read from Houdini by hython)
+- Used by the height graph: no
+
+## Feature summary (web, SideFX reference)
+
+- Source: https://www.sidefx.com/docs/houdini/nodes/cop/sharpen.html
+- Summary (EN): Sharpen sharpens a layer with an unsharp mask: a blurred negative of the source is combined with the original. The page marks the node as available since Houdini 21.0.
+- Résumé (FR) : Le nœud Sharpen accentue une couche par masque flou : un négatif flouté de la source est combiné à l'original, ce qui durcit les contours.
+
+- Inputs meaning: ["source: the input layer or VDB to sharpen", "size (optional): per-pixel size amount, scaled by the Size parameter", "mask (optional): per-pixel mask amount, scaled by the Mask parameter"]
+
+- Key parameters: ["Signature: the layer type the source accepts", "Mask: how much of the new value mixes with the original (default 1, only the new value)", "Units: blur radius in Image space or Pixels", "Read Pixels outside Image: includes pixels beyond the image edge, according to the border type", "Size: radius of the sharpen effect; higher values give crisper results", "Scale Size: scales the sharpen radius", "Amplitude: strength of the unsharp mask", "Gain: multiplies the original brightness; Gain 0 with a positive Amplitude gives a high-pass filter", "Threshold: minimum pixel difference before sharpening occurs"]
+
+- Caveats: ["Sharpening can introduce black edges; the suggested fix is a Maximum node with the original layer on bg and the Sharpen filter output on fg", "The page describes no other limitations"]
+
+## Parameters (exact, from the installed Houdini)
+
+| parameter | label | type | default | range | menu tokens |
+|---|---|---|---|---|---|
+| `signature` | Signature | String | ["auto"] |  |  |
+| `mask` | Mask | Float | [1.0] | 0.0 .. 1.0 (strict) |  |
+| `units` | Units | Menu | 0 |  | image, pixels |
+| `readoutside` | Read Pixels outside Image | Toggle | false |  |  |
+| `sizeimage` | Size | Float | [0.01] | 0.0 .. 0.05 (strict) |  |
+| `sizepixel` | Size | Float | [1.0] | 0.0 .. 5.0 (strict) |  |
+| `scalesx` | Scale Size | Float | 1.0 | 0.0 .. 1.0 (strict) |  |
+| `scalesy` | Scale Size | Float | 1.0 | 0.0 .. 1.0 (strict) |  |
+| `amplitude` | Amplitude | Float | [1.0] | 0.0 .. 5.0 |  |
+| `gain` | Gain | Float | [1.0] | 0.0 .. 5.0 |  |
+| `threshold` | Threshold | Float | [0.0] | 0.0 .. 0.1 (strict) |  |

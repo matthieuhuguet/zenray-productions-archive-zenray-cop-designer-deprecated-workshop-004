@@ -1,0 +1,29 @@
+# sopinvoke
+
+- Label: SOP Invoke
+- Category: Copernicus (`Cop`), Houdini 22.0.368
+- Inputs: 0 to 2048
+- Parameters: 5 (exact, read from Houdini by hython)
+- Used by the height graph: no
+
+## Feature summary (web, SideFX reference)
+
+- Source: https://www.sidefx.com/docs/houdini/nodes/cop/sopinvoke.html
+- Summary (EN): SOP Invoke runs a compiled SOP block on its inputs. It converts incoming COP layers into geometry and passes that geometry to the block's matching inputs.
+- Résumé (FR) : SOP Invoke exécute un bloc SOP compilé sur des entrées COP converties en géométrie, qu'il reçoit sur ses entrées correspondantes.
+
+- Inputs meaning: ["input1, input2, ...: each receives COP data converted to geometry for the matching input of the compiled SOP block; the count is set by the Inputs parameter"]
+
+- Key parameters: ["Inputs: number of inputs", "Input #: name (not a path) of the Input Name on the Block Begin Compile SOP inside the subnetwork that this input overrides", "Outputs: number of outputs", "Output Node #: path to the Block End Compile SOP of the block to run", "Unload Behavior: Never (cache), Use Node's Flag, or Always (no cache, default, less memory)"]
+
+- Caveats: ["Node parameters inside the invoked block are evaluated in their original locations, not through this node's interface", "Distinct from the Invoke Block node listed in the same category"]
+
+## Parameters (exact, from the installed Houdini)
+
+| parameter | label | type | default | range | menu tokens |
+|---|---|---|---|---|---|
+| `inputs` | Inputs | Folder | 1 |  |  |
+| `outputs` | Outputs | Folder | 1 |  |  |
+| `unload` | Unload Behavior | Menu | 2 |  | never, flag, always |
+| `input1_name` | Input 1 | String | ["input1"] |  |  |
+| `output1_path` | Output Node 1 | String | ["./output1"] |  |  |

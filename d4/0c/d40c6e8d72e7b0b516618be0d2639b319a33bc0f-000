@@ -1,0 +1,24 @@
+# statisticsbyid
+
+- Label: Statistics by ID
+- Category: Copernicus (`Cop`), Houdini 22.0.368
+- Inputs: 1 to 2
+- Parameters: 0 (exact, read from Houdini by hython)
+- Used by the height graph: no
+
+## Feature summary (web, SideFX reference)
+
+- Source: https://www.sidefx.com/docs/houdini/nodes/cop/statisticsbyid.html
+- Summary (EN): Statistics by ID computes statistics for the pixels of a Mono source layer, grouped by connected ID islands in an id layer. It reports each island's area, minimum and maximum values.
+- Résumé (FR) : Statistics by ID calcule, pour chaque îlot connexe d'un calque ID, son aire ainsi que les valeurs minimale et maximale du calque source.
+
+- Inputs meaning: ["id: ID layer, each connected component is treated as a separate statistics source", "source: Mono layer whose pixel values are measured"]
+
+- Key parameters: ["No parameters are documented on the page (the Parameters section is empty)", "area: Mono layer giving the area of the island each pixel belongs to, in image units", "minimum: Mono layer giving the lowest source value within each pixel's island", "maximum: Mono layer giving the highest source value within each pixel's island"]
+
+- Caveats: ["The page documents no parameters, check settings in Houdini itself", "Area is reported in image units, not pixel counts"]
+
+## Parameters (exact, from the installed Houdini)
+
+| parameter | label | type | default | range | menu tokens |
+|---|---|---|---|---|---|

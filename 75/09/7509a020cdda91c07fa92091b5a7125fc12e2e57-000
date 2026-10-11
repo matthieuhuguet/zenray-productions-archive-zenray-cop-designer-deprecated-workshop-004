@@ -1,0 +1,63 @@
+# refractfromheight
+
+- Label: Refract from Height
+- Category: Copernicus (`Cop`), Houdini 22.0.368
+- Inputs: 0 to 5
+- Parameters: 39 (exact, read from Houdini by hython)
+- Used by the height graph: no
+
+## Feature summary (web, SideFX reference)
+
+- Source: https://www.sidefx.com/docs/houdini/nodes/cop/refractfromheight.html
+- Summary (EN): Refract from Height treats a height layer as the surface of a transparent medium, such as water, glass or thin ice, and treats a source layer as the ground beneath it. It bends view rays at that surface using its normals, then samples the source image where the rays reach the ground. Documented as since Houdini 22.0.
+- Résumé (FR) : Ce nœud traite un calque de hauteur comme la surface d'un milieu transparent et réfracte les rayons pour échantillonner le calque source placé dessous.
+
+- Inputs meaning: ["source: layer sampled through the refractive surface; the only required input", "height: layer defining the refractive surface; if a normal input is wired, that input supplies the surface normals instead", "ground: optional height layer for the surface the source sits on; a flat ground plane is used if not connected", "normal: optional RGB normal layer in Signed or Offset format, used for the surface normals", "envmap: optional environment map for Fresnel-style reflection and for the refracted background behind transparent source pixels"]
+
+- Key parameters: ["Index of Refraction (Height section): how much light bends at the surface; default 1.33 approximates water", "Height Offset / Height Scale: adjust the height before ray tracing; Height Scale is disabled when a normal input is connected", "Ground parameters: Index of Refraction (default 1.0, air), Ground Offset, Ground Scale and Ray Trace Iterations, which control where refracted rays meet the ground", "Material: Water, Glass or Diamond, each with its own dispersion and absorbance behaviour", "Medium Color, Light Absorbance, Dispersion, Number of Colors: tint, absorption along the path, wavelength separation, and smoothness of dispersion", "Reflection (Strength, Bias, Color, Saturation Scale, Environment Map Offset): reflected environment when envmap is connected", "View Azimuth, View Altitude, View Position, Directional, Space: view ray direction or position"]
+
+- Caveats: ["Connecting normal changes how the surface normals are obtained and disables Height Scale.", "Without envmap there is no environment reflection, and transparent source pixels do not reveal a refracted background.", "A higher Number of Colors gives smoother dispersion but increases cook time.", "The Derivative COP settings inside the node subnetwork (Compute Derivative outside Image, Kernel Size) affect the computed surface normals and the ground calculations.", "The page gives only a basic setup example and no guidance on advanced configurations or performance beyond these notes."]
+
+## Parameters (exact, from the installed Houdini)
+
+| parameter | label | type | default | range | menu tokens |
+|---|---|---|---|---|---|
+| `signature` | Signature | String | ["auto"] |  |  |
+| `filter` | Filter | Menu | 2 |  | point, bilinear, box, triangle, cubic, mitchell, bspline |
+| `space` | Space | Menu | 0 |  | local, world |
+| `normaltype` | Normal Type | Menu | 1 |  | signed, offset |
+| `directional` | Directional | Toggle | true |  |  |
+| `azimuth` | View Azimuth | Float | [0.0] | -180.0 .. 180.0 |  |
+| `altitude` | View Altitude | Float | [90.0] | -90.0 .. 90.0 |  |
+| `viewposx` | View Position | Float | 0.0 | -1.0 .. 1.0 |  |
+| `viewposy` | View Position | Float | 0.0 | -1.0 .. 1.0 |  |
+| `viewposz` | View Position | Float | 2.0 | -1.0 .. 1.0 |  |
+| `folder0` |  | FolderSet |  |  |  |
+| `height_ior` | Index of Refraction | Float | [1.33] | 0.0 .. 2.0 |  |
+| `height_offset` | Height Offset | Float | [0.0] | -1.0 .. 1.0 |  |
+| `height_scale` | Height Scale | Float | [1.0] | 0.0 .. 1.0 |  |
+| `height_outside` | Compute Derivative outside Image | Toggle | true |  |  |
+| `height_kernelsize` | Kernel Size | Int | [1] | 1 .. 64 (strict) |  |
+| `folder1` |  | FolderSet |  |  |  |
+| `ground_ior` | Index of Refraction | Float | [1.0] | 0.0 .. 2.0 |  |
+| `ground_offset` | Ground Offset | Float | [0.0] | -1.0 .. 1.0 |  |
+| `ground_scale` | Ground Scale | Float | [1.0] | 0.0 .. 1.0 |  |
+| `ground_iterations` | Ray Trace Iterations | Int | [10] | 0 .. 30 |  |
+| `ground_outside` | Compute Derivative outside Image | Toggle | true |  |  |
+| `ground_kernelsize` | Kernel Size | Int | [1] | 1 .. 64 (strict) |  |
+| `folder3` |  | FolderSet |  |  |  |
+| `material` | Material | Menu | 0 |  | 0, 1, 2 |
+| `mediumcolorr` | Medium Color | Float | 0.0 | 0.0 .. 1.0 |  |
+| `mediumcolorg` | Medium Color | Float | 0.0 | 0.0 .. 1.0 |  |
+| `mediumcolorb` | Medium Color | Float | 0.0 | 0.0 .. 1.0 |  |
+| `lightabsorbance` | Light Absorbance | Float | [1.0] | 0.0 .. 10.0 |  |
+| `dispersion` | Dispersion | Float | [1.0] | 0.0 .. 2.0 |  |
+| `numcolors` | Number of Colors | Int | [50] | 1 .. 100 (strict) |  |
+| `folder2` |  | FolderSet |  |  |  |
+| `refl_strength` | Strength | Float | [1.0] | 0.0 .. 3.0 |  |
+| `refl_bias` | Bias | Float | [1.0] | 0.0 .. 3.0 (strict) |  |
+| `refl_colorr` | Color | Float | 1.0 | 0.0 .. 1.0 |  |
+| `refl_colorg` | Color | Float | 1.0 | 0.0 .. 1.0 |  |
+| `refl_colorb` | Color | Float | 1.0 | 0.0 .. 1.0 |  |
+| `refl_satscale` | Saturation Scale | Float | [1.0] | 0.0 .. 2.0 |  |
+| `envmapoff` | Environment Map Offset | Float | [0.0] | -90.0 .. 90.0 |  |

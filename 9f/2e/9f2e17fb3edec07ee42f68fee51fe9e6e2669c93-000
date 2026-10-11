@@ -1,0 +1,172 @@
+# pyro_sourceshape
+
+- Label: Pyro Source Shape
+- Category: Copernicus (`Cop`), Houdini 22.0.368
+- Inputs: 0 to 1
+- Parameters: 148 (exact, read from Houdini by hython)
+- Used by the height graph: no
+
+## Feature summary (web, SideFX reference)
+
+- Source: https://www.sidefx.com/docs/houdini/nodes/cop/pyro_sourceshape.html
+- Summary (EN): Pyro Source Shape creates points representing implicit surfaces (box, sphere, torus, tube, or a custom implicit surface) that feed a Pyro simulation as sources. Per-field sourcing, force, curl noise and inherited velocity are configured on this node. It is documented as a Copernicus node in Houdini 22.0.
+- Résumé (FR) : Ce nœud crée des points sources qui représentent des surfaces implicites, primitives ou personnalisées, pour alimenter une simulation pyro.
+
+- Inputs meaning: ["implicitsurface: optional implicit surface geometry that replaces the default primitives"]
+
+- Key parameters: ["Activation: turns the node on or off, active only when 1", "Shape: primitive type and its size, roundness, radius, sphere cut, torus link length, or tube radii and end caps", "Transform: translate, rotate and uniform scale of the shape", "Distortion Noise: animated noise distortion (amplitude, element size, pulse duration, roughness, seed)", "Sourcing per field (Density, Temperature, Velocity, Flame, Divergence): Source toggle, Source Mode, Operation (Add, Copy, Maximum, Average, Blend, Pull, Scale), Blend, Acceleration, Deceleration", "Scale by Timestep: consistency under substepping", "Scale by Noise: multiplies the source by noise (Scale Min/Max, Avoid Negatives)", "Inherited Velocity: Point Velocity and Velocity Scale for moving or rotating sources", "Force: Directional, Spherical, Spin or Radial force field (Scale, Direction, Axis)", "Curl Noise: noise-based vector field (amplitude and noise controls)", "Flame: Source Flame toggle plus Source Mode, Operation and noise settings"]
+
+- Caveats: ["The output must connect to the source_points input of Pyro Block Begin. Merge several sources with Point Merge.", "With First Frame Only, source animation is ignored after the first frame.", "Copy on First Frame copies the source on frame one, then applies the chosen Operation on later frames.", "Point Velocity refers to a Velocity Approximation parameter that this page does not describe.", "Scale Min/Max with negative values creates empty spaces only together with Avoid Negatives, which otherwise zeroes negative values.", "Requires DOP-level permissions. Not available in Houdini Core."]
+
+## Parameters (exact, from the installed Houdini)
+
+| parameter | label | type | default | range | menu tokens |
+|---|---|---|---|---|---|
+| `activation` | Activation | Int | [1] | 0 .. 1 (strict) |  |
+| `folder12` |  | FolderSet |  |  |  |
+| `shape` | Shape | Menu | 1 |  | box, sphere, torus, tube |
+| `box_size` | Size | Float | [1.0] | 0.0 .. 1.0 (strict) |  |
+| `box_sizetype` | Size | Menu | 0 |  | BUTTONS_decompose_transforms |
+| `box_sizescalex` | Size Scale | Float | 1.0 | 0.0 .. 1.0 (strict) |  |
+| `box_sizescaley` | Size Scale | Float | 1.0 | 0.0 .. 1.0 (strict) |  |
+| `box_sizescalez` | Size Scale | Float | 1.0 | 0.0 .. 1.0 (strict) |  |
+| `box_doroundness` | Roundness | Toggle | false |  |  |
+| `box_roundness` | Roundness | Float | [0.5] | 0.0 .. 1.0 (strict) |  |
+| `sphere_radius` | Radius | Float | [0.5] | 0.0 .. 10.0 (strict) |  |
+| `sphere_radiustype` | Radius | Menu | 0 |  | BUTTONS_decompose_transforms |
+| `sphere_radiusscalex` | Radius Scale | Float | 1.0 | 0.0 .. 10.0 (strict) |  |
+| `sphere_radiusscaley` | Radius Scale | Float | 1.0 | 0.0 .. 10.0 (strict) |  |
+| `sphere_radiusscalez` | Radius Scale | Float | 1.0 | 0.0 .. 10.0 (strict) |  |
+| `sphere_cutbyheight` | Cut Sphere | Toggle | false |  |  |
+| `sphere_cutheight` | Cut Sphere | Float | [0.0] | -1.0 .. 1.0 |  |
+| `torus_radiusx` | Radius | Float | 0.5 | 0.0 .. 1.0 (strict) |  |
+| `torus_radiusy` | Radius | Float | 0.25 | 0.0 .. 1.0 (strict) |  |
+| `torus_linklength` | Link Length | Float | [0.0] | 0.0 .. 10.0 |  |
+| `tube_length` | Length | Float | [1.0] | 0.0 .. 10.0 (strict) |  |
+| `tube_radiusx` | Radius | Float | 0.25 | 0.0 .. 10.0 (strict) |  |
+| `tube_radiusy` | Radius | Float | 0.25 | 0.0 .. 10.0 (strict) |  |
+| `tube_radiusscale` | Radius Scale | Float | [1.0] | 0.0 .. 10.0 (strict) |  |
+| `tube_roundcaps` | Round Caps | Toggle | false |  |  |
+| `folder9` |  | FolderSet |  |  |  |
+| `tx` | Translate | Float | 0.0 | -1.0 .. 1.0 |  |
+| `ty` | Translate | Float | 0.0 | -1.0 .. 1.0 |  |
+| `tz` | Translate | Float | 0.0 | -1.0 .. 1.0 |  |
+| `rx` | Rotate | Float | 0.0 | -1.0 .. 1.0 |  |
+| `ry` | Rotate | Float | 0.0 | -1.0 .. 1.0 |  |
+| `rz` | Rotate | Float | 0.0 | -1.0 .. 1.0 |  |
+| `scale` | Uniform Scale | Float | [1.0] | 0.0 .. 10.0 (strict) |  |
+| `distortnoise` | Distortion Noise | Toggle | false |  |  |
+| `folder10` |  | FolderSet |  |  |  |
+| `distortnoise_amp` | Amplitude | Float | [0.1] | 0.0 .. 1.0 (strict) |  |
+| `distortnoise_elementsize` | Element Size | Float | [1.0] | 0.0 .. 10.0 (strict) |  |
+| `distortnoise_pulseduration` | Pulse Duration | Float | [1.0] | 0.0 .. 10.0 (strict) |  |
+| `distortnoise_rough` | Roughness | Float | [0.5] | 0.0 .. 1.0 (strict) |  |
+| `distortnoise_seed` | Seed | Float | [0.0] | 0.0 .. 100.0 (strict) |  |
+| `folder2_1` |  | FolderSet |  |  |  |
+| `source_density` | Source Density | Toggle | true |  |  |
+| `folder6` |  | FolderSet |  |  |  |
+| `density_activation` | Activation | Int | [1] | 0 .. 1 (strict) |  |
+| `density_sourcemode` | Source Mode | Menu | 0 |  | continuous , firstonly, copyonfirst |
+| `density_operation` | Operation | Menu | 0 |  | add, copy, max, average, blend, pull |
+| `density_scale` | Scale | Float | [1.0] | 0.0 .. 10.0 |  |
+| `density_usetimeinc` | Scale by Timestep | Toggle | true |  |  |
+| `density_blend` | Blend | Float | [0.5] | 0.0 .. 1.0 (strict) |  |
+| `density_accel` | Acceleration | Float | [0.5] | 0.0 .. 1.0 (strict) |  |
+| `density_decel` | Deceleration | Float | [0.5] | 0.0 .. 1.0 (strict) |  |
+| `densitynoise` | Enable Noise | Toggle | false |  |  |
+| `folder5` |  | FolderSet |  |  |  |
+| `densitynoise_scalemin` | Scale Min/Max | Float | 0.0 | 0.0 .. 1.0 |  |
+| `densitynoise_scalemax` | Scale Min/Max | Float | 1.0 | 0.0 .. 1.0 |  |
+| `densitynoise_noneg` | Avoid Negatives | Toggle | true |  |  |
+| `densitynoise_elementsize` | Element Size | Float | [1.0] | 0.0 .. 10.0 (strict) |  |
+| `densitynoise_pulseduration` | Pulse Duration | Float | [1.0] | 0.0 .. 10.0 (strict) |  |
+| `densitynoise_rough` | Roughness | Float | [0.5] | 0.0 .. 1.0 (strict) |  |
+| `densitynoise_seed` | Seed | Float | [0.0] | 0.0 .. 100.0 (strict) |  |
+| `source_temperature` | Source Temperature | Toggle | true |  |  |
+| `folder7` |  | FolderSet |  |  |  |
+| `temperature_activation` | Activation | Int | [1] | 0 .. 1 (strict) |  |
+| `temperature_sourcemode` | Source Mode | Menu | 0 |  | continuous , firstonly, copyonfirst |
+| `temperature_operation` | Operation | Menu | 0 |  | add, copy, max, average, blend, pull |
+| `temperature_scale` | Scale | Float | [1.0] | 0.0 .. 10.0 |  |
+| `temperature_usetimeinc` | Scale by Timestep | Toggle | true |  |  |
+| `temperature_blend` | Blend | Float | [0.5] | 0.0 .. 1.0 (strict) |  |
+| `temperature_accel` | Acceleration | Float | [0.5] | 0.0 .. 1.0 (strict) |  |
+| `temperature_decel` | Deceleration | Float | [0.5] | 0.0 .. 1.0 (strict) |  |
+| `temperaturenoise` | Enable Noise | Toggle | false |  |  |
+| `folder11` |  | FolderSet |  |  |  |
+| `temperaturenoise_scalemin` | Scale Min/Max | Float | 0.0 | 0.0 .. 1.0 |  |
+| `temperaturenoise_scalemax` | Scale Min/Max | Float | 1.0 | 0.0 .. 1.0 |  |
+| `temperaturenoise_noneg` | Avoid Negatives | Toggle | true |  |  |
+| `temperaturenoise_elementsize` | Element Size | Float | [1.0] | 0.0 .. 10.0 (strict) |  |
+| `temperaturenoise_pulseduration` | Pulse Duration | Float | [1.0] | 0.0 .. 10.0 (strict) |  |
+| `temperaturenoise_rough` | Roughness | Float | [0.5] | 0.0 .. 1.0 (strict) |  |
+| `temperaturenoise_seed` | Seed | Float | [1.0] | 0.0 .. 100.0 |  |
+| `source_v` | Source Velocity | Toggle | false |  |  |
+| `folder8` |  | FolderSet |  |  |  |
+| `v_activation` | Activation | Int | [1] | 0 .. 1 (strict) |  |
+| `v_sourcemode` | Source Mode | Menu | 0 |  | continuous , firstonly, copyonfirst |
+| `v_operation` | Operation | Menu | 0 |  | add, copy, max, average, blend, pull |
+| `v_scale` | Scale | Float | [1.0] | 0.0 .. 10.0 (strict) |  |
+| `v_usetimeinc` | Scale by Timestep | Toggle | true |  |  |
+| `v_blend` | Blend | Float | [0.5] | 0.0 .. 1.0 (strict) |  |
+| `v_accel` | Acceleration | Float | [0.5] | 0.0 .. 1.0 (strict) |  |
+| `v_decel` | Deceleration | Float | [0.5] | 0.0 .. 1.0 (strict) |  |
+| `vinherited` | Inherited Velocity | Toggle | true |  |  |
+| `folder3` |  | FolderSet |  |  |  |
+| `vinherited_scale` | Velocity Scale | Float | [1.0] | 0.0 .. 10.0 (strict) |  |
+| `velapproximation` | Velocity Approximation | Menu | 0 |  | Backward Difference, Central Difference, Forward Difference |
+| `vforce` | Enable Force | Toggle | true |  |  |
+| `folder1` |  | FolderSet |  |  |  |
+| `vforce_type` | Force Type | Menu | 0 |  | directional, spherical, spin, radial |
+| `vforce_scale` | Scale | Float | [1.0] | 0.0 .. 10.0 |  |
+| `vforce_dirx` | Direction | Float | 0.0 | -1.0 .. 1.0 |  |
+| `vforce_diry` | Direction | Float | 1.0 | -1.0 .. 1.0 |  |
+| `vforce_dirz` | Direction | Float | 0.0 | -1.0 .. 1.0 |  |
+| `vforce_axisx` | Axis | Float | 0.0 | -1.0 .. 1.0 |  |
+| `vforce_axisy` | Axis | Float | 1.0 | -1.0 .. 1.0 |  |
+| `vforce_axisz` | Axis | Float | 0.0 | -1.0 .. 1.0 |  |
+| `vnoise` | Enable Noise | Toggle | false |  |  |
+| `folder4` |  | FolderSet |  |  |  |
+| `vnoise_amp` | Amplitude | Float | [1.0] | 0.0 .. 10.0 (strict) |  |
+| `vnoise_elementsize` | Element Size | Float | [1.0] | 0.0 .. 10.0 (strict) |  |
+| `vnoise_pulseduration` | Pulse Duration | Float | [1.0] | 0.0 .. 10.0 (strict) |  |
+| `vnoise_rough` | Roughness | Float | [0.5] | 0.0 .. 1.0 (strict) |  |
+| `vnoise_seed` | Seed | Float | [2.0] | 0.0 .. 100.0 |  |
+| `source_flame` | Source Flame | Toggle | false |  |  |
+| `folder14` |  | FolderSet |  |  |  |
+| `flame_activation` | Activation | Int | [1] | 0 .. 1 (strict) |  |
+| `flame_sourcemode` | Source Mode | Menu | 0 |  | continuous , firstonly, copyonfirst |
+| `flame_operation` | Operation | Menu | 0 |  | add, copy, max, average, blend, pull |
+| `flame_scale` | Scale | Float | [1.0] | 0.0 .. 10.0 |  |
+| `flame_usetimeinc` | Scale by Timestep | Toggle | true |  |  |
+| `flame_blend` | Blend | Float | [0.5] | 0.0 .. 1.0 (strict) |  |
+| `flame_accel` | Acceleration | Float | [0.5] | 0.0 .. 1.0 (strict) |  |
+| `flame_decel` | Deceleration | Float | [0.5] | 0.0 .. 1.0 (strict) |  |
+| `flamenoise` | Enable Noise | Toggle | false |  |  |
+| `folder13` |  | FolderSet |  |  |  |
+| `flamenoise_scalemin` | Scale Min/Max | Float | 0.0 | 0.0 .. 1.0 |  |
+| `flamenoise_scalemax` | Scale Min/Max | Float | 1.0 | 0.0 .. 1.0 |  |
+| `flamenoise_noneg` | Avoid Negatives | Toggle | true |  |  |
+| `flamenoise_elementsize` | Element Size | Float | [1.0] | 0.0 .. 10.0 (strict) |  |
+| `flamenoise_pulseduration` | Pulse Duration | Float | [1.0] | 0.0 .. 10.0 (strict) |  |
+| `flamenoise_rough` | Roughness | Float | [0.5] | 0.0 .. 1.0 (strict) |  |
+| `flamenoise_seed` | Seed | Float | [3.0] | 0.0 .. 100.0 |  |
+| `source_divergence` | Source Divergence | Toggle | false |  |  |
+| `folder15` |  | FolderSet |  |  |  |
+| `divergence_activation` | Activation | Int | [1] | 0 .. 1 (strict) |  |
+| `divergence_sourcemode` | Source Mode | Menu | 0 |  | continuous , firstonly, copyonfirst |
+| `divergence_operation` | Operation | Menu | 0 |  | add, copy, max, average, blend, pull |
+| `divergence_scale` | Scale | Float | [1.0] | 0.0 .. 10.0 |  |
+| `divergence_usetimeinc` | Scale by Timestep | Toggle | true |  |  |
+| `divergence_blend` | Blend | Float | [0.5] | 0.0 .. 1.0 (strict) |  |
+| `divergence_accel` | Acceleration | Float | [0.5] | 0.0 .. 1.0 (strict) |  |
+| `divergence_decel` | Deceleration | Float | [0.5] | 0.0 .. 1.0 (strict) |  |
+| `divergencenoise` | Enable Noise | Toggle | false |  |  |
+| `folder16` |  | FolderSet |  |  |  |
+| `divergencenoise_scalemin` | Scale Min/Max | Float | 0.0 | 0.0 .. 1.0 |  |
+| `divergencenoise_scalemax` | Scale Min/Max | Float | 1.0 | 0.0 .. 1.0 |  |
+| `divergencenoise_noneg` | Avoid Negatives | Toggle | true |  |  |
+| `divergencenoise_elementsize` | Element Size | Float | [1.0] | 0.0 .. 10.0 (strict) |  |
+| `divergencenoise_pulseduration` | Pulse Duration | Float | [1.0] | 0.0 .. 10.0 (strict) |  |
+| `divergencenoise_rough` | Roughness | Float | [0.5] | 0.0 .. 1.0 (strict) |  |
+| `divergencenoise_seed` | Seed | Float | [4.0] | 0.0 .. 100.0 |  |

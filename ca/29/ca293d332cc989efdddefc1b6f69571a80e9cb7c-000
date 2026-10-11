@@ -1,0 +1,100 @@
+# rop_image
+
+- Label: ROP Image Output
+- Category: Copernicus (`Cop`), Houdini 22.0.368
+- Inputs: 0 to 1
+- Parameters: 76 (exact, read from Houdini by hython)
+- Used by the height graph: yes
+
+## Feature summary (web, SideFX reference)
+
+- Source: https://www.sidefx.com/docs/houdini/nodes/cop/rop_image.html
+- Summary (EN): The ROP Image Copernicus node writes the output of a COP network to disk as image files. It is the Image ROP placed inside a COP network and renders the COP chosen by its COP Path parameter.
+- Résumé (FR) : Le nœud ROP Image écrit sur disque, sous forme de fichiers image, la sortie d'un réseau COP, en rendant le COP désigné par son chemin.
+
+- Inputs meaning: ["The page lists no numbered inputs; a wired input is used only by the Add AOVs from Input button, which imports AOVs from its outputs", "Otherwise the source to render is set by the COP Path parameter"]
+
+- Key parameters: ["Render to Disk / Render to MPlay / Render to Disk in Background: where the images go", "Valid Frame Range: current frame, a range that can include referenced frames, or a strict Start/End/Inc range", "UDIM List: Disabled, Use Context, Explicit or Range", "COP Path: the COP node or subnetwork to render", "Output File: file path with tokens LAYER (one file per AOV), F / F# (frame number) and UDIM", "Colorspace Conversion: OpenColorIO Colorspace, Bake to OpenColorIO Display/View, or Raw", "Set Default Resolution / Pixel Scale / Border / Precision: each overrides the COP node value when enabled", "File Layout (AOV list): name, data size, Raw toggle and optional explicit Port index per AOV", "Save Retries: retries of a save that fails due to a disk or network error"]
+
+- Caveats: ["AOVs added out of sequential order need explicit Port parameters to get the correct order", "The Default Resolution override does not apply when the resolution comes from a File COP or a SOP-converted volume; the page suggests a Resample COP to force a resolution", "Save in Background can speed up large files but uses more memory, since it keeps the output until the save finishes"]
+
+## Parameters (exact, from the installed Houdini)
+
+| parameter | label | type | default | range | menu tokens |
+|---|---|---|---|---|---|
+| `execute` | Render to Disk | Button |  |  |  |
+| `renderpreview` | Render to MPlay | Button |  |  |  |
+| `executebackground` | Render to Disk in Background | Button |  |  |  |
+| `trange` | Valid Frame Range | Menu | 0 |  | off, normal, on |
+| `f1` | Start/End/Inc | Float | 0.0 | 0.0 .. 10.0 |  |
+| `f2` | Start/End/Inc | Float | 0.0 | 0.0 .. 10.0 |  |
+| `f3` | Start/End/Inc | Float | 1.0 | 0.0 .. 10.0 |  |
+| `setudim` | UDIM List | Menu | 3 |  | context, explicit, on, off |
+| `udim1` | UDIM Range | Int | 1001 | 1001 .. 1051 |  |
+| `udim2` | UDIM Range | Int | 1001 | 1001 .. 1051 |  |
+| `udimlist` | Explicit UDIM List | String | [""] |  |  |
+| `take` | Render with Take | String | ["_current_"] |  |  |
+| `coppath` | COP Path | String | [""] |  |  |
+| `copoutput` | Output File | String | ["$HIP/comp/$HIPNAME.$OS.$F4.exr"] |  |  |
+| `docompile` | Compiled Cook | Toggle | false |  |  |
+| `setres` | Set Default Resolution | Toggle | false |  |  |
+| `res1` | Default Resolution | Int | 1024 | 0 .. 10 |  |
+| `res2` | Default Resolution | Int | 1024 | 0 .. 10 |  |
+| `resmenu` | Resolution Menu | Menu | 0 |  |  |
+| `setpixelscale` | Set Default Pixel Scale | Toggle | false |  |  |
+| `pixelscale` | Default Pixel Scale | Float | [1.0] | 1.0 .. 16.0 |  |
+| `setborder` | Set Default Border | Toggle | false |  |  |
+| `border` | Default Border | Menu | 3 |  | constant, clamp, mirror, wrap |
+| `setprecision` | Set Default Precision | Toggle | false |  |  |
+| `precision` | Default Precision | Menu | 1 |  | b16, b32 |
+| `colorconversion` | Colorspace Conversion | Menu | 0 |  | ocio, bakeocio, raw |
+| `ociocolorspace` | Colorspace | String | ["Automatic"] |  |  |
+| `ociolook` | Look | String | ["None"] |  |  |
+| `ociodisplay` | Display | String | ["Default"] |  |  |
+| `ocioview` | View | String | ["Default"] |  |  |
+| `saveretry` | Save Retries | Int | [0] | 0 .. 5 |  |
+| `reloadfiles` | Reload All Files | Toggle | false |  |  |
+| `stdswitcher1` |  | FolderSet |  |  |  |
+| `addaovs` | Add AOVs from Input | Button |  |  |  |
+| `outputaovs` | Output AOVs | Folder | 0 |  |  |
+| `mkpath` | Create Intermediate Directories | Toggle | true |  |  |
+| `initsim` | Initialize Simulation OPs | Toggle | false |  |  |
+| `alfprogress` | Alfred Style Progress | Toggle | false |  |  |
+| `savebackground` | Save in Background | Toggle | true |  |  |
+| `exportattribs` | Export Attributes | Toggle | true |  |  |
+| `attribfilter` | Attribute Filter | String | [""] |  |  |
+| `vm_image_artist` | Artist | String | [""] |  |  |
+| `vm_image_comment` | Comment | String | [""] |  |  |
+| `vm_image_hostname` | Hostname | String | [""] |  |  |
+| `vm_image_mplay_label` | MPlay Session Label | String | [""] |  |  |
+| `vm_image_mplay_gamma` | MPlay Gamma | Float | [1.0] | 0.0 .. 10.0 |  |
+| `mktx` | Tile and Generate Mip-Maps | Toggle | false |  |  |
+| `txtilesize1` | Tile Size | Int | 64 | 0 .. 10 |  |
+| `txtilesize2` | Tile Size | Int | 64 | 0 .. 10 |  |
+| `txmipmapfilter` | Mip-Map Resize Filter | String | ["box"] |  | box, gaussian, point, sinc, bartlett, blackman, catrom, hanning, mitchell |
+| `txopaquedetect` | Remove Opaque Alpha Channels | Toggle | true |  |  |
+| `vm_image_jpeg_quality` | JPEG Quality | Int | [100] | 0 .. 10 |  |
+| `vm_image_tiff_compression` | TIFF Compression | Menu | 1 |  | None, LZW, AdobeDeflate, PackBits, JPEG, PixarLog, SGILog, SGILog24, LZMA, Zstd |
+| `vm_image_exr_compression` | EXR Compression | Menu | 3 |  | none, rle, zips, zip, piz, pix, b44, b44a, dwaa, dwab |
+| `dwa_compression` | DWA Compression Level | Int | [85] | 1 .. 500 |  |
+| `pngtga_alpha_multiplication` | PNG/TGA Premultiplication | Menu | 0 |  | premult, unpremult |
+| `tprerender` | Pre-Render Script | Toggle | true |  |  |
+| `prerender` | Pre-Render Script | String | [""] |  |  |
+| `lprerender` | Pre-Render Script Language | String | ["hscript"] |  | hscript, python |
+| `tpreframe` | Pre-Frame Script | Toggle | true |  |  |
+| `preframe` | Pre-Frame Script | String | [""] |  |  |
+| `lpreframe` | Pre-Frame Script Language | String | ["hscript"] |  | hscript, python |
+| `tpostframe` | Post-Frame Script | Toggle | true |  |  |
+| `postframe` | Post-Frame Script | String | [""] |  |  |
+| `lpostframe` | Post-Frame Script Language | String | ["hscript"] |  | hscript, python |
+| `tpostwrite` | Post-Write Script | Toggle | true |  |  |
+| `postwrite` | Post-Write Script | String | [""] |  |  |
+| `lpostwrite` | Post-Write Script Language | String | ["hscript"] |  | hscript, python |
+| `tpostrender` | Post-Render Script | Toggle | true |  |  |
+| `postrender` | Post-Render Script | String | [""] |  |  |
+| `lpostrender` | Post-Render Script Language | String | ["hscript"] |  | hscript, python |
+| `aov1` | AOV Name | String | [""] |  |  |
+| `size1` | Data Size | Menu | 0 |  | auto, int8, int16, int32, float16, float32 |
+| `raw1` | Raw | Toggle | false |  |  |
+| `useport1` | Explicit Port | Toggle | false |  |  |
+| `port1` | Port | Int | [0] | 0 .. 10 |  |

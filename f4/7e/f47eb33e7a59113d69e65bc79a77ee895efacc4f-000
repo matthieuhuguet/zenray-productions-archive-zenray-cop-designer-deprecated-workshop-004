@@ -1,0 +1,24 @@
+# pyro_sourcefromshape
+
+- Label: Pyro Source from Shape
+- Category: Copernicus (`Cop`), Houdini 22.0.368
+- Inputs: 0 to 6
+- Parameters: 0 (exact, read from Houdini by hython)
+- Used by the height graph: no
+
+## Feature summary (web, SideFX reference)
+
+- Source: https://www.sidefx.com/docs/houdini/nodes/cop/pyro_sourcefromshape.html
+- Summary (EN): Pyro Source from Shape takes pyro source points that represent implicit surfaces and mixes their source material into the incoming volumes, so the simulation receives the combined result. It is part of COP Pyro and is documented since Houdini 22.0.
+- Résumé (FR) : Ce nœud mélange les points sources d'une forme implicite dans les VDB d'une simulation pyro.
+
+- Inputs meaning: ["density: Float VDB the source shape is mixed into", "temperature: Float VDB the source shape is mixed into", "v: Vector VDB the source shape is mixed into", "flame: Float VDB the source shape is mixed into", "divergence: Float VDB the source shape is mixed into", "source_points: pyro source points from the Pyro Source Shape node"]
+
+- Key parameters: ["No parameters are documented on the page. Sourcing options are set on the Pyro Source Shape node, whose source_points output feeds this node's source_points input."]
+
+- Caveats: ["Requires DOP-level permissions. Not available in Houdini Core, only in FX, Apprentice, Indie and Education.", "The See also link on the page points to pyro_sourcehape, a misspelling of the Pyro Source Shape page name."]
+
+## Parameters (exact, from the installed Houdini)
+
+| parameter | label | type | default | range | menu tokens |
+|---|---|---|---|---|---|

@@ -1,0 +1,54 @@
+# xform2d
+
+- Label: Transform 2D
+- Category: Copernicus (`Cop`), Houdini 22.0.368
+- Inputs: 0 to 2
+- Parameters: 30 (exact, read from Houdini by hython)
+- Used by the height graph: no
+
+## Feature summary (web, SideFX reference)
+
+- Source: https://www.sidefx.com/docs/houdini/nodes/cop/xform2d.html
+- Summary (EN): Transform 2D transforms a layer in 2D. It can move the pixels and re-rasterize them onto the original layer, or move the layer itself and leave its data unchanged. Output: the transformed layer.
+- Résumé (FR) : Transforme une couche en 2D en déplaçant soit les pixels (avec ré-échantillonnage), soit la couche elle-même pour garder un résultat sans perte.
+
+- Inputs meaning: ["source: the values to transform", "mask (optional): per-pixel mask amount, scaled by the Mask parameter"]
+
+- Key parameters: ["Signature: the layer type the source accepts", "Units: unit used to measure translations", "Order: order in which transforms are applied", "Translate, Rotate (degrees about the pivot), Scale, Shear, Uniform Scale", "Pivot Translate: translation of the local pivot space", "Invert Transformation: inverts the computed transform before applying it", "Rasterize: keeps the layer in place but re-rasterizes its pixels as if transformed", "Crop to Content: crops output to the transformed data window, accounting for rotation and translation", "Border: boundary handling when rasterizing (Auto, Constant, Clamp, Mirror, Wrap, Clip)", "Filter: sampling method, default Box", "Mask: how much of the new value is mixed with the original; default 1"]
+
+- Caveats: ["Re-rasterizing resamples the pixels; to keep a series of 2D operations lossless, move the layer itself and render with Rasterize Layer or Project on Layer COP", "The page does not state the default value of the Rasterize parameter"]
+
+## Parameters (exact, from the installed Houdini)
+
+| parameter | label | type | default | range | menu tokens |
+|---|---|---|---|---|---|
+| `signature` | Signature | String | ["auto"] |  |  |
+| `units` | Units | Menu | 0 |  | image, texture, pixel, local |
+| `xOrd` | Order | Menu | 0 |  | srt, str, rst, rts, tsr, trs |
+| `tx` | Translate | Float | 0.0 | -1.0 .. 1.0 |  |
+| `ty` | Translate | Float | 0.0 | -1.0 .. 1.0 |  |
+| `t_texturex` | Translate | Float | 0.0 | -1.0 .. 1.0 |  |
+| `t_texturey` | Translate | Float | 0.0 | -1.0 .. 1.0 |  |
+| `t_pixelx` | Translate | Float | 0.0 | -1.0 .. 1.0 |  |
+| `t_pixely` | Translate | Float | 0.0 | -1.0 .. 1.0 |  |
+| `t_localx` | Translate | Float | 0.0 | -1.0 .. 1.0 |  |
+| `t_localy` | Translate | Float | 0.0 | -1.0 .. 1.0 |  |
+| `rz` | Rotate | Float | [0.0] | -180.0 .. 180.0 |  |
+| `sx` | Scale | Float | 1.0 | -1.0 .. 1.0 |  |
+| `sy` | Scale | Float | 1.0 | -1.0 .. 1.0 |  |
+| `shear1` | Shear | Float | [0.0] | -1.0 .. 1.0 |  |
+| `scale` | Uniform Scale | Float | [1.0] | 0.1 .. 10.0 |  |
+| `px` | Pivot Translate | Float | 0.0 | -1.0 .. 1.0 |  |
+| `py` | Pivot Translate | Float | 0.0 | -1.0 .. 1.0 |  |
+| `p_texturex` | Pivot Translate | Float | 0.5 | -1.0 .. 1.0 |  |
+| `p_texturey` | Pivot Translate | Float | 0.5 | -1.0 .. 1.0 |  |
+| `p_pixelx` | Pivot Translate | Float | 0.0 | -1.0 .. 1.0 |  |
+| `p_pixely` | Pivot Translate | Float | 0.0 | -1.0 .. 1.0 |  |
+| `p_localx` | Pivot Translate | Float | 0.0 | -1.0 .. 1.0 |  |
+| `p_localy` | Pivot Translate | Float | 0.0 | -1.0 .. 1.0 |  |
+| `invertxform` | Invert Transformation | Toggle | false |  |  |
+| `rasterize` | Rasterize | Toggle | true |  |  |
+| `crop` | Crop to Content | Toggle | false |  |  |
+| `border` | Border | Menu | 0 |  | auto, constant, clamp, mirror, wrap, clip |
+| `filter` | Filter | Menu | 2 |  | point, bilinear, box, triangle, cubic, mitchell, bspline |
+| `mask` | Mask | Float | [1.0] | 0.0 .. 1.0 |  |

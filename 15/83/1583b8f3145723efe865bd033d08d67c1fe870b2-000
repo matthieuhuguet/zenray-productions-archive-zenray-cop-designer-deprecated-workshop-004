@@ -1,0 +1,27 @@
+# pyro_advectbymap
+
+- Label: Pyro Advect by Map
+- Category: Copernicus (`Cop`), Houdini 22.0.368
+- Inputs: 2 to 3
+- Parameters: 3 (exact, read from Houdini by hython)
+- Used by the height graph: no
+
+## Feature summary (web, SideFX reference)
+
+- Source: https://www.sidefx.com/docs/houdini/nodes/cop/pyro_advectbymap.html
+- Summary (EN): Pyro Advect By Map moves a VDB along a provided flow map so that it follows the simulated motion. The forward map records where each voxel came from after advection, and the reverse map records the opposite. It outputs advect, the advected source.
+- Résumé (FR) : Le nœud Pyro Advect By Map déplace un VDB selon des cartes de flux avant et arrière, avec trois schémas dont BFECC est le plus précis.
+
+- Inputs meaning: ["source: vector or float VDB to advect", "fwdmap: vector VDB map of forward advection origins", "revmap: vector VDB map of backward advection origins; only needed for the BFECC scheme"]
+
+- Key parameters: ["Signature: VDB type accepted by the source", "Scheme: BFECC (best preservation of sharp features, most time and memory), Euler + Sharpen (simplest, with a dynamic sharpen field), Euler (simplest and fastest, tends to over-blur)", "Sharpen: sharpening amount, adjusted per voxel by sampling; values that are too high produce grid artifacts"]
+
+- Caveats: ["Requires DOP-level permissions; available in FX, Apprentice, Indie and Education, not in Houdini Core.", "The reverse map is only needed for BFECC.", "Available since 21.0."]
+
+## Parameters (exact, from the installed Houdini)
+
+| parameter | label | type | default | range | menu tokens |
+|---|---|---|---|---|---|
+| `signature` | Signature | String | ["auto"] |  |  |
+| `method` | Scheme | Menu | 1 |  | bfecc, sharpen, euler |
+| `sharpen` | Sharpen | Float | [1.0] | 0.0 .. 1.0 |  |

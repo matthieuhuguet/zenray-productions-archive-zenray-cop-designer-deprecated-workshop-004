@@ -1,0 +1,30 @@
+# smoothfill
+
+- Label: Smooth Fill
+- Category: Copernicus (`Cop`), Houdini 22.0.368
+- Inputs: 2 to 3
+- Parameters: 6 (exact, read from Houdini by hython)
+- Used by the height graph: no
+
+## Feature summary (web, SideFX reference)
+
+- Source: https://www.sidefx.com/docs/houdini/nodes/cop/smoothfill.html
+- Summary (EN): Smooth Fill fills a region of a layer with smoothly varying values. It solves the Poisson equation inside the provided fill area, so the filled region blends into the boundary values around it.
+- Résumé (FR) : Smooth Fill remplit une zone d'un calque avec des valeurs qui varient en douceur, en résolvant l'équation de Poisson à l'intérieur de la zone de remplissage.
+
+- Inputs meaning: ["source: the layer to fill", "fillarea: Mono layer defining which pixels get filled", "mask (optional): per-pixel amount scaled by the Mask parameter"]
+
+- Key parameters: ["Signature: layer type the source accepts", "Mask: mix between original and new value, default 1 uses only the new value", "Fill: fill pixels Below Threshold or Above Threshold in fillarea", "Threshold: fillarea value where filling starts (dropper can sample it)", "Iterations: relaxation passes used to smooth the filled values", "Acceleration: successive over-relaxation factor, 1 is smooth and stable, up to 1.98 converges faster"]
+
+- Caveats: ["Iterative, may need many iterations to converge", "If not converged, the result depends on resolution", "Starting values close to the final result speed up convergence"]
+
+## Parameters (exact, from the installed Houdini)
+
+| parameter | label | type | default | range | menu tokens |
+|---|---|---|---|---|---|
+| `signature` | Signature | String | ["auto"] |  |  |
+| `mask` | Mask | Float | [1.0] | 0.0 .. 1.0 (strict) |  |
+| `side` | Fill | Menu | 0 |  | below, above |
+| `threshold` | Threshold | Float | [0.5] | 0.0 .. 1.0 |  |
+| `iterations` | Iterations | Int | [300] | 0 .. 1000 |  |
+| `omega` | Acceleration | Float | [1.98] | 1.0 .. 1.98 |  |

@@ -1,0 +1,25 @@
+# pointdelete
+
+- Label: Point Delete
+- Category: Copernicus (`Cop`), Houdini 22.0.368
+- Inputs: 0 to 2
+- Parameters: 1 (exact, read from Houdini by hython)
+- Used by the height graph: no
+
+## Feature summary (web, SideFX reference)
+
+- Source: https://www.sidefx.com/docs/houdini/nodes/cop/pointdelete.html
+- Summary (EN): The Point Delete node removes selected points from a point cloud and always outputs a point cloud. Primitives on the input are not passed through.
+- Résumé (FR) : Le nœud Point Delete supprime des points selon un attribut entier et renvoie toujours un nuage de points, les primitives étant perdues.
+
+- Inputs meaning: ["points: original points; the output is a subset of these", "dead (optional): integer attribute marking points to delete; must match the point count of the first input; zero keeps the point"]
+
+- Key parameters: ["Delete Attribute: integer point attribute deciding removal; zero keeps the point, any other value removes it"]
+
+- Caveats: ["Primitives on the input are dropped; only point data survives.", "The dead input must match the first input's point count.", "Available since Houdini 22.0."]
+
+## Parameters (exact, from the installed Houdini)
+
+| parameter | label | type | default | range | menu tokens |
+|---|---|---|---|---|---|
+| `attrib` | Delete Attribute | String | ["dead"] |  |  |

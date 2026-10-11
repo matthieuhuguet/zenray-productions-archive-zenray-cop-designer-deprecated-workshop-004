@@ -1,0 +1,26 @@
+# uvtopolar
+
+- Label: UV to Polar
+- Category: Copernicus (`Cop`), Houdini 22.0.368
+- Inputs: 1 to 1
+- Parameters: 2 (exact, read from Houdini by hython)
+- Used by the height graph: no
+
+## Feature summary (web, SideFX reference)
+
+- Source: https://www.sidefx.com/docs/houdini/nodes/cop/uvtopolar.html
+- Summary (EN): Converts the Cartesian (x, y) position of each pixel into polar coordinates: its distance from an origin and its angle. It changes each pixel's coordinate values in place and does not move pixels. To relocate pixels, the page recommends a UV Map, then this node, then a UV Sample.
+- Résumé (FR) : Ce nœud convertit les coordonnées cartésiennes UV en coordonnées polaires, angle et distance à l'origine, sans déplacer les pixels.
+
+- Inputs meaning: ["uv: UV layer or attribute containing the Cartesian coordinates to convert."]
+
+- Key parameters: [{"name": "Signature", "meaning": "The layer type the source accepts. Details are in the Signatures glossary entry."}, {"name": "Angle Units", "meaning": "Circles (2pi) gives complete rotations from 0 to 1, and is the default. Radians is the unit circle distance used by VEX and OpenCL. Degrees is the human-readable format used by expressions."}, {"name": "Output angle", "meaning": "Mono layer or attribute with the rotation of each point about the origin."}, {"name": "Output length", "meaning": "Mono layer or attribute with each point's distance from the origin."}]
+
+- Caveats: ["The page does not say how the origin itself is handled, where the zero angle lies, or which direction is positive.", "The Signature parameter is described only by a reference to the glossary.", "The node does not resample or reposition pixels. Use the UV Map and UV Sample workflow for that."]
+
+## Parameters (exact, from the installed Houdini)
+
+| parameter | label | type | default | range | menu tokens |
+|---|---|---|---|---|---|
+| `signature` | Signature | String | ["auto"] |  |  |
+| `angleunit` | Angle Units | Menu | 2 |  | rad, deg, tau |

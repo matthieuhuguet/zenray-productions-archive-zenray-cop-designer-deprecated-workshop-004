@@ -1,0 +1,99 @@
+# starglow
+
+- Label: Star Glow
+- Category: Copernicus (`Cop`), Houdini 22.0.368
+- Inputs: 0 to 3
+- Parameters: 75 (exact, read from Houdini by hython)
+- Used by the height graph: no
+
+## Feature summary (web, SideFX reference)
+
+- Source: https://www.sidefx.com/docs/houdini/nodes/cop/starglow.html
+- Summary (EN): Star Glow adds star-like light streaks to a layer by streaking its bright areas in multiple directions. It finds pixels above a luminance threshold and applies the streaks only to those regions.
+- Résumé (FR) : Star Glow ajoute des traînées lumineuses en étoile aux zones claires d'un calque, en les étirant dans plusieurs directions à partir des pixels au-dessus d'un seuil de luminance.
+
+- Inputs meaning: ["source: original layer receiving the effect", "effect (optional): layer controlling which areas get the effect, works with the Threshold parameter", "mask (optional): per-pixel mask whose amount is scaled by the Mask parameter"]
+
+- Key parameters: ["Threshold / Width: luminance level above which pixels glow, and the range on either side", "Streaks: number of streaks spread evenly around 360 degrees", "Streak Length: overall strength of the streaks, negative values trace the opposite direction", "Brightness: lightens and expands the glow at high values, dims and shrinks it at low values", "Streak: Blur (averages samples) or Max (keeps brightest sample, for edge roughness)", "Streak Weight: ramp multiplying pixel values along each streak", "Combine Streaks with: Add, Screen, Hypot, Maximum, or Difference", "Color Mode / Color / Color Ramp / Multiply with Original: tinting of the streaks", "Aberration (Red, Green, Blue): per-channel rotation of streaks for chromatic fringing", "Glimmer, Animate, Pulse Length, Time Scale, Loop Length: shimmer and animation", "Output Star Glow Only: outputs only the glow, usable as a separate AOV or with Blend COP", "Maximum Steps (Advanced): samples taken along each streak"]
+
+- Caveats: ["Long streaks can leave gaps, increase Maximum Steps to fill them", "For a glow or blur in one direction only, use the Glow COP or Streak Blur COP instead"]
+
+## Parameters (exact, from the installed Houdini)
+
+| parameter | label | type | default | range | menu tokens |
+|---|---|---|---|---|---|
+| `signature` | Signature | String | ["auto"] |  |  |
+| `mask` | Mask | Float | [1.0] | 0.0 .. 1.0 (strict) |  |
+| `threshold` | Threshold | Float | [0.3] | 0.0 .. 1.0 |  |
+| `width` | Width | Float | [0.0] | 0.0 .. 1.0 |  |
+| `border` | Border | Menu | 0 |  | auto, constant, clamp, mirror, wrap |
+| `starglowonly` | Output Star Glow Only | Toggle | false |  |  |
+| `folder0` |  | FolderSet |  |  |  |
+| `streaks` | Streaks | Int | [9] | 1 .. 10 |  |
+| `streaklength` | Streak Length | Float | [0.5] | 0.0 .. 2.0 |  |
+| `brightness` | Brightness | Float | [1.0] | 0.0 .. 2.0 |  |
+| `angleoffset` | Angle | Float | [0.0] | 0.0 .. 360.0 |  |
+| `streak` | Streak | Menu | 0 |  | on, max |
+| `streakweight` | Streak Weight | Ramp | 4 |  |  |
+| `folder1` |  | FolderSet |  |  |  |
+| `streakcombine` | Combine Streaks with | Menu | 1 |  | add, screen, hypot, maximum, diff |
+| `colormode` | Color Mode | Menu | 0 |  | uniform, ramp |
+| `multiplywithoriginal` | Multiply with Original | Toggle | true |  |  |
+| `uniformcolorr` | Color | Float | 1.0 | 0.0 .. 1.0 |  |
+| `uniformcolorg` | Color | Float | 1.0 | 0.0 .. 1.0 |  |
+| `uniformcolorb` | Color | Float | 1.0 | 0.0 .. 1.0 |  |
+| `azimuth` | Azimuth | Float | [314.0] | 0.0 .. 360.0 |  |
+| `colorramp` | Color Ramp | Ramp | 5 |  |  |
+| `folder3` |  | FolderSet |  |  |  |
+| `enableaberration` | Enable Aberration | Toggle | false |  |  |
+| `rangle` | Red | Float | [-5.0] | -45.0 .. 45.0 |  |
+| `gangle` | Green | Float | [0.0] | -45.0 .. 45.0 |  |
+| `bangle` | Blue | Float | [5.0] | -45.0 .. 45.0 |  |
+| `enableglimmer` | Enable Glimmer | Toggle | false |  |  |
+| `folder2` |  | FolderSet |  |  |  |
+| `glimmerstrength` | Glimmer Strength | Float | [1.0] | 0.0 .. 1.0 |  |
+| `glimmersize` | Glimmer Size | Float | [0.03] | 0.001 .. 0.5 |  |
+| `animate` | Animate | Toggle | false |  |  |
+| `pulselength` | Pulse Length | Float | [1.0] | 0.0 .. 1.0 |  |
+| `timescale` | Time Scale | Float | [1.0] | 0.0 .. 1.0 |  |
+| `doloop` | Loop | Toggle | true |  |  |
+| `looplen` | Loop Length (sec) | Float | [10.0] | 0.0 .. 10.0 |  |
+| `advanced` |  | FolderSet |  |  |  |
+| `maxsteps` | Maximum Steps | Int | [100] | 1 .. 300 |  |
+| `streakweight1pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `streakweight1value` | Value | Float | [0.0] | 0.0 .. 10.0 |  |
+| `streakweight1interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `streakweight2pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `streakweight2value` | Value | Float | [0.0] | 0.0 .. 10.0 |  |
+| `streakweight2interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `streakweight3pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `streakweight3value` | Value | Float | [0.0] | 0.0 .. 10.0 |  |
+| `streakweight3interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `streakweight4pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `streakweight4value` | Value | Float | [0.0] | 0.0 .. 10.0 |  |
+| `streakweight4interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `colorramp1pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `colorramp1cr` | Color | Float | 0.0 | 0.0 .. 10.0 |  |
+| `colorramp1cg` | Color | Float | 0.0 | 0.0 .. 10.0 |  |
+| `colorramp1cb` | Color | Float | 0.0 | 0.0 .. 10.0 |  |
+| `colorramp1interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `colorramp2pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `colorramp2cr` | Color | Float | 0.0 | 0.0 .. 10.0 |  |
+| `colorramp2cg` | Color | Float | 0.0 | 0.0 .. 10.0 |  |
+| `colorramp2cb` | Color | Float | 0.0 | 0.0 .. 10.0 |  |
+| `colorramp2interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `colorramp3pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `colorramp3cr` | Color | Float | 0.0 | 0.0 .. 10.0 |  |
+| `colorramp3cg` | Color | Float | 0.0 | 0.0 .. 10.0 |  |
+| `colorramp3cb` | Color | Float | 0.0 | 0.0 .. 10.0 |  |
+| `colorramp3interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `colorramp4pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `colorramp4cr` | Color | Float | 0.0 | 0.0 .. 10.0 |  |
+| `colorramp4cg` | Color | Float | 0.0 | 0.0 .. 10.0 |  |
+| `colorramp4cb` | Color | Float | 0.0 | 0.0 .. 10.0 |  |
+| `colorramp4interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `colorramp5pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `colorramp5cr` | Color | Float | 0.0 | 0.0 .. 10.0 |  |
+| `colorramp5cg` | Color | Float | 0.0 | 0.0 .. 10.0 |  |
+| `colorramp5cb` | Color | Float | 0.0 | 0.0 .. 10.0 |  |
+| `colorramp5interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |

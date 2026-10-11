@@ -1,0 +1,44 @@
+# streakblur
+
+- Label: Streak Blur
+- Category: Copernicus (`Cop`), Houdini 22.0.368
+- Inputs: 0 to 4
+- Parameters: 20 (exact, read from Houdini by hython)
+- Used by the height graph: yes
+
+## Feature summary (web, SideFX reference)
+
+- Source: https://www.sidefx.com/docs/houdini/nodes/cop/streakblur.html
+- Summary (EN): Streak Blur smears an image in one direction to create a motion-blur-like effect. Its streaks have a fixed direction and length unless changed by parameters or inputs.
+- Résumé (FR) : Streak Blur étire une image dans une seule direction pour simuler un flou de mouvement, avec une direction et une longueur constantes, sauf si une entrée les fait varier.
+
+- Inputs meaning: ["source: layer the effect is applied to", "direction (optional): UV layer setting the streak direction per pixel, for example a Constant COP or Fractal Noise COP feeding a Slope Direction COP", "scalelength (optional): value multiplying the Length parameter", "mask (optional): per-pixel mask scaled by the Mask parameter"]
+
+- Key parameters: ["Mask: mix of new result with original, default 1 uses only the new result", "Border: sampling behaviour outside the layer edges, taken automatically from the layer border property", "Direction Type: Angle (0 horizontal, 90 vertical) or Direction vector in polar coordinates", "Normalise Direction: when off, the direction vector is multiplied by the length", "Units: Image or Pixels", "Length: streak length in the chosen units", "Bias: 0 centres the streak, -1 ends it at the pixel, 1 starts it at the pixel", "Mode: Blur (average), Min (erodes shapes), Max (edge roughness)", "Use Streak Weight / Streak Weight: ramp fading samples along the streak, left side is the start"]
+
+- Caveats: ["The page states that the direction and length of the streaks are constant", "To vary them, wire the direction input or use the scalelength input", "Identity matched from the page title and the Copernicus index link, the page body does not repeat the internal name"]
+
+## Parameters (exact, from the installed Houdini)
+
+| parameter | label | type | default | range | menu tokens |
+|---|---|---|---|---|---|
+| `mask` | Mask | Float | [1.0] | 0.0 .. 1.0 (strict) |  |
+| `border` | Border | Menu | 0 |  | auto, constant, clamp, mirror, wrap |
+| `dirtype` | Direction Type | Menu | 0 |  | angle, coord |
+| `dirx` | Direction | Float | 1.0 | 0.0 .. 1.0 |  |
+| `diry` | Direction | Float | 0.0 | 0.0 .. 1.0 |  |
+| `normalizedir` | Normalize Direction | Toggle | false |  |  |
+| `angle` | Angle | Float | [0.0] | -180.0 .. 180.0 |  |
+| `units` | Units | Menu | 0 |  | image, pixels |
+| `length` | Length | Float | [0.05] | 0.0 .. 1.0 |  |
+| `length_pixels` | Length | Float | [3.0] | 0.0 .. 1024.0 |  |
+| `bias` | Bias | Float | [0.0] | -1.0 .. 1.0 |  |
+| `mode` | Mode | Menu | 0 |  | on, min, max |
+| `usestreakweight` | Use Streak Weight | Toggle | false |  |  |
+| `streakweight` | Streak Weight | Ramp | 2 |  |  |
+| `streakweight1pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `streakweight1value` | Value | Float | [0.0] | 0.0 .. 10.0 |  |
+| `streakweight1interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `streakweight2pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `streakweight2value` | Value | Float | [0.0] | 0.0 .. 10.0 |  |
+| `streakweight2interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |

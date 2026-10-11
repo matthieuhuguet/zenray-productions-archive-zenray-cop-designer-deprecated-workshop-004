@@ -1,0 +1,37 @@
+# pyro_buildadvectionmap::2.0
+
+- Label: Pyro Build Advection Map
+- Category: Copernicus (`Cop`), Houdini 22.0.368
+- Inputs: 1 to 1
+- Parameters: 13 (exact, read from Houdini by hython)
+- Used by the height graph: no
+
+## Feature summary (web, SideFX reference)
+
+- Source: https://www.sidefx.com/docs/houdini/nodes/cop/pyro_buildadvectionmap.html
+- Summary (EN): Pyro Build Advection Map constructs a flow map from a velocity VDB ('Constructs a flow map from a velocity VDB'). The output vector VDB records, for each voxel, the position it would have been advected from. Other Pyro nodes, such as Pyro Advect by Map, can use that map. Introduced in version 21.0.
+- Résumé (FR) : Pyro Build Advection Map construit une carte d'écoulement à partir d'un VDB de vitesse. Pour chaque voxel, la sortie vectorielle donne la position d'où la matière aurait été advectée, et d'autres nœuds Pyro comme Pyro Advect by Map peuvent l'utiliser. Requiert les permissions DOP.
+
+- Inputs meaning: ["v: vector VDB providing the velocity field"]
+
+- Key parameters: ["Scale: global multiplier on velocity values", "Ambient Velocity: constant velocity added on top of the velocity VDB, can act like wind", "Scale by Timestep: scales velocity by the timestep", "Trace Method: integration scheme (Forward Euler, Average of Two, Explicit Midpoint, Runge-Kutta 3, Runge-Kutta 4), least to most accurate and costly", "Path Tracing: multiple trace steps to follow curved paths and preserve fine detail", "CFL Condition: approximate step size in voxels, lower is more stable but slower", "Maximum Steps: global cap on path-tracing steps", "Adaptive Step Size: adjusts step size during tracing based on the maximum step count", "Output map: vector VDB giving the source position for each voxel"]
+
+- Caveats: ["Requires DOP-level permissions, not available in Houdini Core (only FX, Apprentice, Indie, Education)", "More accurate trace methods cost more computation, Forward Euler is fastest but blurrier", "For very fast motion the page suggests raising CFL Condition before Maximum Steps"]
+
+## Parameters (exact, from the installed Houdini)
+
+| parameter | label | type | default | range | menu tokens |
+|---|---|---|---|---|---|
+| `signature` | Signature | Float | [0.0] | 0.0 .. 10.0 |  |
+| `folder1` |  | FolderSet |  |  |  |
+| `scale` | Scale | Float | [1.0] | -1.0 .. 1.0 |  |
+| `ambientx` | Ambient Velocity | Float | 0.0 | 0.0 .. 1.0 |  |
+| `ambienty` | Ambient Velocity | Float | 0.0 | 0.0 .. 1.0 |  |
+| `ambientz` | Ambient Velocity | Float | 0.0 | 0.0 .. 1.0 |  |
+| `usetimeinc` | Scale by Timestep | Toggle | true |  |  |
+| `folder0` |  | FolderSet |  |  |  |
+| `tracemethod` | Trace Method | Menu | 0 |  | forwardeuler, average, midpoint, rk3, rk4 |
+| `usepathtrace` | Path Trace | Toggle | true |  |  |
+| `cflcond` | CFL Condition | Float | [1.5] | 0.0 .. 10.0 (strict) |  |
+| `maxstep` | Maximum Steps | Int | [100] | 1 .. 200 (strict) |  |
+| `adaptive` | Adaptive Step Size | Toggle | false |  |  |

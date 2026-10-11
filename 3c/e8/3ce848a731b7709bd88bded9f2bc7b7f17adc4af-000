@@ -1,0 +1,33 @@
+# pyro_configure::2.0
+
+- Label: Pyro Configure
+- Category: Copernicus (`Cop`), Houdini 22.0.368
+- Inputs: 0 to 3
+- Parameters: 9 (exact, read from Houdini by hython)
+- Used by the height graph: no
+
+## Feature summary (web, SideFX reference)
+
+- Source: https://www.sidefx.com/docs/houdini/nodes/cop/pyro_configure.html
+- Summary (EN): Pyro Configure sets up the initial configuration of a Pyro simulation. It generates placeholder VDBs that provide the reference field for Pyro Block Begin. Added in version 21.0.
+- Résumé (FR) : Pyro Configure prépare la configuration initiale d'une simulation Pyro. Il ne calcule rien : il génère des VDB de référence qui fixent la taille de voxel et alimentent Pyro Block Begin. La taille se règle en unités monde, en résolution d'image standard, ou par couverture de caméra. Requiert les permissions DOP.
+
+- Inputs meaning: ["vdb_ref (optional): float VDB used to set the voxel size", "camera_ref: camera reference, used when Divisions is Coverage", "centroid_ref: point geometry reference, used with Coverage, marks the simulation centre"]
+
+- Key parameters: ["Divisions: Voxel Size (world units, best for fully 3D), Resolution (standard 2-unit square imaging plane), Coverage (derived from camera resolution and distance)", "Voxel Size: size of one voxel in world coordinates (Voxel Size mode)", "Resolution: simulation resolution filling the standard imaging plane (Resolution mode)", "Pixel Coverage: screen pixels covering one voxel, default 2.5 (Coverage mode)", "Min Voxel Size (toggle): prevents calculated voxels from becoming smaller than a given size"]
+
+- Caveats: ["Sits in COPs but requires DOP-level permissions, not available in Houdini Core", "Only generates placeholder reference VDBs, it does not run the simulation", "Coverage mode depends on camera_ref and centroid_ref inputs"]
+
+## Parameters (exact, from the installed Houdini)
+
+| parameter | label | type | default | range | menu tokens |
+|---|---|---|---|---|---|
+| `signature` | Signature | Float | [0.0] | 0.0 .. 10.0 |  |
+| `folder1` |  | FolderSet |  |  |  |
+| `divmethod` | Divisions | Menu | 0 |  | voxelsize, resolution, coverage |
+| `voxelsize` | Voxel Size | Float | [0.1] | 0.0 .. 1.0 (strict) |  |
+| `resolution` | Resolution | Int | [100] | 1 .. 500 |  |
+| `pixelcoverage` | Pixel Coverage | Float | [2.5] | 0.0 .. 5.0 (strict) |  |
+| `usevoxelsizelimit` | Min Voxel Size | Toggle | false |  |  |
+| `minvoxelsize` | Min Voxel Size | Float | [0.01] | 0.0 .. 0.1 (strict) |  |
+| `voxelsizelabel` | Voxel Size Message | Label |  |  |  |

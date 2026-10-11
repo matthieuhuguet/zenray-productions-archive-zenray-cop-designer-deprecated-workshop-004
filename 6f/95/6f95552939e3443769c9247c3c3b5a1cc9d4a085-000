@@ -1,0 +1,43 @@
+# oceanspectrum
+
+- Label: Ocean Spectrum
+- Category: Copernicus (`Cop`), Houdini 22.0.368
+- Inputs: 0 to 1
+- Parameters: 19 (exact, read from Houdini by hython)
+- Used by the height graph: no
+
+## Feature summary (web, SideFX reference)
+
+- Source: https://www.sidefx.com/docs/houdini/nodes/cop/oceanspectrum.html
+- Summary (EN): Generates layers describing the wave behaviour of an ocean under constant wind and tidal pull, without modelling time-varying changes. Its outputs feed the Ocean Evaluate COP, which animates the surface height. It is the COP counterpart of the Ocean Spectrum SOP.
+- Résumé (FR) : Génère les couches décrivant le comportement des vagues d'un océan sous vent constant, à transmettre à Ocean Evaluate COP ; c'est la version COP du spectre d'océan SOP, un peu moins nette.
+
+- Inputs meaning: ["size_ref: a representative layer that sets the output image size and controls metadata"]
+
+- Key parameters: ["Ocean Size: world-space size of the spectrum tile; larger values fit more wave peaks into one tile, so waves appear to move slower", "Depth: water depth; deeper water produces stronger dispersion, so large low-frequency waves travel faster than small ones", "Gravity: affects wavelength and wave speed", "Seed: randomises the spectrum without changing the wave dynamics", "Spectrum Type: Phillips (classic fully developed ocean with wind direction control) or TMA (adds fetch and swell, performs better at low depths)", "Wind Direction and Wind Speed: dominant direction and wave energy; higher speed produces larger low-frequency waves", "Distribution: randomises amplitudes with None, Uniform, Gaussian or Log Normal; None is useful when the amplitude layer is post-multiplied by hand", "Normalize: keeps wave height consistent as shaping parameters change; Wind Speed then affects dynamic range and Scale affects overall amplitude", "Min Wavelength: dampens very small waves to reduce aliasing at high resolution", "Scale: constant gain applied to all amplitudes", "Loop Period: length of the looping animation in seconds, when looping is enabled"]
+
+- Caveats: ["The COP result is noticeably less sharp than the Ocean Spectrum SOP output.", "For correct visualisation of the height field from Ocean Evaluate, the spectrum should be uniformly scaled by the Ocean Size value."]
+
+## Parameters (exact, from the installed Houdini)
+
+| parameter | label | type | default | range | menu tokens |
+|---|---|---|---|---|---|
+| `oceansize` | Ocean Size | Float | [50.0] | 1.0 .. 100.0 (strict) |  |
+| `depth` | Depth | Float | [3000.0] | 5.0 .. 10000.0 (strict) |  |
+| `gravity` | Gravity | Float | [9.81] | 0.0 .. 15.0 |  |
+| `seed` | Seed | Int | [0] | 0 .. 10 |  |
+| `folder01` |  | FolderSet |  |  |  |
+| `spectrumtype` | Spectrum Type | Menu | 1 |  | phillips, tma |
+| `winddir` | Wind Direction | Float | [0.0] | 0.0 .. 360.0 |  |
+| `windspeed` | Wind Speed | Float | [5.0] | 0.0 .. 10.0 (strict) |  |
+| `swell` | Swell | Float | [0.0] | -1.0 .. 1.0 (strict) |  |
+| `fetch` | Fetch (km) | Float | [300.0] | 1.0 .. 3000.0 (strict) |  |
+| `windbias` | Wind Direction Bias | Float | [2.0] | 0.0 .. 10.0 |  |
+| `windmove` | Directional Movement | Float | [0.6] | 0.0 .. 1.0 |  |
+| `distribution` | Distribution | Menu | 2 |  | none, uniform, gaussian, lognormal |
+| `normalize` | Normalize | Toggle | true |  |  |
+| `referencewind` | Reference Wind | Float | [10.0] | 0.1 .. 10.0 (strict) |  |
+| `mink` | Min Wavelength | Float | [0.0] | 0.0 .. 2.0 (strict) |  |
+| `scale` | Scale | Float | [3.0] | 0.0 .. 5.0 |  |
+| `loops` | Loops | Toggle | false |  |  |
+| `loopperiod` | Loop Period | Float | [10.0] | 0.0 .. 20.0 |  |

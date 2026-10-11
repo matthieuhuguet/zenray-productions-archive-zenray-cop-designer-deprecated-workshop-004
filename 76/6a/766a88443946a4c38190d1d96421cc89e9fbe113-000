@@ -1,0 +1,26 @@
+# vdbleafpoints
+
+- Label: VDB Leaf Points
+- Category: Copernicus (`Cop`), Houdini 22.0.368
+- Inputs: 0 to 1
+- Parameters: 2 (exact, read from Houdini by hython)
+- Used by the height graph: no
+
+## Feature summary (web, SideFX reference)
+
+- Source: https://www.sidefx.com/docs/houdini/nodes/cop/vdbleafpoints.html
+- Summary (EN): Creates one point for each active leaf of an incoming VDB, where a leaf is an 8x8x8 block of voxels. The points map one-to-one to the VDB topology and can feed geometry-based operations.
+- Résumé (FR) : Crée un point par feuille active d'un VDB (bloc de 8 × 8 × 8 voxels), ce qui permet d'utiliser la topologie dans des opérations géométriques.
+
+- Inputs meaning: ["vdb: the VDB whose active leaves each generate a point"]
+
+- Key parameters: ["Set Positions: sets each point's P to the centre voxel of its leaf", "Point Attributes: adds extra attributes for later OpenCL nodes. Name; Class (only Detail and Point apply to points); Type (integer or float); Tuple Size"]
+
+- Caveats: ["Leaf order within a VDB is not deterministic, so the order of output points should not be relied upon"]
+
+## Parameters (exact, from the installed Houdini)
+
+| parameter | label | type | default | range | menu tokens |
+|---|---|---|---|---|---|
+| `setpos` | Set Positions | Toggle | true |  |  |
+| `attribs` | Point Attributes | Folder | 0 |  |  |

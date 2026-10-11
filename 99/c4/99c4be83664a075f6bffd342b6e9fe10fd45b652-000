@@ -1,0 +1,56 @@
+# worleynoise3d
+
+- Label: Worley Noise 3D
+- Category: Copernicus (`Cop`), Houdini 22.0.368
+- Inputs: 0 to 2
+- Parameters: 32 (exact, read from Houdini by hython)
+- Used by the height graph: no
+
+## Feature summary (web, SideFX reference)
+
+- Source: https://www.sidefx.com/docs/houdini/nodes/cop/worleynoise3d.html
+- Summary (EN): Generates cellular Worley noise from 3D world-space positions. Unlike the 2D Worley Noise COP, which uses image coordinates, each pixel is evaluated at its world position. Output: the noise layer.
+- Résumé (FR) : Génère un bruit de Worley 3D évalué aux positions monde de chaque pixel, avec taille de cellule, gigue, métrique et décalage en coordonnées monde.
+
+- Inputs meaning: ["size_ref: representative layer that sets the output image size and metadata", "pos: RGB layer or Vector VDB giving the position at each pixel where the noise is evaluated"]
+
+- Key parameters: ["Element Size: size of the basic noise cell in world coordinates; Per-Component Controls exposes Element Scale for per-axis sizing", "Jitter: random displacement of each grid point before distances are measured; Jitter Scale adds per-axis control", "Metric: Euclidean (circular cells), Manhattan (diamonds), Chebyshev (squares)", "Round Border: smooths the border between cells; appears only when Metric is Euclidean", "Offset: shifts the whole noise field in world coordinates", "Post-processing, applied in order: Complement, Bias, Gain, Gamma, Contrast, Clamp Minimum, Clamp Maximum"]
+
+- Caveats: ["The page warns that values greater than 1 may produce artifacts because they jitter past the search radius, which applies to the Jitter setting"]
+
+## Parameters (exact, from the installed Houdini)
+
+| parameter | label | type | default | range | menu tokens |
+|---|---|---|---|---|---|
+| `signature` | Signature | String | ["auto"] |  |  |
+| `settypeinfo` | Set Type Info | Toggle | false |  |  |
+| `typeinfo` | Type Info | Menu | 0 |  | none, color, position, vector, normal, offsetnormal, texturecoord, id, mask, sdf, height |
+| `elementsize` | Element Size | Float | [0.1] | 0.001 .. 1.0 |  |
+| `elementsizetype` | Element Size Type | Menu | 0 |  | BUTTONS_decompose_transforms |
+| `elementscalex` | Element Scale | Float | 1.0 | -1.0 .. 1.0 |  |
+| `elementscaley` | Element Scale | Float | 1.0 | -1.0 .. 1.0 |  |
+| `elementscalez` | Element Scale | Float | 1.0 | -1.0 .. 1.0 |  |
+| `jitter` | Jitter | Float | [0.5] | 0.0 .. 1.0 |  |
+| `jittertype` | Jitter Type | Menu | 0 |  | BUTTONS_decompose_transforms |
+| `jitterscalex` | Jitter Scale | Float | 1.0 | -1.0 .. 1.0 |  |
+| `jitterscaley` | Jitter Scale | Float | 1.0 | -1.0 .. 1.0 |  |
+| `jitterscalez` | Jitter Scale | Float | 1.0 | -1.0 .. 1.0 |  |
+| `metric` | Metric | Menu | 0 |  | euclidean, manhattan, chebyshev |
+| `roundborder` | Round Border | Float | [0.0] | 0.0 .. 1.0 |  |
+| `offx` | Offset | Float | 0.0 | 0.0 .. 1.0 |  |
+| `offy` | Offset | Float | 0.0 | 0.0 .. 1.0 |  |
+| `offz` | Offset | Float | 0.0 | 0.0 .. 1.0 |  |
+| `folder4` |  | FolderSet |  |  |  |
+| `post_docomplement` | Complement | Toggle | false |  |  |
+| `post_dobias` | Bias | Toggle | false |  |  |
+| `post_bias` | Bias | Float | [0.5] | 0.0 .. 1.0 |  |
+| `post_dogain` | Gain | Toggle | false |  |  |
+| `post_gain` | Gain | Float | [0.5] | 0.0 .. 1.0 |  |
+| `post_dogamma` | Gamma | Toggle | false |  |  |
+| `post_gamma` | Gamma | Float | [2.2] | 0.0 .. 3.0 |  |
+| `post_docontrast` | Contrast | Toggle | false |  |  |
+| `post_contrast` | Contrast | Float | [0.0] | -1.0 .. 1.0 |  |
+| `post_doclampmin` | Clamp Minimum | Toggle | false |  |  |
+| `post_minimum` | Clamp Minimum | Float | [0.0] | 0.0 .. 1.0 |  |
+| `post_doclampmax` | Clamp Maxmimum | Toggle | false |  |  |
+| `post_maximum` | Clamp Maximum | Float | [1.0] | 0.0 .. 1.0 |  |

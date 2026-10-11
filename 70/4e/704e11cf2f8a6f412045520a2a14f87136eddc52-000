@@ -1,0 +1,273 @@
+# paint
+
+- Label: Paint 3D
+- Category: Copernicus (`Cop`), Houdini 22.0.368
+- Inputs: 0 to 2
+- Parameters: 249 (exact, read from Houdini by hython)
+- Used by the height graph: no
+
+## Feature summary (web, SideFX reference)
+
+- Source: https://www.sidefx.com/docs/houdini/nodes/cop/paint.html
+- Summary (EN): The Paint 3D node lets you paint directly on a COP layer or a UV-mapped geometry. It stores strokes as PaintLayers, blends them over a background through a blend stack, and outputs the combined result.
+- Résumé (FR) : Le nœud Paint 3D peint directement sur une couche COP ou une géométrie UV, empile les traits en PaintLayers et renvoie le résultat composé ; il reste en bêta.
+
+- Inputs meaning: ["canvas: background layer that paint is applied over; a default blank canvas is used if unwired", "uvgeo: geometry with a uv attribute, providing the surface for visualisation and stroke projection"]
+
+- Key parameters: ["Signature: canvas type and paint output type", "Group: limits painting to a region of uvgeo", "FG Color / BG Color: foreground colour and swappable secondary colour", "FG Mask / BG Mask: equivalent values for mask painting", "Stroke Alignment: strokes positioned on the Surface or in Screen space", "Write to Mask: switches writing from colour to mask", "Tile Symmetry and Reflection: mirror strokes across canvas edges or a 3D plane", "Brush tools Paint, Erase, Smooth: radius, opacity, flow, stroke spacing, depth falloff", "Fill Threshold: colour similarity for flood fill"]
+
+- Caveats: ["SideFX marks the feature as beta; functionality may change.", "UDIM tiles are not supported: split the geometry by tile and use one Paint 3D node per tile.", "Interactive parameters do not affect the paint and layers outputs, which are driven by the blend stack.", "The page text is 118900 characters; the first 100000 were read, which covers the node description."]
+
+## Parameters (exact, from the installed Houdini)
+
+| parameter | label | type | default | range | menu tokens |
+|---|---|---|---|---|---|
+| `signature` | Signature | String | ["auto"] |  |  |
+| `internal2` |  | FolderSet |  |  |  |
+| `blendtree` | blendtree | Data |  |  |  |
+| `layers` | layers | Data |  |  |  |
+| `writinglayername` | writinglayername | String | ["Layer#0"] |  |  |
+| `layersupdatedsignal` | layersupdatedsignal | Toggle | false |  |  |
+| `canvasselect` | canvasselect | Toggle | true |  |  |
+| `group` | Group | String | [""] |  |  |
+| `showonlygroup` | Hide Rest | Toggle | false |  |  |
+| `fgcolorr` | FG Color | Float | 1.0 | 0.0 .. 1.0 |  |
+| `fgcolorg` | FG Color | Float | 1.0 | 0.0 .. 1.0 |  |
+| `fgcolorb` | FG Color | Float | 1.0 | 0.0 .. 1.0 |  |
+| `bgcolorr` | BG Color | Float | 0.0 | 0.0 .. 1.0 |  |
+| `bgcolorg` | BG Color | Float | 0.0 | 0.0 .. 1.0 |  |
+| `bgcolorb` | BG Color | Float | 0.0 | 0.0 .. 1.0 |  |
+| `fgmask` | FG Mask | Float | [1.0] | 0.0 .. 1.0 (strict) |  |
+| `bgmask` | BG Mask | Float | [0.5] | 0.0 .. 1.0 (strict) |  |
+| `prefs` |  | FolderSet |  |  |  |
+| `paint2d` | 2D Paint Mode | Toggle | false |  |  |
+| `strokealign` | Stroke Alignment | Menu | 0 |  | surface, screen |
+| `vissurf` | Only Write to Visible | Toggle | false |  |  |
+| `visscreen` | Only Write to Visible | Toggle | true |  |  |
+| `uselazymouse` | Use Lazy Mouse | Toggle | false |  |  |
+| `lazymouseradius` | Lazy Mouse Radius | Float | [0.1] | 0.0 .. 1.0 (strict) |  |
+| `maskwrite` | Write to Mask | Toggle | false |  |  |
+| `maskvis` | Visualize Mask | Toggle | false |  |  |
+| `masktintr` | Mask Tint | Float | 1.0 | 0.0 .. 1.0 |  |
+| `masktintg` | Mask Tint | Float | 0.0 | 0.0 .. 1.0 |  |
+| `masktintb` | Mask Tint | Float | 1.0 | 0.0 .. 1.0 |  |
+| `maskvisibility` | Mask Visibility | Float | [0.5] | 0.0 .. 1.0 (strict) |  |
+| `updirx` | Up Direction | Float | 0.0 | -1.0 .. 1.0 |  |
+| `updiry` | Up Direction | Float | 1.0 | -1.0 .. 1.0 |  |
+| `updirz` | Up Direction | Float | 0.0 | -1.0 .. 1.0 |  |
+| `symmetry` |  | FolderSet |  |  |  |
+| `sym_tile` | Tile Symmetry | Toggle | false |  |  |
+| `sym_type` |  | FolderSet |  |  |  |
+| `sym_tilevis` | Visualize Tile Symmetry | Toggle | false |  |  |
+| `sym_refl` | Reflection | Toggle | false |  |  |
+| `folder0` |  | FolderSet |  |  |  |
+| `sym_reflorigx` | Origin | Float | 0.0 | -1.0 .. 1.0 |  |
+| `sym_reflorigy` | Origin | Float | 0.0 | -1.0 .. 1.0 |  |
+| `sym_reflorigz` | Origin | Float | 0.0 | -1.0 .. 1.0 |  |
+| `sym_refldirx` | Direction | Float | 1.0 | -1.0 .. 1.0 |  |
+| `sym_refldiry` | Direction | Float | 0.0 | -1.0 .. 1.0 |  |
+| `sym_refldirz` | Direction | Float | 0.0 | -1.0 .. 1.0 |  |
+| `sym_refloffset` | Offset | Float | [0.0] | -5.0 .. 5.0 |  |
+| `tools` |  | FolderSet |  |  |  |
+| `tool1` |  | FolderSet |  |  |  |
+| `paint_save` | Save Brush as Recipe | Button |  |  |  |
+| `paint_radiussurf` | Brush Radius | Float | [0.1] | 0.01 .. 10.0 |  |
+| `paint_radiusscreen` | Brush Radius | Float | [0.05] | 0.01 .. 10.0 |  |
+| `paint_opacity` | Opacity | Float | [1.0] | 0.0 .. 1.0 (strict) |  |
+| `paint_flowstatic` | Flow | Float | [1.0] | 0.0 .. 1.0 (strict) |  |
+| `paint_spacing` | Stroke Spacing | Float | [0.05] | 0.01 .. 1.0 |  |
+| `paint_flowcomp` | Adjust Flow to Compensate for Spacing | Toggle | true |  |  |
+| `paint_rotstatic` | Rotation | Float | [0.0] | -180.0 .. 180.0 |  |
+| `paint_orientscreen` | Orient to | Menu | 0 |  |  |
+| `paint_orientsurf` | Orient to | Menu | 0 |  |  |
+| `paint_alpha` |  | FolderSet |  |  |  |
+| `paint_alpha_save` | Save Alpha as Recipe | Button |  |  |  |
+| `paint_alphatype` | Shape | Menu | 1 |  |  |
+| `paint_alphafile` | File | String | [""] |  |  |
+| `paint_alphacatalogfile` | Catalog File | String | [""] |  |  |
+| `paint_alphaxyfalloff` | Soft Edge | Float | [1.0] | 0.0 .. 1.0 (strict) |  |
+| `paint_alphazfalloff` | Depth Falloff | Float | [0.5] | 0.0 .. 2.0 (strict) |  |
+| `paint_alphasquish` | Squish | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `paint_flowisdyn` | Use Flow Dynamics | Toggle | true |  |  |
+| `paint_flow` |  | FolderSet |  |  |  |
+| `paint_flowusedist` | Use Distance | Toggle | false |  |  |
+| `paint_flowdist` |  | FolderSet |  |  |  |
+| `paint_flowmaxdist` | Max Distance | Float | [1.0] | 0.0 .. 10.0 (strict) |  |
+| `paint_flowdistmin` | Min Flow Scale | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `paint_flowincdist` | Increase with Distance | Toggle | false |  |  |
+| `paint_flowusepress` | Use Pressure | Toggle | true |  |  |
+| `paint_flowpress` |  | FolderSet |  |  |  |
+| `paint_flowpressmin` | Min Flow Scale | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `paint_flowincpress` | Increase with Pressure | Toggle | true |  |  |
+| `paint_flowuserand` | Use Random | Toggle | false |  |  |
+| `paint_flowrand` |  | FolderSet |  |  |  |
+| `paint_flowrandscale` | Random Scale | Float | [0.0] | 0.0 .. 10.0 (strict) |  |
+| `paint_flowusespeed` | Use Speed | Toggle | false |  |  |
+| `paint_flowspeed` |  | FolderSet |  |  |  |
+| `paint_flowmaxspeed` | Max Speed | Float | [10.0] | 0.0 .. 10.0 (strict) |  |
+| `paint_flowspeedmin` | Min Flow Scale | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `paint_flowincspeed` | Increase with Speed | Toggle | false |  |  |
+| `paint_radiusisdyn` | Use Radius Dynamics | Toggle | true |  |  |
+| `paint_radius` |  | FolderSet |  |  |  |
+| `paint_radiususedist` | Use Distance | Toggle | false |  |  |
+| `paint_radiusdist` |  | FolderSet |  |  |  |
+| `paint_radiusmaxdist` | Max Distance | Float | [1.0] | 0.0 .. 10.0 (strict) |  |
+| `paint_radiusdistmin` | Min Radius Scale | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `paint_radiusincdist` | Increase with Distance | Toggle | false |  |  |
+| `paint_radiususepress` | Use Pressure | Toggle | true |  |  |
+| `paint_radiuspress` |  | FolderSet |  |  |  |
+| `paint_radiuspressmin` | Min Radius Scale | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `paint_radiusincpress` | Increase with Pressure | Toggle | true |  |  |
+| `paint_radiususerand` | Use Random | Toggle | false |  |  |
+| `paint_radiusrand` |  | FolderSet |  |  |  |
+| `paint_radiusrandscale` | Random Scale | Float | [0.0] | 0.0 .. 10.0 (strict) |  |
+| `paint_radiususespeed` | Use Speed | Toggle | false |  |  |
+| `paint_radiusspeed` |  | FolderSet |  |  |  |
+| `paint_radiusmaxspeed` | Max Speed | Float | [10.0] | 0.0 .. 10.0 (strict) |  |
+| `paint_radiusspeedmin` | Min Radius Scale | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `paint_radiusincspeed` | Increase with Speed | Toggle | false |  |  |
+| `paint_rotisdyn` | Use Rotation Dynamics | Toggle | false |  |  |
+| `paint_rot` |  | FolderSet |  |  |  |
+| `paint_rotusedist` | Use Distance | Toggle | false |  |  |
+| `paint_rotperdist` | Turns per Distance | Float | [0.0] | -2.0 .. 2.0 |  |
+| `paint_rotusepress` | Use Pressure | Toggle | false |  |  |
+| `paint_rotperpress` | Turns at Full Pressure | Float | [0.0] | -2.0 .. 2.0 |  |
+| `paint_rotuserand` | Use Random | Toggle | false |  |  |
+| `paint_rotperrand` | Random Offset | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `paint_rotusespeed` | Use Speed | Toggle | false |  |  |
+| `paint_rotperspeed` | Turns per Speed | Float | [0.0] | -2.0 .. 2.0 |  |
+| `erase_save` | Save Brush as Recipe | Button |  |  |  |
+| `erase_radiussurf` | Brush Radius | Float | [0.1] | 0.01 .. 10.0 |  |
+| `erase_radiusscreen` | Brush Radius | Float | [0.05] | 0.01 .. 10.0 |  |
+| `erase_opacity` | Opacity | Float | [1.0] | 0.0 .. 1.0 (strict) |  |
+| `erase_flowstatic` | Flow | Float | [1.0] | 0.0 .. 1.0 (strict) |  |
+| `erase_spacing` | Stroke Spacing | Float | [0.05] | 0.01 .. 1.0 |  |
+| `erase_flowcomp` | Adjust Flow to Compensate for Spacing | Toggle | false |  |  |
+| `erase_rotstatic` | Rotation | Float | [0.0] | -1.0 .. 1.0 |  |
+| `erase_orientscreen` | Orient to | Menu | 0 |  |  |
+| `erase_orientsurf` | Orient to | Menu | 0 |  |  |
+| `erase_alpha` |  | FolderSet |  |  |  |
+| `erase_alpha_save` | Save Alpha as Recipe | Button |  |  |  |
+| `erase_alphatype` | Shape | Menu | 1 |  |  |
+| `erase_alphafile` | File | String | [""] |  |  |
+| `erase_alphacatalogfile` | Catalog File | String | [""] |  |  |
+| `erase_alphaxyfalloff` | Soft Edge | Float | [1.0] | 0.0 .. 1.0 (strict) |  |
+| `erase_alphazfalloff` | Depth Falloff | Float | [0.5] | 0.0 .. 2.0 (strict) |  |
+| `erase_alphasquish` | Squish | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `erase_flowisdyn` | Use Flow Dynamics | Toggle | true |  |  |
+| `erase_flow` |  | FolderSet |  |  |  |
+| `erase_flowusedist` | Use Distance | Toggle | false |  |  |
+| `erase_flowdist` |  | FolderSet |  |  |  |
+| `erase_flowmaxdist` | Max Distance | Float | [1.0] | 0.0 .. 10.0 (strict) |  |
+| `erase_flowdistmin` | Min Flow Scale | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `erase_flowincdist` | Increase with Distance | Toggle | false |  |  |
+| `erase_flowusepress` | Use Pressure | Toggle | true |  |  |
+| `erase_flowpress` |  | FolderSet |  |  |  |
+| `erase_flowpressmin` | Min Flow Scale | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `erase_flowincpress` | Increase with Pressure | Toggle | true |  |  |
+| `erase_flowuserand` | Use Random | Toggle | false |  |  |
+| `erase_flowrand` |  | FolderSet |  |  |  |
+| `erase_flowrandscale` | Random Scale | Float | [0.0] | 0.0 .. 10.0 (strict) |  |
+| `erase_flowusespeed` | Use Speed | Toggle | false |  |  |
+| `erase_flowspeed` |  | FolderSet |  |  |  |
+| `erase_flowmaxspeed` | Max Speed | Float | [10.0] | 0.0 .. 10.0 (strict) |  |
+| `erase_flowspeedmin` | Min Flow Scale | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `erase_flowincspeed` | Increase with Speed | Toggle | false |  |  |
+| `erase_radiusisdyn` | Use Radius Dynamics | Toggle | false |  |  |
+| `erase_radius` |  | FolderSet |  |  |  |
+| `erase_radiususedist` | Use Distance | Toggle | false |  |  |
+| `erase_radiusdist` |  | FolderSet |  |  |  |
+| `erase_radiusmaxdist` | Max Distance | Float | [1.0] | 0.0 .. 10.0 (strict) |  |
+| `erase_radiusdistmin` | Min Radius Scale | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `erase_radiusincdist` | Increase with Distance | Toggle | false |  |  |
+| `erase_radiususepress` | Use Pressure | Toggle | true |  |  |
+| `erase_radiuspress` |  | FolderSet |  |  |  |
+| `erase_radiuspressmin` | Min Radius Scale | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `erase_radiusincpress` | Increase with Pressure | Toggle | true |  |  |
+| `erase_radiususerand` | Use Random | Toggle | false |  |  |
+| `erase_radiusrand` |  | FolderSet |  |  |  |
+| `erase_radiusrandscale` | Random Scale | Float | [0.0] | 0.0 .. 10.0 (strict) |  |
+| `erase_radiususespeed` | Use Speed | Toggle | false |  |  |
+| `erase_radiusspeed` |  | FolderSet |  |  |  |
+| `erase_radiusmaxspeed` | Max Speed | Float | [10.0] | 0.0 .. 10.0 (strict) |  |
+| `erase_radiusspeedmin` | Min Radius Scale | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `erase_radiusincspeed` | Increase with Speed | Toggle | false |  |  |
+| `erase_rotisdyn` | Use Rotation Dynamics | Toggle | false |  |  |
+| `erase_rot` |  | FolderSet |  |  |  |
+| `erase_rotusedist` | Use Distance | Toggle | false |  |  |
+| `erase_rotperdist` | Rotation per Distance | Float | [0.0] | -2.0 .. 2.0 |  |
+| `erase_rotusepress` | Use Pressure | Toggle | false |  |  |
+| `erase_rotperpress` | Rotations at Full Pressure | Float | [0.0] | -2.0 .. 2.0 |  |
+| `erase_rotuserand` | Use Random | Toggle | false |  |  |
+| `erase_rotperrand` | Random Offset | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `erase_rotusespeed` | Use Speed | Toggle | false |  |  |
+| `erase_rotperspeed` | Rotations per Speed | Float | [0.0] | -2.0 .. 2.0 |  |
+| `smooth_save` | Save Brush as Recipe | Button |  |  |  |
+| `smooth_radiussurf` | Brush Radius | Float | [0.1] | 0.01 .. 10.0 |  |
+| `smooth_radiusscreen` | Brush Radius | Float | [0.05] | 0.01 .. 10.0 |  |
+| `smooth_flowstatic` | Flow | Float | [1.0] | 0.0 .. 1.0 (strict) |  |
+| `smooth_spacing` | Stroke Spacing | Float | [0.3] | 0.01 .. 1.0 |  |
+| `smooth_flowcomp` | Adjust Flow to Compensate for Spacing | Toggle | true |  |  |
+| `smooth_rotstatic` | Rotation | Float | [0.0] | -1.0 .. 1.0 |  |
+| `smooth_orientscreen` | Orient to | Menu | 0 |  |  |
+| `smooth_orientsurf` | Orient to | Menu | 0 |  |  |
+| `smooth_alpha` |  | FolderSet |  |  |  |
+| `smooth_alpha_save` | Save Alpha as Recipe | Button |  |  |  |
+| `smooth_alphatype` | Shape | Menu | 1 |  |  |
+| `smooth_alphafile` | File | String | [""] |  |  |
+| `smooth_alphacatalogfile` | Catalog File | String | [""] |  |  |
+| `smooth_alphaxyfalloff` | Soft Edge | Float | [1.0] | 0.0 .. 1.0 (strict) |  |
+| `smooth_alphazfalloff` | Depth Falloff | Float | [0.5] | 0.0 .. 2.0 (strict) |  |
+| `smooth_alphasquish` | Squish | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `smooth_flowisdyn` | Use Flow Dynamics | Toggle | true |  |  |
+| `smooth_flow` |  | FolderSet |  |  |  |
+| `smooth_flowusedist` | Use Distance | Toggle | false |  |  |
+| `smooth_flowdist` |  | FolderSet |  |  |  |
+| `smooth_flowmaxdist` | Max Distance | Float | [1.0] | 0.0 .. 10.0 (strict) |  |
+| `smooth_flowdistmin` | Min Flow Scale | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `smooth_flowincdist` | Increase with Distance | Toggle | false |  |  |
+| `smooth_flowusepress` | Use Pressure | Toggle | true |  |  |
+| `smooth_flowpress` |  | FolderSet |  |  |  |
+| `smooth_flowpressmin` | Min Flow Scale | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `smooth_flowincpress` | Increase with Pressure | Toggle | true |  |  |
+| `smooth_flowuserand` | Use Random | Toggle | false |  |  |
+| `smooth_flowrand` |  | FolderSet |  |  |  |
+| `smooth_flowrandscale` | Random Scale | Float | [0.0] | 0.0 .. 10.0 (strict) |  |
+| `smooth_flowusespeed` | Use Speed | Toggle | false |  |  |
+| `smooth_flowspeed` |  | FolderSet |  |  |  |
+| `smooth_flowmaxspeed` | Max Speed | Float | [10.0] | 0.0 .. 10.0 (strict) |  |
+| `smooth_flowspeedmin` | Min Flow Scale | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `smooth_flowincspeed` | Increase with Speed | Toggle | false |  |  |
+| `smooth_radiusisdyn` | Use Radius Dynamics | Toggle | false |  |  |
+| `smooth_radius` |  | FolderSet |  |  |  |
+| `smooth_radiususedist` | Use Distance | Toggle | false |  |  |
+| `smooth_radiusdist` |  | FolderSet |  |  |  |
+| `smooth_radiusmaxdist` | Max Distance | Float | [1.0] | 0.0 .. 10.0 (strict) |  |
+| `smooth_radiusdistmin` | Min Radius Scale | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `smooth_radiusincdist` | Increase with Distance | Toggle | false |  |  |
+| `smooth_radiususepress` | Use Pressure | Toggle | true |  |  |
+| `smooth_radiuspress` |  | FolderSet |  |  |  |
+| `smooth_radiuspressmin` | Min Radius Scale | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `smooth_radiusincpress` | Increase with Pressure | Toggle | true |  |  |
+| `smooth_radiususerand` | Use Random | Toggle | false |  |  |
+| `smooth_radiusrand` |  | FolderSet |  |  |  |
+| `smooth_radiusrandscale` | Random Scale | Float | [0.0] | 0.0 .. 10.0 (strict) |  |
+| `smooth_radiususespeed` | Use Speed | Toggle | false |  |  |
+| `smooth_radiusspeed` |  | FolderSet |  |  |  |
+| `smooth_radiusmaxspeed` | Max Speed | Float | [10.0] | 0.0 .. 10.0 (strict) |  |
+| `smooth_radiusspeedmin` | Min Radius Scale | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `smooth_radiusincspeed` | Increase with Speed | Toggle | false |  |  |
+| `smooth_rotisdyn` | Use Rotation Dynamics | Toggle | false |  |  |
+| `smooth_rot` |  | FolderSet |  |  |  |
+| `smooth_rotusedist` | Use Distance | Toggle | false |  |  |
+| `smooth_rotperdist` | Turns per Distance | Float | [10.0] | -2.0 .. 2.0 |  |
+| `smooth_rotusepress` | Use Pressure | Toggle | false |  |  |
+| `smooth_rotperpress` | Turns at Full Pressure | Float | [0.0] | -2.0 .. 2.0 |  |
+| `smooth_rotuserand` | Use Random | Toggle | false |  |  |
+| `smooth_rotperrand` | Random Offset | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `smooth_rotusespeed` | Use Rotation | Toggle | false |  |  |
+| `smooth_rotperspeed` | Turns per Speed | Float | [10.0] | -2.0 .. 2.0 |  |
+| `sample_result` | Sample All Visible Layers | Toggle | true |  |  |
+| `fill_sampleresult` | Sample All Visible Layers | Toggle | true |  |  |
+| `fill_opacity` | Opacity | Float | [1.0] | 0.0 .. 1.0 (strict) |  |
+| `fill_threshold` | Threshold | Float | [0.5] | 0.0 .. 1.0 (strict) |  |

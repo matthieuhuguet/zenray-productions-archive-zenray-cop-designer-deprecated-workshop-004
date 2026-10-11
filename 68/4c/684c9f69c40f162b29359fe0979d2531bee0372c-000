@@ -1,0 +1,32 @@
+# ociotransform
+
+- Label: OCIO Transform
+- Category: Copernicus (`Cop`), Houdini 22.0.368
+- Inputs: 1 to 1
+- Parameters: 8 (exact, read from Houdini by hython)
+- Used by the height graph: no
+
+## Feature summary (web, SideFX reference)
+
+- Source: https://www.sidefx.com/docs/houdini/nodes/cop/ociotransform.html
+- Summary (EN): Converts a layer's colours between colour spaces using the current OpenColorIO (OCIO) settings. It supports either a reversible conversion between two spaces (Between Spaces) or a one-way conversion from a space into a display and view (Space to View).
+- Résumé (FR) : Convertit les couleurs d'un calque entre espaces colorimétriques OCIO, de façon réversible entre deux espaces ou à sens unique vers une vue d'affichage avec tone mapping.
+
+- Inputs meaning: ["source: the layer whose colours will be adjusted"]
+
+- Key parameters: ["Signature: the layer type the source accepts", "Transform Method: Between Spaces converts from one OCIO space to another and is invertible; Space to View converts into a display and view, can include tone mapping, and bakes the colours into final values", "Original Space: the space the input colour is in", "To Space (Between Spaces only): the desired output colour space", "To Display and To View (Space to View only): output display device and view", "Treat RGBA as Premultiplied: un-premultiplies before the transform and re-premultiplies after, so black-alpha areas stay black", "Invert Transform: reverses the transform; for Between Spaces it is like swapping source and destination"]
+
+- Caveats: ["The page says Space to View is not invertible, so Invert Transform cannot fully undo the baking.", "Colour transforms are defined in RGB and may be non-linear, so they should not be applied to only the RGB channels of a premultiplied layer. Use the premultiplied option instead.", "The available view may depend on the current display.", "Colour space dropdowns depend on the OCIO configuration. The meaning of each space depends on the config."]
+
+## Parameters (exact, from the installed Houdini)
+
+| parameter | label | type | default | range | menu tokens |
+|---|---|---|---|---|---|
+| `signature` | Signature | String | ["auto"] |  |  |
+| `method` | Transform Method | Menu | 0 |  | space, view |
+| `sourcespace` | Original Space | String | ["scene_linear"] |  |  |
+| `tospace` | To Space | String | ["scene_linear"] |  |  |
+| `todisplay` | To Display | String | ["sRGB - Display"] |  |  |
+| `toview` | To View | String | ["ACES 1.0 - SDR Video"] |  |  |
+| `ispremult` | Treat RGBA as Premultiplied | Toggle | true |  |  |
+| `invertxform` | Invert Transform | Toggle | false |  |  |

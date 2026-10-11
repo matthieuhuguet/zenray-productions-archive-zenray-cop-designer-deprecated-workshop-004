@@ -1,0 +1,718 @@
+# Substance 3D Designer utility nodes: official documentation index (11 October 2026)
+
+## Scope and method (11 October 2026)
+
+- Substance 3D Designer is not installed on this machine, so no node was opened in the application. (11 October 2026)
+- Every fact below comes from official Adobe pages on Experience League, read with WebFetch and found first with WebSearch. (11 October 2026)
+- helpx.adobe.com pages returned HTTP 403 to WebFetch, so the same content was read on experienceleague.adobe.com. (11 October 2026)
+- Parameter labels and defaults come from those pages. Where a page does not state a default or a type, the entry says "not stated". (11 October 2026)
+- Copernicus node names come from `/Users/zenray/.claude/skills/zenray-cop-designer/inventory/cop_names.txt`. Copernicus purposes come from `/Users/zenray/.claude/skills/zenray-cop-designer/docs/cop/<name>.md`. (11 October 2026)
+- Every mapping has status `documented_only`. No node was tested in Houdini. (11 October 2026)
+- Mapping marks: "none" means no layer node in Copernicus has the same effect. "partial" means the nearest node covers only part of the effect. (11 October 2026)
+- Scope: the request named nine families: utilities, function and pixel processor, height, normal, ambient occlusion, curvature, histogram, channel and make it tile. Section 11 lists the premade function node library by sub-category only. (11 October 2026)
+- Count: 72 node sections (sections 1 to 10). (11 October 2026)
+- Function node names follow the function-nodes page. The function graph index spells some of them differently (Logarithmic, Pow 2, Square Root, Tangent, Arc Tangent 2, Cartesian). Both spellings are noted in section 2. (11 October 2026)
+- Hash node 31 is written "Hash31" on its page, without a space. It is kept as written in section 11. (11 October 2026)
+
+## 1. Atomic nodes (4 sections, 11 October 2026)
+
+Index page: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/atomic-nodes/atomic-nodes (11 October 2026)
+
+### 1.1 Pixel processor (11 October 2026)
+
+- Category: Atomic nodes, Substance graphs. (11 October 2026)
+- Purpose: outputs an image in which each pixel's value comes from a Substance function graph that the user defines, evaluated for every pixel in parallel. (11 October 2026)
+- Main parameters: "Color mode" (Boolean, grayscale or color output, default not stated); "Per pixel function" (Float or Float4 function graph, default not stated). Optional "Input image #" (grayscale or color), read with a Sample color or Sample grayscale node. (11 October 2026)
+- Notes: pixel position comes from a Get Float2 node set to `$pos`. Each pixel is computed without knowledge of its neighbours. (11 October 2026)
+- Copernicus nearest: `Cop wrangle` (VEX per pixel, not a function graph). Status: documented_only. (11 October 2026)
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/atomic-nodes/pixel-processor (11 October 2026)
+
+### 1.2 Value processor (11 October 2026)
+
+- Category: Atomic nodes, Substance graphs. (11 October 2026)
+- Purpose: evaluates a Substance function graph and outputs a single value that can be used inside a Substance graph. (11 October 2026)
+- Main parameters: "Value processor function" (any available value type, default not stated). Optional "Input image #" (grayscale or color), read with Sample color or Sample grayscale. (11 October 2026)
+- Notes: same idea as the Pixel processor, but one value instead of one function per pixel. The page says it can be more optimised than the Pixel processor. (11 October 2026)
+- Copernicus nearest: none. Copernicus works on layers and has no single-value node. Status: documented_only. (11 October 2026)
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/atomic-nodes/value-processor (11 October 2026)
+
+### 1.3 Normal (11 October 2026)
+
+- Category: Atomic nodes, Substance graphs. (11 October 2026)
+- Purpose: computes a tangent-space normal map from a grayscale image treated as a height map. (11 October 2026)
+- Main parameters: "Intensity" (Float, default not stated; values above 100 have little extra effect, depending on the input); "Normal format" (Boolean, flips the Y coordinate, OpenGL convention); "Alpha channel content" (Boolean, "Fill Alpha With Input" or "Force Alpha To 1"). (11 October 2026)
+- Input: "Input" (grayscale, primary). Output: a tangent-space normal map. (11 October 2026)
+- Notes: the page lists Normal Sobel and Height To Normal World Units as alternatives. (11 October 2026)
+- Copernicus nearest: `Cop heighttonormal`. Status: documented_only. (11 October 2026)
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/atomic-nodes/normal (11 October 2026)
+
+### 1.4 Channels shuffle (11 October 2026)
+
+- Category: Atomic nodes, Substance graphs. (11 October 2026)
+- Purpose: rearranges the colour channels of one or two input images into an output image. (11 October 2026)
+- Main parameters: "Red channel", "Green channel", "Blue channel", "Alpha channel" (all Integer, each selects the source channel; defaults not stated). (11 October 2026)
+- Inputs: "Input 1" (colour or grayscale, primary); "Input 2" (colour or grayscale, secondary). (11 October 2026)
+- Notes: grayscale inputs are treated as colour, so R, G, B and A return the same value. The page recommends RGBA Merge, RGBA Split, Alpha Merge or Alpha Split for simple packing. (11 October 2026)
+- Copernicus nearest: `Cop channelswap`. Status: documented_only. (11 October 2026)
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/atomic-nodes/channel-shuffle (11 October 2026)
+
+## 2. Function atomic nodes (18 sections, 11 October 2026)
+
+Page used for all 18 sections: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-function-graphs/nodes-reference-for-substance-function-graphs/atomic-function-nodes/function-nodes (11 October 2026)
+Index page: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-function-graphs/nodes-reference-for-substance-function-graphs/atomic-function-nodes/atomic-function-nodes (11 October 2026)
+
+These nodes take one, two or three float inputs and return one value (Linear interpolation takes three). The page gives no default values. (11 October 2026) The Copernicus Function node (`Cop function`) exposes one operation at a time from a selector, so each mapping below is operation-level. (11 October 2026)
+
+### 2.1 Pow (11 October 2026)
+
+- Category: Function, atomic function nodes. (11 October 2026)
+- Purpose: raises the first input to the power of the second. (11 October 2026)
+- Inputs and output: X, Y, output X^Y. (11 October 2026)
+- Copernicus nearest: `Cop function`. Status: documented_only. (11 October 2026)
+
+### 2.2 2Pow (11 October 2026)
+
+- Category: Function, atomic function nodes. (11 October 2026)
+- Purpose: raises 2 to the power of the input. (11 October 2026)
+- Input and output: X, output 2^X. Index spelling: "Pow 2". (11 October 2026)
+- Copernicus nearest: `Cop function`. Status: documented_only. (11 October 2026)
+
+### 2.3 Square root (11 October 2026)
+
+- Category: Function, atomic function nodes. (11 October 2026)
+- Purpose: computes the square root of the input. (11 October 2026)
+- Input and output: X, output sqrt(X). (11 October 2026)
+- Copernicus nearest: `Cop function`. Status: documented_only. (11 October 2026)
+
+### 2.4 Exponential (11 October 2026)
+
+- Category: Function, atomic function nodes. (11 October 2026)
+- Purpose: computes e raised to the power of the input. (11 October 2026)
+- Input and output: X, output e^X. (11 October 2026)
+- Copernicus nearest: `Cop function`. Status: documented_only. (11 October 2026)
+
+### 2.5 Logarithm (11 October 2026)
+
+- Category: Function, atomic function nodes. (11 October 2026)
+- Purpose: computes the natural logarithm of the input. (11 October 2026)
+- Input and output: X, output ln(X). Index spelling: "Logarithmic". (11 October 2026)
+- Copernicus nearest: `Cop function`. Status: documented_only. (11 October 2026)
+
+### 2.6 Logarithm base 2 (11 October 2026)
+
+- Category: Function, atomic function nodes. (11 October 2026)
+- Purpose: computes the base-2 logarithm of the input. (11 October 2026)
+- Input and output: X, output log2(X). (11 October 2026)
+- Copernicus nearest: `Cop function`. Status: documented_only. (11 October 2026)
+
+### 2.7 Absolute (11 October 2026)
+
+- Category: Function, atomic function nodes. (11 October 2026)
+- Purpose: returns the absolute value of the input. (11 October 2026)
+- Input and output: X, output abs(X). (11 October 2026)
+- Copernicus nearest: `Cop function`. Status: documented_only. (11 October 2026)
+
+### 2.8 Ceil (11 October 2026)
+
+- Category: Function, atomic function nodes. (11 October 2026)
+- Purpose: rounds the input up to the nearest integer. (11 October 2026)
+- Input and output: X, output ceil(X). (11 October 2026)
+- Copernicus nearest: `Cop function`. Status: documented_only. (11 October 2026)
+
+### 2.9 Floor (11 October 2026)
+
+- Category: Function, atomic function nodes. (11 October 2026)
+- Purpose: rounds the input down to the nearest integer. (11 October 2026)
+- Input and output: X, output floor(X). (11 October 2026)
+- Copernicus nearest: `Cop function`. Status: documented_only. (11 October 2026)
+
+### 2.10 Linear interpolation (11 October 2026)
+
+- Category: Function, atomic function nodes. (11 October 2026)
+- Purpose: blends two values according to a float factor. (11 October 2026)
+- Inputs and output: A, B, X; output (1 - X) * A + X * B. (11 October 2026)
+- Copernicus nearest: `Cop function` (the local Function doc lists mix). Status: documented_only. (11 October 2026)
+
+### 2.11 Minimum (11 October 2026)
+
+- Category: Function, atomic function nodes. (11 October 2026)
+- Purpose: returns the lower of two values. (11 October 2026)
+- Inputs and output: A, B; output min(A, B). (11 October 2026)
+- Copernicus nearest: `Cop function` (the local Function doc lists min). Status: documented_only. (11 October 2026)
+
+### 2.12 Maximum (11 October 2026)
+
+- Category: Function, atomic function nodes. (11 October 2026)
+- Purpose: returns the higher of two values. (11 October 2026)
+- Inputs and output: A, B; output max(A, B). (11 October 2026)
+- Copernicus nearest: `Cop function` (partial: the local Function doc does not list a max operation, so this is the nearest node only). Status: documented_only. (11 October 2026)
+
+### 2.13 Cosine (11 October 2026)
+
+- Category: Function, atomic function nodes. (11 October 2026)
+- Purpose: computes the cosine of the input in radians. (11 October 2026)
+- Input and output: X, output cos(X). (11 October 2026)
+- Copernicus nearest: `Cop function`. Status: documented_only. (11 October 2026)
+
+### 2.14 Sine (11 October 2026)
+
+- Category: Function, atomic function nodes. (11 October 2026)
+- Purpose: computes the sine of the input in radians. (11 October 2026)
+- Input and output: X, output sin(X). (11 October 2026)
+- Copernicus nearest: `Cop function`. Status: documented_only. (11 October 2026)
+
+### 2.15 Tangent (11 October 2026)
+
+- Category: Function, atomic function nodes. (11 October 2026)
+- Purpose: computes the tangent of the input in radians. (11 October 2026)
+- Input and output: X, output tan(X). Index spelling: "Tangent" (Function sub-category). (11 October 2026)
+- Copernicus nearest: `Cop function`. Status: documented_only. (11 October 2026)
+
+### 2.16 Arc tangent 2 (11 October 2026)
+
+- Category: Function, atomic function nodes. (11 October 2026)
+- Purpose: returns the angle between a 2D vector and the horizontal axis. (11 October 2026)
+- Input and output: 2D vector; output angle. Index spelling: "Arc Tangent 2". (11 October 2026)
+- Copernicus nearest: `Cop function` (the local Function doc lists atan2). Status: documented_only. (11 October 2026)
+
+### 2.17 Cartesian (11 October 2026)
+
+- Category: Function, atomic function nodes. (11 October 2026)
+- Purpose: converts polar coordinates to Cartesian coordinates. (11 October 2026)
+- Inputs and output: Length and Angle (radians); output Length * Float2(cos(Angle), sin(Angle)). Index spelling: polar to Cartesian. (11 October 2026)
+- Copernicus nearest: `Cop polartouv` (it converts polar to Cartesian UV, with the same maths). Status: documented_only. (11 October 2026)
+
+### 2.18 Random (11 October 2026)
+
+- Category: Function, atomic function nodes. (11 October 2026)
+- Purpose: returns a random value between 0 and the input value X. (11 October 2026)
+- Input and output: X, output random value. (11 October 2026)
+- Copernicus nearest: `Cop randommono` (seed-driven random mono values). Status: documented_only. (11 October 2026)
+
+## 3. Adjustments: histogram, height and channel mixer (7 sections, 11 October 2026)
+
+Filters index: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/filters/filters (11 October 2026)
+
+### 3.1 Histogram Range (11 October 2026)
+
+- Category: Filters, Adjustments. (11 October 2026)
+- Purpose: reduces and/or moves the range of a grayscale input, remapping its transitions. (11 October 2026)
+- Main parameters: "Range" (Numeric 0.0 to 1.0, default not stated, reduces the range like moving the Levels min and max inward); "Position" (Numeric 0.0 to 1.0, default not stated, offsets the reduction and sets a different midpoint). (11 October 2026)
+- Notes: the page points to Histogram Scan as the more useful remap. (11 October 2026)
+- Copernicus nearest: `Cop remap` (rescales values from one range to another). Status: documented_only. (11 October 2026)
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/filters/adjustments/histogram-range (11 October 2026)
+
+### 3.2 Histogram Scan (11 October 2026)
+
+- Category: Filters, Adjustments. (11 October 2026)
+- Purpose: remaps the contrast and brightness of a grayscale input, and can grow or shrink masks. (11 October 2026)
+- Main parameters: "Position" (Number 0.0 to 1.0, shifts the midpoint like brightness; default 0 gives all black, the page suggests about 0.5); "Contrast" (Number 0.0 to 1.0, sets how hard the transition is; default not stated); "Invert Position" (Boolean, inverts the result). (11 October 2026)
+- Copernicus nearest: `Cop remap` (its threshold makes a soft or hard step around a midpoint). Status: documented_only. (11 October 2026)
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/filters/adjustments/histogram-scan (11 October 2026)
+
+### 3.3 Histogram Scan Non-Uniform (11 October 2026)
+
+- Category: Filters, Adjustments. (11 October 2026)
+- Purpose: applies the Histogram Scan effect per pixel, driven by maps, instead of uniformly over the image. (11 October 2026)
+- Inputs: "Input" (grayscale, source result); "Position Map" (grayscale, active only when "Use Position Input" is True); "Contrast Map" (grayscale, active only when "Use Contrast Input" is True). (11 October 2026)
+- Main parameters: "Use Position Input" (Boolean); "position" (0.0 to 1.0); "Use Contrast Input" (Boolean); "contrast" (0.0 to 1.0). Defaults not stated. (11 October 2026)
+- Notes: the page says it is more complex than Histogram Scan, so learn that node first. (11 October 2026)
+- Copernicus nearest: `Cop remap` (partial: remap has no per-pixel control maps in this sense). Status: documented_only. (11 October 2026)
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/filters/adjustments/histogram-scan-non-uniform (11 October 2026)
+
+### 3.4 Histogram Select (11 October 2026)
+
+- Category: Filters, Adjustments. (11 October 2026)
+- Purpose: selects a range of grayscale values centred on a chosen position, with the selection fading out around that range. (11 October 2026)
+- Main parameters: "Position" (0.0 to 1.0, centre of the range); "Range" (0.0 to 1.0, width of the range); "Contrast" (0.0 to 1.0, sharpens the edges of the selection). Defaults not stated. (11 October 2026)
+- Copernicus nearest: `Cop remap` (partial: remap gives one threshold step, while a band needs `Cop segmentbyvalue` and `Cop idtomask`). Status: documented_only. (11 October 2026)
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/filters/adjustments/histogram-select (11 October 2026)
+
+### 3.5 Histogram Shift (11 October 2026)
+
+- Category: Filters, Adjustments. (11 October 2026)
+- Purpose: shifts the whole tonal range of an image by a set amount, wrapping values past the range limits back to the other end. (11 October 2026)
+- Main parameters: "Position" (0.0 to 1.0, type and default not stated). A Position of 1.0 gives the same result as 0.0. (11 October 2026)
+- Copernicus nearest: none. No Copernicus layer node wraps values around the range. Status: documented_only. (11 October 2026)
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/filters/adjustments/histogram-shift (11 October 2026)
+
+### 3.6 Height Map Frequencies Mapper (11 October 2026)
+
+- Category: Filters, Adjustments. (11 October 2026)
+- Purpose: separates a height map's frequencies into two maps, one with large-scale differences and one with small-scale differences. (11 October 2026)
+- Main parameters: "Relief" (0.0 to 32.0, sets the detail size of the Displacement output; default not stated). (11 October 2026)
+- Inputs and outputs: not named on the page; the page refers to a "Displacement output". (11 October 2026)
+- Copernicus nearest: `Cop filterfrequencies` (strengthens, weakens or removes detail at a chosen scale, through frequency space). Status: documented_only. (11 October 2026)
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/filters/adjustments/height-map-frequencies-mapper (11 October 2026)
+
+### 3.7 Channel Mixer (11 October 2026)
+
+- Category: Filters, Adjustments. (11 October 2026)
+- Purpose: mixes, swaps and blends the RGB channels of an image. (11 October 2026)
+- Main parameters: "Red Channel", "Green Channel", "Blue Channel" (Float, -200.0 to 200.0, how much of the input RGB feeds each output channel; default not stated); "Monochrome" (Boolean, switches to a monochrome output). (11 October 2026)
+- Copernicus nearest: `Cop channelswap` (partial: channelswap routes and copies channels but has no weighted mix). Status: documented_only. (11 October 2026)
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/filters/adjustments/channel-mixer (11 October 2026)
+
+## 4. Channels (6 sections, 11 October 2026)
+
+Channels index: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/filters/channels/channels (11 October 2026)
+
+### 4.1 RGBA Merge (11 October 2026)
+
+- Category: Filters, Channels. (11 October 2026)
+- Purpose: combines four separate grayscale inputs into the four channels of one output, one map per R, G, B and A. (11 October 2026)
+- Inputs: "R", "G", "B", "A" (all Grayscale). No parameters listed. (11 October 2026)
+- Notes: the page's example packs Smoothness into R, Metallic into G and AO into B. (11 October 2026)
+- Copernicus nearest: `Cop channeljoin` (merges up to four single-channel inputs into one RGBA layer). Status: documented_only. (11 October 2026)
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/filters/channels/rgba-merge (11 October 2026)
+
+### 4.2 RGBA Split (11 October 2026)
+
+- Category: Filters, Channels. (11 October 2026)
+- Purpose: separates an input image into its Red, Green, Blue and Alpha channels. (11 October 2026)
+- Inputs, outputs and parameters: not listed on the page. (11 October 2026)
+- Notes: the page cites isolating the X, Y or Z component of a baked Position or World Space Normal map. (11 October 2026)
+- Copernicus nearest: `Cop channelsplit` (splits a multichannel layer into four mono outputs). Status: documented_only. (11 October 2026)
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/filters/channels/rgba-split (11 October 2026)
+
+### 4.3 Alpha Merge (11 October 2026)
+
+- Category: Filters, Channels. (11 October 2026)
+- Purpose: adds an alpha channel to an image that has none. (11 October 2026)
+- Inputs: "RGB" (colour, without alpha); "A" (grayscale, used as the alpha). No parameters listed. (11 October 2026)
+- Copernicus nearest: `Cop channeljoin` (takes a red, green, blue and alpha input and joins them). Status: documented_only. (11 October 2026)
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/filters/channels/alpha-merge (11 October 2026)
+
+### 4.4 Alpha Split (11 October 2026)
+
+- Category: Filters, Channels. (11 October 2026)
+- Purpose: separates the alpha of an input image from its colour. (11 October 2026)
+- Outputs: the image with its alpha removed, and the alpha channel as a separate output. Labels not listed. No parameters. (11 October 2026)
+- Copernicus nearest: `Cop channelsplit` (partial: it also splits red, green and blue). Status: documented_only. (11 October 2026)
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/filters/channels/alpha-split (11 October 2026)
+
+### 4.5 Pre-Multiplied to Straight (11 October 2026)
+
+- Category: Filters, Channels. (11 October 2026)
+- Purpose: removes pre-multiplied colour from the RGB channels on alpha-blended edges, and removes the alpha channel. (11 October 2026)
+- Inputs and parameters: not listed on the page. (11 October 2026)
+- Notes: the output has no transparency information. Its stated use is removing the fringe around edges. (11 October 2026)
+- Copernicus nearest: `Cop premult` (converts an RGBA layer between straight and premultiplied alpha). Status: documented_only. (11 October 2026)
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/filters/channels/pre-multiplied-to-straight (11 October 2026)
+
+### 4.6 Straight to Pre-multiplied (11 October 2026)
+
+- Category: Filters, Channels. (11 October 2026)
+- Purpose: converts straight alpha to pre-multiplied alpha, scaling colour by the transparency of each pixel. (11 October 2026)
+- Inputs and parameters: not listed on the page. (11 October 2026)
+- Copernicus nearest: `Cop premult`. Status: documented_only. (11 October 2026)
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/filters/channels/straight-to-pre-multiplied (11 October 2026)
+
+## 5. Normal map (13 sections, 11 October 2026)
+
+Normal map index: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/filters/normal-map/normal-map (11 October 2026)
+
+### 5.1 Facing Normal (11 October 2026)
+
+- Category: Filters, Normal Map. (11 October 2026)
+- Purpose: converts a normal map into a grayscale image showing how much each normal faces the viewer in texture space. (11 October 2026)
+- Inputs, outputs and parameters: one normal map input and one grayscale output; no parameters documented, labels not listed. (11 October 2026)
+- Copernicus nearest: none. Status: documented_only. (11 October 2026)
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/filters/normal-map/facing-normal (11 October 2026)
+
+### 5.2 Height Normal Blender (11 October 2026)
+
+- Category: Filters, Normal Map. (11 October 2026)
+- Purpose: blends a grayscale height map onto a normal map, replacing several separate nodes. (11 October 2026)
+- Inputs: "Height" (grayscale); "Normal" (colour, base normal map). Output not listed. (11 October 2026)
+- Main parameters: "Normal Intensity" (0.0 to 16.0, default not stated); "Normal Format" (DirectX or OpenGL, default not stated). (11 October 2026)
+- Notes: the page says it offers less control than the manual steps. (11 October 2026)
+- Copernicus nearest: `Cop combinenormals` (partial: Copernicus needs `Cop heighttonormal` first, then the combine). Status: documented_only. (11 October 2026)
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/filters/normal-map/height-normal-blender (11 October 2026)
+
+### 5.3 Height to Normal World Units (11 October 2026)
+
+- Category: Filters, Normal Map. (11 October 2026)
+- Purpose: converts a height map to a normal map using real-world units, for example scanned material with known dimensions. (11 October 2026)
+- Main parameters: "Surface Size (cm)" (0.0 to 1000.0); "Height Depth (cm)" (0.0 to 100.0); "Normal Format" (OpenGL or DirectX); "Sampling" (Standard or Sobel). Defaults not stated. (11 October 2026)
+- Inputs and outputs: not listed on the page. (11 October 2026)
+- Copernicus nearest: `Cop heighttonormal` (the Copernicus doc notes an explicit scale is needed for the expected steepness). Status: documented_only. (11 October 2026)
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/filters/normal-map/height-to-normal-world-units (11 October 2026)
+
+### 5.4 Normal Blend (11 October 2026)
+
+- Category: Filters, Normal Map. (11 October 2026)
+- Purpose: blends two normal maps with an optional mask while keeping the normals normalised. (11 October 2026)
+- Inputs: "NormalFG" (colour, top); "NormalBG" (colour, bottom); "Mask" (grayscale, used when "Use Mask" is on). (11 October 2026)
+- Main parameters: "Opacity" (0.0 to 1.0); "Use Mask" (Boolean). Defaults not stated. (11 October 2026)
+- Notes: the page says it is not for overlaying detail; use Normal Combine for that. (11 October 2026)
+- Copernicus nearest: `Cop blend` (composes a foreground over a background with a mask). Status: documented_only. (11 October 2026)
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/filters/normal-map/normal-blend (11 October 2026)
+
+### 5.5 Normal Combine (11 October 2026)
+
+- Category: Filters, Normal Map. (11 October 2026)
+- Purpose: merges the surface details of two normal maps with a mathematically sound method. (11 October 2026)
+- Inputs: "Normal 1" and "Normal 2" (colour; descriptions not given). (11 October 2026)
+- Main parameters: "Technique" (Integer): Whiteout (low quality), Channel mixer (high quality) or Detail oriented (high quality). Default not stated. (11 October 2026)
+- Copernicus nearest: `Cop combinenormals` (merges the detail of two normal maps; base map carries large scale, detail map adds fine detail). Status: documented_only. (11 October 2026)
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/filters/normal-map/normal-combine (11 October 2026)
+
+### 5.6 Normal Invert (11 October 2026)
+
+- Category: Filters, Normal Map. (11 October 2026)
+- Purpose: inverts any or all channels of a normal map. (11 October 2026)
+- Main parameters: "Invert Red", "Invert Green", "Invert Blue", "Invert Alpha" (Boolean, default not stated). (11 October 2026)
+- Notes: the page says most normal nodes already offer a Green inversion, so this node is rarely needed. (11 October 2026)
+- Copernicus nearest: `Cop invert` (partial: it inverts layer values, not single normal channels). Status: documented_only. (11 October 2026)
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/filters/normal-map/normal-invert (11 October 2026)
+
+### 5.7 Normal Normalize (11 October 2026)
+
+- Category: Filters, Normal Map. (11 October 2026)
+- Purpose: re-normalises the vectors of every pixel in a normal map, for maps that went through heavy blending. (11 October 2026)
+- Inputs, outputs and parameters: not listed on the page. (11 October 2026)
+- Copernicus nearest: none. Status: documented_only. (11 October 2026)
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/filters/normal-map/normal-normalize (11 October 2026)
+
+### 5.8 Normal Sobel (11 October 2026)
+
+- Category: Filters, Normal Map. (11 October 2026)
+- Purpose: converts a height map to a normal map with Sobel sampling, slightly more advanced than the atomic Normal node. (11 October 2026)
+- Input: "Heightmap input". Output: "Normalmap output". (11 October 2026)
+- Main parameters: "Intensity" (0.0 to 3.0); "Normal Format" (OpenGL or DirectX). Defaults not stated. (11 October 2026)
+- Copernicus nearest: `Cop heighttonormal`. Status: documented_only. (11 October 2026)
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/filters/normal-map/normal-sobel (11 October 2026)
+
+### 5.9 Normal to Height (11 October 2026)
+
+- Category: Filters, Normal Map. (11 October 2026)
+- Purpose: reconstructs an approximate height map from a tangent-space normal map. (11 October 2026)
+- Main parameters: "Relief Balance" (slider 0.0 to 1.0); "Normal Format" (DirectX or OpenGL); "Global Opacity" (slider 0.0 to 1.0). Defaults not stated. (11 October 2026)
+- Notes: the result is never fully accurate. This is the simpler of the two versions. (11 October 2026)
+- Copernicus nearest: `Cop normaltoheight` (reconstructs a height layer from normals by integrating the slopes). Status: documented_only. (11 October 2026)
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/filters/normal-map/normal-to-height (11 October 2026)
+
+### 5.10 Normal To Height HQ (11 October 2026)
+
+- Category: Filters, Normal Map. (11 October 2026)
+- Purpose: the more advanced normal-to-height conversion, with more controls than Normal to Height. (11 October 2026)
+- Main parameters: "Normal Format" (DirectX or OpenGL); "Relief Balance" (0.0 to 1.0); "Height Intensity" (0.0 to 1.0); "Height Normalize" (Boolean, stretches the range to full contrast); "Quality" (Normal or High). Defaults not stated. (11 October 2026)
+- Inputs and outputs: not listed on the page. (11 October 2026)
+- Copernicus nearest: `Cop normaltoheight` (Copernicus has one variant only). Status: documented_only. (11 October 2026)
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/filters/normal-map/normal-to-height-hq (11 October 2026)
+
+### 5.11 Normal Transform (11 October 2026)
+
+- Category: Filters, Normal Map. (11 October 2026)
+- Purpose: transforms a normal map and recalculates the normals so the tangent space stays correct. (11 October 2026)
+- Main parameters: "Matrix2x2" (transformation matrix, rotates or scales); "Offset" (-0.5 to 0.5); "Normal Format" (DirectX or OpenGL). Defaults not stated. (11 October 2026)
+- Copernicus nearest: none. Status: documented_only. (11 October 2026)
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/filters/normal-map/normal-transform (11 October 2026)
+
+### 5.12 Normal Vector Rotation (11 October 2026)
+
+- Category: Filters, Normal Map. (11 October 2026)
+- Purpose: rotates the vectors of a normal map in tangent space. It changes the values the pixels represent, not the pixels. (11 October 2026)
+- Inputs: "Normal" (colour, required); "Rotation Map" (grayscale, optional, modulates the rotation strength). (11 October 2026)
+- Main parameters: "Rotation Angle" (0.0 to 1.0); "Normal Format" (DirectX or OpenGL). Defaults not stated. (11 October 2026)
+- Copernicus nearest: none. Status: documented_only. (11 October 2026)
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/filters/normal-map/normal-vector-rotation (11 October 2026)
+
+### 5.13 Bent Normal (11 October 2026)
+
+- Category: Filters, Normal Map. (11 October 2026)
+- Purpose: generates a bent normal map from a height map, with ambient occlusion embedded in the normal map. (11 October 2026)
+- Input: a height map input (label not given). Output not listed. (11 October 2026)
+- Main parameters: "Use Physical Size" (Boolean); "Physical Size" (Float3); "Samples" (Integer, number of rays); "Height Scale" (Float); "Distribution" (Integer, falloff toward shadowed areas); "Maximum Distance" (Float); "Spread Angle" (Float, 1 is a full hemisphere); "Normal Format" (Integer, inverts green). Defaults not stated. (11 October 2026)
+- Notes: the page advises against the CPU (SSE) engine for this node. (11 October 2026)
+- Copernicus nearest: `Cop heighttoambientocclusion` (partial: it gives the AO part only, not the bent normal). Status: documented_only. (11 October 2026)
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/filters/normal-map/bent-normal (11 October 2026)
+
+## 6. Effects: ambient occlusion and curvature (5 sections, 11 October 2026)
+
+Effects index: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/filters/effects/effects (11 October 2026)
+
+### 6.1 Ambient Occlusion (HBAO) (Filter Node) (11 October 2026)
+
+- Category: Filters, Effects. (11 October 2026)
+- Purpose: generates an ambient occlusion map from a height map using Horizon-Based Ambient Occlusion. (11 October 2026)
+- Input: a heightmap (label not given). Output: an AO map (label not given). (11 October 2026)
+- Main parameters: "Use World Units" (Boolean); "Height Depth" (0.0 to 1.0, used when Use World Units is off); "Surface Size" (0.0 to 1000.0, used when on); "Height Scale (cm)" (0.0 to 1000.0, used when on); "Radius" (0.0 to 1.0); "Quality" (4, 8 or 16 samples); "GPU Optimization" (Boolean). Defaults not stated. (11 October 2026)
+- Copernicus nearest: `Cop heighttoambientocclusion` (estimates AO from a height layer). Status: documented_only. (11 October 2026)
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/filters/effects/ambient-occlusion-hbao-filter-node (11 October 2026)
+
+### 6.2 Ambient Occlusion (RTAO) (11 October 2026)
+
+- Category: Filters, Effects. (11 October 2026)
+- Purpose: generates an ambient occlusion map from a height map with more accuracy than HBAO, at a higher cost. (11 October 2026)
+- Main parameters: "Use Physical Size" (Boolean); "Physical Size" (Float3); "Height Scale" (Float); "Samples" (Integer, rays); "Distribution" (Integer, values not listed); "Maximum Distance" (Float); "Spread Angle" (Float, 1 is a full hemisphere). Defaults not stated. (11 October 2026)
+- Notes: the page recommends HBAO as the faster option, and says to avoid the CPU (SSE) engine. (11 October 2026)
+- Copernicus nearest: `Cop heighttoambientocclusion` (Copernicus has no ray-traced variant, so this is the nearest). Status: documented_only. (11 October 2026)
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/filters/effects/ambient-occlusion-rtao (11 October 2026)
+
+### 6.3 Curvature (Filter Node) (11 October 2026)
+
+- Category: Filters, Effects. (11 October 2026)
+- Purpose: converts an input normal map into a curvature map that highlights convex and concave edges. (11 October 2026)
+- Main parameters: "Intensity" (0.0 to 10.0, raises the contrast); "Normal Format" (DirectX or OpenGL). Defaults not stated. (11 October 2026)
+- Notes: convex areas are white tints, concave areas black tints; a single-pass conversion, so lines are pixel-thin. (11 October 2026)
+- Copernicus nearest: `Cop curvature` (computes curvature for convex and concave regions). Status: documented_only. (11 October 2026)
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/filters/effects/curvature-filter-node (11 October 2026)
+
+### 6.4 Curvature Smooth (11 October 2026)
+
+- Category: Filters, Effects. (11 October 2026)
+- Purpose: computes the curvature of a surface described by a normal map, with concave and convex areas. (11 October 2026)
+- Input: "Normal" (colour, primary). Outputs: "Curvature" (grayscale, flat is 50 percent grey), "Convexity" (grayscale), "Concavity" (grayscale). (11 October 2026)
+- Main parameters: "Normal format" (Integer, DirectX Y up or OpenGL Y down). Defaults not stated. (11 October 2026)
+- Notes: the page recommends Curvature for a sharper result and Curvature Sobel for more options. (11 October 2026)
+- Copernicus nearest: `Cop curvature`. Status: documented_only. (11 October 2026)
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/filters/effects/curvature-smooth (11 October 2026)
+
+### 6.5 Curvature Sobel (11 October 2026)
+
+- Category: Filters, Effects. (11 October 2026)
+- Purpose: converts a normal map into a curvature map that quickly highlights or darkens edges. (11 October 2026)
+- Main parameters: "Intensity" (0.0 to 1.0, adjusts contrast); "Normal type" (DirectX or OpenGL). Defaults not stated. (11 October 2026)
+- Notes: single-pass conversion; thicker lines and sharp transitions. (11 October 2026)
+- Copernicus nearest: `Cop curvature`. Status: documented_only. (11 October 2026)
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/filters/effects/curvature-sobel (11 October 2026)
+
+## 7. Tiling: make it tile (2 sections, 11 October 2026)
+
+Tiling index: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/filters/tiling/tiling (11 October 2026)
+
+### 7.1 Make It Tile Patch (11 October 2026)
+
+- Category: Filters, Tiling. (11 October 2026)
+- Purpose: turns a small texture patch into a larger tiling image by stamping the patch across a grid with semi-random placement. (11 October 2026)
+- Main parameters: "Mask Size" (0.0 to 1.0); "Mask Precision" (0.0 to 1.0); "Mask Warping" (-100.0 to 100.0); "Pattern size width" (0.0 to 1000.0); "Pattern size height" (0.0 to 1000.0); "Disorder" (0.0 to 1.0); "Size Variation" (0.0 to 100.0); "Octave" (0 to 6, main size control); "Rotation" (-360.0 to 360.0); "Rotation Variation" (0.0 to 360.0); "Background Color"; "Color Variation" (0.0 to 1.0, colour version only); "Luminosity Variation" (grayscale version only, range not stated). Defaults not stated. (11 October 2026)
+- Inputs and outputs: not specified on the page. (11 October 2026)
+- Notes: for a whole material, the page points to Smart Auto Tile. (11 October 2026)
+- Copernicus nearest: `Cop hextile` (random tiling with randomly placed, rotated and scaled cells). Status: documented_only. (11 October 2026)
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/filters/tiling/make-it-tile-patch (11 October 2026)
+
+### 7.2 Make It Tile Photo (11 October 2026)
+
+- Category: Filters, Tiling. (11 October 2026)
+- Purpose: fixes the edges of an image so it tiles seamlessly when its edges do not match. (11 October 2026)
+- Main parameters: "Mask Warping H" and "Mask Warping V" (-100.0 to 100.0); "Mask Size H" and "Mask Size V" (0.0 to 1.0); "Mask Precision H" and "Mask Precision V" (0.0 to 1.0). Defaults not stated. (11 October 2026)
+- Notes: it modifies only the edges and leaves the rest of the image unchanged. (11 October 2026)
+- Copernicus nearest: none. Status: documented_only. (11 October 2026)
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/filters/tiling/make-it-tile-photo (11 October 2026)
+
+## 8. Height in patterns and materials, AO cancellation (4 sections, 11 October 2026)
+
+### 8.1 Height Extrude (11 October 2026)
+
+- Category: Texture generators, Patterns. (11 October 2026)
+- Purpose: renders 3D Z-depth from an input height map to create rotated shapes, for use with Shape Splatter. (11 October 2026)
+- Main parameters: "Camera Angle" (Euler angles, in half-turns); "Camera Scale" (0.001 to 3.0); "Height Scale" (0.0 to 2.0); "Vertical Offset" (-1.0 to 1.0); "Ground" (Off or On); "Normal Format" (DirectX or OpenGL); "Normal Intensity" (0.0 to 256.0). Defaults not stated. (11 October 2026)
+- Notes: the input does not need to be a binary alpha map; there are no bevel controls. (11 October 2026)
+- Copernicus nearest: none. Status: documented_only. (11 October 2026)
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/texture-generators/patterns/height-extrude (11 October 2026)
+
+### 8.2 Height Blend (11 October 2026)
+
+- Category: Material filters, Effects. (11 October 2026)
+- Purpose: combines two height maps using their height information, producing a blended height map and a black and white mask. (11 October 2026)
+- Inputs: "Height Top" (grayscale); "Height Bottom" (grayscale); "Mask" (grayscale, optional). (11 October 2026)
+- Main parameters: "Height Offset" (0.0 to 1.0, main blend control); "Contrast" (0.0 to 1.0); "Mode" ("Balanced height" or "Bottom height priority"); "Opacity" (0.0 to 1.0). Defaults not stated. (11 October 2026)
+- Copernicus nearest: `Cop blend` (partial: Copernicus has no height-weighted blend, only a mask blend). Status: documented_only. (11 October 2026)
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/material-filters/effects-material/height-blend (11 October 2026)
+
+### 8.3 Material Height Blend (11 October 2026)
+
+- Category: Material filters, Effects. (11 October 2026)
+- Purpose: blends two materials from their height maps, without a user-defined mask. (11 October 2026)
+- Main parameters: "Channels" (group toggles); "Height Offset" (0.0 to 1.0, main control); "Contrast" (0.0 to 1.0); "Mode" ("Balanced height" or "Bottom height priority"); "Opacity" (0.0 to 1.0); "Albedo Matching" (0.0 to 1.0). Defaults not stated. (11 October 2026)
+- Notes: for water or snow, the page recommends Water Level or Snow Cover. (11 October 2026)
+- Copernicus nearest: `Cop blend` (partial, as Height Blend). Status: documented_only. (11 October 2026)
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/material-filters/effects-material/material-height-blend (11 October 2026)
+
+### 8.4 AO Cancellation (11 October 2026)
+
+- Category: Material filters, Scan processing. (11 October 2026)
+- Purpose: removes ambient occlusion lighting from an albedo (base colour) map, using a separate AO map. (11 October 2026)
+- Inputs: "Albedo (Base Color) map"; "AO map". Outputs not specified. (11 October 2026)
+- Main parameters: "AO Cancellation" (0.0 to 1.0); "AO Saturation" (0.0 to 1.0). Defaults not stated. (11 October 2026)
+- Copernicus nearest: none. Status: documented_only. (11 October 2026)
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/material-filters/scan-processing/ao-cancellation (11 October 2026)
+
+## 9. Mesh-based utilities (5 sections, 11 October 2026)
+
+Index: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/node-library (the utilities sub-category is listed under Mesh based generators there, 11 October 2026)
+
+### 9.1 3D Planar Projection (11 October 2026)
+
+- Category: Mesh based generators, Utilities. (11 October 2026)
+- Purpose: projects a texture onto a model from a planar direction using baked mesh data, so decals can cross UV seams. (11 October 2026)
+- Inputs: "Position Map", "World Space Normal", "Projected Texture" (all colour). (11 October 2026)
+- Main parameters: "Project Input" (UV Position or World Space Position); "Target UV Position"; "Target Position"; "Target Normal"; "Rotation" (0.0 to 1.0); "Scale" (0.0 to 1.0); "Size" (0.0 to 2.0); "Maximum Depth" (0.0 to 1.0); "Depth Fade" (0.0 to 1.0); "Normal Threshold" (-1.0 to 1.0); "Normal Fade" (0.0 to 1.0). Defaults not stated. (11 October 2026)
+- Copernicus nearest: `Cop triplanar` (partial: triplanar projects from position and normal layers, not a single planar decal). Status: documented_only. (11 October 2026)
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/mesh-based-generators/utilities-mesh-based-generators/3d-planar-projection (11 October 2026)
+
+### 9.2 Material Mesh Data Blender (11 October 2026)
+
+- Category: Mesh based generators, Utilities. (11 October 2026)
+- Purpose: adds surface detail to a full material by blending in baked map data such as edge highlights, AO and cartoon effects. (11 October 2026)
+- Inputs: "Full Material Input" (material set); "Ambient Occlusion", "Curvature", "Height" (grayscale); "Normal", "Vertex Color", "World Space Normal" (colour). Output: the modified full material. (11 October 2026)
+- Main parameters: groups "Channels" and "Baked Maps" (toggles); Diffuse AO, Diffuse Sharp Edges, Diffuse Color From Vertex Color, Diffuse Pre Lighting, Diffuse Cartoon Lighting Balance, Diffuse Cartoon Pre Lighting Layers (0 to 10), Diffuse Cartoon Outlines; Base Color AO, Base Color Sharp edges, Base Color From Vertex Color; Normal Material Intensity; SpecularAO, Specular Bright Sharp Edges, Specular Cartoon Outlines, Glossiness Dark Sharp Edges; Roughness Bright Sharp Edges, Roughness Cartoon Outlines; Metallic Bright Sharp Edges, Metallic Cartoon Outlines; AO Materiel Intensity, Height Material Intensity, Height Material Blending Type (Reinforce or Interpolation). All 0.0 to 1.0 unless stated; defaults not stated. (11 October 2026)
+- Copernicus nearest: none. Status: documented_only. (11 October 2026)
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/mesh-based-generators/utilities-mesh-based-generators/material-mesh-data-blender (11 October 2026)
+
+### 9.3 Material Selector (11 October 2026)
+
+- Category: Mesh based generators, Utilities. (11 October 2026)
+- Purpose: converts a full-colour ID map to a black and white mask, combining several colours into one mask. (11 October 2026)
+- Main parameters: "Materials" (1 to 16, how many colours are combined); "Enable Material #1-16" (Boolean); "Material #1-16" (colour value); "Fuzziness" (0.01 to 1.0); "Padding" (0.0 to 1.0, sharpness). Defaults not stated. (11 October 2026)
+- Inputs and outputs: not stated on the page. (11 October 2026)
+- Copernicus nearest: `Cop idtomask` (creates a mask from an ID layer by selecting IDs). Status: documented_only. (11 October 2026)
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/mesh-based-generators/utilities-mesh-based-generators/material-selector (11 October 2026)
+
+### 9.4 Mesh Data Combiner (11 October 2026)
+
+- Category: Mesh based generators, Utilities. (11 October 2026)
+- Purpose: packs baked mesh data into a single group for use with Compact Material Mode. (11 October 2026)
+- Main parameters: toggles for Ambient Occlusion, UV Masks, Curvature, Height, Position (Grayscale), Thickness, Normal, Position (RGB), Color ID, World Space Direction, World Space Normal (False or True; defaults not stated). (11 October 2026)
+- Copernicus nearest: none. Status: documented_only. (11 October 2026)
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/mesh-based-generators/utilities-mesh-based-generators/mesh-data-combiner (11 October 2026)
+
+### 9.5 Tri Planar (11 October 2026)
+
+- Category: Mesh based generators, Utilities. (11 October 2026)
+- Purpose: applies triplanar projection in 2D from baked Position and World Space Normal data, for a mostly seam-free mapping. (11 October 2026)
+- Inputs: "Position" and "World Space Normal" (colour, ideally 16-bit or higher); "Input X", "Input Y", "Input Z" (grayscale; Y and Z used only with 3 image inputs). (11 October 2026)
+- Main parameters: "Projection" (All axis, X only, Y only, Z only); "Image Inputs" (1 or 3); "Blending Mode" (linear or advanced); "Blending Contrast" (0.001 to 1.0); "Normalization Factor" (0.0 to 1.0); "Texture Tiling" (0.0 to 10.0); "Global Rotation" (0.0 to 1.0); "Fix Mirrored Projection" (Boolean); "Rotation X/Y/Z" (0.0 to 1.0); "Offset X/Y/Z" (0.0 to 1.0); "Random Offset X/Y/Z" (0.0 to 1.0). Defaults not stated. (11 October 2026)
+- Notes: computationally heavy; the page warns that 8-bit bakes give poor results. (11 October 2026)
+- Copernicus nearest: `Cop triplanar` (projects X, Y and Z textures onto a position layer and blends them). Status: documented_only. (11 October 2026)
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/mesh-based-generators/utilities-mesh-based-generators/tri-planar (11 October 2026)
+
+## 10. PBR utilities (8 sections, 11 October 2026)
+
+Index: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/node-library (material filters sub-category, 11 October 2026)
+
+### 10.1 BaseColor / Metallic / Roughness converter (11 October 2026)
+
+- Category: Material filters, PBR utilities. (11 October 2026)
+- Purpose: converts BaseColor, Metallic and Roughness maps into other PBR model outputs, such as Specular/Glossiness. (11 October 2026)
+- Inputs: BaseColor, Metallic, Roughness; "SpecularLevel" (optional, shown when "Use SpecularLevel input" is on). (11 October 2026)
+- Main parameters: "Use SpecularLevel input" (Boolean); "Target" (PBR Diffuse/Specular/Gloss, Vray (GGX), Corona, Corona 1.6+, Redshift 1.x, Arnold 4 (AiStandard), Arnold 4 (AlSurface), RenderMan (PxrSurface)). Defaults not stated. (11 October 2026)
+- Copernicus nearest: none. Status: documented_only. (11 October 2026)
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/material-filters/pbr-utilities/basecolor-metallic-roughness-converter (11 October 2026)
+
+### 10.2 Base Material (11 October 2026)
+
+- Category: Material filters, PBR utilities. (11 October 2026)
+- Purpose: creates a multi-channel material from solid colour and value settings, as a placeholder or a base to refine. (11 October 2026)
+- Main parameters: "PBR Workflow" (Metal-Roughness or Specular-Glossiness); "Material Preset" (Custom, Dielectric, Gold, Silver, Aluminium, Iron, Copper, Titanium, Nickel, Cobalt, Platinum); "Base Color", "Diffuse Color", "Specular" (colour values); "Metallic", "Roughness Value", "Glossiness Value" (grayscale values); "Specular Presets" (Plastic, Wood, Stone, Brick, Sand, Concrete, Fabric, Rusted Metal, Water, Ice, Glass); "Specular Range" (0.0 to 1.0); "Grunge Amount" (0.0 to 1.0); "Grunge Tiling" (1 to 16); "Custom Grunge Input"; "Normal from Height Intensity" (0.0 to 16.0); "Height Position" (0.0 to 1.0); "Height Range" (0.0 to 1.0); "User-Defined Maps". Defaults not stated. (11 October 2026)
+- Outputs: one bundled full material. (11 October 2026)
+- Copernicus nearest: none. Status: documented_only. (11 October 2026)
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/material-filters/pbr-utilities/base-material (11 October 2026)
+
+### 10.3 PBR Albedo Safe Color (11 October 2026)
+
+- Category: Material filters, PBR utilities. (11 October 2026)
+- Purpose: corrects Base Color or Diffuse values that fall outside a PBR-correct range. (11 October 2026)
+- Main parameters: "PBR Workflow" (Base Color - Metallic or Diffuse - Specular); "Tolerance" (0.0 to 1.0). Defaults not stated. (11 October 2026)
+- Notes: a quick correction, not guaranteed correct in every case; use PBR BaseColor / Metallic Validate to see problem areas. (11 October 2026)
+- Copernicus nearest: none. Status: documented_only. (11 October 2026)
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/material-filters/pbr-utilities/pbr-albedo-safe-color (11 October 2026)
+
+### 10.4 PBR BaseColor / Metallic Validate (11 October 2026)
+
+- Category: Material filters, PBR utilities. (11 October 2026)
+- Purpose: checks albedo and metallic values against PBR standards and shows a good-to-bad heatmap. (11 October 2026)
+- Main parameters: "Validation Mode" (Albedo, Metal, Combined); "Albedo Dark Range Threshold" (50 sRGB or 30 sRGB); "Metal Reflectance Range" (70-100% or 60-100% reflective); "Overlay Map" (Boolean). Defaults not stated. (11 October 2026)
+- Copernicus nearest: none. Status: documented_only. (11 October 2026)
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/material-filters/pbr-utilities/pbr-basecolor-metallic-validate (11 October 2026)
+
+### 10.5 PBR Dielectric F0 (11 October 2026)
+
+- Category: Material filters, PBR utilities. (11 October 2026)
+- Purpose: supplies Specular values for the Specular PBR model from presets, so no colour picking is needed. (11 October 2026)
+- Main parameters: "Specular F0" (Plastic, Wood, Stone, Brick, Sand, Concrete, Fabric, Rusted Metal, Water, Ice, Glass, Custom IOR); "Specular Range" (0.01 to 1.0); "IOR" (1.0 to 5.0, only with Custom IOR). Defaults not stated. (11 October 2026)
+- Copernicus nearest: none. Status: documented_only. (11 October 2026)
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/material-filters/pbr-utilities/pbr-dielectric-f0 (11 October 2026)
+
+### 10.6 PBR Metal Reflectance (11 October 2026)
+
+- Category: Material filters, PBR utilities. (11 October 2026)
+- Purpose: returns the reflection colours of a set of predefined pure metals. (11 October 2026)
+- Main parameters: "Metal Color" (Gold, Silver, Aluminium, Iron, Copper, Titanium, Nickel, Cobalt, Platinum). Type and default not stated. (11 October 2026)
+- Copernicus nearest: none. Status: documented_only. (11 October 2026)
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/material-filters/pbr-utilities/pbr-metal-reflectance (11 October 2026)
+
+### 10.7 PBR Render (11 October 2026)
+
+- Category: Material filters, PBR utilities. (11 October 2026)
+- Purpose: renders a PBR material onto a sphere, plane or cylinder with image-based lighting, producing a texture inside the graph. (11 October 2026)
+- Inputs: material channels (Base Color, Normal, Emissive, Roughness, Metallic, Specular Level, Height, Ambient Occlusion, Opacity Mask, Anisotropy Level, Anisotropy Angle, Translucency, Scattering Distance Scale); "Lens Dirt Map", "Lens Aperture Map" (grayscale); "Background input" (colour); "Environment Map" (colour, spherical HDR). (11 October 2026)
+- Outputs: Beauty, Raw Irradiance, Raw Specular, Normal World Space, Normal Tangent Space, UVs. (11 October 2026)
+- Main parameters: "Shape" (Sphere, Plane, Cylinder); "Exposure" (-4.0 to 4.0); "Tone Mapper" (Linear, ACES, Filmic Hejl); "Camera Mode" (Perspective, Orthographic); "Field of View" (0.01 to 100.0); "Aperture Blades" (3 to 9); "Diffuse Quality" (16, 32, 64, 128 samples); "Enable Post Effects" (Boolean), with bloom, lens and dirt intensities; "Enable Clear Coat" and "Enable Subsurface Scattering"; many other camera, UV and material controls. Defaults not stated. (11 October 2026)
+- Notes: very heavy, poor on the CPU (SSE2) engine; needs a spherically unwrapped HDRI. (11 October 2026)
+- Copernicus nearest: `Cop previewmaterial` (applies a standard preview material to geometry and renders it). Status: documented_only. (11 October 2026)
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/material-filters/pbr-utilities/pbr-render (11 October 2026)
+
+### 10.8 PBR Render Mapping (11 October 2026)
+
+- Category: Material filters, PBR utilities. (11 October 2026)
+- Purpose: an extension of PBR Render that maps a separate texture onto the shape of a previous PBR Render. (11 October 2026)
+- Inputs: "Texture" (colour or grayscale); "UVs" (colour, required, from a PBR Render node). (11 October 2026)
+- Main parameters: "Background Color" (colour value, default not stated). (11 October 2026)
+- Copernicus nearest: none. Status: documented_only. (11 October 2026)
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/material-filters/pbr-utilities/pbr-render-mapping (11 October 2026)
+
+## 11. Function node library: names only, not expanded (11 October 2026)
+
+These are premade function graphs shown as instance nodes. The library index gives names and sub-categories only, with no descriptions. Their per-node pages were not read, so no purpose, parameter or Copernicus mapping is written here. (11 October 2026)
+
+Index: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-function-graphs/nodes-reference-for-substance-function-graphs/function-node-library/function-node-library (11 October 2026)
+
+Sub-categories on that index (names only, 11 October 2026):
+- SDF functions: Primitives (capped cone, capsule, cube, cylinder, ellipsoid, helix, plane, pyramid, rock, sphere, torus and others), Operators (intersection, subtraction, union, smooth and chamfer variants, morph, shell, symmetry and others), Transforms (bend, elongate, flip, offset, rotate, scale, twist and others), Material (set color, set material ID, set material, set metalness, set roughness). (11 October 2026)
+- Comparison: equality and not-equal for boolean, float2, float3, float4. (11 October 2026)
+- Conversion: range remaps, Boolean to float1, degrees and radians, turns and degrees, sawtooth and triangle waves, height balance. (11 October 2026)
+- Constant: 2 Pi, Pi. (11 October 2026)
+- Parity: even count, odd count, parity test. (11 October 2026)
+- Maths: acos, asin, average, clamp, cross product, distance, division, fmod, frac, length, merge, normalize, one minus, orthogonal, reflect, round, saturate, sign, smoothstep, step, truncate. (11 October 2026)
+- Color: colour-space conversions (sRGB, linear, ACEScg, HSL, HSV, HSI, HCL, hue, saturation and lightness variants), random color, random luminosity, temperature to RGB, ACES, AgX and Hejl tonemappers. (11 October 2026)
+- Transformation: cartesian to polar, polar to cartesian, matrix invert, matrix multiply, rotate vec2, rotation, scale and tile matrix, directional offset. (11 October 2026)
+- Random: random discrete [a, b], global random, Hash 11, Hash 14, Hash 21, Hash 22, Hash 24, Hash31, Hash 32, normal distribution, random uniform variants (float to float4). (11 October 2026)
+- Easings: ease in, ease out and ease in out variants (circ, cubic, expo, quad, quart, quint, sine). (11 October 2026)
+- Various: curve, non-square expansion UV scale, non-square output size, roughness, and the switch nodes with 2, 4 or 8 inputs for each type. (11 October 2026)
+
+Pages read for section 11: the library index above, the Color category page https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-function-graphs/nodes-reference-for-substance-function-graphs/function-node-library/function-nodes-color (11 October 2026), and the hash page https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-function-graphs/nodes-reference-for-substance-function-graphs/function-node-library/random/hash-functions (11 October 2026). Hash nodes were read but are not expanded into sections; the hash page gives only "Input" and output types. (11 October 2026)
+
+## Pages read, all sections (11 October 2026)
+
+Substance graphs, atomic nodes:
+- https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/atomic-nodes/atomic-nodes (11 October 2026)
+- https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/atomic-nodes/pixel-processor (11 October 2026)
+- https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/atomic-nodes/value-processor (11 October 2026)
+- https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/atomic-nodes/normal (11 October 2026)
+- https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/atomic-nodes/channel-shuffle (11 October 2026)
+
+Function graphs:
+- https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-function-graphs/nodes-reference-for-substance-function-graphs/atomic-function-nodes/atomic-function-nodes (11 October 2026)
+- https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-function-graphs/nodes-reference-for-substance-function-graphs/atomic-function-nodes/function-nodes (11 October 2026)
+- https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-function-graphs/nodes-reference-for-substance-function-graphs/function-node-library/function-node-library (11 October 2026)
+- https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-function-graphs/nodes-reference-for-substance-function-graphs/function-node-library/function-nodes-color (11 October 2026)
+- https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-function-graphs/nodes-reference-for-substance-function-graphs/function-node-library/random/hash-functions (11 October 2026)
+
+Node library (indexes, filters, normal map, effects, tiling, material and mesh categories): each node URL is cited in its own section above, and these index pages were read:
+- https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/nodes-reference-for-substance-compositing-graphs (11 October 2026)
+- https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/node-library (11 October 2026)
+- https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/filters/filters (11 October 2026)
+
+Pages that returned HTTP 403 or 404 (not used as sources, 11 October 2026):
+- https://helpx.adobe.com/substance-3d-designer/function-graphs/nodes-reference-for-function-graphs/function-node-library.html (403, 11 October 2026)
+- https://helpx.adobe.com/substance-3d-designer/function-graphs/nodes-reference-for-function-graphs/atomic-function-nodes/function-nodes.html (403 on the reading attempt, 11 October 2026)
+- https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/function-graphs/nodes-reference-for-function-graphs/function-node-library (404, 11 October 2026)
+
+## Not found in the official pages (11 October 2026)
+
+- No official page was found for a standalone "Make It Tile" node in Substance 3D Designer. The official Make it Tile page found in search is for Substance 3D Sampler, and was not used. (11 October 2026)
+- No page named "Height to Normal" in Designer was found. The nearest official page is Normal (atomic), and the world-units variant is in section 5.3. (11 October 2026)
+- No "Histogram" or "Channel Select" node page with those exact names was found. The official names are the Histogram Range, Scan, Scan Non-Uniform, Select and Shift nodes (section 3), and the Channels Shuffle node (section 1.4) plus the RGBA and Alpha nodes (section 4). (11 October 2026)

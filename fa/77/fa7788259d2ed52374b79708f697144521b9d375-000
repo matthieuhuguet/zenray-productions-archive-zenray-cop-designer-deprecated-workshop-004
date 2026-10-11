@@ -1,0 +1,47 @@
+# randommono
+
+- Label: Random Mono
+- Category: Copernicus (`Cop`), Houdini 22.0.368
+- Inputs: 0 to 5
+- Parameters: 23 (exact, read from Houdini by hython)
+- Used by the height graph: no
+
+## Feature summary (web, SideFX reference)
+
+- Source: https://www.sidefx.com/docs/houdini/nodes/cop/randommono.html
+- Summary (EN): Random Mono generates random values for a mono layer, VDB or attribute. By default the Seed-driven selection fills the whole layer, and per-pixel randomness creates fine, grain-like noise. Values can come from a Min/Max range, a Float Ramp or a Specific Values list.
+- Résumé (FR) : Ce nœud génère des valeurs mono aléatoires pour un calque, un VDB ou un attribut, selon une plage, une rampe ou une liste de valeurs.
+
+- Inputs meaning: ["size_ref: representative layer that sets the output image size and metadata", "min: layer or attribute setting the minimum limit when Range Values is Min/Max", "max: layer or attribute setting the maximum limit when Range Values is Min/Max", "ramp: layer or attribute sampled horizontally for range values when Range Values is Float Ramp", "seed: layer or attribute controlling the random value distribution"]
+
+- Key parameters: ["Signature: layer type the node outputs", "Range Values: Min/Max, Float Ramp or Specific Values", "Minimum / Maximum: bounds of the random range in Min/Max mode", "Float Ramp: reshapes the uniformly distributed random value through a ramp", "Number of Values, Value, Weight, Value List: for Specific Values; Value List accepts ranges with steps, such as 0-1:0.25", "Random per Pixel: selection varies per pixel", "Seed and Time: both change the random outcome", "Zero Negative IDs: when a seed input is wired, outputs 0 wherever the seed is a negative integer"]
+
+- Caveats: ["Per-pixel randomness must be enabled explicitly, or the seed input must be used, to vary randomness for each custom shape.", "Within a Value List, all expanded values share the same weight.", "Sets with lower weights are selected less often; equal weights give equal probability.", "The page does not describe the Signature parameter beyond its brief definition."]
+
+## Parameters (exact, from the installed Houdini)
+
+| parameter | label | type | default | range | menu tokens |
+|---|---|---|---|---|---|
+| `signature` | Signature | String | ["auto"] |  |  |
+| `folder0` |  | FolderSet |  |  |  |
+| `rangemethod` | Range Values | Menu | 1 |  | minmax, ramp, specific |
+| `min` | Minimum | Float | [0.0] | 0.0 .. 1.0 |  |
+| `max` | Maximum | Float | [1.0] | 0.0 .. 1.0 |  |
+| `floatramp` | Float Ramp | Ramp | 2 |  |  |
+| `nvalues` | Number of Values | Folder | 1 |  |  |
+| `folder1` |  | FolderSet |  |  |  |
+| `perpixel` | Random per Pixel | Toggle | false |  |  |
+| `seed` | Seed | Float | [0.0] | 0.0 .. 100.0 (strict) |  |
+| `time` | Time | Float | [0.0] | 0.0 .. 1.0 |  |
+| `zeroinvalid` | Zero Negative IDs | Toggle | false |  |  |
+| `floatramp1pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `floatramp1value` | Value | Float | [0.0] | 0.0 .. 10.0 |  |
+| `floatramp1interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `floatramp2pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `floatramp2value` | Value | Float | [0.0] | 0.0 .. 10.0 |  |
+| `floatramp2interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `folder3_0` |  | FolderSet |  |  |  |
+| `value0` | Value | Float | [1.0] | 0.0 .. 1.0 |  |
+| `valuetype0` | Value Type | Menu | 0 |  | const, list |
+| `weight0` | Weight | Float | [1.0] | 0.0 .. 1.0 (strict) |  |
+| `values0` | Value List | String | [""] |  |  |

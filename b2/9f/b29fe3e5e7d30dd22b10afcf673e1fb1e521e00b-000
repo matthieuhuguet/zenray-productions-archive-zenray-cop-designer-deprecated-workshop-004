@@ -1,0 +1,45 @@
+# vignette
+
+- Label: Vignette
+- Category: Copernicus (`Cop`), Houdini 22.0.368
+- Inputs: 1 to 2
+- Parameters: 21 (exact, read from Houdini by hython)
+- Used by the height graph: no
+
+## Feature summary (web, SideFX reference)
+
+- Source: https://www.sidefx.com/docs/houdini/nodes/cop/vignette.html
+- Summary (EN): Darkens the corners of an input layer, reducing brightness toward the edges to draw attention to the centre. Useful for framing a subject or giving an old lens look. Output: the vignetted layer.
+- Résumé (FR) : Assombrit les coins d'une couche pour recentrer le regard, avec une forme ronde, rectangulaire ou mixte et un bord adouci.
+
+- Inputs meaning: ["source: the original layer to apply the vignetting to", "mask (optional): per-pixel mask whose amount is scaled by the Mask parameter"]
+
+- Key parameters: ["Signature: sets the layer type the source accepts", "Mask: how much of the new value mixes with the original (default 1)", "Brightness: scales how bright or dim the vignette is", "Shape: Round (circular), Rectangle, or Blend between the two", "Circle Radius and Circle Scale: size of the round vignette and its non-uniform stretch", "Rectangle Size and Round Corners: size and corner rounding of the rectangle", "Blend: mixes Round and Rectangle when Shape is Blend", "Center: vignette centre in image space", "Blur: softens the edge of the vignette", "Shape Ramp: adjusts the shape profile of the vignette"]
+
+- Caveats: ["The Shape Ramp only has a visible effect when the vignette is fairly smooth, meaning blurred"]
+
+## Parameters (exact, from the installed Houdini)
+
+| parameter | label | type | default | range | menu tokens |
+|---|---|---|---|---|---|
+| `signature` | Signature | String | ["auto"] |  |  |
+| `mask` | Mask | Float | [1.0] | 0.0 .. 1.0 (strict) |  |
+| `bright` | Brightness | Float | [0.05] | 0.0 .. 1.0 (strict) |  |
+| `shape` | Shape | Menu | 0 |  | round, rectangle, blend |
+| `circle_radius` | Circle Radius | Float | [0.7] | 0.0 .. 1.0 (strict) |  |
+| `circle_scalex` | Circle Scale | Float | 1.0 | -1.0 .. 1.0 |  |
+| `circle_scaley` | Circle Scale | Float | 1.0 | -1.0 .. 1.0 |  |
+| `blend` | Blend | Float | [1.0] | 0.0 .. 1.0 (strict) |  |
+| `rect_sizex` | Rectangle Size | Float | 1.8 | 0.0 .. 1.0 (strict) |  |
+| `rect_sizey` | Rectangle Size | Float | 1.4 | 0.0 .. 1.0 (strict) |  |
+| `rect_roundness` | Round Corners | Float | [0.3] | 0.0 .. 1.0 (strict) |  |
+| `centerx` | Center | Float | 0.0 | -1.0 .. 1.0 |  |
+| `centery` | Center | Float | 0.0 | -1.0 .. 1.0 |  |
+| `blur` | Blur | Float | [0.25] | 0.0 .. 0.6 (strict) |  |
+| `shaperamp` | Shape Ramp | Ramp | 2 |  |  |
+| `shaperamp1pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `shaperamp1value` | Value | Float | [0.0] | 0.0 .. 10.0 |  |
+| `shaperamp1interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `shaperamp2pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `shaperamp2value` | Value | Float | [0.0] | 0.0 .. 10.0 |  |
+| `shaperamp2interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |

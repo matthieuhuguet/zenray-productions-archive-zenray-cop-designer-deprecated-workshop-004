@@ -1,0 +1,25 @@
+# switch
+
+- Label: Switch
+- Category: Copernicus (`Cop`), Houdini 22.0.368
+- Inputs: 0 to 2048
+- Parameters: 1 (exact, read from Houdini by hython)
+- Used by the height graph: no
+
+## Feature summary (web, SideFX reference)
+
+- Source: https://www.sidefx.com/docs/houdini/nodes/cop/switch.html
+- Summary (EN): Switch selects one of several input layers and passes it through as its output. The choice is controlled by a parameter, so the layer flowing downstream changes without rewiring the network.
+- Résumé (FR) : Switch transmet l'une de ses entrées, choisie par un paramètre, sans qu'il soit nécessaire de recâbler le réseau en aval.
+
+- Inputs meaning: ["input1: a series of possible input layers, indexed in order, and the Select Input parameter picks among them"]
+
+- Key parameters: ["Select Input: chooses which input becomes the output, an out-of-range value uses the nearest valid input", "Output: chosen, the selected layer"]
+
+- Caveats: ["The output takes the highest type among all inputs, and every input must be convertible to that type, so mixed input types can cause conversion issues", "Out-of-range values raise no error and silently fall back to the nearest input, which can hide an incorrect index", "Related nodes: Switch by Type, Switch If Wired, Two Way Switch If Wired"]
+
+## Parameters (exact, from the installed Houdini)
+
+| parameter | label | type | default | range | menu tokens |
+|---|---|---|---|---|---|
+| `input` | Select Input | Int | [0] | 0 .. 10 (strict) |  |

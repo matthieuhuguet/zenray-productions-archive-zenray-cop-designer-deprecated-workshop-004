@@ -1,0 +1,34 @@
+# wrangle
+
+- Label: Wrangle
+- Category: Copernicus (`Cop`), Houdini 22.0.368
+- Inputs: 0 to 2048
+- Parameters: 10 (exact, read from Houdini by hython)
+- Used by the height graph: no
+
+## Feature summary (web, SideFX reference)
+
+- Source: https://www.sidefx.com/docs/houdini/nodes/cop/wrangle.html
+- Summary (EN): Lets users who know VEX change pixel values in layers through code. It corresponds to the Volume Wrangle SOP but automatically converts incoming layers or VDBs into bound volumes.
+- Résumé (FR) : Permet de modifier les valeurs de pixels par du code VEX, en convertissant automatiquement les couches et VDB en volumes liés, au prix d'une exécution CPU plus lente.
+
+- Inputs meaning: ["input1: layers, VDBs or other inputs sent into the wrangle; the page lists only this input, but Number of Inputs can add more; layers and VDBs bind to geometry input 0, so additional geometry uses higher input numbers"]
+
+- Key parameters: ["Volumes to Write to: pattern limiting which layers can be modified; narrowing it speeds up the node because unlisted layers are not copied", "Enforce Prototypes: requires @ bindings (such as @Cd or @ptnum) to be declared first, catching typos", "Evaluation Node Path: where VEX functions such as ch() start their path search", "Export Parameters: pattern stopping the VEX shader from writing to certain volumes; those stay bound for reading", "Rename Wires Using Output Labels: output wire names come from port labels instead of inputs", "Number of Inputs: for each input sets Type (Mono, UV, RGB, RGBA, ID, Geometry or VDB types), Binding Name and Input Index"]
+
+- Caveats: ["Wrangles run on the CPU and can noticeably slow networks", "The page says it is still encouraged to use the OpenCL COP rather than a Wrangle, reserving the Wrangle for tasks needing high-level geometry functions"]
+
+## Parameters (exact, from the installed Houdini)
+
+| parameter | label | type | default | range | menu tokens |
+|---|---|---|---|---|---|
+| `vexsnippet` | Snippet | String | [""] |  |  |
+| `vex_exportlist` | Volumes to Write to | String | ["*"] |  |  |
+| `vex_strict` | Enforce Prototypes | Toggle | false |  |  |
+| `vex_cwdpath` | Evaluation Node Path | String | [""] |  |  |
+| `vex_outputmask` | Export Parameters | String | ["*"] |  |  |
+| `cablerenamebylabel` | Rename Wires Using Output Labels | Toggle | false |  |  |
+| `aovs` | Number of Inputs | Folder | 0 |  |  |
+| `type1` | Type | Menu | 3 |  | float, vector2, vector, vector4, int, geometry, floatvdb, vectorvdb, intvdb |
+| `layer1` | Binding Name | String | [""] |  |  |
+| `geoinput1` | Input Index | Int | [1] | 1 .. 3 |  |

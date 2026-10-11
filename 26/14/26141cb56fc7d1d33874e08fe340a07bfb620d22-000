@@ -1,0 +1,96 @@
+# pyro_vortexconfinement
+
+- Label: Pyro Vortex Confinement Force
+- Category: Copernicus (`Cop`), Houdini 22.0.368
+- Inputs: 0 to 4
+- Parameters: 72 (exact, read from Houdini by hython)
+- Used by the height graph: no
+
+## Feature summary (web, SideFX reference)
+
+- Source: https://www.sidefx.com/docs/houdini/nodes/cop/pyro_vortexconfinement.html
+- Summary (EN): Pyro Vortex Confinement Force applies a vortex confinement force to a velocity field. It strengthens existing vortices to offset detail lost to diffusion during the fluid solver's diffusion stages. It outputs the modified velocities v.
+- Résumé (FR) : Ce nœud renforce les tourbillons existants d'un champ de vitesse pour compenser la perte de détail due à la diffusion du solveur.
+
+- Inputs meaning: ["v: Vector VDB containing the original velocities", "direction: Vector VDB for per-voxel control of the force direction", "threshold: Float or Vector VDB used as a threshold mask; a Vector VDB contributes its length", "control: Float or Vector VDB used as a control mask; a Vector VDB contributes its length", "angledir: Vector VDB for per-voxel control of the angle mask direction"]
+
+- Key parameters: ["Activation: 1 turns the node on, 0 turns it off; the node has no effect unless set to 1", "Operation: Set (replace), Add, or Rotate (align with the incoming velocity direction)", "Type: First-order (fast and stable, more numerical diffusion) or second-order (better detail and energy preservation, slower and possibly unstable)", "Confinement Scale: strength of the confinement force", "Positive / Negative Diffusion Scale: positive smooths noise and spikes for stability; negative acts as anti-diffusion, concentrating energy toward vortex centres", "Kernel Size: size of the stencil used to compute curvature; larger gives smoother results", "Target Energy: smoothly clamps amplification above a set band energy to reduce instability", "Adaptive Confinement: limits confinement to areas where vortices are likely to form, reducing jitter", "Frequency Separation (Min/Max Swirl Size): restricts which swirl sizes are affected", "Threshold, Control, Angle and Axis masks: scale the effect by a range or direction, with optional ramps; Angle Mask uses Spread Angle (default 90 degrees), Axis Mask uses a world-space Axis Range"]
+
+- Caveats: ["Requires DOP-level permissions. Not available in Houdini Core; works in FX, Apprentice, Indie and Education.", "The second-order method can introduce instabilities; the diffusion scale parameters are the suggested mitigation.", "Kernel Size and Frequency Separation both remove high-frequency detail, so aggressive values may remove useful detail.", "The node has no effect unless Activation is 1."]
+
+## Parameters (exact, from the installed Houdini)
+
+| parameter | label | type | default | range | menu tokens |
+|---|---|---|---|---|---|
+| `signature` | Signature | String | ["auto"] |  |  |
+| `activation` | Activation | Int | [1] | 0 .. 1 (strict) |  |
+| `folder1` |  | FolderSet |  |  |  |
+| `operation` | Operation | Menu | 1 |  | set, add, rotate |
+| `type` | Type | Menu | 0 |  | first, second |
+| `scale` | Confinement Scale | Float | [1.0] | 0.0 .. 10.0 (strict) |  |
+| `positivediffusionscale` | Positive Diffusion Scale | Float | [0.1] | 0.0001 .. 1.0 |  |
+| `negativediffusionscale` | Negative Diffusion Scale | Float | [0.15] | 0.0001 .. 1.0 |  |
+| `kernel` | Kernel Size | Int | [1] | 1 .. 3 (strict) |  |
+| `useenergytarget` | Energy Target | Toggle | false |  |  |
+| `energytarget` | Target Energy | Float | [1.0] | 0.0 .. 10.0 (strict) |  |
+| `adaptive` | Adaptive Confinement | Toggle | true |  |  |
+| `useband` | Use Frequency Separation | Toggle | false |  |  |
+| `folder0` |  | FolderSet |  |  |  |
+| `useminbandsize` | Min Swirl Size | Toggle | false |  |  |
+| `minbandsize` | Min Swirl Size | Float | [0.0] | 0.0 .. 10.0 |  |
+| `maxbandsize` | Max Swirl Size | Float | [0.2] | 0.0 .. 10.0 |  |
+| `usethreshold` | Threshold Volume | Toggle | false |  |  |
+| `folder2` |  | FolderSet |  |  |  |
+| `thresholdrangemin` | Threshold Range | Float | 0.01 | 0.0 .. 10.0 |  |
+| `thresholdrangemax` | Threshold Range | Float | 0.0 | 0.0 .. 10.0 |  |
+| `folder7` |  | FolderSet |  |  |  |
+| `remapthreshold` | Remap Threshold | Toggle | false |  |  |
+| `thresholdramp` | Threshold Ramp | Ramp | 2 |  |  |
+| `usecontrol` | Control Volume | Toggle | false |  |  |
+| `folder3` |  | FolderSet |  |  |  |
+| `controlrangemin` | Control Range | Float | 0.0 | 0.0 .. 10.0 |  |
+| `controlrangemax` | Control Range | Float | 1.0 | 0.0 .. 10.0 |  |
+| `folder6` |  | FolderSet |  |  |  |
+| `remapcontrol` | Remap Control | Toggle | false |  |  |
+| `controlramp` | Control Ramp | Ramp | 2 |  |  |
+| `useanglecontrol` | Use Angle Control | Toggle | false |  |  |
+| `folder8` |  | FolderSet |  |  |  |
+| `angledirx` | Angle Direction | Int | 0 | -1 .. 1 |  |
+| `anglediry` | Angle Direction | Int | 1 | -1 .. 1 |  |
+| `angledirz` | Angle Direction | Int | 0 | -1 .. 1 |  |
+| `angle` | Spread Angle | Float | [90.0] | 0.0 .. 180.0 (strict) |  |
+| `folder9` |  | FolderSet |  |  |  |
+| `remapanglecontrol` | Remap Angle Control | Toggle | false |  |  |
+| `anglecontrolramp` | Angle Control Ramp | Ramp | 2 |  |  |
+| `useaxiscontrol` | Use Axis Control | Toggle | false |  |  |
+| `folder4` |  | FolderSet |  |  |  |
+| `axiscontroldir` | Direction | Menu | 1 |  | x, y, z |
+| `axiscontrolmin` | Axis Range | Float | 0.0 | 0.0 .. 1.0 |  |
+| `axiscontrolmax` | Axis Range | Float | 1.0 | 0.0 .. 1.0 |  |
+| `folder5` |  | FolderSet |  |  |  |
+| `remapaxiscontrol` | Remap Axis Control | Toggle | false |  |  |
+| `axiscontrolramp` | Axis Control Ramp | Ramp | 2 |  |  |
+| `thresholdramp1pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `thresholdramp1value` | Value | Float | [0.0] | 0.0 .. 10.0 |  |
+| `thresholdramp1interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `thresholdramp2pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `thresholdramp2value` | Value | Float | [0.0] | 0.0 .. 10.0 |  |
+| `thresholdramp2interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `controlramp1pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `controlramp1value` | Value | Float | [0.0] | 0.0 .. 10.0 |  |
+| `controlramp1interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `controlramp2pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `controlramp2value` | Value | Float | [0.0] | 0.0 .. 10.0 |  |
+| `controlramp2interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `anglecontrolramp1pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `anglecontrolramp1value` | Value | Float | [0.0] | 0.0 .. 10.0 |  |
+| `anglecontrolramp1interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `anglecontrolramp2pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `anglecontrolramp2value` | Value | Float | [0.0] | 0.0 .. 10.0 |  |
+| `anglecontrolramp2interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `axiscontrolramp1pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `axiscontrolramp1value` | Value | Float | [0.0] | 0.0 .. 10.0 |  |
+| `axiscontrolramp1interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `axiscontrolramp2pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `axiscontrolramp2value` | Value | Float | [0.0] | 0.0 .. 10.0 |  |
+| `axiscontrolramp2interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |

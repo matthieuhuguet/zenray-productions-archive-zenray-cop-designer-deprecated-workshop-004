@@ -1,0 +1,96 @@
+# 11 October 2026 00:58 : full inventory of the Copernicus (Cop) and COP2 (Cop2) node types of the installed Houdini, read by hython.
+# EN: no hand-written list. Every type is instantiated, every parameter read (range, default, menu). Writes inventory/*.json.
+# FR : inventaire complet des nœuds COP de la Houdini installée, lu par hython. Aucune liste écrite à la main.
+import hou
+import json
+import os
+import datetime
+
+SKILL = os.path.expanduser('~/.claude/skills/zenray-cop-designer')
+OUT = os.path.join(SKILL, 'inventory')
+CATEGORIES = ['Cop', 'Cop2']
+
+
+def plain(value):
+    # EN: tuples to lists, anything else unchanged. FR : tuples convertis en listes.
+    if isinstance(value, (tuple, list)):
+        return [plain(v) for v in value]
+    if isinstance(value, (int, float, str, bool)) or value is None:
+        return value
+    return str(value)
+
+
+def parm_record(p):
+    # EN: one record per real parameter (p.name() is the component name, e.g. startposx), read from the parameter instance.
+    # FR : un enregistrement par paramètre réel (startposx et non startpos), lu sur l'instance.
+    pt = p.parmTemplate()
+    idx = p.componentIndex()
+    tuple_size = pt.numComponents()
+    rec = {'name': p.name(), 'tuple': pt.name(), 'tuple_size': tuple_size, 'component_index': idx,
+           'label': pt.label(), 'type': str(pt.type()).split('.')[-1], 'components': 1,
+           'hidden': bool(pt.isHidden())}
+    for key, attr in [('default', 'defaultValue'), ('min', 'minValue'), ('max', 'maxValue'),
+                      ('min_strict', 'minIsStrict'), ('max_strict', 'maxIsStrict'),
+                      ('menu', 'menuItems'), ('menu_labels', 'menuLabels')]:
+        try:
+            value = plain(getattr(pt, attr)())
+        except Exception:
+            value = None
+        if key == 'default' and isinstance(value, list) and tuple_size > 1:
+            value = value[idx] if idx < len(value) else None
+        rec[key] = value
+    return rec
+
+
+hou.hipFile.clear()
+scratch = {}
+scratch['Cop'] = hou.node('/obj').createNode('copnet', 'InvCop')
+# EN: legacy COP2 nodes live in a cop2net container under /obj. FR : les nœuds COP2 vivent dans un cop2net.
+try:
+    scratch['Cop2'] = hou.node('/obj').createNode('cop2net', 'InvCop2')
+except hou.OperationFailed as exc:
+    print('cop2net container failed:', exc)
+    scratch['Cop2'] = None
+
+records = []
+summary = {}
+for cat in CATEGORIES:
+    types = hou.nodeTypeCategories()[cat].nodeTypes()
+    summary[cat] = {'declared': len(types), 'instantiated': 0, 'failed': []}
+    for name in sorted(types):
+        nt = types[name]
+        rec = {'name': name, 'category': cat, 'label': nt.description(), 'min_inputs': nt.minNumInputs(),
+               'max_inputs': nt.maxNumInputs(), 'hidden': bool(nt.hidden()),
+               'deprecated': bool(nt.isDeprecated()) if hasattr(nt, 'isDeprecated') else None,
+               'help_url': nt.helpUrl(), 'parms': [], 'instantiated': False, 'error': None}
+        parent = scratch.get(cat)
+        if parent is None:
+            rec['error'] = 'no scratch network for category ' + cat
+        else:
+            try:
+                node = parent.createNode(name, 'inv_' + name.replace(':', '_'))   # EN: colons are invalid in node names. FR : pas de deux-points.
+                rec['instantiated'] = True
+                for p in node.parms():
+                    rec['parms'].append(parm_record(p))
+                node.destroy()
+            except hou.OperationFailed as exc:
+                rec['error'] = 'createNode failed: ' + str(exc)[:160]
+        if rec['instantiated']:
+            summary[cat]['instantiated'] += 1
+        else:
+            summary[cat]['failed'].append(name)
+        records.append(rec)
+
+stamp = datetime.datetime.now().isoformat(timespec='seconds')
+payload = {'generated': stamp, 'houdini_version': hou.applicationVersionString(),
+           'summary': summary, 'nodes': records}
+os.makedirs(OUT, exist_ok=True)
+with open(os.path.join(OUT, 'cop_inventory.json'), 'w', encoding='utf-8') as fh:
+    json.dump(payload, fh, ensure_ascii=False, indent=1)
+with open(os.path.join(OUT, 'cop_names.txt'), 'w', encoding='utf-8') as fh:
+    for rec in records:
+        fh.write('%s %s\n' % (rec['category'], rec['name']))
+for cat in CATEGORIES:
+    print(cat, 'declared', summary[cat]['declared'], 'instantiated', summary[cat]['instantiated'],
+          'failed', len(summary[cat]['failed']), summary[cat]['failed'][:12])
+print('written', os.path.join(OUT, 'cop_inventory.json'), 'records', len(records))

@@ -1,0 +1,29 @@
+# timeloop
+
+- Label: Time Loop
+- Category: Copernicus (`Cop`), Houdini 22.0.368
+- Inputs: 0 to 1
+- Parameters: 5 (exact, read from Houdini by hython)
+- Used by the height graph: no
+
+## Feature summary (web, SideFX reference)
+
+- Source: https://www.sidefx.com/docs/houdini/nodes/cop/timeloop.html
+- Summary (EN): Repeats a range of frames from its input to create a looping animation. It can also blend the input over time so the wrap point is less visible.
+- Résumé (FR) : Ce nœud répète une plage d'images de sa source pour créer une animation bouclée, avec un mode Cycle, Zig-Zag ou Blend pour masquer la jointure.
+
+- Inputs meaning: ["source: the VDB, Layer or Attribute to loop."]
+
+- Key parameters: [{"name": "Signature", "meaning": "The layer type the source accepts."}, {"name": "Frame Start", "meaning": "Frame where the loop begins. Output frame numbers match input frame numbers."}, {"name": "Frame Length", "meaning": "Number of frames in the loop."}, {"name": "Loop Type", "meaning": "Cycle jumps back to the start frame. Zig-Zag plays backwards at the end. Blend mixes in a copy offset by half the length."}, {"name": "Blend Shape", "meaning": "Used with Blend. Linear gives a harsh sawtooth pattern, Cosine gives a smooth curve."}]
+
+- Caveats: ["The output keeps the input frame numbering. To start the output at frame 1, the page suggests a Time Shift COP.", "Zig-Zag is seamless, but the reversal of time is obvious.", "Cycle gives a clean loop only if the source already loops seamlessly."]
+
+## Parameters (exact, from the installed Houdini)
+
+| parameter | label | type | default | range | menu tokens |
+|---|---|---|---|---|---|
+| `signature` | Signature | String | ["auto"] |  |  |
+| `fstart` | Frame Start | Int | [1] | 0 .. 240 |  |
+| `flen` | Frame Length | Int | [24] | 1 .. 240 |  |
+| `type` | Loop Type | Menu | 0 |  | cycle, zigzag, blend |
+| `blendshape` | Blend Shape | Menu | 0 |  | linear, cos |

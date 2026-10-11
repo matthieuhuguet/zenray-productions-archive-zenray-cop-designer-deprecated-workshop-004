@@ -1,0 +1,34 @@
+# testgeometry_tommy
+
+- Label: Test Geometry: Tommy
+- Category: Copernicus (`Cop`), Houdini 22.0.368
+- Inputs: 0 to 0
+- Parameters: 12 (exact, read from Houdini by hython)
+- Used by the height graph: no
+
+## Feature summary (web, SideFX reference)
+
+- Source: https://www.sidefx.com/docs/houdini/nodes/cop/testgeometry_tommy.html
+- Summary (EN): Creates a soldier model (Tommy) as test geometry for prototyping and experimenting in Copernicus. It has several components, holes and imperfect geometry, similar to what an effect may need to handle.
+- Résumé (FR) : Ce nœud crée le modèle de soldat Tommy comme géométrie de test, avec la peau et les vêtements en sorties séparées, pour prototyper des effets dans Copernicus.
+
+- Key parameters: [{"name": "Signature", "meaning": "Outputs the geometry as polygons or as a VDB signed distance field (SDF)."}, {"name": "Voxel Size", "meaning": "Voxel size for SDF output. Smaller is more accurate but costs more time and memory."}, {"name": "Translate", "meaning": "Positions the feet."}, {"name": "Rotate", "meaning": "Rotates the geometry about its feet."}, {"name": "Uniform Scale", "meaning": "Scales the geometry uniformly."}, {"name": "Skin", "meaning": "Outputs the skin geometry."}, {"name": "Clothing", "meaning": "Outputs the clothing geometry."}, {"name": "Add Shader", "meaning": "Attaches a default shader with embedded texture maps for rendering."}]
+
+- Caveats: ["Tommy has multiple materials, and clothing and skin share UV space, so they may need separate handling in the Copernicus pipeline.", "Outputs are listed as geo, skin and clothes. The skin and clothes outputs are material layer cables with basecolor, normal, roughness and specular layers."]
+
+## Parameters (exact, from the installed Houdini)
+
+| parameter | label | type | default | range | menu tokens |
+|---|---|---|---|---|---|
+| `signature` | Signature | String | ["default"] |  |  |
+| `voxelsize` | Voxel Size | Float | [0.1] | 0.0 .. 1.0 (strict) |  |
+| `tx` | Translate | Float | 0.0 | -1.0 .. 1.0 |  |
+| `ty` | Translate | Float | 0.0 | -1.0 .. 1.0 |  |
+| `tz` | Translate | Float | 0.0 | -1.0 .. 1.0 |  |
+| `rx` | Rotate | Float | 0.0 | 0.0 .. 360.0 |  |
+| `ry` | Rotate | Float | 0.0 | 0.0 .. 360.0 |  |
+| `rz` | Rotate | Float | 0.0 | 0.0 .. 360.0 |  |
+| `scale` | Uniform Scale | Float | [1.0] | 0.0 .. 10.0 |  |
+| `skin` | Skin | Toggle | true |  |  |
+| `clothing` | Clothing | Toggle | true |  |  |
+| `addshader` | Add Shader | Toggle | false |  |  |

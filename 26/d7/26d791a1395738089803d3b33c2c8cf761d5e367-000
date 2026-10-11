@@ -1,0 +1,34 @@
+# testgeometry_pighead
+
+- Label: Test Geometry: Pig Head
+- Category: Copernicus (`Cop`), Houdini 22.0.368
+- Inputs: 0 to 0
+- Parameters: 10 (exact, read from Houdini by hython)
+- Used by the height graph: no
+
+## Feature summary (web, SideFX reference)
+
+- Source: https://www.sidefx.com/docs/houdini/nodes/cop/testgeometry_pighead.html
+- Summary (EN): Test Geometry: Pig Head generates a pig head model as test geometry. It gives a textured, multi-part mesh to experiment with, more representative of production shapes than a simple torus.
+- Résumé (FR) : Test Geometry: Pig Head génère une tête de cochon texturée, maillage multi-pièces, utilisable comme géométrie de test.
+
+- Inputs meaning: ["None documented: the node works as a standalone generator"]
+
+- Key parameters: ["Signature: polygons or VDB signed distance field (SDF)", "Voxel Size: voxel resolution for SDF output, smaller is more accurate but costs more time and memory", "Translate: position of the geometry centre", "Rotate: rotation about the centre", "Uniform Scale: even scale on all axes", "Add Shader: default shader with embedded texture maps", "Outputs: geo (surface or SDF), basecolor (RGB diffuse), specular (mono), sss_amount (mono), sss_color (RGB)"]
+
+- Caveats: ["Voxel Size trades accuracy against cost, very small voxels can be slow and memory-heavy", "Identity matched from the file name and the Copernicus index listing, the page body does not state the internal name"]
+
+## Parameters (exact, from the installed Houdini)
+
+| parameter | label | type | default | range | menu tokens |
+|---|---|---|---|---|---|
+| `signature` | Signature | String | ["default"] |  |  |
+| `voxelsize` | Voxel Size | Float | [0.1] | 0.0 .. 1.0 (strict) |  |
+| `tx` | Translate | Float | 0.0 | -1.0 .. 1.0 |  |
+| `ty` | Translate | Float | 0.0 | -1.0 .. 1.0 |  |
+| `tz` | Translate | Float | 0.0 | -1.0 .. 1.0 |  |
+| `rx` | Rotate | Float | 0.0 | 0.0 .. 360.0 |  |
+| `ry` | Rotate | Float | 0.0 | 0.0 .. 360.0 |  |
+| `rz` | Rotate | Float | 0.0 | 0.0 .. 360.0 |  |
+| `scale` | Uniform Scale | Float | [1.0] | 0.0 .. 10.0 |  |
+| `addshader` | Add Shader | Toggle | false |  |  |

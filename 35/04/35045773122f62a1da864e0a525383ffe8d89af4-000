@@ -1,0 +1,37 @@
+# timepack
+
+- Label: Time Pack
+- Category: Copernicus (`Cop`), Houdini 22.0.368
+- Inputs: 0 to 2048
+- Parameters: 13 (exact, read from Houdini by hython)
+- Used by the height graph: no
+
+## Feature summary (web, SideFX reference)
+
+- Source: https://www.sidefx.com/docs/houdini/nodes/cop/timepack.html
+- Summary (EN): Takes one input and samples it at several points in time, gathering those samples into a single cable. The page describes it as combining its input at multiple times into a cable. Available since Houdini 22.0.
+- Résumé (FR) : Ce nœud échantillonne son entrée à plusieurs instants et regroupe ces échantillons dans un seul câble, utile pour travailler sur une fenêtre de temps.
+
+- Inputs meaning: ["Single input: the layer or source to sample over time."]
+
+- Key parameters: [{"name": "Mode", "meaning": "Relative uses a window around the requested frame. Absolute sets a start and end directly."}, {"name": "Method", "meaning": "Sets how sample times are specified. Only By Frame is documented."}, {"name": "Range", "meaning": "Span of time to sample, in frames or seconds, for relative or absolute mode."}, {"name": "Step", "meaning": "Interval between samples, in frames or seconds."}, {"name": "Add Time As", "meaning": "Adds the sample time to each wire name as a Prefix or a Suffix."}]
+
+- Caveats: ["Default values and the ordering of wires in the cable are not described.", "Several parameters have frame and second variants, and relative and absolute variants, whose interaction is not explained.", "Time Shift is listed as a related node, but the page does not explain how the two differ."]
+
+## Parameters (exact, from the installed Houdini)
+
+| parameter | label | type | default | range | menu tokens |
+|---|---|---|---|---|---|
+| `mode` | Mode | Menu | 0 |  | relative, absolute |
+| `method` | Method | Menu | 0 |  | byframe, bytime |
+| `relrangeframe1` | Range | Float | -1.0 | 0.0 .. 10.0 |  |
+| `relrangeframe2` | Range | Float | 1.0 | 0.0 .. 10.0 |  |
+| `absrangeframe1` | Range | Float | 1.0 | 0.0 .. 10.0 |  |
+| `absrangeframe2` | Range | Float | 10.0 | 0.0 .. 10.0 |  |
+| `relrangetime1` | Range | Float | -1.0 | 0.0 .. 10.0 |  |
+| `relrangetime2` | Range | Float | 1.0 | 0.0 .. 10.0 |  |
+| `absrangetime1` | Range | Float | 0.0 | 0.0 .. 10.0 |  |
+| `absrangetime2` | Range | Float | 10.0 | 0.0 .. 10.0 |  |
+| `stepframe` | Step | Float | [1.0] | 0.0 .. 10.0 |  |
+| `steptime` | Step | Float | [1.0] | 0.0 .. 10.0 |  |
+| `namepos` | Add Time As | Menu | 1 |  | prefix, suffix |

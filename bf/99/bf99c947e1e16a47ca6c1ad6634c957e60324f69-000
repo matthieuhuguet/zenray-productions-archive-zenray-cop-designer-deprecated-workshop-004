@@ -1,0 +1,83 @@
+# sdftorgb
+
+- Label: SDF to RGB
+- Category: Copernicus (`Cop`), Houdini 22.0.368
+- Inputs: 0 to 1
+- Parameters: 59 (exact, read from Houdini by hython)
+- Used by the height graph: no
+
+## Feature summary (web, SideFX reference)
+
+- Source: https://www.sidefx.com/docs/houdini/nodes/cop/sdftorgb.html
+- Summary (EN): SDF to RGB converts a 2D signed distance field into an RGB colour layer. It draws the shape, outline and shadow that the field defines, with colours set by parameters or colour ramps.
+- Résumé (FR) : Le nœud SDF to RGB transforme un champ de distance signé 2D en couche RGB, avec la forme, le contour et l'ombre qu'il définit.
+
+- Inputs meaning: ["sdf: the SDF mono layer to convert; the output is one rgb layer"]
+
+- Key parameters: ["Background: Background Color, Iso Range, Color Ramp", "Shape: Draw Shape, Shape Color, Iso Distance, Color Ramp", "Outline: Draw Outline, Outline Color, Outline Width, Alignment (inside, outside or centered)", "Shadowing: Draw Shadowing, Shadow Density, Shadow Falloff, Shadow Color", "SDF: Iso Value (higher values enlarge the shape), Onion Skin, Smooth, Anti-Aliasing, Invert"]
+
+- Caveats: ["The page lists no specific limitations", "The input must be a mono SDF layer; ramp remapping applies only when a colour menu is set to Use Ramp"]
+
+## Parameters (exact, from the installed Houdini)
+
+| parameter | label | type | default | range | menu tokens |
+|---|---|---|---|---|---|
+| `signature` | Signature | Float | [0.0] | 0.0 .. 10.0 |  |
+| `folder2` |  | FolderSet |  |  |  |
+| `bgcolorr` | Background Color | Float | 0.0 | 0.0 .. 1.0 |  |
+| `bgcolorg` | Background Color | Float | 0.0 | 0.0 .. 1.0 |  |
+| `bgcolorb` | Background Color | Float | 0.0 | 0.0 .. 1.0 |  |
+| `bgcolormode` | Background Color Mode | Menu | 0 |  | 0, 1 |
+| `bgcolorisorangex` | Iso Range | Float | 0.0 | 0.0 .. 1.0 |  |
+| `bgcolorisorangey` | Iso Range | Float | 1.0 | 0.0 .. 1.0 |  |
+| `bgcolorramp` | Color Ramp | Ramp | 2 |  |  |
+| `folder1` |  | FolderSet |  |  |  |
+| `drawshape` | Draw Shape | Toggle | true |  |  |
+| `shapecolorr` | Shape Color | Float | 1.0 | 0.0 .. 1.0 |  |
+| `shapecolorg` | Shape Color | Float | 1.0 | 0.0 .. 1.0 |  |
+| `shapecolorb` | Shape Color | Float | 1.0 | 0.0 .. 1.0 |  |
+| `shapecolormode` | Shape Color Mode | Menu | 0 |  | 0, 1 |
+| `shapecoloriso` | Iso Distance | Float | [1.0] | 0.0 .. 10.0 |  |
+| `shapecolorramp` | Color Ramp | Ramp | 2 |  |  |
+| `folder3` |  | FolderSet |  |  |  |
+| `drawoutline` | Draw Outline | Toggle | false |  |  |
+| `outlinecolorr` | Outline Color | Float | 1.0 | 0.0 .. 1.0 |  |
+| `outlinecolorg` | Outline Color | Float | 1.0 | 0.0 .. 1.0 |  |
+| `outlinecolorb` | Outline Color | Float | 1.0 | 0.0 .. 1.0 |  |
+| `outlinewidth` | Outline Width | Float | [0.001] | 0.0 .. 0.01 (strict) |  |
+| `outlinemode` | Alignment | Menu | 0 |  | inside, outside, center |
+| `folder4` |  | FolderSet |  |  |  |
+| `drawshadowing` | Draw Shadowing | Toggle | false |  |  |
+| `shadowdensity` | Shadow Density | Float | [1.0] | 0.0 .. 1.0 (strict) |  |
+| `shadowfalloff` | Shadow Falloff | Float | [0.05] | 0.0 .. 1.0 (strict) |  |
+| `shadowcolorr` | Shadow Color | Float | 1.0 | 0.0 .. 1.0 |  |
+| `shadowcolorg` | Shadow Color | Float | 1.0 | 0.0 .. 1.0 |  |
+| `shadowcolorb` | Shadow Color | Float | 1.0 | 0.0 .. 1.0 |  |
+| `folder0` |  | FolderSet |  |  |  |
+| `iso` | Iso Value | Float | [0.0] | -1.0 .. 1.0 |  |
+| `doonion` | Onion Skin | Toggle | false |  |  |
+| `onion` | Onion Skin | Float | [0.01] | 0.0 .. 0.1 (strict) |  |
+| `dosmooth` | Smooth | Toggle | false |  |  |
+| `smooth` | Smooth | Float | [0.01] | 0.0 .. 0.1 (strict) |  |
+| `doaa` | Anti-Aliasing | Toggle | true |  |  |
+| `invert` | Invert | Toggle | false |  |  |
+| `bgcolorramp1pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `bgcolorramp1cr` | Color | Float | 0.0 | 0.0 .. 10.0 |  |
+| `bgcolorramp1cg` | Color | Float | 0.0 | 0.0 .. 10.0 |  |
+| `bgcolorramp1cb` | Color | Float | 0.0 | 0.0 .. 10.0 |  |
+| `bgcolorramp1interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `bgcolorramp2pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `bgcolorramp2cr` | Color | Float | 0.0 | 0.0 .. 10.0 |  |
+| `bgcolorramp2cg` | Color | Float | 0.0 | 0.0 .. 10.0 |  |
+| `bgcolorramp2cb` | Color | Float | 0.0 | 0.0 .. 10.0 |  |
+| `bgcolorramp2interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `shapecolorramp1pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `shapecolorramp1cr` | Color | Float | 0.0 | 0.0 .. 10.0 |  |
+| `shapecolorramp1cg` | Color | Float | 0.0 | 0.0 .. 10.0 |  |
+| `shapecolorramp1cb` | Color | Float | 0.0 | 0.0 .. 10.0 |  |
+| `shapecolorramp1interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `shapecolorramp2pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `shapecolorramp2cr` | Color | Float | 0.0 | 0.0 .. 10.0 |  |
+| `shapecolorramp2cg` | Color | Float | 0.0 | 0.0 .. 10.0 |  |
+| `shapecolorramp2cb` | Color | Float | 0.0 | 0.0 .. 10.0 |  |
+| `shapecolorramp2interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |

@@ -1,0 +1,83 @@
+# pyro_velocityscale
+
+- Label: Pyro Velocity Scale Force
+- Category: Copernicus (`Cop`), Houdini 22.0.368
+- Inputs: 1 to 4
+- Parameters: 59 (exact, read from Houdini by hython)
+- Used by the height graph: no
+
+## Feature summary (web, SideFX reference)
+
+- Source: https://www.sidefx.com/docs/houdini/nodes/cop/pyro_velocityscale.html
+- Summary (EN): Pyro Velocity Scale Force adjusts a fluid's velocity field according to how fast the fluid already moves, either slowing it down or speeding it up. The page title is Pyro Velocity Scale Force and the URL and icon use pyro_velocityscale; the internal name is inferred from these, not stated in the body. Listed as since Houdini 22.0.
+- Résumé (FR) : Ce nœud ralentit ou accélère le champ de vitesse d'un fluide selon sa vitesse existante.
+
+- Inputs meaning: ["v: Vector VDB holding the original velocities", "direction: Vector VDB that sets the force direction per voxel", "threshold: Float or Vector VDB used as the threshold field; a Vector VDB contributes its length", "control: Float or Vector VDB used as a mask-like control field; a Vector VDB contributes its length", "angledir: Vector VDB that sets the per-voxel direction for the angle mask"]
+
+- Key parameters: ["Activation: turns the node on or off, active only when 1", "Threshold Range, Scale at Min/Max Threshold: map threshold values to scale amounts at each end of the range", "Apply Scale Below/Above Threshold: whether scaling applies outside the range, which prevents runaway speed-up or stalling", "Remap Scale / Scale Ramp: ramp controlling how values between min and max are mapped", "Control Volume, Control Range, Use Ramp: mask the effect with the control field; default 0 to 1 concentrates it on higher control values", "Angle Mask, Angle Direction, Spread Angle: scale by how closely velocity aligns with a reference direction; fades to zero at 90 degrees by default", "Axis Mask, Axis Direction, Axis Range: scale by world-space position along an axis, without a VDB"]
+
+- Caveats: ["Requires DOP-level permissions. Not available in Houdini Core.", "Without the apply-scale toggles, motion may speed up indefinitely or come to a halt.", "Vector VDB inputs for threshold and control are reduced to their length, so direction is ignored for those fields.", "The node outputs v, the modified velocities."]
+
+## Parameters (exact, from the installed Houdini)
+
+| parameter | label | type | default | range | menu tokens |
+|---|---|---|---|---|---|
+| `signature` | Signature | String | ["auto"] |  |  |
+| `activation` | Activation | Int | [1] | 0 .. 1 (strict) |  |
+| `folder0` |  | FolderSet |  |  |  |
+| `thresholdrangemin` | Threshold Range | Float | 0.0 | 0.0 .. 10.0 |  |
+| `thresholdrangemax` | Threshold Range | Float | 10.0 | 0.0 .. 10.0 |  |
+| `scalemin` | Scale at Min Threshold | Float | [1.0] | 0.0 .. 2.0 (strict) |  |
+| `scalebelowmin` | Scale Below Threshold | Toggle | true |  |  |
+| `scalemax` | Scale at Max Threshold | Float | [1.0] | 0.0 .. 2.0 (strict) |  |
+| `scaleabovemax` | Scale Above Threshold | Toggle | true |  |  |
+| `remapscale` | Remap Scale | Toggle | false |  |  |
+| `scaleramp` | Scale Ramp | Ramp | 2 |  |  |
+| `usecontrol` | Control Volume | Toggle | false |  |  |
+| `folder3` |  | FolderSet |  |  |  |
+| `controlrangemin` | Control Range | Float | 0.0 | 0.0 .. 10.0 |  |
+| `controlrangemax` | Control Range | Float | 1.0 | 0.0 .. 10.0 |  |
+| `folder6` |  | FolderSet |  |  |  |
+| `remapcontrol` | Remap Control | Toggle | false |  |  |
+| `controlramp` | Control Ramp | Ramp | 2 |  |  |
+| `useanglecontrol` | Use Angle Control | Toggle | false |  |  |
+| `folder8` |  | FolderSet |  |  |  |
+| `angledirx` | Angle Direction | Int | 0 | -1 .. 1 |  |
+| `anglediry` | Angle Direction | Int | 1 | -1 .. 1 |  |
+| `angledirz` | Angle Direction | Int | 0 | -1 .. 1 |  |
+| `angle` | Spread Angle | Float | [90.0] | 0.0 .. 180.0 (strict) |  |
+| `folder9` |  | FolderSet |  |  |  |
+| `remapanglecontrol` | Remap Angle Control | Toggle | false |  |  |
+| `anglecontrolramp` | Angle Control Ramp | Ramp | 2 |  |  |
+| `useaxiscontrol` | Use Axis Control | Toggle | false |  |  |
+| `folder4` |  | FolderSet |  |  |  |
+| `axiscontroldir` | Direction | Menu | 1 |  | x, y, z |
+| `axiscontrolmin` | Axis Range | Float | 0.0 | 0.0 .. 1.0 |  |
+| `axiscontrolmax` | Axis Range | Float | 1.0 | 0.0 .. 1.0 |  |
+| `folder5` |  | FolderSet |  |  |  |
+| `remapaxiscontrol` | Remap Axis Control | Toggle | false |  |  |
+| `axiscontrolramp` | Axis Control Ramp | Ramp | 2 |  |  |
+| `scaleramp1pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `scaleramp1value` | Value | Float | [0.0] | 0.0 .. 10.0 |  |
+| `scaleramp1interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `scaleramp2pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `scaleramp2value` | Value | Float | [0.0] | 0.0 .. 10.0 |  |
+| `scaleramp2interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `controlramp1pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `controlramp1value` | Value | Float | [0.0] | 0.0 .. 10.0 |  |
+| `controlramp1interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `controlramp2pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `controlramp2value` | Value | Float | [0.0] | 0.0 .. 10.0 |  |
+| `controlramp2interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `anglecontrolramp1pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `anglecontrolramp1value` | Value | Float | [0.0] | 0.0 .. 10.0 |  |
+| `anglecontrolramp1interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `anglecontrolramp2pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `anglecontrolramp2value` | Value | Float | [0.0] | 0.0 .. 10.0 |  |
+| `anglecontrolramp2interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `axiscontrolramp1pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `axiscontrolramp1value` | Value | Float | [0.0] | 0.0 .. 10.0 |  |
+| `axiscontrolramp1interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `axiscontrolramp2pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `axiscontrolramp2value` | Value | Float | [0.0] | 0.0 .. 10.0 |  |
+| `axiscontrolramp2interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |

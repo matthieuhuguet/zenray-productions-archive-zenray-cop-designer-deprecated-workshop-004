@@ -1,0 +1,65 @@
+# pyro_sourcefrompoints
+
+- Label: Pyro Source from Points
+- Category: Copernicus (`Cop`), Houdini 22.0.368
+- Inputs: 1 to 2
+- Parameters: 41 (exact, read from Houdini by hython)
+- Used by the height graph: no
+
+## Feature summary (web, SideFX reference)
+
+- Source: https://www.sidefx.com/docs/houdini/nodes/cop/pyro_sourcefrompoints.html
+- Summary (EN): Adds values to a Float VDB by treating each input point as a sphere that updates the voxels it overlaps. With no geometry connected, it creates a single source from its own parameters. Available since Houdini 21.0.
+- Résumé (FR) : Pyro Source from Points ajoute des valeurs à un VDB en traitant chaque point comme une sphère qui met à jour les voxels qu'elle recouvre.
+
+- Inputs meaning: ["source: Float VDB to modify", "points (optional): geometry whose points act as sphere sources"]
+
+- Key parameters: ["Method: how point values combine with the existing VDB (Set, Add, Minimum, Maximum)", "Radius: sphere size, scaled per point by pscale", "Center: source location when no geometry is connected", "Scale by Timestep: makes Add mode add the same total amount per second, even with substepping", "Amount: point density, scaled by the density attribute", "Falloff: ramp controlling how the value fades from the point centre to its radius", "Noise (Enable, Scale, Element Size, Element Scale, Offset, Pulse): modulates the value with noise", "Distortion (Enable, Scale, Element Size, Element Scale, Offset, Pulse): warps the sphere shape with noise"]
+
+- Caveats: ["Does not activate voxels, so sources outside already-active areas have no effect", "Every point is evaluated against every voxel, so high point counts can be slow", "Requires DOP-level permissions; not in Houdini Core, included in Houdini FX, Apprentice, Indie and Education"]
+
+## Parameters (exact, from the installed Houdini)
+
+| parameter | label | type | default | range | menu tokens |
+|---|---|---|---|---|---|
+| `method` | Method | Menu | 1 |  | set, add, min, max |
+| `folder2` |  | FolderSet |  |  |  |
+| `size` | Radius | Float | [0.1] | 0.0 .. 1.0 |  |
+| `tx` | Center | Float | 0.0 | -1.0 .. 1.0 |  |
+| `ty` | Center | Float | 0.0 | -1.0 .. 1.0 |  |
+| `tz` | Center | Float | 0.0 | -1.0 .. 1.0 |  |
+| `dotimestep` | Scale by Timestep | Toggle | true |  |  |
+| `amount` | Amount | Float | [1.0] | 0.0 .. 10.0 |  |
+| `falloff` | Falloff | Ramp | 2 |  |  |
+| `noise_enable` | Noise Enable | Toggle | false |  |  |
+| `folder0` |  | FolderSet |  |  |  |
+| `noise_scale` | Noise Scale | Float | [1.0] | 0.0 .. 1.0 |  |
+| `noise_elemsize` | Element Size | Float | [0.1] | 0.0 .. 1.0 |  |
+| `noise_elemsizetype` | Element Size Type | Menu | 0 |  | BUTTONS_decompose_transforms |
+| `noise_elemscalex` | Element Scale | Float | 1.0 | 0.0 .. 1.0 |  |
+| `noise_elemscaley` | Element Scale | Float | 1.0 | 0.0 .. 1.0 |  |
+| `noise_elemscalez` | Element Scale | Float | 1.0 | 0.0 .. 1.0 |  |
+| `noise_offsetx` | Noise Offset | Float | 0.0 | 0.0 .. 1.0 |  |
+| `noise_offsety` | Noise Offset | Float | 0.0 | 0.0 .. 1.0 |  |
+| `noise_offsetz` | Noise Offset | Float | 0.0 | 0.0 .. 1.0 |  |
+| `noise_offsetw` | Noise Offset | Float | 0.0 | 0.0 .. 1.0 |  |
+| `noise_pulse` | Noise Pulse | Float | [1.0] | 0.0 .. 1.0 |  |
+| `distort_enable` | Distort Enable | Toggle | false |  |  |
+| `folder1` |  | FolderSet |  |  |  |
+| `distort_scale` | Distort Scale | Float | [0.1] | 0.0 .. 1.0 |  |
+| `distort_elemsize` | Element Size | Float | [0.1] | 0.0 .. 1.0 |  |
+| `distort_elemsizetype` | Element Size Type | Menu | 0 |  | BUTTONS_decompose_transforms |
+| `distort_elemscalex` | Element Scale | Float | 1.0 | 0.0 .. 1.0 |  |
+| `distort_elemscaley` | Element Scale | Float | 1.0 | 0.0 .. 1.0 |  |
+| `distort_elemscalez` | Element Scale | Float | 1.0 | 0.0 .. 1.0 |  |
+| `distort_offsetx` | Distort Offset | Float | 0.0 | 0.0 .. 1.0 |  |
+| `distort_offsety` | Distort Offset | Float | 0.0 | 0.0 .. 1.0 |  |
+| `distort_offsetz` | Distort Offset | Float | 0.0 | 0.0 .. 1.0 |  |
+| `distort_offsetw` | Distort Offset | Float | 0.0 | 0.0 .. 1.0 |  |
+| `distort_pulse` | Distort Pulse | Float | [1.0] | 0.0 .. 1.0 |  |
+| `falloff1pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `falloff1value` | Value | Float | [0.0] | 0.0 .. 10.0 |  |
+| `falloff1interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `falloff2pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `falloff2value` | Value | Float | [0.0] | 0.0 .. 10.0 |  |
+| `falloff2interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |

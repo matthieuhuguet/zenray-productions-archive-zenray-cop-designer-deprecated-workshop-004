@@ -1,0 +1,30 @@
+# rasterizelayer
+
+- Label: Rasterize Layer
+- Category: Copernicus (`Cop`), Houdini 22.0.368
+- Inputs: 0 to 2
+- Parameters: 6 (exact, read from Houdini by hython)
+- Used by the height graph: no
+
+## Feature summary (web, SideFX reference)
+
+- Source: https://www.sidefx.com/docs/houdini/nodes/cop/rasterizelayer.html
+- Summary (EN): Rasterize Layer images a source layer as seen from the camera of another layer, producing a layer that shows the source from that viewpoint. It is the inverse of Project on Layer. Outputs are result, the source rasterized into camera_ref space, and depth, the distance from the camera to the source layer.
+- Résumé (FR) : Ce nœud image un calque source tel qu'il est vu depuis la caméra d'un autre calque, et fournit aussi la distance de la source.
+
+- Inputs meaning: ["camera_ref: supplies the camera viewpoint; its pixels are not used, only its resolution, location and viewpoint matter", "source: layer to image; must be Mono, UV, RGB or RGBA"]
+
+- Key parameters: ["Signature: layer type the source input accepts", "Move to Origin: moves the output layers to canonical space", "Invert Transformation: inverts the computed transform used to project the source onto the camera reference", "Crop to Content: crops the output to the source's transformed data window", "Border: sampling outside the incoming layer boundaries, defaults to the layer border property", "Filter: sampling method, default Box"]
+
+- Caveats: ["Re-cropping is not possible while Invert Transformation is on.", "The source input accepts only Mono, UV, RGB or RGBA layers.", "The pixel content of camera_ref is ignored."]
+
+## Parameters (exact, from the installed Houdini)
+
+| parameter | label | type | default | range | menu tokens |
+|---|---|---|---|---|---|
+| `signature` | Signature | String | ["auto"] |  |  |
+| `resetorig` | Move to Origin | Toggle | false |  |  |
+| `invertxform` | Invert Transformation | Toggle | false |  |  |
+| `crop` | Crop to Content | Toggle | false |  |  |
+| `border` | Border | Menu | 0 |  | auto, constant, clamp, mirror, wrap, clip |
+| `filter` | Filter | Menu | 2 |  | point, bilinear, box, triangle, cubic, mitchell, bspline |

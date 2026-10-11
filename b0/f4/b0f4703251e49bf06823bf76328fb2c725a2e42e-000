@@ -1,0 +1,61 @@
+# pyro_collisionshape
+
+- Label: Pyro Collision Shape
+- Category: Copernicus (`Cop`), Houdini 22.0.368
+- Inputs: 0 to 1
+- Parameters: 37 (exact, read from Houdini by hython)
+- Used by the height graph: no
+
+## Feature summary (web, SideFX reference)
+
+- Source: https://www.sidefx.com/docs/houdini/nodes/cop/pyro_collisionshape.html
+- Summary (EN): Creates points that represent implicit surfaces, which add collision objects to a Pyro simulation. Mainly for basic primitives (box, sphere, torus, tube), and can also take a more complex implicit surface as its collision shape. Output is source_points, the points carrying Pyro collision attributes.
+- Résumé (FR) : Pyro Collision Shape crée des points représentant des surfaces implicites (boîte, sphère, tore, tube) qui servent d'obstacles à une simulation Pyro.
+
+- Inputs meaning: ["implicitsurface (optional): implicit surface built with the SOP-based implicit surface workflow"]
+
+- Key parameters: ["Activation: 1 turns the node on, 0 turns it off", "Shape: selects the primitive, which determines the other controls", "Shape Box: Size (with per-component option), Roundness (0 gives sharp edges)", "Shape Sphere: Radius (with per-component option), Radius Scale, Cut Sphere with a Y-position plane", "Shape Torus: major and tube radius, Link Length (0 gives a regular torus)", "Shape Tube: Length, end Radius values (matching values give a straight tube), Radius Scale, Round Caps", "Transform: Translate, Rotate X Y Z, Uniform Scale", "Collision: Collision Velocity (motion-based velocity estimate for moving or rotating sources), Velocity Scale"]
+
+- Caveats: ["Requires DOP-level permissions; not in Houdini Core, only in Houdini FX, Apprentice, Indie and Education", "Connect the output to the collision_points input of a Pyro Block Begin node", "For multiple collisions, merge several outputs with a Point Merge node", "The page does not describe the similarly named Pyro Collision from Shape node, which is only linked under See also"]
+
+## Parameters (exact, from the installed Houdini)
+
+| parameter | label | type | default | range | menu tokens |
+|---|---|---|---|---|---|
+| `activation` | Activation | Int | [1] | 0 .. 1 (strict) |  |
+| `folder12` |  | FolderSet |  |  |  |
+| `shape` | Shape | Menu | 1 |  | box, plane, sphere, torus, tube |
+| `box_size` | Size | Float | [1.0] | 0.0 .. 1.0 (strict) |  |
+| `box_sizetype` | Size | Menu | 0 |  | BUTTONS_decompose_transforms |
+| `box_sizescalex` | Size Scale | Float | 1.0 | 0.0 .. 1.0 (strict) |  |
+| `box_sizescaley` | Size Scale | Float | 1.0 | 0.0 .. 1.0 (strict) |  |
+| `box_sizescalez` | Size Scale | Float | 1.0 | 0.0 .. 1.0 (strict) |  |
+| `box_doroundness` | Roundness | Toggle | false |  |  |
+| `box_roundness` | Roundness | Float | [0.5] | 0.0 .. 1.0 (strict) |  |
+| `sphere_radius` | Radius | Float | [0.5] | 0.0 .. 10.0 (strict) |  |
+| `sphere_radiustype` | Radius | Menu | 0 |  | BUTTONS_decompose_transforms |
+| `sphere_radiusscalex` | Radius Scale | Float | 1.0 | 0.0 .. 10.0 (strict) |  |
+| `sphere_radiusscaley` | Radius Scale | Float | 1.0 | 0.0 .. 10.0 (strict) |  |
+| `sphere_radiusscalez` | Radius Scale | Float | 1.0 | 0.0 .. 10.0 (strict) |  |
+| `sphere_cutbyheight` | Cut Sphere | Toggle | false |  |  |
+| `sphere_cutheight` | Cut Sphere | Float | [0.0] | -1.0 .. 1.0 |  |
+| `torus_radiusx` | Radius | Float | 0.5 | 0.0 .. 1.0 (strict) |  |
+| `torus_radiusy` | Radius | Float | 0.25 | 0.0 .. 1.0 (strict) |  |
+| `torus_linklength` | Link Length | Float | [0.0] | 0.0 .. 10.0 |  |
+| `tube_length` | Length | Float | [1.0] | 0.0 .. 10.0 (strict) |  |
+| `tube_radiusx` | Radius | Float | 0.25 | 0.0 .. 10.0 (strict) |  |
+| `tube_radiusy` | Radius | Float | 0.25 | 0.0 .. 10.0 (strict) |  |
+| `tube_radiusscale` | Radius Scale | Float | [1.0] | 0.0 .. 10.0 (strict) |  |
+| `tube_roundcaps` | Round Caps | Toggle | false |  |  |
+| `folder9` |  | FolderSet |  |  |  |
+| `tx` | Translate | Float | 0.0 | -1.0 .. 1.0 |  |
+| `ty` | Translate | Float | 0.0 | -1.0 .. 1.0 |  |
+| `tz` | Translate | Float | 0.0 | -1.0 .. 1.0 |  |
+| `rx` | Rotate | Float | 0.0 | -1.0 .. 1.0 |  |
+| `ry` | Rotate | Float | 0.0 | -1.0 .. 1.0 |  |
+| `rz` | Rotate | Float | 0.0 | -1.0 .. 1.0 |  |
+| `scale` | Uniform Scale | Float | [1.0] | 0.0 .. 10.0 (strict) |  |
+| `enablecollisionvel` | Collision Velocity | Toggle | true |  |  |
+| `folder2_1` |  | FolderSet |  |  |  |
+| `vscale` | Velocity Scale | Float | [1.0] | 0.0 .. 10.0 (strict) |  |
+| `velapproximation` | Velocity Approximation | Menu | 0 |  | Backward Difference, Central Difference, Forward Difference |

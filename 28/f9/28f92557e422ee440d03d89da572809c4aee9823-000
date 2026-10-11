@@ -1,0 +1,72 @@
+---
+name: zenray-cop-designer
+description: Provisional name. Python designer that writes Copernicus height graphs made ONLY of real COP nodes (checked against the installed Houdini 22.0.368), reads every parameter back, and tunes parameters against measures of a reference height. Height graph only. Use for any request to reproduce a height or texture with Copernicus, to document COP nodes, or to continue the overnight optimizer.
+---
+
+# zenray-cop-designer (provisional name, 11 October 2026)
+
+Source of truth: `~/.claude/skills/zenray-cop-designer/`. Edit here, then `sync-skill.sh zenray-cop-designer`.
+Runtime outputs (hips, PNG, measures) live in the project, never in this folder (the skill is synced everywhere).
+Runs: `/Users/zenray/Create/Build/Productions/ZenRayHoudini/LouisianaBayou/Heights/CopDesigner/runs/`.
+
+## What is verified (11 October 2026)
+
+- Inventory of the installed Houdini, read by hython, no hand-written list: 384 types in category `Cop`, all instantiated, 10 064 parameters. Of these, 372 are Copernicus function nodes; 12 are network containers or Paint internals (listed with reasons in `docs/cop/COVERAGE.md`, 11 October 2026). Legacy COP2 (category `Cop2`): 169 nodes, 4 282 parameters, parameter tables only. File: `inventory/cop_inventory.json`.
+- Graph format (IR) with a validator that reports EVERY problem: unknown node, forbidden node (`wrangle`, `vopnet`, `pythonsnippet`), unknown parameter, wrong value type, menu token or index out of range, ramp keys not increasing, input count outside the node's limits, dead nodes, invalid names.
+- Compiler (`tool/hou_compile.py`, hython): builds real `copnet` nodes, writes each parameter, reads it back and compares, reports Houdini node errors and missing exports. Exit code 1 on any problem.
+- Regression: the height graph (`tool/window_height.py`, layers L01 to L06) compiled by the designer equals the earlier SimpleHeight L05 export with maximum difference 0.0 (bit identical).
+- 25 unit tests pass (`tool/test_designer.py`): every positive test has a negative twin.
+- Optimizer (`tool/optimize_window.py`, hython): coordinate descent with reproducible random restarts, resumable from `best.json`, global best saved at every improvement. Watchdog `tool/watchdog.sh` checks every 15 seconds and relaunches the optimizer when it is not running and its state is not `done` (gives up after 40 relaunches).
+
+## What is NOT verified or NOT done
+
+- Substance Designer is not installed here. Its mapping is DOCUMENTED ONLY (`docs/substance_designer/`), status `documented_only`, never executed. Sources: the local Copernicus page `substance_designer.txt` (read in full) and the Adobe Experience League node reference (137 generator nodes read; helpx.adobe.com returned HTTP 403, so the Experience League copies were used). Judgement: 3 exact in purpose, 112 approximate, 22 without equivalent (generators only).
+- Web summaries: 372 of 372 function nodes have a SideFX page summary (status ok). Three summaries were re-checked against the live SideFX pages on 11 October 2026 (fractalnoise, streakblur, heighttonormal): all three match. A node without a source would be listed, never hidden.
+- Exact pixel reproduction of the reference is impossible with random placement (IoU of random families 0.03 to 0.20 measured in the M01 bilan). Strict identity would require copying the reference, which the project forbids. The search reaches a statistical match, judged by eye.
+- EQUIV is NOT the objective any more. Lesson of 11 October 2026: an EQUIV-driven search raised EQUIV from 0.373 to 0.61 by adding streaks, and the planche looked worse (brushed metal, blurred flakes). The objective is now statistical (row profile correlation, histogram quantiles, gradient energy, mean) inside LOOK limits set from the planches. The LOOK limits are a visual judgment that Matthieu must validate.
+- Only the height graph is in scope. Other nodes can be created by name (validated against the inventory), but no template exists for them yet.
+
+## Rules that do not bend
+
+- Only Copernicus functions: no `wrangle`, no VOP network, no Python snippet. The validator refuses them.
+- The reference image is a measure, never a source of pixels: no File node, no import, no copy. Measures live in `measures/ref_measures.json` of the SimpleHeight folder.
+- A graph is validated before Houdini sees it; Houdini errors and read-back differences are reported, never ignored.
+- Names are English. Comments are English first, then French. Each generated file carries a date comment.
+
+## Commands
+
+```bash
+HY=/Applications/Houdini/Current/Frameworks/Houdini.framework/Versions/Current/Resources/bin/hython
+SK=$HOME/.claude/skills/zenray-cop-designer/tool
+python3 $SK/test_designer.py
+$HY $SK/inventory_cop.py
+python3 $SK/build_docs.py
+$HY $SK/hou_compile.py --graph RUN/window_L05.json --png RUN/out.png --res 1254 --hip RUN/out.hip
+```
+
+Overnight optimizer (background, relaunched every 15 seconds if it stops):
+
+```bash
+RUNS=/Users/zenray/Create/Build/Productions/ZenRayHoudini/LouisianaBayou/Heights/CopDesigner/runs
+nohup bash $SK/watchdog.sh $RUNS/window_opt_2 $HY $SK 6000 &
+tail -f $RUNS/window_opt_2/optimizer.log
+```
+
+## Files
+
+- `tool/cop_catalog.py`: loads the inventory; every check lives here.
+- `tool/cop_graph.py`: IR (nodes, inputs, parameters, tags), validation, save and load.
+- `tool/hou_compile.py`: IR to real COP nodes (hython), read-back, export, hip.
+- `tool/window_height.py`: the window height as IR; `DEFAULTS` are the values reached by SimpleHeight L05.
+- `tool/evaluate.py`: measures one PNG against the reference (python3 with numpy).
+- `tool/optimize_window.py`, `tool/watchdog.sh`: the search and its keep-alive.
+- `tool/build_docs.py`, `docs/cop/`: one page per Copernicus node (exact parameters + web summary).
+- `inventory/`: `cop_inventory.json` (all nodes, all parameters), `cop_names.txt`.
+- `JOURNAL.md`: append-only digest of the conversations that built this skill.
+- `REVIEW.md`: premortem and review checklist for the morning review.
+
+## Decisions waiting for Matthieu
+
+1. LOOK limits in `tool/optimize_window.py` (`SPACE`): accept or change them after looking at the best planche.
+2. Stop criterion: strict identity is impossible under the no-copy rule. Options: a measured statistical target with visual sign-off, or open-ended search.
+3. Substance Designer: install it to verify the mapping, or keep the mapping documented only.

@@ -1,0 +1,28 @@
+# sequence
+
+- Label: Sequence
+- Category: Copernicus (`Cop`), Houdini 22.0.368
+- Inputs: 0 to 2048
+- Parameters: 4 (exact, read from Houdini by hython)
+- Used by the height graph: no
+
+## Feature summary (web, SideFX reference)
+
+- Source: https://www.sidefx.com/docs/houdini/nodes/cop/sequence.html
+- Summary (EN): Sequence arranges parts of one or more inputs temporally. It cuts clips from its inputs, each defined by a start frame and a length, and places them on a new timeline at an output start frame. The page marks the node as available since Houdini 22.0.
+- Résumé (FR) : Le nœud Sequence assemble des extraits d'une ou de plusieurs entrées sur une nouvelle chronologie, chaque extrait étant défini par une frame de départ et une longueur.
+
+- Inputs meaning: ["The page does not name or number the inputs; each clip is taken from its corresponding input in order, and with a single input all clips come from it"]
+
+- Key parameters: ["Clips > Start Frame: frame number to take from the input", "Clips > Length in Frames: how many frames to take", "Clips > Output Start Frame: frame where the first clip starts in the output"]
+
+- Caveats: ["If there are more inputs than clips, no clip is left without an input", "If there are more clips than inputs, the extra clips without an input are taken from the last clip"]
+
+## Parameters (exact, from the installed Houdini)
+
+| parameter | label | type | default | range | menu tokens |
+|---|---|---|---|---|---|
+| `clips` | Clips | Folder | 1 |  |  |
+| `outputstart` | Output Start Frame | Int | [0] | 0 .. 10 |  |
+| `start1` | Start Frame | Int | [1] | 0 .. 10 |  |
+| `length1` | Length in Frames | Int | [1] | 1 .. 240 |  |

@@ -1,0 +1,25 @@
+# ripple_block_begin
+
+- Label: Ripple Block Begin
+- Category: Copernicus (`Cop`), Houdini 22.0.368
+- Inputs: 0 to 8
+- Parameters: 1 (exact, read from Houdini by hython)
+- Used by the height graph: no
+
+## Feature summary (web, SideFX reference)
+
+- Source: https://www.sidefx.com/docs/houdini/nodes/cop/ripple_block_begin.html
+- Summary (EN): Ripple Block Begin opens a Ripple simulation block in Copernicus, which simulates ripples spreading across an image layer. It defines the block inputs, and the matching Ripple Block End closes the block and defines its outputs.
+- Résumé (FR) : Le nœud Ripple Block Begin ouvre un bloc de simulation de vagues dans Copernicus et définit ses entrées, le bloc étant refermé par Ripple Block End.
+
+- Inputs meaning: ["height: initial wave height values above rest", "rest: the equilibrium value the simulation returns to", "wavespeed: mask multiplying the Block End Wave Speed", "conservation: mask multiplying the Block End Conservation", "spring: mask multiplying the Block End Rest Spring", "feedback: cable carrying values into the next solve iteration; its structure must match the Block End inputs and it is read on the initial frame only", "passthrough (optional): data evaluated outside the simulation and read each frame", "adjacency (optional): adjacency data computed outside the simulation, letting pixels cross UV seams"]
+
+- Key parameters: ["Block Path: path to the Ripple Block End COP that closes this block, at the same network level"]
+
+- Caveats: ["Requires DOP-level permissions: not in Houdini Core, only in Houdini FX, Apprentice, Indie and Education", "Operations independent of previous frames go before the block; post-processing that does not feed back goes after the Block End", "Time Shift cannot be used inside blocks when inputs must cook at different times; pack frames with Time Pack before the Block Begin and wire them as a cable"]
+
+## Parameters (exact, from the installed Houdini)
+
+| parameter | label | type | default | range | menu tokens |
+|---|---|---|---|---|---|
+| `blockpath` | Block Path | String | [""] |  |  |

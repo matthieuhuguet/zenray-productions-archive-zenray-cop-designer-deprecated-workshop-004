@@ -1,0 +1,52 @@
+# xform
+
+- Label: Transform 3D
+- Category: Copernicus (`Cop`), Houdini 22.0.368
+- Inputs: 0 to 1
+- Parameters: 28 (exact, read from Houdini by hython)
+- Used by the height graph: no
+
+## Feature summary (web, SideFX reference)
+
+- Source: https://www.sidefx.com/docs/houdini/nodes/cop/xform.html
+- Summary (EN): Transform 3D moves a layer in 3D space. It can reposition the layer without changing its pixels, or keep the layer fixed and re-rasterize its pixels as if they had been transformed.
+- Résumé (FR) : Déplace une couche ou un VDB en 3D sans toucher aux pixels par défaut, et ne ré-échantillonne les pixels que lorsque Rasterize est activé.
+
+- Inputs meaning: ["source: the layer or VDB to transform"]
+
+- Key parameters: ["Transform Order / Rotate Order: sequence of transformations and rotations", "Translate: moves the layer along X, Y and Z", "Rotate: rotates about X, Y and Z, in degrees", "Scale / Uniform Scale: non-uniform or uniform scaling", "Shear: skews the layer across three planes", "Pivot Translate / Pivot Rotate: local pivot for transformations", "Invert Transformation: applies the inverse, cancelling a matching transform node", "Rasterize: keeps the layer in place and re-rasterizes its pixels instead of moving the layer", "Crop to Content: resizes the output to the transformed data window", "Perspective Camera: forces a perspective transform when rasterizing", "Border: edge handling when rasterizing (Auto, Constant, Clamp, Mirror, Wrap, Clip)", "Filter: sampling method, Box by default"]
+
+- Caveats: ["By default the node transforms the layer's placement, not its pixels, so chained transforms stay lossless", "Pixels are only resampled when Rasterize is enabled", "To convert back to canonical space, the page recommends a Rasterize Layer or Project on Layer COP", "For fuller perspective control, the page suggests an explicit imaging layer built with Rasterize Layer instead of Perspective Camera"]
+
+## Parameters (exact, from the installed Houdini)
+
+| parameter | label | type | default | range | menu tokens |
+|---|---|---|---|---|---|
+| `xOrd` | Transform Order | Menu | 0 |  | srt, str, rst, rts, tsr, trs |
+| `rOrd` | Rotate Order | Menu | 0 |  | xyz, xzy, yxz, yzx, zxy, zyx |
+| `tx` | Translate | Float | 0.0 | -1.0 .. 1.0 |  |
+| `ty` | Translate | Float | 0.0 | -1.0 .. 1.0 |  |
+| `tz` | Translate | Float | 0.0 | -1.0 .. 1.0 |  |
+| `rx` | Rotate | Float | 0.0 | 0.0 .. 360.0 |  |
+| `ry` | Rotate | Float | 0.0 | 0.0 .. 360.0 |  |
+| `rz` | Rotate | Float | 0.0 | 0.0 .. 360.0 |  |
+| `sx` | Scale | Float | 1.0 | -1.0 .. 1.0 |  |
+| `sy` | Scale | Float | 1.0 | -1.0 .. 1.0 |  |
+| `sz` | Scale | Float | 1.0 | -1.0 .. 1.0 |  |
+| `shear1` | Shear | Float | 0.0 | 0.0 .. 10.0 |  |
+| `shear2` | Shear | Float | 0.0 | 0.0 .. 10.0 |  |
+| `shear3` | Shear | Float | 0.0 | 0.0 .. 10.0 |  |
+| `scale` | Uniform Scale | Float | [1.0] | 0.1 .. 10.0 |  |
+| `parmgroup_pivotxform` |  | FolderSet |  |  |  |
+| `px` | Pivot Translate | Float | 0.0 | -1.0 .. 1.0 |  |
+| `py` | Pivot Translate | Float | 0.0 | -1.0 .. 1.0 |  |
+| `pz` | Pivot Translate | Float | 0.0 | -1.0 .. 1.0 |  |
+| `prx` | Pivot Rotate | Float | 0.0 | 0.0 .. 360.0 |  |
+| `pry` | Pivot Rotate | Float | 0.0 | 0.0 .. 360.0 |  |
+| `prz` | Pivot Rotate | Float | 0.0 | 0.0 .. 360.0 |  |
+| `invertxform` | Invert Transformation | Toggle | false |  |  |
+| `rasterize` | Rasterize | Toggle | false |  |  |
+| `crop` | Crop to Content | Toggle | false |  |  |
+| `perspective` | Perspective Camera | Toggle | false |  |  |
+| `border` | Border | Menu | 0 |  | auto, constant, clamp, mirror, wrap, clip |
+| `filter` | Filter | Menu | 2 |  | point, bilinear, box, triangle, cubic, mitchell, bspline |

@@ -1,0 +1,37 @@
+# pyro_projectnondivergentelectrostatic
+
+- Label: Pyro Project Non-Divergent Electro Static
+- Category: Copernicus (`Cop`), Houdini 22.0.368
+- Inputs: 2 to 5
+- Parameters: 13 (exact, read from Houdini by hython)
+- Used by the height graph: no
+
+## Feature summary (web, SideFX reference)
+
+- Source: https://www.sidefx.com/docs/houdini/nodes/cop/pyro_projectnondivergentelectrostatic.html
+- Summary (EN): Removes divergence from a velocity VDB, yielding the physically closest velocity field to the input. Builds an electrostatic potential from the divergence and applies the resulting field, a multi-scale approach that works well even on sparse fields.
+- Résumé (FR) : Pyro Project Non-Divergent Electro Static retire la divergence d'un champ de vitesse VDB en gardant le champ le plus proche possible de l'original, par un potentiel électrostatique multi-échelle.
+
+- Inputs meaning: ["v: input velocity VDB to remove divergence from", "reference: Float VDB with the same topology as v, used to compute divergence", "goaldiv (optional): Float VDB of goal divergence per voxel, for expanding or contracting fluids", "collision (optional): Float VDB signed distance field; negative voxels are inside the collider and are reset to the collision velocity", "collisionv (optional): Vector VDB giving the collision velocity at each point"]
+
+- Key parameters: ["Iterations: number of projection repeats; more improves accuracy and collision strength at higher cost", "Voxel Kernel Size: size of the voxel kernel; larger improves quality but adds significant computation time", "Double Voxel Pass: runs two voxel kernel passes before the block pass", "Block Pass / Block Kernel Size: reduces divergence to dipoles over large blocks, allowing action at a distance without a larger voxel kernel", "Feather Blocks: weakens block correction over the farthest blocks to avoid sharp transitions; may need more iterations", "Point Pass: combines block dipoles into coarser points applied to every voxel, giving divergence a global effect in one pass", "Ambient Velocity: global implied velocity added to the input to get world-space velocity", "Collision Velocity Scale: scales the strength of the collisionv input", "Hourglass Filter: smooths velocity modes that corner-sampled divergence misses, reducing jagged artifacts"]
+
+- Caveats: ["Divergence uses corner-sampled values, so some velocity modes go undetected; the Hourglass Filter is the page's remedy", "The projection is approximate and converges toward the correct solution as Iterations increase; other tuning parameters typically need no adjustment", "Requires DOP-level permissions; not in Houdini Core, only in Houdini FX, Apprentice, Indie and Education"]
+
+## Parameters (exact, from the installed Houdini)
+
+| parameter | label | type | default | range | menu tokens |
+|---|---|---|---|---|---|
+| `iterations` | Iterations | Int | [1] | 0 .. 10 (strict) |  |
+| `kernel` | Voxel Kernel Size | Int | [2] | 0 .. 10 |  |
+| `doublevoxel` | Double Voxel Pass | Toggle | true |  |  |
+| `useblock` | Block Pass | Toggle | true |  |  |
+| `blockrad` | Block Kernel Size | Int | [3] | 0 .. 10 |  |
+| `blockfeather` | Feather Blocks | Toggle | false |  |  |
+| `usepoint` | Point Pass | Toggle | false |  |  |
+| `ambientx` | Ambient Velocity | Float | 0.0 | -1.0 .. 1.0 |  |
+| `ambienty` | Ambient Velocity | Float | 0.0 | -1.0 .. 1.0 |  |
+| `ambientz` | Ambient Velocity | Float | 0.0 | -1.0 .. 1.0 |  |
+| `collisionvscale` | Collision Velocity Scale | Float | [1.0] | 0.0 .. 10.0 (strict) |  |
+| `dohourglass` | Hourglass Filter | Toggle | false |  |  |
+| `hourglass` | Hourglass Filter | Float | [1.0] | 0.0 .. 1.0 |  |

@@ -1,0 +1,37 @@
+# testgeometry_otto
+
+- Label: Test Geometry: Otto
+- Category: Copernicus (`Cop`), Houdini 22.0.368
+- Inputs: 0 to 0
+- Parameters: 13 (exact, read from Houdini by hython)
+- Used by the height graph: no
+
+## Feature summary (web, SideFX reference)
+
+- Source: https://www.sidefx.com/docs/houdini/nodes/cop/testgeometry_otto.html
+- Summary (EN): Test Geometry: Otto generates Otto, a realistic test character, as polygon geometry or as a VDB signed distance field. Because Otto uses UDIM textures, it is a useful test case for UDIM-based workflows.
+- Résumé (FR) : Test Geometry: Otto génère un personnage de test réaliste, en polygones ou en SDF VDB, avec des textures UDIM.
+
+- Inputs meaning: ["None documented: the page lists parameters and outputs only (geo, basecolor, roughness)"]
+
+- Key parameters: ["Signature: polygons or VDB signed distance field (SDF)", "Level of Detail: Render (high quality) or Proxy (lower resolution, faster)", "Voxel Size: SDF voxel size, smaller is more accurate but costs more time and memory", "Translate / Rotate / Uniform Scale: position by the feet, rotation about the centre, uniform scale", "Add Shader: default shader with embedded texture maps", "UDIM: overrides which UDIM tile is exported, by default the @UDIM context option controls it"]
+
+- Caveats: ["The UDIM tiles are not contiguous, do not assume a continuous tile range", "Smaller voxel sizes improve SDF accuracy at a higher time and memory cost"]
+
+## Parameters (exact, from the installed Houdini)
+
+| parameter | label | type | default | range | menu tokens |
+|---|---|---|---|---|---|
+| `signature` | Signature | String | ["default"] |  |  |
+| `meshlod` | Level of Detail | Menu | 1 |  | render, proxy |
+| `voxelsize` | Voxel Size | Float | [0.1] | 0.0 .. 1.0 (strict) |  |
+| `tx` | Translate | Float | 0.0 | -1.0 .. 1.0 |  |
+| `ty` | Translate | Float | 0.0 | -1.0 .. 1.0 |  |
+| `tz` | Translate | Float | 0.0 | -1.0 .. 1.0 |  |
+| `rx` | Rotate | Float | 0.0 | 0.0 .. 360.0 |  |
+| `ry` | Rotate | Float | 0.0 | 0.0 .. 360.0 |  |
+| `rz` | Rotate | Float | 0.0 | 0.0 .. 360.0 |  |
+| `scale` | Uniform Scale | Float | [1.0] | 0.0 .. 10.0 |  |
+| `addshader` | Add Shader | Toggle | false |  |  |
+| `setudim` | Set UDIM | Toggle | false |  |  |
+| `udim` | UDIM | Int | [1001] | 1001 .. 1051 |  |

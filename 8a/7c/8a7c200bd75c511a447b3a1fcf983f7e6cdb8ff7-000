@@ -1,0 +1,29 @@
+# oceanevaluate
+
+- Label: Ocean Evaluate
+- Category: Copernicus (`Cop`), Houdini 22.0.368
+- Inputs: 0 to 3
+- Parameters: 5 (exact, read from Houdini by hython)
+- Used by the height graph: no
+
+## Feature summary (web, SideFX reference)
+
+- Source: https://www.sidefx.com/docs/houdini/nodes/cop/oceanevaluate.html
+- Summary (EN): Converts the layers of an Ocean Spectrum COP into an animated ocean surface. It evaluates them at a given time to produce the surface height and horizontal displacement.
+- Résumé (FR) : Transforme les couches d'un spectre d'océan en surface animée, en donnant la hauteur et le déplacement horizontal à un instant donné, avec une taille d'océan qui doit correspondre au spectre.
+
+- Inputs meaning: ["amplitude: the amplitude layer from an Ocean Spectrum COP", "frequency: the frequency layer from an Ocean Spectrum COP", "phase: the phase layer from an Ocean Spectrum COP"]
+
+- Key parameters: ["Scale: overall multiplier on wave amplitude; higher values produce taller waves", "Chop: sharpens wave crests and flattens troughs by pushing the surface toward the peaks", "Time: the time at which the ocean surface is evaluated", "Ocean Size: world-space size of the input spectrum; should match the Ocean Size of the Ocean Spectrum COP", "Outputs: height (vertical surface height), cusp (wave peak sharpness), dir (horizontal displacement, which can distort textures such as foam through the Distort COP)"]
+
+- Caveats: ["The page has no separate warning section. If Ocean Size does not match the Ocean Spectrum COP, the horizontal displacement is scaled incorrectly."]
+
+## Parameters (exact, from the installed Houdini)
+
+| parameter | label | type | default | range | menu tokens |
+|---|---|---|---|---|---|
+| `scale` | Scale | Float | [1.0] | 0.0 .. 2.0 (strict) |  |
+| `chop` | Chop | Float | [0.7] | 0.0 .. 1.0 (strict) |  |
+| `time` | Time | Float | [0.0] | 0.0 .. 1.0 |  |
+| `oceansize` | Ocean Size | Float | [50.0] | 0.0 .. 1.0 |  |
+| `spare_cableinput` | Input Override Port | String | [""] |  |  |

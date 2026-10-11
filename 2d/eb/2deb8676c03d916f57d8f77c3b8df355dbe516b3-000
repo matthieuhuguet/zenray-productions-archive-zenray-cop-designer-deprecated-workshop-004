@@ -1,0 +1,99 @@
+# rasterizevolume
+
+- Label: Rasterize Volume
+- Category: Copernicus (`Cop`), Houdini 22.0.368
+- Inputs: 0 to 9
+- Parameters: 75 (exact, read from Houdini by hython)
+- Used by the height graph: no
+
+## Feature summary (web, SideFX reference)
+
+- Source: https://www.sidefx.com/docs/houdini/nodes/cop/rasterizevolume.html
+- Summary (EN): Rasterize Volume renders a volume, such as a VDB from SOPs or a pyro fire simulation, as seen through a camera, producing a 2D raster for compositing. The page's URL and navigation list match rasterizevolume, but the body does not state the internal name explicitly. Documented as since Houdini 21.0.
+- Résumé (FR) : Ce nœud rend un volume VDB tel qu'il est vu à travers une caméra, en un raster 2D prêt pour la composition, avec densité, diffusion et émission.
+
+- Inputs meaning: ["camera_ref: optional camera layer that sets the view ray for each output pixel; without it, a default orthographic projection (-1 to 1) along Z is used", "density: density field, required when Bake Light Fields is on", "diffusecolor: diffuse field", "emission: emission scale field", "emissioncolor: emission colour field", "vieworigin: per-pixel ray origins, used instead of camera_ref", "viewdir: per-pixel ray directions, used instead of camera_ref", "mindepth: raymarch minimum depth boundary", "maxdepth: raymarch maximum depth boundary"]
+
+- Key parameters: ["Signature: layer type the source accepts; float VDBs apply the same value to all three components", "Depth Conversion (Distance, Depth, Height): how mindepth and maxdepth are interpreted", "Density Scale, Min, Max, Mode (No Ramp, Clamped Ramp, Periodic Ramp): Min and Max define the interval remapped linearly to 0-1; Density Scale multiplies the result after the ramp", "Diffuse Tint: RGB multiplier applied after the ramp", "Emission Scale and Emission Tint: multipliers applied after the ramp", "Input Range (on Diffuse, Emission and Emission Color): overrides the Density Min/Max interval for that field", "Bake Light Fields: combines the light fields before raymarching; faster, but output can look blocky when VDBs contain tiles", "Multiply Diffuse with Density before Interpolation: more accurate at density boundaries, but slower", "Integration Step Size: length of ray slices, which sets the expected distance between samples", "Max Step Count: limits raymarch steps to prevent timeouts; default 4096", "Transmittance Cutoff: stops raymarching once accumulated transmittance drops below this value; -1 disables it", "Sample Jitter Scale, Stratification Jitter Scale, Seed Jitter with Time: control jitter of samples and ray slices"]
+
+- Caveats: ["Diffuse Color is truncated where Density is smaller than Diffuse.", "Emission and Emission Color multiply together and are independent of Density and Diffuse Color; wiring only emission produces pure light.", "To rasterize Emission with no Density, wire the same layer into density and emission and set Density Scale to 0.", "Bake Light Fields always requires a density input, because it uses that field's topology.", "Without baking, the node can take longer, because the kernel iterates over four uncombined VDBs.", "For a live camera workflow, the page suggests enabling Export View Continuously in the viewport camera menu."]
+
+## Parameters (exact, from the installed Houdini)
+
+| parameter | label | type | default | range | menu tokens |
+|---|---|---|---|---|---|
+| `signature` | Signature | String | ["auto"] |  |  |
+| `resetorig` | Move to Origin | Toggle | false |  |  |
+| `convertdepth` | Depth Conversion | Menu | 1 |  | dist, depth, height |
+| `folder21` |  | FolderSet |  |  |  |
+| `emitswitcher` |  | FolderSet |  |  |  |
+| `densityscale` | Density Scale | Float | [1.0] | 0.0 .. 10.0 |  |
+| `rangemin` | Min | Float | [0.0] | 0.0 .. 10.0 |  |
+| `rangemax` | Max | Float | [1.0] | 0.0 .. 10.0 |  |
+| `densityrampmode` | Mode | Menu | 0 |  | none, clamp, periodic |
+| `densityramp` | Density Ramp | Ramp | 2 |  |  |
+| `folder0` |  | FolderSet |  |  |  |
+| `cdtintr` | Diffuse Tint | Float | 1.0 | 0.0 .. 1.0 |  |
+| `cdtintg` | Diffuse Tint | Float | 1.0 | 0.0 .. 1.0 |  |
+| `cdtintb` | Diffuse Tint | Float | 1.0 | 0.0 .. 1.0 |  |
+| `cdrangeoverride` | Diffuse Range | Toggle | false |  |  |
+| `cdrangex` | Input Range | Float | 0.0 | -1.0 .. 1.0 |  |
+| `cdrangey` | Input Range | Float | 1.0 | -1.0 .. 1.0 |  |
+| `cdrampmode` | Mode | Menu | 0 |  | none, clamp, periodic |
+| `cdramp` | Diffuse Ramp | Ramp | 2 |  |  |
+| `emitswitcher_1` |  | FolderSet |  |  |  |
+| `emitscale` | Emission Scale | Float | [1.0] | 0.0 .. 10.0 |  |
+| `emitrangeoverride` | Emission Range | Toggle | false |  |  |
+| `emitrangex` | Input Range | Float | 0.0 | -1.0 .. 1.0 |  |
+| `emitrangey` | Input Range | Float | 1.0 | -1.0 .. 1.0 |  |
+| `emitrampmode` | Mode | Menu | 0 |  | none, clamp, periodic |
+| `emitramp` | Emission Map | Ramp | 2 |  |  |
+| `folder1` |  | FolderSet |  |  |  |
+| `emittintr` | Emission Tint | Float | 1.0 | 0.0 .. 1.0 |  |
+| `emittintg` | Emission Tint | Float | 1.0 | 0.0 .. 1.0 |  |
+| `emittintb` | Emission Tint | Float | 1.0 | 0.0 .. 1.0 |  |
+| `emitcdrangeoverride` | Emission Color Range | Toggle | false |  |  |
+| `emitcdrangex` | Input Range | Float | 0.0 | -1.0 .. 1.0 |  |
+| `emitcdrangey` | Input Range | Float | 1.0 | -1.0 .. 1.0 |  |
+| `emitcdrampmode` | Mode | Menu | 0 |  | none, clamp, periodic |
+| `emitcdramp` | Emission Color Map | Ramp | 2 |  |  |
+| `bake` | Bake Light Fields | Toggle | true |  |  |
+| `multdiffbeforeinterp` | Multiply Diffuse with Density before Interpolation | Toggle | false |  |  |
+| `stepsize` | Integration Step Size | Float | [1.0] | 0.01 .. 10.0 |  |
+| `maxstepcount` | Max Step Count | Int | [4096] | 0 .. 16384 |  |
+| `transmitcutoff` | Transmittance Cutoff | Float | [0.001] | 1e-06 .. 1.0 |  |
+| `timeseed` | Seed Jitter with Time | Toggle | false |  |  |
+| `jitter` | Sample Jitter Scale | Float | [1.0] | 0.0 .. 1.0 |  |
+| `stratjitter` | Stratification Jitter Scale | Float | [1.0] | 0.0 .. 1.0 |  |
+| `densityramp1pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `densityramp1value` | Value | Float | [0.0] | 0.0 .. 10.0 |  |
+| `densityramp1interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `densityramp2pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `densityramp2value` | Value | Float | [0.0] | 0.0 .. 10.0 |  |
+| `densityramp2interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `cdramp1pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `cdramp1cr` | Color | Float | 0.0 | 0.0 .. 10.0 |  |
+| `cdramp1cg` | Color | Float | 0.0 | 0.0 .. 10.0 |  |
+| `cdramp1cb` | Color | Float | 0.0 | 0.0 .. 10.0 |  |
+| `cdramp1interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `cdramp2pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `cdramp2cr` | Color | Float | 0.0 | 0.0 .. 10.0 |  |
+| `cdramp2cg` | Color | Float | 0.0 | 0.0 .. 10.0 |  |
+| `cdramp2cb` | Color | Float | 0.0 | 0.0 .. 10.0 |  |
+| `cdramp2interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `emitramp1pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `emitramp1value` | Value | Float | [0.0] | 0.0 .. 10.0 |  |
+| `emitramp1interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `emitramp2pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `emitramp2value` | Value | Float | [0.0] | 0.0 .. 10.0 |  |
+| `emitramp2interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `emitcdramp1pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `emitcdramp1cr` | Color | Float | 0.0 | 0.0 .. 10.0 |  |
+| `emitcdramp1cg` | Color | Float | 0.0 | 0.0 .. 10.0 |  |
+| `emitcdramp1cb` | Color | Float | 0.0 | 0.0 .. 10.0 |  |
+| `emitcdramp1interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `emitcdramp2pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `emitcdramp2cr` | Color | Float | 0.0 | 0.0 .. 10.0 |  |
+| `emitcdramp2cg` | Color | Float | 0.0 | 0.0 .. 10.0 |  |
+| `emitcdramp2cb` | Color | Float | 0.0 | 0.0 .. 10.0 |  |
+| `emitcdramp2interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |

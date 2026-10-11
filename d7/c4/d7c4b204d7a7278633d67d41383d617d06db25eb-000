@@ -1,0 +1,89 @@
+# randomrgb
+
+- Label: Random RGB
+- Category: Copernicus (`Cop`), Houdini 22.0.368
+- Inputs: 0 to 5
+- Parameters: 65 (exact, read from Houdini by hython)
+- Used by the height graph: no
+
+## Feature summary (web, SideFX reference)
+
+- Source: https://www.sidefx.com/docs/houdini/nodes/cop/randomrgb.html
+- Summary (EN): Random RGB generates random colours for an RGB layer, VDB or attribute. Colours come from Min/Max channel ranges, a colour ramp, or a palette of specific values, and colour derivation modes (complementary, analogous, triadic, tetradic, shades, tints) apply to Specific Values.
+- Résumé (FR) : Ce nœud génère des couleurs aléatoires pour un calque RGB, à partir de plages, d'une rampe de couleurs ou d'une palette de valeurs.
+
+- Inputs meaning: ["size_ref: representative layer that sets the output image size and metadata", "min: minimum component limit when Range Values is Min/Max", "max: maximum component limit when Range Values is Min/Max", "ramp: ramp sampled horizontally when Range Values is Color Ramp", "seed: controls the random colour distribution, allowing variation per custom shape"]
+
+- Key parameters: ["Signature: layer type the node outputs", "Range Values: Min/Max, Color Ramp or Specific Values", "Color Model (Min/Max only): RGB constrains the red, green and blue ranges; HSV restricts hue, saturation and value to a slice of the colour wheel", "Relative to Color: base colour that small random deviations are applied around", "Red/Green/Blue and Hue/Saturation/Value Min/Max: range limits per component", "Color Ramp: maps the intermediate random value through a ramp to get the final colour", "Color Palette and Number of Colors (Specific Values only): preset palette filling the number of colours", "Color # modes: Constant, Complementary, 2 Analogous, 4 Analogous, Triadic, Tetradic, 5 Shades, 5 Tints", "Weight: how often each adjustment value is sampled; equal weights mean equal probability", "Angle and Distance: Angle sets the spacing around the colour wheel; Distance sets the brightness step for 5 Shades or the saturation step for 5 Tints", "Random per Pixel: selection varies per pixel for grain-like noise", "Seed and Time: both drive the randomness", "Zero Negative IDs: when a seed input is connected, outputs black where the seed is a negative integer"]
+
+- Caveats: ["Per-pixel variation requires Random per Pixel to be enabled or a seed input to be wired; otherwise the fill is uniform across the layer.", "Min/max and ramp inputs apply only in their matching Range Values mode.", "Color Model applies only when Range Values is Min/Max.", "Zero Negative IDs has an effect only when a seed is connected.", "The page gives identical descriptions for Triadic and 2 Analogous, so the difference between them is unclear from this page alone."]
+
+## Parameters (exact, from the installed Houdini)
+
+| parameter | label | type | default | range | menu tokens |
+|---|---|---|---|---|---|
+| `signature` | Signature | String | ["auto"] |  |  |
+| `folder0` |  | FolderSet |  |  |  |
+| `rangemethod` | Range Values | Menu | 1 |  | minmax, ramp, specific |
+| `randomcolormodel` | Color Model | Menu | 0 |  | rgb, hsv |
+| `dobasecolor` | Relative to Color | Toggle | false |  |  |
+| `basecolorr` | Relative to Color | Float | 1.0 | 0.0 .. 1.0 |  |
+| `basecolorg` | Relative to Color | Float | 1.0 | 0.0 .. 1.0 |  |
+| `basecolorb` | Relative to Color | Float | 1.0 | 0.0 .. 1.0 |  |
+| `randrmin` | Red Min/Max | Float | 0.0 | 0.0 .. 1.0 |  |
+| `randrmax` | Red Min/Max | Float | 1.0 | 0.0 .. 1.0 |  |
+| `randgmin` | Green Min/Max | Float | 0.0 | 0.0 .. 1.0 |  |
+| `randgmax` | Green Min/Max | Float | 1.0 | 0.0 .. 1.0 |  |
+| `randbmin` | Blue Min/Max | Float | 0.0 | 0.0 .. 1.0 |  |
+| `randbmax` | Blue Min/Max | Float | 1.0 | 0.0 .. 1.0 |  |
+| `randhuemin` | Hue Min/Max | Float | -180.0 | 0.0 .. 360.0 |  |
+| `randhuemax` | Hue Min/Max | Float | 180.0 | 0.0 .. 360.0 |  |
+| `randsatmin` | Saturation Min/Max | Float | 0.0 | 0.0 .. 1.0 |  |
+| `randsatmax` | Saturation Min/Max | Float | 1.0 | 0.0 .. 1.0 |  |
+| `randvalmin` | Value Min/Max | Float | 0.0 | 0.0 .. 1.0 |  |
+| `randvalmax` | Value Min/Max | Float | 1.0 | 0.0 .. 1.0 |  |
+| `colorramp` | Color Ramp | Ramp | 5 |  |  |
+| `colorpalette` | Color Palette | Menu | 0 |  |  |
+| `nvalues` | Number of Colors | Folder | 1 |  |  |
+| `folder1` |  | FolderSet |  |  |  |
+| `perpixel` | Random per Pixel | Toggle | false |  |  |
+| `seed` | Seed | Float | [0.0] | 0.0 .. 100.0 (strict) |  |
+| `time` | Time | Float | [0.0] | 0.0 .. 1.0 |  |
+| `zeroinvalid` | Zero Negative IDs | Toggle | false |  |  |
+| `colorramp1pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `colorramp1cr` | Color | Float | 0.0 | 0.0 .. 10.0 |  |
+| `colorramp1cg` | Color | Float | 0.0 | 0.0 .. 10.0 |  |
+| `colorramp1cb` | Color | Float | 0.0 | 0.0 .. 10.0 |  |
+| `colorramp1interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `colorramp2pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `colorramp2cr` | Color | Float | 0.0 | 0.0 .. 10.0 |  |
+| `colorramp2cg` | Color | Float | 0.0 | 0.0 .. 10.0 |  |
+| `colorramp2cb` | Color | Float | 0.0 | 0.0 .. 10.0 |  |
+| `colorramp2interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `colorramp3pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `colorramp3cr` | Color | Float | 0.0 | 0.0 .. 10.0 |  |
+| `colorramp3cg` | Color | Float | 0.0 | 0.0 .. 10.0 |  |
+| `colorramp3cb` | Color | Float | 0.0 | 0.0 .. 10.0 |  |
+| `colorramp3interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `colorramp4pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `colorramp4cr` | Color | Float | 0.0 | 0.0 .. 10.0 |  |
+| `colorramp4cg` | Color | Float | 0.0 | 0.0 .. 10.0 |  |
+| `colorramp4cb` | Color | Float | 0.0 | 0.0 .. 10.0 |  |
+| `colorramp4interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `colorramp5pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `colorramp5cr` | Color | Float | 0.0 | 0.0 .. 10.0 |  |
+| `colorramp5cg` | Color | Float | 0.0 | 0.0 .. 10.0 |  |
+| `colorramp5cb` | Color | Float | 0.0 | 0.0 .. 10.0 |  |
+| `colorramp5interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `folder3_0_2` |  | FolderSet |  |  |  |
+| `color0r` | Color 0 | Float | 1.0 | 0.0 .. 10.0 |  |
+| `color0g` | Color 0 | Float | 1.0 | 0.0 .. 10.0 |  |
+| `color0b` | Color 0 | Float | 1.0 | 0.0 .. 10.0 |  |
+| `colorscheme0` | Color Scheme | Menu | 0 |  | const, comp, twoanalog, fouranalog, triadic, tetradic, fiveshades, fivetints |
+| `weight0` | Weight | Float | [1.0] | 0.0 .. 1.0 (strict) |  |
+| `twoanalogangle0` | Angle | Float | [30.0] | 0.0 .. 180.0 (strict) |  |
+| `fouranalogangle0` | Angle | Float | [30.0] | 0.0 .. 180.0 (strict) |  |
+| `triadicangle0` | Angle | Float | [120.0] | 0.0 .. 180.0 (strict) |  |
+| `tetradicangle0` | Angle | Float | [45.0] | -90.0 .. 90.0 (strict) |  |
+| `fiveshadesdist0` | Distance | Float | [1.0] | 0.0 .. 1.0 (strict) |  |
+| `fivetintsdist0` | Distance | Float | [1.0] | 0.0 .. 1.0 (strict) |  |

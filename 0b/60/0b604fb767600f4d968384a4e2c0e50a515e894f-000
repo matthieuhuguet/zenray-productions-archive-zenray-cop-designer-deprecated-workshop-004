@@ -1,0 +1,590 @@
+# pyro_block_end::2.0
+
+- Label: Pyro Block End
+- Category: Copernicus (`Cop`), Houdini 22.0.368
+- Inputs: 0 to 9
+- Parameters: 566 (exact, read from Houdini by hython)
+- Used by the height graph: no
+
+## Feature summary (web, SideFX reference)
+
+- Source: https://www.sidefx.com/docs/houdini/nodes/cop/pyro_block_end.html
+- Summary (EN): Pyro Block End marks the end of a Pyro simulation block in COPs, paired with a Pyro Block Begin COP. It takes the simulation fields, runs the solver steps and outputs the updated fields. Its parameters control caching, sparse domain bounds, collisions, sourcing (density, temperature, velocity, flame, divergence), field dissipation and diffusion, forces, advection and pressure projection.
+- Résumé (FR) : Pyro Block End ferme le bloc de simulation Pyro ouvert par Pyro Block Begin. Il reprend densité, température, vitesse et flamme, exécute les étapes du solveur (sources, dissipation, forces, advection, projection de pression) et renvoie les champs mis à jour. Ses réglages couvrent le cache, le domaine épars, les collisions et les sources. Le texte lu est tronqué, les 25 130 derniers caractères de la page n'ont pas été lus.
+
+- Inputs meaning: ["density: Float VDB of current densities, fed back to the input", "temperature: Float VDB of current temperatures, fed back", "v: Vector VDB of current velocities, projected to non-divergent values and fed back", "flame: Float VDB of current flames, fed back", "divergence (optional): Float VDB giving a goal divergence so the fluid can expand or contract", "collision (optional): Float VDB signed distance field of a collider", "collisionv (optional): Vector VDB of collider velocities in world space", "feedback and passthrough: cables fed back, structure must match the Pyro Block Begin"]
+
+- Key parameters: ["Reset Simulation: clears the simulation cache", "Sparse Simulation and Voxel Size: control where calculations occur and voxel resolution", "Live Simulation: interactive mode running independently of the playbar", "Cache: cached frames and checkpoint rate, affecting scrubbing speed", "Bounds and Collision: limit the domain and handle colliders", "Sourcing (density, temperature, velocity, flame, divergence): source mode (Continuous, First Frame Only, Copy on First Frame), operation, blend and acceleration", "Fields: dissipation, diffusion and cooling for density, temperature and flame, with optional control masks, flame-based emission", "Forces: buoyancy, disturbance, turbulence, viscosity, vortex confinement, ambient velocity, velocity scale", "Advanced: advection tracing and schemes, advection reflection, pressure projection iterations"]
+
+- Caveats: ["Requires DOP-level permissions, not available in Houdini Core (only FX, Apprentice, Indie, Education)", "Compiled COP networks do not support simulation", "Without Sparse Simulation, a bounds_geo input is required to define the domain", "Live Simulation does not save results, use a Stash COP to store output", "Page formatting issues: Min Swirl Size appears twice, Source Velocity section has no description line", "Read was truncated: the page text is 125130 characters, only the first 100000 were read, the final 25130 are not covered"]
+
+## Parameters (exact, from the installed Houdini)
+
+| parameter | label | type | default | range | menu tokens |
+|---|---|---|---|---|---|
+| `resimulate` | Reset Simulation | Button |  |  |  |
+| `folder0` |  | FolderSet |  |  |  |
+| `startframe` | Start Frame | Int | [1] | 1 .. 1001 |  |
+| `continuouscook` | Live Simulation | Toggle | false |  |  |
+| `continuouscook_toggle` | Toggle Live Simulation | Button |  |  |  |
+| `continuouscook_tick` | Live Tick | Int | [0] | 0 .. 10 |  |
+| `folder51` |  | FolderSet |  |  |  |
+| `folder20` |  | FolderSet |  |  |  |
+| `dosparsesim` | Sparse Simulation | Toggle | true |  |  |
+| `timescale` | Time Scale | Float | [1.0] | 0.0 .. 10.0 |  |
+| `substeps` | Substeps | Int | [1] | 1 .. 10 (strict) |  |
+| `useadvectionreflection` | Advection Reflection | Toggle | false |  |  |
+| `folder13` |  | FolderSet |  |  |  |
+| `advectionreflectionamount` | Reflection Amount | Float | [0.95] | 0.0 .. 1.0 (strict) |  |
+| `cacheenabled` | Cache | Toggle | true |  |  |
+| `folder2` |  | FolderSet |  |  |  |
+| `cacheframes` | Cached Frames | Toggle | true |  |  |
+| `cachedframes` | Cached Frames | Int | [10] | 1 .. 100 (strict) |  |
+| `cachecheckpoints` | Checkpoint Rate | Toggle | true |  |  |
+| `checkpointframes` | Checkpoint Rate | Int | [24] | 0 .. 100 (strict) |  |
+| `enablebounds` | Clip by Bounds | Toggle | false |  |  |
+| `folder3` |  | FolderSet |  |  |  |
+| `clipmode` | Clip by | Menu | 0 |  | bbox, sides |
+| `folder9` |  | FolderSet |  |  |  |
+| `sizex` | Size | Float | 2.0 | -1.0 .. 1.0 |  |
+| `sizey` | Size | Float | 2.0 | -1.0 .. 1.0 |  |
+| `sizez` | Size | Float | 2.0 | -1.0 .. 1.0 |  |
+| `tx` | Center | Float | 0.0 | -1.0 .. 1.0 |  |
+| `ty` | Center | Float | 0.0 | -1.0 .. 1.0 |  |
+| `tz` | Center | Float | 0.0 | -1.0 .. 1.0 |  |
+| `doclipxmin` | Doclipxmin | Toggle | false |  |  |
+| `clipminx` | Clip Min X | Float | [-1.0] | -10.0 .. 10.0 |  |
+| `doclipxmax` | Doclipxmax | Toggle | false |  |  |
+| `clipmaxx` | Clip Max X | Float | [1.0] | -10.0 .. 10.0 |  |
+| `doclipymin` | Doclipymin | Toggle | false |  |  |
+| `clipminy` | Clip Min Y | Float | [-1.0] | -10.0 .. 10.0 |  |
+| `doclipymax` | Doclipymax | Toggle | false |  |  |
+| `clipmaxy` | Clip Max Y | Float | [1.0] | -10.0 .. 10.0 |  |
+| `doclipzmin` | Doclipzmin | Toggle | false |  |  |
+| `clipminz` | Clip Min Z | Float | [-1.0] | -10.0 .. 10.0 |  |
+| `doclipzmax` | Doclipzmax | Toggle | false |  |  |
+| `clipmaxz` | Clip Max Z | Float | [1.0] | -10.0 .. 10.0 |  |
+| `folder11` |  | FolderSet |  |  |  |
+| `reffields` | Reference Fields | Menu | 1 |  | density, temperature, flame |
+| `refcutoff` | Reference Cutoff | Float | [0.001] | 0.0 .. 0.05 |  |
+| `folder79` |  | FolderSet |  |  |  |
+| `activatefields` | Activate Fields | Menu | 7 |  | density, temperature, v, flame, divergence |
+| `activatefeedbacks` | Activate Feedbacks | String | [""] |  |  |
+| `folder80` |  | FolderSet |  |  |  |
+| `useleafdilation` | Leaf Padding | Toggle | true |  |  |
+| `leafdilation` | Leaf Padding | Int | [1] | 1 .. 5 (strict) |  |
+| `useleafdilationdist` | Padding Distance | Toggle | false |  |  |
+| `leafdilationdist` | Padding Distance | Float | [0.1] | 0.0 .. 1.0 (strict) |  |
+| `veldilate` | Pad by Velocity | Toggle | true |  |  |
+| `velscale` | Velocity Scale | Float | [1.0] | 0.0 .. 5.0 (strict) |  |
+| `tangscale` | Tangential Scale | Float | [0.5] | 0.0 .. 1.0 |  |
+| `enable_collision` | Enable Collision | Toggle | true |  |  |
+| `folder54` |  | FolderSet |  |  |  |
+| `collisionv_scale` | Velocity Scale | Float | [1.0] | 0.0 .. 10.0 (strict) |  |
+| `correctcollision` | Correct Collisions | Toggle | true |  |  |
+| `source_density` | Source Density | Toggle | true |  |  |
+| `folder6` |  | FolderSet |  |  |  |
+| `density_activation` | Activation | Int | [1] | 0 .. 1 (strict) |  |
+| `density_sourcemode` | Source Mode | Menu | 0 |  | continuous , firstonly, copyonfirst |
+| `density_operation` | Operation | Menu | 0 |  | add, copy, max, average, blend, pull |
+| `density_scale` | Scale | Float | [1.0] | 0.0 .. 10.0 (strict) |  |
+| `density_usetimeinc` | Scale by Timestep | Toggle | true |  |  |
+| `density_blend` | Blend | Float | [0.5] | 0.0 .. 1.0 (strict) |  |
+| `density_accel` | Acceleration | Float | [0.5] | 0.0 .. 1.0 (strict) |  |
+| `density_decel` | Deceleration | Float | [0.5] | 0.0 .. 1.0 (strict) |  |
+| `source_temperature` | Source Temperature | Toggle | true |  |  |
+| `folder7` |  | FolderSet |  |  |  |
+| `temperature_activation` | Activation | Int | [1] | 0 .. 1 (strict) |  |
+| `temperature_sourcemode` | Source Mode | Menu | 0 |  | continuous , firstonly, copyonfirst |
+| `temperature_operation` | Operation | Menu | 0 |  | add, copy, max, average, blend, pull |
+| `temperature_scale` | Scale | Float | [1.0] | 0.0 .. 10.0 (strict) |  |
+| `temperature_usetimeinc` | Scale by Timestep | Toggle | true |  |  |
+| `temperature_blend` | Blend | Float | [0.5] | 0.0 .. 1.0 (strict) |  |
+| `temperature_accel` | Acceleration | Float | [0.5] | 0.0 .. 1.0 (strict) |  |
+| `temperature_decel` | Deceleration | Float | [0.5] | 0.0 .. 1.0 (strict) |  |
+| `source_v` | Source Velocity | Toggle | true |  |  |
+| `folder8` |  | FolderSet |  |  |  |
+| `v_activation` | Activation | Int | [1] | 0 .. 1 (strict) |  |
+| `v_sourcemode` | Source Mode | Menu | 0 |  | continuous , firstonly, copyonfirst |
+| `v_operation` | Operation | Menu | 0 |  | add, copy, max, average, blend, pull |
+| `v_scale` | Scale | Float | [1.0] | 0.0 .. 10.0 (strict) |  |
+| `v_usetimeinc` | Scale by Timestep | Toggle | true |  |  |
+| `v_blend` | Blend | Float | [0.5] | 0.0 .. 1.0 (strict) |  |
+| `v_accel` | Acceleration | Float | [0.5] | 0.0 .. 1.0 (strict) |  |
+| `v_decel` | Deceleration | Float | [0.5] | 0.0 .. 1.0 (strict) |  |
+| `source_flame` | Source Flame | Toggle | false |  |  |
+| `folder58` |  | FolderSet |  |  |  |
+| `flame_activation` | Activation | Int | [1] | 0 .. 1 (strict) |  |
+| `flame_sourcemode` | Source Mode | Menu | 0 |  | continuous , firstonly, copyonfirst |
+| `flame_operation` | Operation | Menu | 0 |  | add, copy, max, average, blend, pull |
+| `flame_scale` | Scale | Float | [1.0] | 0.0 .. 10.0 (strict) |  |
+| `flame_usetimeinc` | Scale by Timestep | Toggle | true |  |  |
+| `flame_blend` | Blend | Float | [0.5] | 0.0 .. 1.0 (strict) |  |
+| `flame_accel` | Acceleration | Float | [0.5] | 0.0 .. 1.0 (strict) |  |
+| `flame_decel` | Deceleration | Float | [0.5] | 0.0 .. 1.0 (strict) |  |
+| `source_divergence` | Source Divergence | Toggle | false |  |  |
+| `folder59` |  | FolderSet |  |  |  |
+| `divergence_activation` | Activation | Int | [1] | 0 .. 1 (strict) |  |
+| `divergence_sourcemode` | Source Mode | Menu | 0 |  | continuous , firstonly, copyonfirst |
+| `divergence_operation` | Operation | Menu | 0 |  | add, copy, max, average, blend, pull |
+| `divergence_scale` | Scale | Float | [1.0] | 0.0 .. 10.0 (strict) |  |
+| `divergence_usetimeinc` | Scale by Timestep | Toggle | true |  |  |
+| `divergence_blend` | Blend | Float | [0.5] | 0.0 .. 1.0 (strict) |  |
+| `divergence_accel` | Acceleration | Float | [0.5] | 0.0 .. 1.0 (strict) |  |
+| `divergence_decel` | Deceleration | Float | [0.5] | 0.0 .. 1.0 (strict) |  |
+| `folder21` |  | FolderSet |  |  |  |
+| `dissipatedensity` | Density Dissipation | Toggle | true |  |  |
+| `folder4` |  | FolderSet |  |  |  |
+| `density_dissipationrate` | Dissipation | Float | [0.1] | 0.0 .. 1.0 (strict) |  |
+| `density_dissipateusecontrol` | Use Control Field | Toggle | false |  |  |
+| `folder14` |  | FolderSet |  |  |  |
+| `density_dissipatecontrolfield` | Control Field | String | ["temperature"] |  |  |
+| `density_dissipatecontrolrangemin` | Control Range | Float | 0.0 | 0.0 .. 1.0 |  |
+| `density_dissipatecontrolrangemax` | Control Range | Float | 1.0 | 0.0 .. 1.0 |  |
+| `density_dissipateremapcontrol` | Remap Control | Toggle | false |  |  |
+| `folder29` |  | FolderSet |  |  |  |
+| `density_dissipatecontrolramp` | Control Ramp | Ramp | 2 |  |  |
+| `density_dissipateuseaxiscontrol` | Use Axis Control | Toggle | false |  |  |
+| `folder22` |  | FolderSet |  |  |  |
+| `density_dissipateaxiscontroldir` | Direction | Menu | 1 |  | x, y, z |
+| `density_dissipateaxiscontrolmin` | Axis Range | Float | 0.0 | 0.0 .. 1.0 |  |
+| `density_dissipateaxiscontrolmax` | Axis Range | Float | 1.0 | 0.0 .. 1.0 |  |
+| `density_dissipateremapaxiscontrol` | Remap Axis | Toggle | false |  |  |
+| `folder31` |  | FolderSet |  |  |  |
+| `density_dissipateaxiscontrolramp` | Axis Ramp | Ramp | 2 |  |  |
+| `diffusedensity` | Density Diffusion | Toggle | false |  |  |
+| `folder24` |  | FolderSet |  |  |  |
+| `density_diffusion` | Diffusion | Float | [1.0] | 0.0 .. 10.0 (strict) |  |
+| `density_diffuseusecontrol` | Use Control Field | Toggle | false |  |  |
+| `folder25` |  | FolderSet |  |  |  |
+| `density_diffusecontrolfield` | Control Field | String | ["temperature"] |  |  |
+| `density_diffusecontrolrangemin` | Control Range | Float | 0.0 | 0.0 .. 1.0 |  |
+| `density_diffusecontrolrangemax` | Control Range | Float | 1.0 | 0.0 .. 1.0 |  |
+| `density_diffuseremapcontrol` | Remap Control | Toggle | false |  |  |
+| `folder34` |  | FolderSet |  |  |  |
+| `density_diffusecontrolramp` | Control Ramp | Ramp | 2 |  |  |
+| `folder23` |  | FolderSet |  |  |  |
+| `cooltemperature` | Temperature Cooling | Toggle | true |  |  |
+| `folder27` |  | FolderSet |  |  |  |
+| `temperature_coolingrate` | Cooling | Float | [0.65] | 0.0 .. 1.0 (strict) |  |
+| `temperature_coolingusecontrol` | Use Control Field | Toggle | false |  |  |
+| `folder28` |  | FolderSet |  |  |  |
+| `temperature_coolingcontrolfield` | Control Field | String | ["density"] |  |  |
+| `temperature_coolingcontrolrangemin` | Control Range | Float | 0.0 | 0.0 .. 1.0 |  |
+| `temperature_coolingcontrolrangemax` | Control Range | Float | 1.0 | 0.0 .. 1.0 |  |
+| `temperature_coolingremapcontrol` | Remap Control | Toggle | false |  |  |
+| `folder55` |  | FolderSet |  |  |  |
+| `temperature_coolingcontrolramp` | Control Ramp | Ramp | 2 |  |  |
+| `temperature_coolinguseaxiscontrol` | Use Axis Control | Toggle | false |  |  |
+| `folder30` |  | FolderSet |  |  |  |
+| `temperature_coolingaxiscontroldir` | Direction | Menu | 1 |  | x, y, z |
+| `temperature_coolingaxiscontrolmin` | Axis Range | Float | 0.0 | 0.0 .. 1.0 |  |
+| `temperature_coolingaxiscontrolmax` | Axis Range | Float | 1.0 | 0.0 .. 1.0 |  |
+| `temperature_coolingremapaxiscontrol` | Remap Axis | Toggle | false |  |  |
+| `folder60` |  | FolderSet |  |  |  |
+| `temperature_coolingaxiscontrolramp` | Axis Ramp | Ramp | 2 |  |  |
+| `diffusetemperature` | Temperature Diffusion | Toggle | false |  |  |
+| `folder32` |  | FolderSet |  |  |  |
+| `temperature_diffusion` | Diffusion | Float | [1.0] | 0.0 .. 10.0 (strict) |  |
+| `temperature_diffuseusecontrol` | Use Control Field | Toggle | false |  |  |
+| `folder33` |  | FolderSet |  |  |  |
+| `temperature_diffusecontrolfield` | Control Field | String | ["density"] |  |  |
+| `temperature_diffusecontrolrangemin` | Control Range | Float | 0.0 | 0.0 .. 1.0 |  |
+| `temperature_diffusecontrolrangemax` | Control Range | Float | 1.0 | 0.0 .. 1.0 |  |
+| `temperature_diffuseremapcontrol` | Remap Control | Toggle | false |  |  |
+| `temperature_diffusecontrolramp` | Control Ramp | Ramp | 2 |  |  |
+| `folder26` |  | FolderSet |  |  |  |
+| `coolflame` | Flame Cooling | Toggle | true |  |  |
+| `folder56` |  | FolderSet |  |  |  |
+| `flame_coolingrate` | Cooling | Float | [0.65] | 0.0 .. 1.0 (strict) |  |
+| `flame_coolingusecontrol` | Use Control Field | Toggle | false |  |  |
+| `folder57` |  | FolderSet |  |  |  |
+| `flame_coolingcontrolfield` | Control Field | String | ["temperature"] |  |  |
+| `flame_coolingcontrolrangemin` | Control Range | Float | 0.0 | 0.0 .. 1.0 |  |
+| `flame_coolingcontrolrangemax` | Control Range | Float | 1.0 | 0.0 .. 1.0 |  |
+| `flame_coolingremapcontrol` | Remap Control | Toggle | false |  |  |
+| `folder64` |  | FolderSet |  |  |  |
+| `flame_coolingcontrolramp` | Control Ramp | Ramp | 2 |  |  |
+| `emitdensity` | Emit Density | Toggle | false |  |  |
+| `folder61` |  | FolderSet |  |  |  |
+| `density_emissionoperation` | Operation | Menu | 0 |  | add, max, pull |
+| `density_emissionscale` | Emission Scale | Float | [1.0] | 0.0 .. 10.0 |  |
+| `density_emissionflamerangemin` | Flame Range | Float | 0.2 | 0.0 .. 10.0 |  |
+| `density_emissionflamerangemax` | Flame Range | Float | 0.5 | 0.0 .. 10.0 |  |
+| `density_doemissionrange` | Emission Range | Toggle | false |  |  |
+| `density_emissionrangemin` | Emission Range | Float | 0.0 | 0.0 .. 10.0 |  |
+| `density_emissionrangemax` | Emission Range | Float | 1.0 | 0.0 .. 10.0 |  |
+| `density_emissionaccel` | Strength | Float | [0.5] | 0.0 .. 1.0 (strict) |  |
+| `density_emissionremapsource` | Remap Flame | Toggle | false |  |  |
+| `density_emissionsourceramp` | Flame Ramp | Ramp | 2 |  |  |
+| `density_emissionusecontrol` | Use Control Field | Toggle | false |  |  |
+| `folder63` |  | FolderSet |  |  |  |
+| `density_emissioncontrolfield` | Control Field | String | ["temperature"] |  |  |
+| `density_emissioncontrolrangemin` | Control Range | Float | 0.0 | 0.0 .. 1.0 |  |
+| `density_emissioncontrolrangemax` | Control Range | Float | 1.0 | 0.0 .. 1.0 |  |
+| `density_emissionremapcontrol` | Remap Control | Toggle | false |  |  |
+| `folder49` |  | FolderSet |  |  |  |
+| `density_emissioncontrolramp` | Control Ramp | Ramp | 2 |  |  |
+| `emittemperature` | Emit Temperature | Toggle | false |  |  |
+| `folder65` |  | FolderSet |  |  |  |
+| `temperature_emissionoperation` | Operation | Menu | 0 |  | add, max, pull |
+| `temperature_emissionscale` | Emission Scale | Float | [1.0] | 0.0 .. 10.0 |  |
+| `temperature_emissionflamerangemin` | Flame Range | Float | 0.2 | 0.0 .. 10.0 |  |
+| `temperature_emissionflamerangemax` | Flame Range | Float | 0.5 | 0.0 .. 10.0 |  |
+| `temperature_doemissionrange` | Emission Range | Toggle | false |  |  |
+| `temperature_emissionrangemin` | Emission Range | Float | 0.0 | 0.0 .. 10.0 |  |
+| `temperature_emissionrangemax` | Emission Range | Float | 1.0 | 0.0 .. 10.0 |  |
+| `temperature_emissionaccel` | Strength | Float | [0.5] | 0.0 .. 1.0 (strict) |  |
+| `temperature_emissionremapsource` | Remap Flame | Toggle | false |  |  |
+| `temperature_emissionsourceramp` | Flame Ramp | Ramp | 2 |  |  |
+| `temperature_emissionusecontrol` | Use Control Field | Toggle | false |  |  |
+| `folder67` |  | FolderSet |  |  |  |
+| `temperature_emissioncontrolfield` | Control Field | String | ["density"] |  |  |
+| `temperature_emissioncontrolrangemin` | Control Range | Float | 0.0 | 0.0 .. 1.0 |  |
+| `temperature_emissioncontrolrangemax` | Control Range | Float | 1.0 | 0.0 .. 1.0 |  |
+| `temperature_emissionremapcontrol` | Remap Control | Toggle | false |  |  |
+| `folder62` |  | FolderSet |  |  |  |
+| `temperature_emissioncontrolramp` | Control Ramp | Ramp | 2 |  |  |
+| `doexpansion` | Expansion | Toggle | false |  |  |
+| `folder69` |  | FolderSet |  |  |  |
+| `div_operation` | Operation | Menu | 0 |  | add, max, pull |
+| `div_scale` | Expansion Scale | Float | [1.0] | 0.0 .. 1.0 |  |
+| `div_flamerangemin` | Flame Range | Float | 0.2 | 0.0 .. 10.0 |  |
+| `div_flamerangemax` | Flame Range | Float | 0.5 | 0.0 .. 10.0 |  |
+| `div_doemissionrange` | Emission Range | Toggle | false |  |  |
+| `div_emissionrangemin` | Emission Range | Float | 0.0 | 0.0 .. 10.0 |  |
+| `div_emissionrangemax` | Emission Range | Float | 1.0 | 0.0 .. 10.0 |  |
+| `div_accel` | Strength | Float | [0.5] | 0.0 .. 1.0 (strict) |  |
+| `div_remapsource` | Remap Flame | Toggle | false |  |  |
+| `div_sourceramp` | Flame Ramp | Ramp | 2 |  |  |
+| `div_usecontrol` | Use Control Field | Toggle | false |  |  |
+| `folder71` |  | FolderSet |  |  |  |
+| `div_controlfield` | Control Field | String | ["temperature"] |  |  |
+| `div_controlrangemin` | Control Range | Float | 0.0 | 0.0 .. 1.0 |  |
+| `div_controlrangemax` | Control Range | Float | 1.0 | 0.0 .. 1.0 |  |
+| `div_remapcontrol` | Remap Control | Toggle | false |  |  |
+| `folder66` |  | FolderSet |  |  |  |
+| `div_controlramp` | Control Ramp | Ramp | 2 |  |  |
+| `enablebuoyancy` | Enable Buoyancy | Toggle | true |  |  |
+| `folder10` |  | FolderSet |  |  |  |
+| `buoyancyscale` | Buoyancy Scale | Float | [1.0] | 0.0 .. 10.0 (strict) |  |
+| `buoyancytemp0` | Ambient Temp (K) | Float | [300.0] | 0.0 .. 500.0 (strict) |  |
+| `buoyancytemp1` | Reference Temp (K) | Float | [3000.0] | 0.0 .. 5000.0 (strict) |  |
+| `buoyancyambient` | Equilibrium Temp | Float | [0.0] | 0.0 .. 10.0 |  |
+| `buoyancygravaccel` | Gravity Acceleration | Float | [9.806] | 0.0 .. 10.0 (strict) |  |
+| `buoyancydirx` | Direction | Float | 0.0 | 0.0 .. 1.0 |  |
+| `buoyancydiry` | Direction | Float | 1.0 | 0.0 .. 1.0 |  |
+| `buoyancydirz` | Direction | Float | 0.0 | 0.0 .. 1.0 |  |
+| `buoyancy_usethreshold` | Threshold Volume | Toggle | false |  |  |
+| `folder35` |  | FolderSet |  |  |  |
+| `buoyancy_thresholdfield` | Control Field | String | ["density"] |  |  |
+| `buoyancy_thresholdrangemin` | Threshold Range | Float | 0.01 | 0.0 .. 10.0 |  |
+| `buoyancy_thresholdrangemax` | Threshold Range | Float | 0.0 | 0.0 .. 10.0 |  |
+| `buoyancy_remapthreshold` | Remap Threshold | Toggle | false |  |  |
+| `folder36` |  | FolderSet |  |  |  |
+| `buoyancy_thresholdramp` | Threshold Ramp | Ramp | 2 |  |  |
+| `buoyancy_usecontrol` | Control Volume | Toggle | false |  |  |
+| `folder37` |  | FolderSet |  |  |  |
+| `buoyancy_controlfield` | Control Field | String | ["density"] |  |  |
+| `buoyancy_controlrangemin` | Control Range | Float | 0.0 | 0.0 .. 10.0 |  |
+| `buoyancy_controlrangemax` | Control Range | Float | 1.0 | 0.0 .. 10.0 |  |
+| `buoyancy_remapcontrol` | Remap Control | Toggle | false |  |  |
+| `folder38` |  | FolderSet |  |  |  |
+| `buoyancy_controlramp` | Control Ramp | Ramp | 2 |  |  |
+| `enabledisturbance` | Enable Disturbance | Toggle | false |  |  |
+| `folder42` |  | FolderSet |  |  |  |
+| `disturbance_mode` | Mode | Menu | 1 |  | cont, blocks |
+| `disturbance` | Disturbance | Float | [1.0] | 0.0 .. 10.0 (strict) |  |
+| `disturbance_refscale` | Reference Scale | Float | [0.2] | 0.0 .. 1.0 (strict) |  |
+| `disturbance_blocksize` | Block Size | Float | [0.2] | 0.0 .. 1.0 (strict) |  |
+| `disturbance_pulselength` | Pulse Length | Float | [0.2] | 0.0 .. 1.0 (strict) |  |
+| `folder43` |  | FolderSet |  |  |  |
+| `disturbance_oct` | Max Octaves | Int | [3] | 1 .. 8 (strict) |  |
+| `disturbance_lac` | Lacunarity | Float | [2.01234] | 0.0 .. 4.0 (strict) |  |
+| `disturbance_rough` | Roughness | Float | [0.5] | 0.0 .. 1.0 (strict) |  |
+| `disturbance_rotationalforce` | Rotational Force | Toggle | false |  |  |
+| `disturbance_usethreshold` | Threshold Volume | Toggle | true |  |  |
+| `folder44` |  | FolderSet |  |  |  |
+| `disturbance_thresholdfield` | Threshold Field | String | ["density"] |  |  |
+| `disturbance_thresholdrangemin` | Threshold Range | Float | 0.01 | 0.0 .. 10.0 |  |
+| `disturbance_thresholdrangemax` | Threshold Range | Float | 0.0 | 0.0 .. 10.0 |  |
+| `disturbance_remapthreshold` | Remap Threshold | Toggle | false |  |  |
+| `folder45` |  | FolderSet |  |  |  |
+| `disturbance_thresholdramp` | Threshold Ramp | Ramp | 2 |  |  |
+| `disturbance_usecontrol` | Control Volume | Toggle | false |  |  |
+| `folder46` |  | FolderSet |  |  |  |
+| `disturbance_controlfield` | Control Field | String | ["v"] |  |  |
+| `disturbance_controlrangemin` | Control Range | Float | 0.0 | 0.0 .. 10.0 |  |
+| `disturbance_controlrangemax` | Control Range | Float | 1.0 | 0.0 .. 10.0 |  |
+| `disturbance_remapcontrol` | Remap Control | Toggle | false |  |  |
+| `folder47` |  | FolderSet |  |  |  |
+| `disturbance_controlramp` | Control Ramp | Ramp | 2 |  |  |
+| `enableturbulance` | Enable Turbulence | Toggle | false |  |  |
+| `folder48` |  | FolderSet |  |  |  |
+| `turbulence_amp` | Amplitude | Float | [1.0] | 0.0 .. 10.0 (strict) |  |
+| `turbulence_amptype` | Amplitude Type | Menu | 0 |  | BUTTONS_decompose_transforms |
+| `turbulence_ampscalex` | Amplitude Scale | Float | 1.0 | 0.0 .. 10.0 |  |
+| `turbulence_ampscaley` | Amplitude Scale | Float | 1.0 | 0.0 .. 10.0 |  |
+| `turbulence_ampscalez` | Amplitude Scale | Float | 1.0 | 0.0 .. 10.0 |  |
+| `turbulence_elementsize` | Element Size | Float | [1.0] | 0.0 .. 10.0 (strict) |  |
+| `turbulence_elementtype` | Element Type | Menu | 0 |  | BUTTONS_decompose_transforms |
+| `turbulence_elementscalex` | Element Scale | Float | 1.0 | 0.0 .. 10.0 |  |
+| `turbulence_elementscaley` | Element Scale | Float | 1.0 | 0.0 .. 10.0 |  |
+| `turbulence_elementscalez` | Element Scale | Float | 1.0 | 0.0 .. 10.0 |  |
+| `turbulence_pulseduration` | Pulse Duration | Float | [1.0] | 0.0 .. 10.0 (strict) |  |
+| `turbulence_oct` | Max Octaves | Int | [3] | 1 .. 8 (strict) |  |
+| `turbulence_lac` | Lacunarity | Float | [2.01234] | 0.0 .. 4.0 (strict) |  |
+| `turbulence_rough` | Roughness | Float | [0.5] | 0.0 .. 1.0 (strict) |  |
+| `turbulence_seed` | Seed | Float | [0.0] | 0.0 .. 100.0 |  |
+| `turbulence_usethreshold` | Threshold Volume | Toggle | true |  |  |
+| `folder50` |  | FolderSet |  |  |  |
+| `turbulence_thresholdfield` | Threshold Field | String | ["density"] |  |  |
+| `turbulence_thresholdrangemin` | Threshold Range | Float | 0.01 | 0.0 .. 10.0 |  |
+| `turbulence_thresholdrangemax` | Threshold Range | Float | 0.0 | 0.0 .. 10.0 |  |
+| `turbulence_remapthreshold` | Remap Threshold | Toggle | false |  |  |
+| `folder51` |  | FolderSet |  |  |  |
+| `turbulence_thresholdramp` | Threshold Ramp | Ramp | 2 |  |  |
+| `turbulence_usecontrol` | Control Volume | Toggle | false |  |  |
+| `folder52` |  | FolderSet |  |  |  |
+| `turbulence_controlfield` | Control Field | String | ["v"] |  |  |
+| `turbulence_controlrangemin` | Control Range | Float | 0.0 | 0.0 .. 10.0 |  |
+| `turbulence_controlrangemax` | Control Range | Float | 1.0 | 0.0 .. 10.0 |  |
+| `turbulence_remapcontrol` | Remap Control | Toggle | false |  |  |
+| `folder53` |  | FolderSet |  |  |  |
+| `turbulence_controlramp` | Control Ramp | Ramp | 2 |  |  |
+| `enableviscosity` | Enable Viscosity | Toggle | false |  |  |
+| `folder39` |  | FolderSet |  |  |  |
+| `viscosity` | Viscosity | Float | [1.0] | 0.0 .. 10.0 (strict) |  |
+| `viscosity_usecontrol` | Use Control Field | Toggle | false |  |  |
+| `folder40` |  | FolderSet |  |  |  |
+| `viscosity_controlfield` | Control Field | String | ["temperature"] |  |  |
+| `viscosity_controlrangemin` | Control Range | Float | 0.0 | 0.0 .. 1.0 |  |
+| `viscosity_controlrangemax` | Control Range | Float | 1.0 | 0.0 .. 1.0 |  |
+| `viscosity_remapcontrol` | Remap Control | Toggle | false |  |  |
+| `folder41` |  | FolderSet |  |  |  |
+| `viscosity_controlramp` | Control Ramp | Ramp | 2 |  |  |
+| `enablevortexconfinement` | Enable Vortex Confinement | Toggle | false |  |  |
+| `folder12` |  | FolderSet |  |  |  |
+| `vortex_type` | Type | Menu | 0 |  | first, second |
+| `vortex_scale` | Scale | Float | [1.0] | 0.0 .. 10.0 (strict) |  |
+| `vortex_positivediffusionscale` | Positive Diffusion Scale | Float | [0.1] | 0.0001 .. 1.0 |  |
+| `vortex_negativediffusionscale` | Negative Diffusion Scale | Float | [0.15] | 0.0001 .. 1.0 |  |
+| `vortex_kernel` | Kernel Size | Int | [1] | 1 .. 3 (strict) |  |
+| `vortex_useenergytarget` | Energy Target | Toggle | false |  |  |
+| `vortex_energytarget` | Target Energy | Float | [1.0] | 0.0 .. 10.0 (strict) |  |
+| `vortex_adaptive` | Adaptive Confinement | Toggle | true |  |  |
+| `vortex_useband` | Frequency Separation | Toggle | false |  |  |
+| `folder70` |  | FolderSet |  |  |  |
+| `vortex_useminbandsize` | Min Swirl Size | Toggle | false |  |  |
+| `vortex_minbandsize` | Min Swirl Size | Float | [0.0] | 0.0 .. 10.0 |  |
+| `vortex_maxbandsize` | Max Swirl Size | Float | [0.2] | 0.0 .. 10.0 |  |
+| `vortex_usethreshold` | Threshold Volume | Toggle | false |  |  |
+| `folder68` |  | FolderSet |  |  |  |
+| `vortex_thresholdfield` | Threshold Field | String | ["density"] |  |  |
+| `vortex_thresholdrangemin` | Threshold Range | Float | 0.01 | 0.0 .. 10.0 |  |
+| `vortex_thresholdrangemax` | Threshold Range | Float | 0.0 | 0.0 .. 10.0 |  |
+| `vortex_remapthreshold` | Remap Threshold | Toggle | false |  |  |
+| `folder72` |  | FolderSet |  |  |  |
+| `vortex_thresholdramp` | Threshold Ramp | Ramp | 2 |  |  |
+| `vortex_usecontrol` | Control Volume | Toggle | false |  |  |
+| `folder73` |  | FolderSet |  |  |  |
+| `vortex_controlfield` | Control Field | String | ["v"] |  |  |
+| `vortex_controlrangemin` | Control Range | Float | 0.0 | 0.0 .. 10.0 |  |
+| `vortex_controlrangemax` | Control Range | Float | 1.0 | 0.0 .. 10.0 |  |
+| `vortex_remapcontrol` | Remap Control | Toggle | false |  |  |
+| `folder74` |  | FolderSet |  |  |  |
+| `vortex_controlramp` | Control Ramp | Ramp | 2 |  |  |
+| `enableambientvel` | Enable Ambient Velocity | Toggle | false |  |  |
+| `folder15` |  | FolderSet |  |  |  |
+| `ambientvelx` | Ambient Velocity | Float | 0.0 | -1.0 .. 1.0 |  |
+| `ambientvely` | Ambient Velocity | Float | 0.0 | -1.0 .. 1.0 |  |
+| `ambientvelz` | Ambient Velocity | Float | 0.0 | -1.0 .. 1.0 |  |
+| `enablevelscale` | Enable Velocity Scale | Toggle | false |  |  |
+| `folder75` |  | FolderSet |  |  |  |
+| `velscale_thresholdfield` | Threshold Field | String | ["v"] |  |  |
+| `velscale_thresholdrangemin` | Threshold Range | Float | 0.0 | 0.0 .. 10.0 (strict) |  |
+| `velscale_thresholdrangemax` | Threshold Range | Float | 10.0 | 0.0 .. 10.0 (strict) |  |
+| `velscale_scalemin` | Scale at Min Threshold | Float | [1.0] | 0.0 .. 2.0 (strict) |  |
+| `velscale_scalebelowmin` | Scale Below Threshold | Toggle | true |  |  |
+| `velscale_scalemax` | Scale at Max Threshold | Float | [1.0] | 0.0 .. 2.0 (strict) |  |
+| `velscale_scaleabovemax` | Scale Above Threshold | Toggle | true |  |  |
+| `velscale_remapscale` | Remap Scale Range | Toggle | false |  |  |
+| `velscale_scaleramp` | Scale Range Ramp | Ramp | 2 |  |  |
+| `velscale_usecontrol` | Control Volume | Toggle | false |  |  |
+| `folder76` |  | FolderSet |  |  |  |
+| `velscale_controlfield` | Control Field | String | ["temperature"] |  |  |
+| `velscale_controlrangemin` | Control Range | Float | 0.0 | 0.0 .. 10.0 |  |
+| `velscale_controlrangemax` | Control Range | Float | 1.0 | 0.0 .. 10.0 |  |
+| `velscale_remapcontrol` | Remap Control | Toggle | false |  |  |
+| `folder77` |  | FolderSet |  |  |  |
+| `velscale_controlramp` | Control Ramp | Ramp | 2 |  |  |
+| `folder18` |  | FolderSet |  |  |  |
+| `folder16` |  | FolderSet |  |  |  |
+| `advectfields` | Advect Fields | Menu | 7 |  | density, temperature, v, flame |
+| `advectfeedbacks` | Advect Feedbacks | String | [""] |  |  |
+| `folder19` |  | FolderSet |  |  |  |
+| `tracemethod` | Trace Method | Menu | 0 |  | forwardeuler, average, midpoint, rk3, rk4 |
+| `usepathtrace` | Path Trace | Toggle | true |  |  |
+| `folder78` |  | FolderSet |  |  |  |
+| `cflcond` | CFL Condition | Float | [1.5] | 0.0 .. 10.0 (strict) |  |
+| `maxstep` | Maximum Steps | Int | [100] | 1 .. 200 (strict) |  |
+| `adaptivestepsize` | Adaptive Step Size | Toggle | false |  |  |
+| `folder17` |  | FolderSet |  |  |  |
+| `field_advectscheme` | Scheme | Menu | 1 |  | bfecc, sharpen, sl |
+| `field_advectsharpen` | Sharpen | Float | [1.0] | 0.0 .. 1.0 |  |
+| `decoupleadvectscheme` | Separate Velocity Advection Scheme | Toggle | false |  |  |
+| `v_advectscheme` | Velocity Scheme | Menu | 1 |  | bfecc, sharpen, sl |
+| `v_advectsharpen` | Velocity Sharpen | Float | [1.0] | 0.0 .. 1.0 |  |
+| `folder0_2` |  | FolderSet |  |  |  |
+| `projectiterations` | Iterations | Int | [1] | 1 .. 10 (strict) |  |
+| `projectdohourglass` | Hourglass Filter | Toggle | false |  |  |
+| `projecthourglass` | Hourglass Filter | Float | [1.0] | 0.0 .. 1.0 |  |
+| `blockfeather` | Feather Blocks | Toggle | false |  |  |
+| `projectusepoint` | Point Pass | Toggle | false |  |  |
+| `folder1` |  | FolderSet |  |  |  |
+| `correctvelocity_timescale` | Correct by Time Scale | Toggle | true |  |  |
+| `correctvelocity_ambient` | Correct by Ambient Velocity | Toggle | true |  |  |
+| `density_dissipatecontrolramp1pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `density_dissipatecontrolramp1value` | Value | Float | [0.0] | 0.0 .. 10.0 |  |
+| `density_dissipatecontrolramp1interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `density_dissipatecontrolramp2pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `density_dissipatecontrolramp2value` | Value | Float | [0.0] | 0.0 .. 10.0 |  |
+| `density_dissipatecontrolramp2interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `density_dissipateaxiscontrolramp1pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `density_dissipateaxiscontrolramp1value` | Value | Float | [0.0] | 0.0 .. 10.0 |  |
+| `density_dissipateaxiscontrolramp1interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `density_dissipateaxiscontrolramp2pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `density_dissipateaxiscontrolramp2value` | Value | Float | [0.0] | 0.0 .. 10.0 |  |
+| `density_dissipateaxiscontrolramp2interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `density_diffusecontrolramp1pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `density_diffusecontrolramp1value` | Value | Float | [0.0] | 0.0 .. 10.0 |  |
+| `density_diffusecontrolramp1interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `density_diffusecontrolramp2pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `density_diffusecontrolramp2value` | Value | Float | [0.0] | 0.0 .. 10.0 |  |
+| `density_diffusecontrolramp2interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `temperature_coolingcontrolramp1pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `temperature_coolingcontrolramp1value` | Value | Float | [0.0] | 0.0 .. 10.0 |  |
+| `temperature_coolingcontrolramp1interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `temperature_coolingcontrolramp2pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `temperature_coolingcontrolramp2value` | Value | Float | [0.0] | 0.0 .. 10.0 |  |
+| `temperature_coolingcontrolramp2interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `temperature_coolingaxiscontrolramp1pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `temperature_coolingaxiscontrolramp1value` | Value | Float | [0.0] | 0.0 .. 10.0 |  |
+| `temperature_coolingaxiscontrolramp1interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `temperature_coolingaxiscontrolramp2pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `temperature_coolingaxiscontrolramp2value` | Value | Float | [0.0] | 0.0 .. 10.0 |  |
+| `temperature_coolingaxiscontrolramp2interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `temperature_diffusecontrolramp1pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `temperature_diffusecontrolramp1value` | Value | Float | [0.0] | 0.0 .. 10.0 |  |
+| `temperature_diffusecontrolramp1interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `temperature_diffusecontrolramp2pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `temperature_diffusecontrolramp2value` | Value | Float | [0.0] | 0.0 .. 10.0 |  |
+| `temperature_diffusecontrolramp2interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `flame_coolingcontrolramp1pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `flame_coolingcontrolramp1value` | Value | Float | [0.0] | 0.0 .. 10.0 |  |
+| `flame_coolingcontrolramp1interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `flame_coolingcontrolramp2pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `flame_coolingcontrolramp2value` | Value | Float | [0.0] | 0.0 .. 10.0 |  |
+| `flame_coolingcontrolramp2interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `density_emissionsourceramp1pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `density_emissionsourceramp1value` | Value | Float | [0.0] | 0.0 .. 10.0 |  |
+| `density_emissionsourceramp1interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `density_emissionsourceramp2pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `density_emissionsourceramp2value` | Value | Float | [0.0] | 0.0 .. 10.0 |  |
+| `density_emissionsourceramp2interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `density_emissioncontrolramp1pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `density_emissioncontrolramp1value` | Value | Float | [0.0] | 0.0 .. 10.0 |  |
+| `density_emissioncontrolramp1interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `density_emissioncontrolramp2pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `density_emissioncontrolramp2value` | Value | Float | [0.0] | 0.0 .. 10.0 |  |
+| `density_emissioncontrolramp2interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `temperature_emissionsourceramp1pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `temperature_emissionsourceramp1value` | Value | Float | [0.0] | 0.0 .. 10.0 |  |
+| `temperature_emissionsourceramp1interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `temperature_emissionsourceramp2pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `temperature_emissionsourceramp2value` | Value | Float | [0.0] | 0.0 .. 10.0 |  |
+| `temperature_emissionsourceramp2interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `temperature_emissioncontrolramp1pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `temperature_emissioncontrolramp1value` | Value | Float | [0.0] | 0.0 .. 10.0 |  |
+| `temperature_emissioncontrolramp1interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `temperature_emissioncontrolramp2pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `temperature_emissioncontrolramp2value` | Value | Float | [0.0] | 0.0 .. 10.0 |  |
+| `temperature_emissioncontrolramp2interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `div_sourceramp1pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `div_sourceramp1value` | Value | Float | [0.0] | 0.0 .. 10.0 |  |
+| `div_sourceramp1interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `div_sourceramp2pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `div_sourceramp2value` | Value | Float | [0.0] | 0.0 .. 10.0 |  |
+| `div_sourceramp2interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `div_controlramp1pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `div_controlramp1value` | Value | Float | [0.0] | 0.0 .. 10.0 |  |
+| `div_controlramp1interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `div_controlramp2pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `div_controlramp2value` | Value | Float | [0.0] | 0.0 .. 10.0 |  |
+| `div_controlramp2interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `buoyancy_thresholdramp1pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `buoyancy_thresholdramp1value` | Value | Float | [0.0] | 0.0 .. 10.0 |  |
+| `buoyancy_thresholdramp1interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `buoyancy_thresholdramp2pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `buoyancy_thresholdramp2value` | Value | Float | [0.0] | 0.0 .. 10.0 |  |
+| `buoyancy_thresholdramp2interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `buoyancy_controlramp1pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `buoyancy_controlramp1value` | Value | Float | [0.0] | 0.0 .. 10.0 |  |
+| `buoyancy_controlramp1interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `buoyancy_controlramp2pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `buoyancy_controlramp2value` | Value | Float | [0.0] | 0.0 .. 10.0 |  |
+| `buoyancy_controlramp2interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `disturbance_thresholdramp1pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `disturbance_thresholdramp1value` | Value | Float | [0.0] | 0.0 .. 10.0 |  |
+| `disturbance_thresholdramp1interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `disturbance_thresholdramp2pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `disturbance_thresholdramp2value` | Value | Float | [0.0] | 0.0 .. 10.0 |  |
+| `disturbance_thresholdramp2interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `disturbance_controlramp1pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `disturbance_controlramp1value` | Value | Float | [0.0] | 0.0 .. 10.0 |  |
+| `disturbance_controlramp1interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `disturbance_controlramp2pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `disturbance_controlramp2value` | Value | Float | [0.0] | 0.0 .. 10.0 |  |
+| `disturbance_controlramp2interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `turbulence_thresholdramp1pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `turbulence_thresholdramp1value` | Value | Float | [0.0] | 0.0 .. 10.0 |  |
+| `turbulence_thresholdramp1interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `turbulence_thresholdramp2pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `turbulence_thresholdramp2value` | Value | Float | [0.0] | 0.0 .. 10.0 |  |
+| `turbulence_thresholdramp2interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `turbulence_controlramp1pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `turbulence_controlramp1value` | Value | Float | [0.0] | 0.0 .. 10.0 |  |
+| `turbulence_controlramp1interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `turbulence_controlramp2pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `turbulence_controlramp2value` | Value | Float | [0.0] | 0.0 .. 10.0 |  |
+| `turbulence_controlramp2interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `viscosity_controlramp1pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `viscosity_controlramp1value` | Value | Float | [0.0] | 0.0 .. 10.0 |  |
+| `viscosity_controlramp1interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `viscosity_controlramp2pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `viscosity_controlramp2value` | Value | Float | [0.0] | 0.0 .. 10.0 |  |
+| `viscosity_controlramp2interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `vortex_thresholdramp1pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `vortex_thresholdramp1value` | Value | Float | [0.0] | 0.0 .. 10.0 |  |
+| `vortex_thresholdramp1interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `vortex_thresholdramp2pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `vortex_thresholdramp2value` | Value | Float | [0.0] | 0.0 .. 10.0 |  |
+| `vortex_thresholdramp2interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `vortex_controlramp1pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `vortex_controlramp1value` | Value | Float | [0.0] | 0.0 .. 10.0 |  |
+| `vortex_controlramp1interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `vortex_controlramp2pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `vortex_controlramp2value` | Value | Float | [0.0] | 0.0 .. 10.0 |  |
+| `vortex_controlramp2interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `velscale_scaleramp1pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `velscale_scaleramp1value` | Value | Float | [0.0] | 0.0 .. 10.0 |  |
+| `velscale_scaleramp1interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `velscale_scaleramp2pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `velscale_scaleramp2value` | Value | Float | [0.0] | 0.0 .. 10.0 |  |
+| `velscale_scaleramp2interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `velscale_controlramp1pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `velscale_controlramp1value` | Value | Float | [0.0] | 0.0 .. 10.0 |  |
+| `velscale_controlramp1interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `velscale_controlramp2pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `velscale_controlramp2value` | Value | Float | [0.0] | 0.0 .. 10.0 |  |
+| `velscale_controlramp2interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |

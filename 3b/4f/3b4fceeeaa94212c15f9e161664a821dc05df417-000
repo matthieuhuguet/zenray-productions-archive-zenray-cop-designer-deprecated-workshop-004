@@ -1,0 +1,26 @@
+# switchbytype
+
+- Label: Switch by Type
+- Category: Copernicus (`Cop`), Houdini 22.0.368
+- Inputs: 0 to 2048
+- Parameters: 2 (exact, read from Houdini by hython)
+- Used by the height graph: no
+
+## Feature summary (web, SideFX reference)
+
+- Source: https://www.sidefx.com/docs/houdini/nodes/cop/switchbytype.html
+- Summary (EN): Switch by Type chooses one of its inputs according to the type of the layers connected to it. The choice happens during type inference, so it can change the output type, which helps build HDAs that accept several input signatures.
+- Résumé (FR) : Switch by Type choisit une entrée selon le type des calques connectés, ce qui permet de construire des HDA qui acceptent plusieurs signatures d'entrée.
+
+- Inputs meaning: ["type_ref: the layer tested against the type rules", "choice1, choice2, ...: optional inputs, each tied to a rule, evaluated in order"]
+
+- Key parameters: ["If No Matches: Unwire, Use Test Input (outputs type_ref), or Use First Choice", "Choice #: negates the rule, accepting where it would have rejected and rejecting where it would have accepted", "Rule #: type to match, one of Any, Layer, Mono/Color, ID, Mono, UV, RGB, RGBA, Geometry, Metadata", "Output Type: First Choice, ID, Mono, UV, RGB, RGBA, Geometry, Metadata"]
+
+- Caveats: ["The first rule that passes is used, further rules are not tested", "Only legal paths should be marked for computation, otherwise a type error is generated", "The page notes the node can be quite confusing to use", "Identity matched from the page title and the Copernicus index link, the page body does not repeat the internal name"]
+
+## Parameters (exact, from the installed Houdini)
+
+| parameter | label | type | default | range | menu tokens |
+|---|---|---|---|---|---|
+| `nomatchrule` | If No Matches | Menu | 0 |  | none, test, first |
+| `inputs` | Inputs | Folder | 0 |  |  |

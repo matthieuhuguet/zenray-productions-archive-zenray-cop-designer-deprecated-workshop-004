@@ -1,0 +1,70 @@
+# __STAMP__ : measures one exported height against the reference. Measures only; the reference pixels never enter a graph.
+# EN: prints one JSON line: means, deviations, row correlation, EQUIV (12 components, Metrics2) and the score used by the search.
+# FR : mesure une height exportée contre la référence. Mesures seulement ; les pixels de référence n'entrent dans aucun graphe.
+import argparse
+import json
+import subprocess
+import sys
+
+import numpy as np
+from PIL import Image
+
+REF = '/Users/zenray/Create/Build/Productions/ZenRayHoudini/LouisianaBayou/Heights/refs/window_height_ref.png'
+METRICS2 = '/Users/zenray/Create/Build/Productions/ZenRayHoudini/LouisianaBayou/Heights/Scripts/Metrics2.py'
+MEAN_TOLERANCE = 2.0     # EN: levels of mean error tolerated before the penalty starts. FR : tolérance de moyenne.
+MEAN_PENALTY = 0.01      # EN: score lost per level beyond the tolerance. FR : perte de score par niveau au-delà.
+QUANTILES = [1, 5, 25, 50, 75, 95, 99]
+# EN: the search objective is statistical (row structure, histogram quantiles, gradient energy, mean). EQUIV is reported only:
+# on 11 October 2026 an EQUIV-driven search raised EQUIV to 0.61 and produced a worse-looking height (streaks, blurred flakes).
+# FR : l'objectif est statistique ; l'EQUIV est affiché seulement (la recherche EQUIV a rendu une height plus mauvaise).
+
+
+
+def load(path):
+    return np.asarray(Image.open(path).convert('L'), dtype=np.float64)
+
+
+def equiv(path):
+    run = subprocess.run(['python3', METRICS2, 'window', path], capture_output=True, text=True)
+    lines = [ln for ln in run.stdout.splitlines() if ln.strip().startswith('{')]
+    if not lines:
+        raise RuntimeError('Metrics2 gave no JSON: ' + (run.stderr or run.stdout)[-300:])
+    data = json.loads(lines[-1])
+    return float(data['equiv']), {k: round(float(v), 4) for k, v in data['comp'].items()}
+
+
+def evaluate(gen_path, with_equiv=True, ref_path=REF):
+    ref = load(ref_path)
+    gen = load(gen_path)
+    if ref.shape != gen.shape:
+        raise RuntimeError('shape mismatch %s %s' % (ref.shape, gen.shape))
+    out = {'mean': round(float(gen.mean()), 3), 'mean_ref': round(float(ref.mean()), 3),
+           'std': round(float(gen.std()), 3), 'std_ref': round(float(ref.std()), 3),
+           'mae': round(float(np.abs(ref - gen).mean()), 3)}
+    rr, rg = ref.mean(axis=1), gen.mean(axis=1)
+    out['row_corr'] = round(float(np.corrcoef(rr, rg)[0, 1]), 4) if rg.std() > 0 else None
+    out['mean_penalty'] = round(MEAN_PENALTY * max(0.0, abs(out['mean'] - out['mean_ref']) - MEAN_TOLERANCE), 4)
+    qr = np.percentile(ref, QUANTILES)
+    qg = np.percentile(gen, QUANTILES)
+    out['quantile_err'] = round(float(np.abs(qg - qr).mean()), 3)
+    dy_r, dx_r = np.abs(np.diff(ref, axis=0)).mean(), np.abs(np.diff(ref, axis=1)).mean()
+    dy_g, dx_g = np.abs(np.diff(gen, axis=0)).mean(), np.abs(np.diff(gen, axis=1)).mean()
+    out['grad_log_err'] = round(float(abs(np.log(dy_g / dy_r)) + abs(np.log(dx_g / dx_r))), 4)
+    row_part = out['row_corr'] if out['row_corr'] is not None else 0.0
+    # EN: the gradient term is weighted 0.05 since 11 October 2026: at 0.25 the v2 search pushed grain to its look limits.
+    # FR : poids du gradient 0,05 depuis le 11 October 2026 ; à 0,25 la v2 poussait le grain jusqu'aux bornes.
+    out['score'] = round(row_part - out['quantile_err'] / 100.0 - 0.05 * out['grad_log_err'] - out['mean_penalty'], 5)
+    if with_equiv:
+        value, comp = equiv(gen_path)
+        out['equiv'] = round(value, 5)
+        out['comp'] = comp
+    return out
+
+
+if __name__ == '__main__':
+    ap = argparse.ArgumentParser()
+    ap.add_argument('png')
+    ap.add_argument('--ref', default=REF)
+    ap.add_argument('--equiv', action='store_true')
+    args = ap.parse_args(sys.argv[1:])
+    print(json.dumps(evaluate(args.png, args.equiv, args.ref), ensure_ascii=False))

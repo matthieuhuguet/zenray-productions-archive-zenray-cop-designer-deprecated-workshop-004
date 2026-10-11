@@ -1,0 +1,27 @@
+# pointsfromblobs
+
+- Label: Points from Blobs
+- Category: Copernicus (`Cop`), Houdini 22.0.368
+- Inputs: 0 to 1
+- Parameters: 3 (exact, read from Houdini by hython)
+- Used by the height graph: no
+
+## Feature summary (web, SideFX reference)
+
+- Source: https://www.sidefx.com/docs/houdini/nodes/cop/pointsfromblobs.html
+- Summary (EN): The Points From Blobs node finds connected bright or dark regions in a mono layer using a threshold, and places one point at the centre of each region.
+- Résumé (FR) : Le nœud Points From Blobs place un point au centre de chaque zone connectée située au-dessus ou au-dessous d'un seuil, sans que la page précise le calcul du centre.
+
+- Inputs meaning: ["blobs: mono layer to generate points from; the only input"]
+
+- Key parameters: ["Blob when: whether pixel groups above or below the threshold count as blobs", "Threshold: cut-off value deciding which pixels belong to a blob", "Space: coordinate space of the output points: Image, Texture, Pixel or World"]
+
+- Caveats: ["The page does not say how a blob centre is computed (centroid or bounding-box centre).", "It does not explain how touching or overlapping blobs are handled.", "It lists no default parameter values.", "Available since Houdini 22.0."]
+
+## Parameters (exact, from the installed Houdini)
+
+| parameter | label | type | default | range | menu tokens |
+|---|---|---|---|---|---|
+| `side` | Blob when | Menu | 1 |  | below, above |
+| `threshold` | Threshold | Float | [0.5] | 0.0 .. 1.0 |  |
+| `space` | Space | Menu | 3 |  | image, texture, pixel, world |

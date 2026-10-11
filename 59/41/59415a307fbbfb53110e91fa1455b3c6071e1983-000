@@ -1,0 +1,112 @@
+# __STAMP__ : loads the Copernicus inventory and checks every node name, parameter name and value against it.
+# EN: a name or a value that the installed Houdini does not know is an error, never a silent default.
+# FR : un nom ou une valeur que la Houdini installée ignore est une erreur, jamais un défaut silencieux.
+import json
+import os
+
+SKILL = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+INVENTORY = os.path.join(SKILL, 'inventory', 'cop_inventory.json')
+CATEGORY = 'Cop'
+# EN: the rule "functions only" forbids VEX, VOP networks and Python snippets. FR : règle des fonctions seules.
+FORBIDDEN = ('wrangle', 'vopnet', 'pythonsnippet')
+BASES = ('linear', 'monotone', 'constant', 'catmullrom', 'bezier')
+SETTABLE = ('Float', 'Int', 'String', 'Toggle', 'Menu', 'Ramp')
+
+
+class CatalogError(Exception):
+    pass
+
+
+def check_ramp(where, value):
+    # EN: a ramp is {"basis": name, "keys": [[position, value], ...]} with positions in 0..1, strictly increasing.
+    # FR : une rampe est une liste de clés (position 0 à 1, croissante).
+    if not isinstance(value, dict) or 'keys' not in value:
+        raise CatalogError('%s: a ramp needs a dict with "keys"' % where)
+    basis = value.get('basis', 'linear')
+    if basis not in BASES:
+        raise CatalogError('%s: unknown ramp basis %r' % (where, basis))
+    keys = value['keys']
+    if len(keys) < 2:
+        raise CatalogError('%s: a ramp needs at least two keys' % where)
+    last = -1.0
+    clean = []
+    for pos, val in keys:
+        if not (0.0 <= float(pos) <= 1.0):
+            raise CatalogError('%s: key position %r outside 0..1' % (where, pos))
+        if float(pos) <= last:
+            raise CatalogError('%s: key positions must strictly increase (%r after %r)' % (where, pos, last))
+        last = float(pos)
+        clean.append([float(pos), float(val)])
+    return {'basis': basis, 'keys': clean}
+
+
+class Catalog:
+    def __init__(self, path=INVENTORY):
+        with open(path, encoding='utf-8') as fh:
+            data = json.load(fh)
+        self.houdini_version = data['houdini_version']
+        self.nodes = {}
+        for rec in data['nodes']:
+            if rec['category'] == CATEGORY and rec['instantiated']:
+                self.nodes[rec['name']] = rec
+
+    def node(self, name):
+        if any(tag in name for tag in FORBIDDEN):
+            raise CatalogError("forbidden node '%s': only Copernicus functions are allowed" % name)
+        if name not in self.nodes:
+            raise CatalogError("unknown Copernicus node '%s' (Houdini %s)" % (name, self.houdini_version))
+        return self.nodes[name]
+
+    def parm(self, node_name, parm_name):
+        rec = self.node(node_name)
+        for p in rec['parms']:
+            if p['name'] == parm_name:
+                return p
+        raise CatalogError("node '%s' has no parameter '%s'" % (node_name, parm_name))
+
+    def check_value(self, node_name, parm_name, value):
+        # EN: returns the normalised value or raises CatalogError. FR : valeur normalisée ou erreur.
+        p = self.parm(node_name, parm_name)
+        where = '%s.%s' % (node_name, parm_name)
+        t = p['type']
+        if t not in SETTABLE:
+            raise CatalogError('%s: parameter type %s cannot be set by the designer' % (where, t))
+        if t == 'Ramp':
+            return check_ramp(where, value)
+        if t in ('Float', 'Int'):
+            vals = list(value) if isinstance(value, (list, tuple)) else [value]
+            if len(vals) != p['components']:
+                raise CatalogError('%s: %d values given, %d expected' % (where, len(vals), p['components']))
+            for v in vals:
+                if isinstance(v, bool) or not isinstance(v, (int, float)):
+                    raise CatalogError('%s: number expected, got %r' % (where, v))
+                if t == 'Int' and int(v) != v:
+                    raise CatalogError('%s: integer expected, got %r' % (where, v))
+                if p['min_strict'] and p['min'] is not None and v < p['min']:
+                    raise CatalogError('%s: %r below strict minimum %r' % (where, v, p['min']))
+                if p['max_strict'] and p['max'] is not None and v > p['max']:
+                    raise CatalogError('%s: %r above strict maximum %r' % (where, v, p['max']))
+            return value
+        if t == 'Toggle':
+            if value not in (0, 1, True, False):
+                raise CatalogError('%s: toggle expects 0, 1, True or False, got %r' % (where, value))
+            return int(bool(value))
+        if t == 'Menu':
+            menu = p['menu'] or []
+            if isinstance(value, int) and not isinstance(value, bool):
+                if not (0 <= value < len(menu)):
+                    raise CatalogError('%s: menu index %d outside 0..%d' % (where, value, len(menu) - 1))
+                return value
+            if value not in menu:
+                raise CatalogError('%s: %r is not a menu token (%s)' % (where, value, ', '.join(menu)))
+            return value
+        # EN: String. FR : chaîne.
+        if not isinstance(value, str):
+            raise CatalogError('%s: string expected, got %r' % (where, value))
+        if p['menu'] and value not in p['menu']:
+            raise CatalogError('%s: %r is not one of %s' % (where, value, p['menu']))
+        return value
+
+    def input_limits(self, node_name):
+        rec = self.node(node_name)
+        return rec['min_inputs'], rec['max_inputs']

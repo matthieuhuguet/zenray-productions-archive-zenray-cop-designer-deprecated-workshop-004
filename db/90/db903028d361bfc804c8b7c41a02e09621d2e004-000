@@ -1,0 +1,122 @@
+# __STAMP__ : the tile height (6 x 6 grid of two-plank tiles on black gutters) as a designer graph (IR).
+# EN: one repeating cell coordinate per axis (ramp with method repeat), a rectangle per tile, a seam at the middle,
+# a jagged bottom edge from noise, vertical fibres, black gutters. Grid pitch and offset are measured, not guessed.
+# FR : une coordonnée de cellule répétée, un rectangle par tuile, un joint au milieu, bord inférieur irrégulier, fibres verticales.
+import json
+import os
+import sys
+
+HERE = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, HERE)
+from cop_graph import Graph  # noqa: E402
+import window_height as WH  # noqa: E402  # EN: shared smoothstep and coordinate helpers. FR : helpers partagés.
+
+REF = '/Users/zenray/Create/Build/Productions/ZenRayHoudini/LouisianaBayou/Heights/refs/tile_height_ref.png'
+MEASURES = '/Users/zenray/Create/Build/Productions/ZenRayHoudini/LouisianaBayou/Heights/CopDesigner/measures/tile.json'
+CELLS = 6   # EN: 6 x 6 tiles, counted on the reference by its gutters (measure_target.py). FR : 6 x 6 tuiles.
+
+# EN: start values read from the measured gutters: tiles start near 21 px and repeat every 206.5 px on 1254.
+# FR : départs lus sur les gouttières mesurées : premier bord vers 21 px, pas de 206,5 px sur 1254.
+DEFAULTS = {
+    'x0': 0.0167, 'y0': 0.0144, 'pitch': 0.1647,
+    'margin': 0.065, 'edge_soft': 0.010,
+    'seam_w': 0.010, 'seam_depth': 0.12,
+    'level': 0.55,
+    'jag': 0.05, 'jag_elementsize': 0.08,
+    'grain_gain': 0.06, 'grain_width': 0.03, 'grain_length': 50.0, 'grain_elementsize': 0.006,
+    'mean_trim': 0.0,
+}
+
+SPACE = [
+    ('x0', 0.0, 0.05, 0.005),
+    ('y0', 0.0, 0.05, 0.005),
+    ('pitch', 0.155, 0.175, 0.002),
+    ('margin', 0.03, 0.12, 0.01),
+    ('edge_soft', 0.004, 0.03, 0.004),
+    ('seam_w', 0.002, 0.03, 0.004),
+    ('seam_depth', 0.0, 0.30, 0.04),
+    ('level', 0.30, 0.80, 0.05),
+    ('jag', 0.0, 0.15, 0.02),
+    ('jag_elementsize', 0.03, 0.15, 0.02),
+    ('grain_gain', 0.0, 0.15, 0.02),
+    ('grain_width', 0.01, 0.08, 0.01),
+    ('grain_length', 20.0, 120.0, 15.0),
+    ('grain_elementsize', 0.003, 0.02, 0.003),
+    ('mean_trim', -0.05, 0.05, 0.01),
+]
+
+
+def repeat_coord(g, name, axis, P, tag):
+    # EN: fract((x - x0) / pitch) on one axis. cycles = 1/pitch and phase = -x0/pitch in ramp cycles.
+    # FR : fract((x - x0) / pitch) sur un axe, avec cycles = 1/pitch et phase = -x0/pitch.
+    x0 = P['x0'] if axis == 'x' else P['y0']
+    params = WH.coord_params(axis)
+    params.update({'method': 1, 'cycles': 1.0 / P['pitch'], 'phase': -x0 / P['pitch']})
+    return g.add(name, 'ramp', tag=tag, params=params)
+
+
+def smooth_edge(g, name, src, in0, in1, tag):
+    # EN: 0 at in0, 1 at in1 with a smoothstep; in1 < in0 gives the reversed edge. FR : bord lissé, sens inversé possible.
+    return g.add(name, 'remap', [src], tag=tag, params={
+        'inputmin': in0, 'inputmax': in1, 'outputmin': 0.0, 'outputmax': 1.0,
+        'useramp': 1, 'ramp': {'basis': 'linear', 'keys': WH.smoothstep_keys()}})
+
+
+def build(P, measures=None):
+    g = Graph('TileHeight')
+    m, e = P['margin'], P['edge_soft']
+
+    # T1 : cell coordinates (one repeat per tile on each axis)
+    repeat_coord(g, 'T_u', 'x', P, 'T1_cells')
+    repeat_coord(g, 'T_v', 'y', P, 'T1_cells')
+
+    # T2 : the tile rectangle, inside the black gutters
+    smooth_edge(g, 'T_u_left', 'T_u', m, m + e, 'T2_rect')
+    smooth_edge(g, 'T_u_right', 'T_u', 1.0 - m, 1.0 - m - e, 'T2_rect')
+    g.add('T_u_rect', 'blend', ['T_u_left', 'T_u_right'], tag='T2_rect', params={'mode': 5})
+    smooth_edge(g, 'T_v_top', 'T_v', m, m + e, 'T2_rect')
+
+    # T3 : jagged bottom edge, from noise added to the v coordinate
+    g.add('T_jag_noise', 'fractalnoise', tag='T3_jag', params={
+        'elementsize': P['jag_elementsize'], 'oct': 3.0, 'rough': 0.5, 'amp': 0.5, 'center': 0.5})
+    g.add('T_jag_off', 'remap', ['T_jag_noise'], tag='T3_jag', params={
+        'inputmin': 0.0, 'inputmax': 1.0, 'outputmin': -P['jag'] / 2.0, 'outputmax': P['jag'] / 2.0, 'useramp': 0})
+    g.add('T_v_jag', 'blend', ['T_v', 'T_jag_off'], tag='T3_jag', params={'mode': 3})
+    smooth_edge(g, 'T_v_bottom', 'T_v_jag', 1.0 - m, 1.0 - m - e, 'T3_jag')
+    g.add('T_v_rect', 'blend', ['T_v_top', 'T_v_bottom'], tag='T3_jag', params={'mode': 5})
+    g.add('T_cell', 'blend', ['T_u_rect', 'T_v_rect'], tag='T3_jag', params={'mode': 5})
+
+    # T4 : the two planks of each tile, a dark seam at the middle of the tile (|u - 0.5| small)
+    g.add('T_half', 'constant', tag='T4_planks', params={'signature': 'f1', 'f1': 0.5})
+    g.add('T_u_dist', 'blend', ['T_u', 'T_half'], tag='T4_planks', params={'mode': 9})
+    smooth_edge(g, 'T_seam', 'T_u_dist', P['seam_w'], 2.0 * P['seam_w'], 'T4_planks')
+    lvl, dep = P['level'], P['seam_depth']
+    g.add('T_plank', 'remap', ['T_seam'], tag='T4_planks', params={
+        'inputmin': 0.0, 'inputmax': 1.0, 'outputmin': lvl - dep, 'outputmax': lvl, 'useramp': 0})
+
+    # T5 : vertical fibres, symmetric so the level does not move
+    g.add('T_grain_noise', 'fractalnoise', tag='T5_grain', params={
+        'elementsize': P['grain_elementsize'], 'oct': 3.0, 'rough': 0.6, 'amp': 0.5, 'center': 0.5})
+    g.add('T_grain_streak', 'streakblur', ['T_grain_noise'], tag='T5_grain', params={
+        # EN: dirtype 0 reads the angle parameter (0 = horizontal, 90 = vertical), not dirx and diry.
+        # FR : dirtype 0 lit l'angle (0 horizontal, 90 vertical), pas dirx et diry.
+        'dirtype': 0, 'angle': 90.0, 'units': 1, 'length_pixels': P['grain_length']})
+    w, span = P['grain_width'], P['grain_gain']
+    g.add('T_grain_delta', 'remap', ['T_grain_streak'], tag='T5_grain', params={
+        'inputmin': 0.5 - w, 'inputmax': 0.5 + w, 'outputmin': -span / 2.0, 'outputmax': span / 2.0, 'useramp': 0})
+    g.add('T_planked', 'blend', ['T_plank', 'T_grain_delta'], tag='T5_grain', params={'mode': 3})
+
+    # T6 : gutters are black: multiply by the tile mask, then level calibration
+    g.add('T_masked', 'blend', ['T_planked', 'T_cell'], tag='T6_gutters', params={'mode': 5})
+    trim = P['mean_trim']
+    g.add('T_level', 'remap', ['T_masked'], tag='T6_gutters', params={
+        'inputmin': 0.0, 'inputmax': 1.0, 'outputmin': -trim, 'outputmax': 1.0 - trim, 'useramp': 0})
+    g.set_output('T_level')
+    return g
+
+
+if __name__ == '__main__':
+    out = sys.argv[1] if len(sys.argv) > 1 else '/Users/zenray/Create/Build/Productions/ZenRayHoudini/LouisianaBayou/Heights/CopDesigner/runs/tile_start.json'
+    graph = build(dict(DEFAULTS))
+    graph.save(out)
+    print('graph written', out, 'nodes', len(graph.order), 'cells', CELLS * CELLS)

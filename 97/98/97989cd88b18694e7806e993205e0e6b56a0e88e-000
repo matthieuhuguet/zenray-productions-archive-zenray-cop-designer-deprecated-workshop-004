@@ -1,0 +1,44 @@
+# tonemap
+
+- Label: Tone Map
+- Category: Copernicus (`Cop`), Houdini 22.0.368
+- Inputs: 0 to 2
+- Parameters: 20 (exact, read from Houdini by hython)
+- Used by the height graph: no
+
+## Feature summary (web, SideFX reference)
+
+- Source: https://www.sidefx.com/docs/houdini/nodes/cop/tonemap.html
+- Summary (EN): Applies a filmic tone curve that compresses high dynamic range input into a range a display can show. It also gives the image a film-like contrast and colour look. Listed as since 21.0.
+- Résumé (FR) : Ce nœud applique une courbe de tonemapping filmique qui ramène une image à grande dynamique dans la plage d'affichage, avec six opérateurs au choix.
+
+- Inputs meaning: ["source: the layer to process.", "mask: optional per-pixel mask, scaled by the Mask parameter."]
+
+- Key parameters: [{"name": "Operator", "meaning": "Selects the curve: Reinhard, Ward, ACES Filmic, Hable Filmic, Hable Filmic Updated or Unreal."}, {"name": "Mask", "meaning": "How much of the tone-mapped result mixes with the original. Default 1 means the full effect."}, {"name": "Toggle RGB, Red, Green, Blue, Alpha", "meaning": "Chooses which channels the effect applies to."}, {"name": "Treat RGBA as Premultiplied", "meaning": "Treats colour channels as already multiplied by alpha."}, {"name": "Exposure", "meaning": "Overall brightness before tone mapping, in stops."}, {"name": "Shoulder Strength", "meaning": "How gradually highlights roll off to white. The name appears more than once on the page."}, {"name": "Linear Strength and Linear Angle", "meaning": "Slope and contrast of the midtones."}, {"name": "Toe Strength and Toe Length", "meaning": "How much shadows are lifted, and how much of the range the shadow section covers."}, {"name": "Shoulder Length and Shoulder Angle", "meaning": "Extent and angle of the highlight section."}, {"name": "Slope", "meaning": "Steepness of the S-curve."}]
+
+- Caveats: ["Several parameter names repeat, and the page does not clearly say which operator each belongs to.", "No default operator or output bit depth is given.", "The descriptions for Ward and Shoulder Length are vague.", "The source text says 'color correct' for the source input, which appears to be a copy-paste error."]
+
+## Parameters (exact, from the installed Houdini)
+
+| parameter | label | type | default | range | menu tokens |
+|---|---|---|---|---|---|
+| `signature` | Signature | String | ["auto"] |  |  |
+| `mask` | Mask | Float | [1.0] | 0.0 .. 1.0 |  |
+| `scopergba` | Scope | Int | [7] | 0 .. 10 |  |
+| `ispremult` | Treat RGBA as Premultiplied | Toggle | true |  |  |
+| `operator` | Operator | Menu | 0 |  | 0, 1, 2, 3, 4, 5 |
+| `exposure` | Exposure | Float | [0.0] | -3.0 .. 3.0 |  |
+| `hable_shoulderstrength` | Shoulder Strength | Float | [0.22] | 0.0 .. 1.0 |  |
+| `hable_linearstrength` | Linear Strength | Float | [0.3] | 0.0 .. 1.0 |  |
+| `hable_linearangle` | Linear Angle | Float | [0.1] | 0.0 .. 1.0 |  |
+| `hable_toestrength` | Toe Strength | Float | [0.2] | 0.0 .. 1.0 |  |
+| `hable_whitepoint` | White Point | Float | [11.2] | 0.0 .. 20.0 |  |
+| `hablefilmicupdated_toestrength` | Toe Strength | Float | [0.55] | 0.0 .. 1.0 |  |
+| `hablefilmicupdated_toelength` | Toe Length | Float | [0.5] | 0.0 .. 1.0 |  |
+| `hablefilmicupdated_shoulderstrength` | Shoulder Strength | Float | [0.26] | 0.0 .. 1.0 |  |
+| `hablefilmicupdated_shoulderlength` | Shoulder Length | Float | [0.5] | 0.0 .. 1.0 |  |
+| `hablefilmicupdated_shoulderangle` | Shoulder Angle | Float | [1.0] | 0.0 .. 1.0 |  |
+| `unreal_toestrength` | Toe Strength | Float | [0.55] | 0.0 .. 1.0 |  |
+| `unreal_shoulderstrength` | Shoulder Strength | Float | [0.26] | 0.0 .. 1.0 |  |
+| `unreal_slope` | Slope | Float | [0.88] | 0.0 .. 1.0 |  |
+| `unreal_g` | Unreal G Const | Float | [0.88] | 0.0 .. 1.0 |  |

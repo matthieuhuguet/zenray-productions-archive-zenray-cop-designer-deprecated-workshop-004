@@ -1,0 +1,68 @@
+# pyro_dissipate
+
+- Label: Pyro Dissipate
+- Category: Copernicus (`Cop`), Houdini 22.0.368
+- Inputs: 1 to 2
+- Parameters: 44 (exact, read from Houdini by hython)
+- Used by the height graph: no
+
+## Feature summary (web, SideFX reference)
+
+- Source: https://www.sidefx.com/docs/houdini/nodes/cop/pyro_dissipate.html
+- Summary (EN): Gradually reduces the values of a VDB so that smoke or other volume data fades over time. Drives values toward a goal value (usually zero). An optional control field can limit where dissipation happens.
+- Résumé (FR) : Pyro Dissipate réduit progressivement les valeurs d'un VDB pour que la fumée s'estompe, avec un champ de contrôle optionnel pour limiter la zone touchée.
+
+- Inputs meaning: ["source: Float or Vector VDB driven toward a goal value", "control (optional): Float or Vector VDB used as a control field; a Vector VDB contributes its length"]
+
+- Key parameters: ["Mode: Dissipation Rate (percentage lost per second), Subtraction Rate (fixed amount lost per second), Lifespan (time for one unit to be lost), Half-Life (time for half the amount to be lost)", "Goal Value: value the field cools toward, usually zero", "Goal Tolerance: when enabled, values within this range of the goal are pushed all the way to the Goal Value", "Control Volume, Control Range, Use Ramp, Control Ramp: mask the effect with the control field and remap its values to 0-1", "Axis Mask, Axis Direction, Axis Range, Use Ramp, Axis Control Ramp: limit the effect along a world-space axis", "Minimum Limit / Maximum Limit: clamp the output VDB values"]
+
+- Caveats: ["Requires DOP-level permissions; not in Houdini Core, only in Houdini FX, Apprentice, Indie and Education", "The Control Range description refers to a Scale multiplier, but no Scale parameter is listed on the page, so its exact location is unclear"]
+
+## Parameters (exact, from the installed Houdini)
+
+| parameter | label | type | default | range | menu tokens |
+|---|---|---|---|---|---|
+| `signature` | Signature | String | ["auto"] |  |  |
+| `activation` | Activation | Int | [1] | 0 .. 1 (strict) |  |
+| `folder5` |  | FolderSet |  |  |  |
+| `dissipationmode` | Dissipation Mode | Menu | 0 |  | evaprate, subtractrate, lifespan, halflife |
+| `dissipationrate` | Dissipation Rate | Float | [0.1] | 0.0 .. 1.0 (strict) |  |
+| `subtractrate` | Subtraction Rate | Float | [0.1] | 0.0 .. 1.0 |  |
+| `lifespan` | Lifespan | Float | [1.0] | 0.0 .. 10.0 |  |
+| `halflife` | Half-Life | Float | [1.0] | 0.0 .. 10.0 |  |
+| `usegoalvalue` | Goal Value | Toggle | false |  |  |
+| `goalvalue` | Goal Value | Float | [0.0] | 0.0 .. 1.0 |  |
+| `usegoaltolerance` | Goal Tolerance | Toggle | false |  |  |
+| `goaltolerance` | Goal Tolerance | Float | [0.005] | 0.0 .. 1.0 |  |
+| `usecontrol` | Use Control Field | Toggle | false |  |  |
+| `folder1` |  | FolderSet |  |  |  |
+| `controlrangemin` | Control Range | Float | 0.0 | 0.0 .. 1.0 |  |
+| `controlrangemax` | Control Range | Float | 1.0 | 0.0 .. 1.0 |  |
+| `folder2` |  | FolderSet |  |  |  |
+| `remapcontrol` | Use Ramp | Toggle | false |  |  |
+| `controlramp` | Control Ramp | Ramp | 2 |  |  |
+| `useaxiscontrol` | Use Axis Control | Toggle | false |  |  |
+| `folder0` |  | FolderSet |  |  |  |
+| `axiscontroldir` | Direction | Menu | 0 |  | x, y, z |
+| `axiscontrolmin` | Axis Range | Float | 0.0 | 0.0 .. 1.0 |  |
+| `axiscontrolmax` | Axis Range | Float | 1.0 | 0.0 .. 1.0 |  |
+| `folder3` |  | FolderSet |  |  |  |
+| `remapaxiscontrol` | Use Ramp | Toggle | false |  |  |
+| `axiscontrolramp` | Axis Control Ramp | Ramp | 2 |  |  |
+| `folder4` |  | FolderSet |  |  |  |
+| `dominlimit` | Minimum Limit | Toggle | false |  |  |
+| `minlimit` | Minimum Limit | Float | [0.0] | 0.0 .. 1.0 |  |
+| `domaxlimit` | Maximum Limit | Toggle | false |  |  |
+| `maxlimit` | Maximum Limit | Float | [1.0] | 0.0 .. 1.0 |  |
+| `controlramp1pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `controlramp1value` | Value | Float | [0.0] | 0.0 .. 10.0 |  |
+| `controlramp1interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `controlramp2pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `controlramp2value` | Value | Float | [0.0] | 0.0 .. 10.0 |  |
+| `controlramp2interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `axiscontrolramp1pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `axiscontrolramp1value` | Value | Float | [0.0] | 0.0 .. 10.0 |  |
+| `axiscontrolramp1interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `axiscontrolramp2pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `axiscontrolramp2value` | Value | Float | [0.0] | 0.0 .. 10.0 |  |
+| `axiscontrolramp2interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |

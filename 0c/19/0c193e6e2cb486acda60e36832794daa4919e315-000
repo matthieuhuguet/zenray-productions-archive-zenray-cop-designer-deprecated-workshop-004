@@ -1,0 +1,54 @@
+# stamppoint
+
+- Label: Stamp Points
+- Category: Copernicus (`Cop`), Houdini 22.0.368
+- Inputs: 0 to 2048
+- Parameters: 30 (exact, read from Houdini by hython)
+- Used by the height graph: no
+
+## Feature summary (web, SideFX reference)
+
+- Source: https://www.sidefx.com/docs/houdini/nodes/cop/stamppoint.html
+- Summary (EN): Stamp Points takes a point cloud from a geometry input and places a layer (texture or image) at each point, building the result in an output layer. Point attributes control each stamp's position, scale, rotation and colour.
+- Résumé (FR) : Stamp Points pose une couche, texture ou image, sur chaque point d'une géométrie, et les attributs de points règlent la position, l'échelle, la rotation et la couleur de chaque tampon.
+
+- Inputs meaning: ["size_ref: layer setting the output image size and metadata, optional reference layer to align to", "points: geometry containing the points to stamp", "clipshape: SDF whose zero contour defines the cut-out shape of each stamp", "pointmask: all-or-nothing mask, a point stamps only if its location falls inside", "pos: world-space positions sampled per output pixel, replacing the default output-pixel positions", "filterscale: layer giving the Jacobian of the transform from output to pos, used for filtering", "stamp0: up to 10 stamp layers, the integer point attribute stamp selects which one each point uses"]
+
+- Key parameters: ["Stamp Mode: Rasterize (Sprite) for camera-facing 2D sprites, or Project (Spray) for projection onto a surface with 4x4 matrices from the points", "Instancing Attributes: standard (orient, up), sprite (spriterot, spritescale, spriteuv), or automatic detection", "Background Color / Background Alpha: starting colour and alpha of the output", "Stamp Color / Stamp Alpha: tint of the stamp and scale of its alpha", "Shape / Scale / Angle: built-in square or circle (when no clipshape), uniform scale multiplied by pscale, rotation added to spriterot", "Blend Method: depth-sorted or order-independent Over, Add, Subtract, Multiply, Maximum, Minimum", "Wrap Mode / Tile Size: whether stamps outside the main tile wrap back in, and the tile size", "Filter: sampling method, default Box"]
+
+- Caveats: ["Depth-Sorted Over is expensive because it sorts the points first", "Over blend modes expect colours with alpha in the 0 to 1 range", "Subtract and Multiply usually need a non-zero background", "Stamp positions are world space under standard instancing, image space under sprite attributes", "Z Falloff applies only when Space is set to World Space", "At most 10 stamp layers are accepted"]
+
+## Parameters (exact, from the installed Houdini)
+
+| parameter | label | type | default | range | menu tokens |
+|---|---|---|---|---|---|
+| `signature` | Signature | String | ["auto"] |  |  |
+| `folder1` |  | FolderSet |  |  |  |
+| `bgr` | Background Color | Float | 0.0 | 0.0 .. 10.0 |  |
+| `bgg` | Background Color | Float | 0.0 | 0.0 .. 10.0 |  |
+| `bgb` | Background Color | Float | 0.0 | 0.0 .. 10.0 |  |
+| `bgalpha` | Background Alpha | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `fgr` | Stamp Color | Float | 1.0 | 0.0 .. 10.0 |  |
+| `fgg` | Stamp Color | Float | 1.0 | 0.0 .. 10.0 |  |
+| `fgb` | Stamp Color | Float | 1.0 | 0.0 .. 10.0 |  |
+| `fgalpha` | Stamp Alpha | Float | [1.0] | 0.0 .. 1.0 (strict) |  |
+| `folder2` |  | FolderSet |  |  |  |
+| `cutout_shape` | Shape | Menu | 0 |  | square, circle |
+| `scale` | Scale | Float | [0.1] | 0.0 .. 1.0 |  |
+| `angle` | Angle | Float | [0.0] | -180.0 .. 180.0 |  |
+| `cutout_edgefilter` | Shape Edge Filter | Float | [1.0] | 0.0 .. 2.0 (strict) |  |
+| `cutout_falloff` | Shape Falloff | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `folder3` |  | FolderSet |  |  |  |
+| `space` | Space | Menu | 0 |  | image, world |
+| `attribmode` | Instancing Attributes | Menu | 0 |  | auto, instance, sprite |
+| `upaxis` | Up Axis | Menu | 1 |  | x, y, z |
+| `rotationmethod` | Rotation from | Menu | 2 |  | x, y, both |
+| `zfalloff` | Z Falloff | Float | [0.1] | 0.0 .. 1.0 (strict) |  |
+| `numstamps` | Number of Stamps | Int | [1] | 1 .. 10 (strict) |  |
+| `filterscale` | Filter Scale | Float | [1.0] | 0.0 .. 10.0 (strict) |  |
+| `filter` | Filter | Menu | 2 |  | point, bilinear, box, triangle, cubic, mitchell, bspline |
+| `blend` | Blend Method | Menu | 0 |  | sorted, unsorted, add, subtract, multiply, max, min |
+| `sort` | Sort Stamps by Depth | Toggle | true |  |  |
+| `wrap` | Wrap Mode | Menu | 1 |  | auto, off, on |
+| `tilesizex` | Tile Size | Float | 2.0 | 0.0 .. 10.0 |  |
+| `tilesizey` | Tile Size | Float | 2.0 | 0.0 .. 10.0 |  |

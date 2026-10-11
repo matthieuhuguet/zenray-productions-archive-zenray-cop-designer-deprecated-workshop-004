@@ -1,0 +1,28 @@
+# sample
+
+- Label: UV Sample
+- Category: Copernicus (`Cop`), Houdini 22.0.368
+- Inputs: 2 to 3
+- Parameters: 4 (exact, read from Houdini by hython)
+- Used by the height graph: no
+
+## Feature summary (web, SideFX reference)
+
+- Source: https://www.sidefx.com/docs/houdini/nodes/cop/sample.html
+- Summary (EN): The page at this URL documents the UV Sample node, which reads values from a texture layer at the UV coordinates supplied by a UV layer or attribute. Each output pixel receives the value its UV coordinate points to.
+- Résumé (FR) : Le nœud Sample, documenté sous le nom UV Sample, lit une texture aux coordonnées UV fournies, chaque pixel de sortie recevant la valeur pointée par sa coordonnée.
+
+- Inputs meaning: ["uv: the UV layer or attribute giving the coordinates; it also sets the output resolution and metadata", "filterscale (optional): per-pixel multiplier for Filter Scale", "texture: the mono, UV, RGB or RGBA layer to sample"]
+
+- Key parameters: ["Signature: the layer type the source accepts", "UV Space: Texture (0 to 1 across the input data window, suits latitude/longitude maps) or Image (-1 to 1 across the display window, keeps pixels square)", "Filter Scale: filtering needed to avoid aliasing with non-identity UV maps; defaults to the voxel size", "Filter: sampling method, default Box"]
+
+- Caveats: ["The official title is UV Sample; no page is titled just Sample, so this is the official page of the sample node", "Attributes have no intrinsic filter size, so Filter Scale usually needs manual adjustment", "UV seams can stop the node from determining the rate of change, so the filterscale input may be needed"]
+
+## Parameters (exact, from the installed Houdini)
+
+| parameter | label | type | default | range | menu tokens |
+|---|---|---|---|---|---|
+| `signature` | Signature | String | ["auto"] |  |  |
+| `uvspace` | UV Space | Menu | 1 |  | texture, image |
+| `filterscale` | Filter Scale | Float | [1.0] | 0.0 .. 1.0 |  |
+| `filter` | Filter | Menu | 2 |  | point, bilinear, box, triangle, cubic, mitchell, bspline |

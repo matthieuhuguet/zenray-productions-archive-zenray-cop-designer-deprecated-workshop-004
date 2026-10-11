@@ -1,0 +1,45 @@
+# planarinflate
+
+- Label: Planar Inflate
+- Category: Copernicus (`Cop`), Houdini 22.0.368
+- Inputs: 0 to 1
+- Parameters: 21 (exact, read from Houdini by hython)
+- Used by the height graph: no
+
+## Feature summary (web, SideFX reference)
+
+- Source: https://www.sidefx.com/docs/houdini/nodes/cop/planarinflate.html
+- Summary (EN): The Planar Inflate node turns a 2D signed distance field into a smooth height layer, inflating the region inside the shape boundary. Optional wrinkle and mound noise breaks up the surface for base terrain, cushion-like shapes or texture displacement.
+- Résumé (FR) : Le nœud Planar Inflate gonfle une distance signée 2D en hauteur lisse, avec des rides et des monticules de bruit optionnels.
+
+- Inputs meaning: ["sdf: layer holding the signed distance field to inflate"]
+
+- Key parameters: ["Height Scale: multiplies the base inflation; negative values invert it", "Pre Scale: base inflation strength before the height is solved", "Noise Scale: amount of Wrinkles and Mounds noise added", "Wrinkles: fine phasor noise (Size, Boundary Blend, Seed)", "Mounds: broader fractal noise (Size, Max Octaves, Lacunarity, Roughness)", "Blur: smooths the noise and blends it with the shape (Scale, Mask from Boundary, Mask Smoothing)", "Iterations: Poisson solve iterations; more gives a more converged result but is slower"]
+
+- Caveats: ["Inflating directly at the image edge can produce artifacts; SideFX suggests adjusting the SDF radius so it stays inside the image boundary.", "If the height has flat areas, increase Iterations."]
+
+## Parameters (exact, from the installed Houdini)
+
+| parameter | label | type | default | range | menu tokens |
+|---|---|---|---|---|---|
+| `heightscale` | Height Scale | Float | [2.0] | -4.0 .. 4.0 |  |
+| `folder5` |  | FolderSet |  |  |  |
+| `pre_scale` | Pre Scale | Float | [2.0] | 0.0 .. 4.0 |  |
+| `noisescale` | Noise Scale | Float | [1.0] | 0.0 .. 2.0 |  |
+| `usewrinkle` | Use Wrinkle | Toggle | false |  |  |
+| `folder2` |  | FolderSet |  |  |  |
+| `wrinkle_size` | Size | Float | [0.3] | 0.0 .. 1.0 (strict) |  |
+| `wrinkle_blend` | Boundary Blend | Float | [0.8] | 0.0 .. 1.0 |  |
+| `wrinkle_seed` | Seed | Int | [1] | 1 .. 10 |  |
+| `usemounds` | Use Mounds | Toggle | false |  |  |
+| `folder6` |  | FolderSet |  |  |  |
+| `mound_size` | Size | Float | [0.03] | 0.001 .. 1.0 |  |
+| `mound_maxoctaves` | Max Octaves | Float | [8.0] | 0.0 .. 8.0 |  |
+| `mound_lacunarity` | Lacunarity | Float | [2.01234] | 1.0 .. 3.0 |  |
+| `mound_roughness` | Roughness | Float | [0.5] | 0.0 .. 1.0 |  |
+| `folder4` |  | FolderSet |  |  |  |
+| `scale` | Scale | Float | [0.01] | 0.0 .. 0.2 (strict) |  |
+| `maskisooffset` | Mask from Boundary | Float | [0.0] | -0.1 .. 0.1 |  |
+| `masksmoothing` | Mask Smoothing | Float | [0.2] | 0.0 .. 0.5 (strict) |  |
+| `folder3` |  | FolderSet |  |  |  |
+| `iterations` | Iterations | Int | [25] | 1 .. 500 (strict) |  |

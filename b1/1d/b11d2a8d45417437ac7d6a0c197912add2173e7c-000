@@ -1,0 +1,30 @@
+# pythonsnippet
+
+- Label: Python Snippet
+- Category: Copernicus (`Cop`), Houdini 22.0.368
+- Inputs: 0 to 2048
+- Parameters: 6 (exact, read from Houdini by hython)
+- Used by the height graph: no
+
+## Feature summary (web, SideFX reference)
+
+- Source: https://www.sidefx.com/docs/houdini/nodes/cop/pythonsnippet.html
+- Summary (EN): Python Snippet runs user-written Python code on layers and geometry. The code receives its inputs and bound parameters through a kwargs dictionary and returns named outputs. The page title is Python Snippet Copernicus node and the index links pythonsnippet.html; the internal type name is not stated in the body.
+- Résumé (FR) : Ce nœud exécute du code Python écrit par l'utilisateur sur des calques et de la géométrie, avec des entrées et des sorties nommées.
+
+- Inputs meaning: ["input#: inputs defined in the Signature tab and referenced by name in #bind. Types include Varying, ID, Mono, UV, RGB, RGBA, Geometry, Metadata, and integer, float or varying VDBs. An Optional flag is available."]
+
+- Key parameters: ["Kernel > Python Code: Python code that reads inputs and bindings from kwargs and returns a dictionary of outputs; #bind comments define signatures and bindings", "Options > Maintain State: the interpreter persists between cooks; can improve performance but may cause unexpected behaviour; the page recommends leaving it off in most cases", "Signature: number of inputs and outputs, with each name, type and optional status", "Bindings: bound constants with name and type (Integer, Float, Vector2, Vector, Vector4, Ramp or String); Ramp bindings also have a data type (Float or Vector)", "Outputs: defined in the Signature tab, with names and types matching the layers or geometry returned"]
+
+- Caveats: ["Python runs on the CPU and is interpreted, so per-pixel work is slow; the page suggests OpenCL or VEX for that.", "Geometry cannot be bound as a layer; refer to it by name in an attribute or volume binding.", "Unlike the Python Script SOP, this node cannot access the node that is currently evaluating.", "Signature and Bindings rarely need manual editing; the create-parameter button in the Kernel tab sets them up."]
+
+## Parameters (exact, from the installed Houdini)
+
+| parameter | label | type | default | range | menu tokens |
+|---|---|---|---|---|---|
+| `stdswitcher1` |  | FolderSet |  |  |  |
+| `pythoncode` | Python Code | String | [""] |  |  |
+| `options_maintainstate` | Maintain State | Toggle | false |  |  |
+| `inputs` | Inputs | Folder | 0 |  |  |
+| `outputs` | Outputs | Folder | 0 |  |  |
+| `bindings` | Bindings | Folder | 0 |  |  |

@@ -1,0 +1,25 @@
+# switchifwired
+
+- Label: Switch If Wired
+- Category: Copernicus (`Cop`), Houdini 22.0.368
+- Inputs: 0 to 2048
+- Parameters: 1 (exact, read from Houdini by hython)
+- Used by the height graph: no
+
+## Feature summary (web, SideFX reference)
+
+- Source: https://www.sidefx.com/docs/houdini/nodes/cop/switchifwired.html
+- Summary (EN): Switch If Wired passes through one of its inputs based on which inputs have wires connected. It is useful for keeping or restoring a node's unwired behaviour when a connection is missing.
+- Résumé (FR) : Switch If Wired choisit une entrée selon les fils réellement branchés, et non selon le contenu qui se trouve derrière ces fils.
+
+- Inputs meaning: ["input1 onward: checked in order for wire status", "Output: chosen, the selected layer"]
+
+- Key parameters: ["Selection: First Wired (outputs the first connected input, else unwired) or First Unless Unwired (outputs the first input only if all inputs are connected, else unwired)"]
+
+- Caveats: ["The node checks whether an input is wired, not whether the content behind it exists", "A node can have all inputs wired while those wires lead to unwired subnet inputs or unwired nodes"]
+
+## Parameters (exact, from the installed Houdini)
+
+| parameter | label | type | default | range | menu tokens |
+|---|---|---|---|---|---|
+| `rule` | Selection | Menu | 0 |  | firstwire, unwired |

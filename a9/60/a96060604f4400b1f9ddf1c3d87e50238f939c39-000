@@ -1,0 +1,139 @@
+# __STAMP__ : builds the feature documentation of every Copernicus node: exact parameters from Houdini, summaries from the web.
+# EN: docs/cop/<name>.md per node, docs/cop/INDEX.md and docs/cop/COVERAGE.md. A node without a web source is listed, never hidden.
+# FR : une fiche par nœud. Paramètres exacts de Houdini, résumés du web. Un nœud sans source est listé, jamais caché.
+import json
+import os
+import re
+import datetime
+
+SKILL = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+INV = os.path.join(SKILL, 'inventory', 'cop_inventory.json')
+WEB = os.path.join(SKILL, 'docs', 'cop', '_web')
+OUT = os.path.join(SKILL, 'docs', 'cop')
+# EN: nodes the height graph uses (window_height.py). FR : nœuds utilisés par le graphe de hauteur.
+HEIGHT_NODES = ['fractalnoise', 'streakblur', 'ramp', 'remap', 'blend', 'constant', 'rop_image']
+# EN: 12 names of the Cop category are network containers or Paint internals, not functions a user places as a node.
+# Houdini lists them there; no SideFX Copernicus page exists (HTTP 404, verified 11 October 2026). They are excluded from
+# the node count, listed with their reason, and never written as node pages.
+# FR : 12 noms de la catégorie Cop sont des conteneurs de réseau ou des internes de Paint, pas des fonctions. Exclus, listés.
+EXCLUDED = {
+    'dopnet': 'DOP network container', 'chopnet': 'CHOP network container', 'lopnet': 'LOP network container',
+    'matnet': 'material network container', 'objnet': 'OBJ network container', 'ropnet': 'ROP network container',
+    'shopnet': 'SHOP network container', 'sopnet': 'SOP network container', 'topnet': 'TOP network container',
+    'vopnet': 'VOP network container (also forbidden by the functions-only rule)',
+    'paintinternals': 'Paint internal helper, not in the COP index', 'paintinternalconvert': 'Paint internal helper, not in the COP index',
+}
+
+
+def clean(text):
+    # EN: no dash characters in generated text. FR : pas de tirets longs dans les textes générés.
+    if text is None:
+        return ''
+    if not isinstance(text, str):
+        text = json.dumps(text, ensure_ascii=False)
+    return text.replace('—', ', ').replace('–', '-').replace('--', ' ').strip()
+
+
+def web_name(name):
+    return name.replace('::', '__').replace(':', '_')
+
+
+def load_web(name):
+    path = os.path.join(WEB, web_name(name) + '.json')
+    if not os.path.exists(path):
+        return None
+    try:
+        with open(path, encoding='utf-8') as fh:
+            return json.load(fh)
+    except (ValueError, OSError):
+        return {'status': 'unreadable'}
+
+
+def fmt_range(p):
+    lo, hi = p.get('min'), p.get('max')
+    if lo is None and hi is None:
+        return ''
+    return '%s .. %s%s' % (lo, hi, ' (strict)' if p.get('min_strict') or p.get('max_strict') else '')
+
+
+def parm_table(parms):
+    rows = ['| parameter | label | type | default | range | menu tokens |', '|---|---|---|---|---|---|']
+    for p in parms:
+        menu = ', '.join(p.get('menu') or []) if p.get('menu') else ''
+        default = p.get('default')
+        rows.append('| `%s` | %s | %s | %s | %s | %s |' % (
+            p['name'], clean(p.get('label')), p.get('type'), clean(default), fmt_range(p), clean(menu)))
+    return '\n'.join(rows)
+
+
+def node_page(rec, web, stamp):
+    name = rec['name']
+    lines = ['# %s' % name, '',
+             '- Label: %s' % clean(rec.get('label')),
+             '- Category: Copernicus (`%s`), Houdini %s' % (rec['category'], stamp['houdini']),
+             '- Inputs: %s to %s' % (rec.get('min_inputs'), rec.get('max_inputs')),
+             '- Parameters: %d (exact, read from Houdini by hython)' % len(rec['parms']),
+             '- Used by the height graph: %s' % ('yes' if name in HEIGHT_NODES else 'no'),
+             '']
+    if web and web.get('status') == 'ok':
+        lines += ['## Feature summary (web, SideFX reference)', '',
+                  '- Source: %s' % clean(web.get('url') or web.get('url_used') or ''),
+                  '- Summary (EN): %s' % clean(web.get('summary_en')),
+                  '- Résumé (FR) : %s' % clean(web.get('resume_fr')), '']
+        if web.get('inputs'):
+            lines += ['- Inputs meaning: %s' % clean(web.get('inputs')), '']
+        if web.get('key_parameters'):
+            lines += ['- Key parameters: %s' % clean(web.get('key_parameters')), '']
+        if web.get('caveats'):
+            lines += ['- Caveats: %s' % clean(web.get('caveats')), '']
+    else:
+        status = (web or {}).get('status', 'no web file')
+        lines += ['## Feature summary', '', 'NOT DOCUMENTED FROM THE WEB YET (status: %s). The parameter table below is still exact.' % status, '']
+    lines += ['## Parameters (exact, from the installed Houdini)', '', parm_table(rec['parms']), '']
+    return '\n'.join(lines)
+
+
+def main():
+    with open(INV, encoding='utf-8') as fh:
+        inv = json.load(fh)
+    stamp = {'houdini': inv['houdini_version'], 'generated': datetime.datetime.now().isoformat(timespec='seconds')}
+    cop = [n for n in inv['nodes'] if n['category'] == 'Cop']
+    cop2 = [n for n in inv['nodes'] if n['category'] == 'Cop2']
+    os.makedirs(OUT, exist_ok=True)
+    documented, missing = [], []
+    index_rows = ['| node | label | inputs | parameters | web summary | height graph |', '|---|---|---|---|---|---|']
+    cop = [r for r in cop if r['name'] not in EXCLUDED]
+    excluded = [n for n in inv['nodes'] if n['category'] == 'Cop' and n['name'] in EXCLUDED]
+    for rec in sorted(cop, key=lambda r: r['name']):
+        web = load_web(rec['name'])
+        ok = bool(web and web.get('status') == 'ok')
+        (documented if ok else missing).append(rec['name'])
+        with open(os.path.join(OUT, web_name(rec['name']) + '.md'), 'w', encoding='utf-8') as fh:
+            fh.write(node_page(rec, web, stamp))
+        index_rows.append('| [%s](%s.md) | %s | %s..%s | %d | %s | %s |' % (
+            rec['name'], web_name(rec['name']), clean(rec.get('label')), rec.get('min_inputs'), rec.get('max_inputs'),
+            len(rec['parms']), 'yes' if ok else 'missing', 'yes' if rec['name'] in HEIGHT_NODES else ''))
+    with open(os.path.join(OUT, 'INDEX.md'), 'w', encoding='utf-8') as fh:
+        fh.write('# Copernicus node index (Houdini %s, generated %s)\n\n' % (inv['houdini_version'], stamp['generated']))
+        fh.write('Copernicus nodes (category Cop): %d. Parameters: %d.\n\n' % (
+            len(cop), sum(len(n['parms']) for n in cop)))
+        fh.write('\n'.join(index_rows) + '\n')
+    with open(os.path.join(OUT, 'COVERAGE.md'), 'w', encoding='utf-8') as fh:
+        fh.write('# Documentation coverage (generated %s)\n\n' % stamp['generated'])
+        fh.write('- Copernicus nodes in the installed Houdini: %d\n' % len(cop))
+        fh.write('- Each one has an exact parameter table from Houdini: %d of %d\n' % (
+            sum(1 for n in cop if n['instantiated']), len(cop)))
+        fh.write('- Each one has a web summary with status ok: %d of %d\n' % (len(documented), len(cop)))
+        fh.write('- Excluded from the node count (network containers and Paint internals): %d, see list below\n' % len(excluded))
+        fh.write('- Legacy COP2 nodes (category Cop2, not Copernicus): %d, parameter tables only\n\n' % len(cop2))
+        fh.write('## Nodes still without a web summary\n\n')
+        fh.write(', '.join(missing) if missing else 'none')
+        fh.write('\n')
+        fh.write('\n## Excluded names and reasons\n\n')
+        for n in excluded:
+            fh.write('- %s: %s\n' % (n['name'], EXCLUDED[n['name']]))
+    print('Cop nodes', len(cop), 'web documented', len(documented), 'missing', len(missing))
+
+
+if __name__ == '__main__':
+    main()

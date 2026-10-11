@@ -1,0 +1,43 @@
+# rasterizegsplats
+
+- Label: Rasterize GSplats
+- Category: Copernicus (`Cop`), Houdini 22.0.368
+- Inputs: 0 to 4
+- Parameters: 19 (exact, read from Houdini by hython)
+- Used by the height graph: no
+
+## Feature summary (web, SideFX reference)
+
+- Source: https://www.sidefx.com/docs/houdini/nodes/cop/rasterizegsplats.html
+- Summary (EN): Rasterize GSplats converts point-based Gaussian Splat geometry into image layers. It reads each splat's position and optional attributes (colour, opacity, orientation, scale) and renders them onto one or more layers. Documented for Houdini 22.0.
+- Résumé (FR) : Ce nœud convertit des splats gaussiens en calques image, avec couleur et profondeur, à partir de leur position et de leurs attributs.
+
+- Inputs meaning: ["camera_ref: optional camera metadata that sets the viewpoint; without it the node uses the COPnet resolution, sits at the origin and looks down the negative z axis", "gsplats: Gaussian Splat geometry with point positions P, usually from a SOP Import COP that references a Bake GSplats SOP", "mindepth: optional non-integer mono layer giving the minimum allowed depth per output pixel", "maxdepth: optional non-integer mono layer giving the maximum allowed depth per output pixel"]
+
+- Key parameters: ["Quick Setups: shortcuts to add the Cd colour, depth from the eye or NDC depth, and to move output layers to canonical space", "Depth Conversion (Distance, Depth, Height): how mindepth and maxdepth are interpreted, as distances, depths projected along the camera forward direction, or heights from the imaging plane", "Border: sampling outside the incoming layer boundaries, defaults to the layer border property", "Name: which GSplat output to rasterize, Cd, intrinsic:depth_ndc or intrinsic:depth_eye; aliases depth, depth_ndc and depth_eye are accepted", "Output Type: Cd requires an RGB or RGBA layer; the depth outputs require a Mono layer"]
+
+- Caveats: ["If Cd, alpha, orientation or scale is missing, the node falls back to white colour, full opacity, identity orientation and unit scale.", "Spherical harmonic attributes GS_SPH_R, GS_SPH_G and GS_SPH_B are used when present.", "The Optional and Default Value parameters currently have no effect on the supported GSplat outputs.", "With camera_ref connected, the layer is generated at the camera focus plane; the page suggests Match Camera COP to move it back to the origin.", "The page does not describe behaviour beyond the listed outputs, such as performance or handling of unsupported attributes."]
+
+## Parameters (exact, from the installed Houdini)
+
+| parameter | label | type | default | range | menu tokens |
+|---|---|---|---|---|---|
+| `quicksetup` |  | Menu | 0 |  | menu, cd, deptheye, depthndc |
+| `resetorig` | Move to Origin | Toggle | false |  |  |
+| `convertdepth` | Depth Conversion | Menu | 1 |  | dist, depth, height |
+| `border` | Border | Menu | 0 |  | auto, constant, clamp, mirror, wrap |
+| `attributes` | Number of Attributes | Folder | 0 |  |  |
+| `name1` | Name | String | ["Cd"] |  |  |
+| `outtype1` | Output Type | Menu | 2 |  | float, vector2, vector3, vector4, int |
+| `optional1` | Optional | Toggle | false |  |  |
+| `f1_def1` | Default Value | Float | [1.0] | 0.0 .. 10.0 |  |
+| `f2_def11` | Default Value | Float | 1.0 | 0.0 .. 10.0 |  |
+| `f2_def12` | Default Value | Float | 1.0 | 0.0 .. 10.0 |  |
+| `f3_def1r` | Default Value | Float | 1.0 | 0.0 .. 10.0 |  |
+| `f3_def1g` | Default Value | Float | 1.0 | 0.0 .. 10.0 |  |
+| `f3_def1b` | Default Value | Float | 1.0 | 0.0 .. 10.0 |  |
+| `f4_def1r` | Default Value | Float | 1.0 | 0.0 .. 10.0 |  |
+| `f4_def1g` | Default Value | Float | 1.0 | 0.0 .. 10.0 |  |
+| `f4_def1b` | Default Value | Float | 1.0 | 0.0 .. 10.0 |  |
+| `f4_def1a` | Default Value | Float | 1.0 | 0.0 .. 10.0 |  |
+| `i_def1` | Default Value | Int | [0] | 0 .. 10 |  |

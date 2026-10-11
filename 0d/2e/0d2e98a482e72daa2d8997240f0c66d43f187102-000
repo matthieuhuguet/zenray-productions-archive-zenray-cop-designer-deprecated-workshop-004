@@ -1,0 +1,41 @@
+# testgeometry_capybara
+
+- Label: Test Geometry: Capybara
+- Category: Copernicus (`Cop`), Houdini 22.0.368
+- Inputs: 0 to 0
+- Parameters: 17 (exact, read from Houdini by hython)
+- Used by the height graph: no
+
+## Feature summary (web, SideFX reference)
+
+- Source: https://www.sidefx.com/docs/houdini/nodes/cop/testgeometry_capybara.html
+- Summary (EN): Test Geometry: Capybara generates a procedural capybara model to use as test geometry for prototyping effects. Its multi-part, imperfect shape makes it a more realistic test subject than a simple primitive such as a torus.
+- Résumé (FR) : Test Geometry: Capybara génère un modèle de capybara procédural, à la forme multi-pièces et imparfaite, pour tester des effets.
+
+- Inputs meaning: ["None documented: a source node driven by its parameters alone"]
+
+- Key parameters: ["Signature: polygons or VDB signed distance field (SDF)", "Voxel Size: SDF resolution, smaller is more accurate but costs more time and memory", "Translate / Rotate / Uniform Scale: position by the feet, rotation about the centre, uniform scale", "Geometry: skin surface with texture UVs, or GSplats (fur, skin, baked lighting), when not in SDF mode", "Add Shader / Texture Set: default shader with embedded textures, and output texture resolution", "Animate / Animation Clip (Walk, Clothes Line, Elbow Drop, Fall) / Frame: default pose or built-in clip frame", "Apply Locomotion / Number of Loops: forward movement during the walk cycle, and loop count"]
+
+- Caveats: ["The built-in shader always uses 512x512 textures, so Texture Set does not affect it", "The Geometry parameter only applies when the output is not an SDF", "Smaller voxel sizes improve SDF accuracy at a significant cost in time and memory"]
+
+## Parameters (exact, from the installed Houdini)
+
+| parameter | label | type | default | range | menu tokens |
+|---|---|---|---|---|---|
+| `signature` | Signature | String | ["default"] |  |  |
+| `voxelsize` | Voxel Size | Float | [0.1] | 0.0 .. 1.0 (strict) |  |
+| `tx` | Translate | Float | 0.0 | -1.0 .. 1.0 |  |
+| `ty` | Translate | Float | 0.0 | -1.0 .. 1.0 |  |
+| `tz` | Translate | Float | 0.0 | -1.0 .. 1.0 |  |
+| `rx` | Rotate | Float | 0.0 | 0.0 .. 360.0 |  |
+| `ry` | Rotate | Float | 0.0 | 0.0 .. 360.0 |  |
+| `rz` | Rotate | Float | 0.0 | 0.0 .. 360.0 |  |
+| `scale` | Uniform Scale | Float | [1.0] | 0.0 .. 10.0 |  |
+| `geometry` | Geometry | Menu | 0 |  | skin, gsplats |
+| `addshader` | Add Shader | Toggle | false |  |  |
+| `textureset` | Texture Set | Menu | 0 |  | hda, orig |
+| `animate` | Animate | Toggle | false |  |  |
+| `clip` | Animation Clip | Menu | 0 |  | walk, clothesline, elbowdrop, fall |
+| `frame` | Frame | Float | [0.0] | 0.0 .. 10.0 |  |
+| `applylocomotion` | Apply Locomotion | Toggle | false |  |  |
+| `numloops` | Number of Loops | Int | [1] | 1 .. 5 (strict) |  |

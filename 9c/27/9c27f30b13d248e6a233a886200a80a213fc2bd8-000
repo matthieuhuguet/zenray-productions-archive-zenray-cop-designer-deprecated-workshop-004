@@ -1,0 +1,43 @@
+# pyro_lightfrompoints
+
+- Label: Pyro Light from Points
+- Category: Copernicus (`Cop`), Houdini 22.0.368
+- Inputs: 1 to 4
+- Parameters: 19 (exact, read from Houdini by hython)
+- Used by the height graph: no
+
+## Feature summary (web, SideFX reference)
+
+- Source: https://www.sidefx.com/docs/houdini/nodes/cop/pyro_lightfrompoints.html
+- Summary (EN): Builds a light field recording how much light from point lights reaches each voxel of a VDB. Light comes from a geometry input or from position and direction parameters. Chaining several nodes accumulates light from several sources; the result can feed Rasterize Volume to render the VDB as lit smoke.
+- Résumé (FR) : Pyro Light from Points calcule la lumière venant de sources ponctuelles atteignant chaque voxel d'un VDB, avec un rayon de lumière pour éviter les éclats infinis.
+
+- Inputs meaning: ["density (required): Float VDB defining occlusion and the topology of the light field; light appears only where density is active", "mipmap (optional): Float VDB MipMap from a Packed MipMap COP; computed internally if omitted", "light (optional): Vector VDB that new light is added to, enabling chaining", "points (optional): geometry whose points act as light sources"]
+
+- Key parameters: ["Directional: when on, lights are infinitely distant with parallel rays; when off, they are point lights at their 3D positions", "Light Position / Light Direction: used only when no point geometry is connected", "Light Radius: treats each light as a sphere, preventing infinite brightness when a point light sits inside the volume; multiplied by the pscale attribute", "Color: light color, multiplied by the Cd attribute", "Intensity: linear brightness", "Exposure: exponential brightness; each +1 doubles brightness", "Density Scale: how fast the volume occludes light", "Steps Per MipMap: tracing steps before moving to a coarser MipMap level; shadows get blurrier farther from the light", "Max Steps: maximum number of samples per occlusion ray"]
+
+- Caveats: ["The page says every point is tested against every voxel, so care should be taken not to use too many points", "Requires DOP-level permissions; not in Houdini Core, only in Houdini FX, Apprentice, Indie and Education", "Without a radius, a point light inside the volume produces an infinitely bright spot, so Light Radius matters in that case"]
+
+## Parameters (exact, from the installed Houdini)
+
+| parameter | label | type | default | range | menu tokens |
+|---|---|---|---|---|---|
+| `folder1` |  | FolderSet |  |  |  |
+| `directional` | Directional | Toggle | false |  |  |
+| `lightposx` | Light Position | Float | -5.0 | 0.0 .. 1.0 |  |
+| `lightposy` | Light Position | Float | 5.0 | 0.0 .. 1.0 |  |
+| `lightposz` | Light Position | Float | 0.0 | 0.0 .. 1.0 |  |
+| `lightdirx` | Light Direction | Float | 1.0 | 0.0 .. 1.0 |  |
+| `lightdiry` | Light Direction | Float | -1.0 | 0.0 .. 1.0 |  |
+| `lightdirz` | Light Direction | Float | 0.0 | 0.0 .. 1.0 |  |
+| `radius` | Light Radius | Float | [0.1] | 0.0 .. 1.0 |  |
+| `folder2` |  | FolderSet |  |  |  |
+| `colorr` | Color | Float | 1.0 | 0.0 .. 1.0 |  |
+| `colorg` | Color | Float | 1.0 | 0.0 .. 1.0 |  |
+| `colorb` | Color | Float | 1.0 | 0.0 .. 1.0 |  |
+| `intensity` | Intensity | Float | [1.0] | 0.0 .. 10.0 |  |
+| `exposure` | Exposure | Float | [0.0] | -10.0 .. 10.0 |  |
+| `densityscale` | Density Scale | Float | [1.0] | 0.0 .. 10.0 |  |
+| `folder0` |  | FolderSet |  |  |  |
+| `steppermip` | Steps Per MipMap | Int | [4] | 0 .. 10 |  |
+| `maxstep` | Max Steps | Int | [256] | 0 .. 256 |  |

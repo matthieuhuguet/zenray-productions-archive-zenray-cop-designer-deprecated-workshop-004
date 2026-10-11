@@ -1,0 +1,84 @@
+# phasornoise
+
+- Label: Phasor Noise
+- Category: Copernicus (`Cop`), Houdini 22.0.368
+- Inputs: 0 to 6
+- Parameters: 60 (exact, read from Houdini by hython)
+- Used by the height graph: no
+
+## Feature summary (web, SideFX reference)
+
+- Source: https://www.sidefx.com/docs/houdini/nodes/cop/phasornoise.html
+- Summary (EN): The Phasor Noise node procedurally generates wave-like noise by summing local phasor kernels, each defining sine and cosine waves in a small area. It suits wood grain, water ripples and wind-blown textures, with finer control over direction and spacing than OpenCL sine and cosine code.
+- Résumé (FR) : Le nœud Phasor Noise génère un bruit ondulatoire procédural en sommant des noyaux phaseurs locaux, adapté aux veines de bois, aux ondulations d'eau et aux textures de vent.
+
+- Inputs meaning: ["size_ref: sets output image size and metadata", "pos (optional): UV layer replacing pixel coordinates", "time (optional): per-pixel time value", "bias (optional): sets wave peak positions for Phasor Wave", "scale (optional): multiplies Element Size", "direction (optional): UV layer setting the initial kernel angle"]
+
+- Key parameters: ["Signature / Rotate Channel: layer type; non-Mono signatures give one noise per channel, each rotated by an offset", "Amplitude / Center / Noise Contrast: scale, offset and contrast of noise values", "Type: Phasor Wave (Sine, Rectangle or Saw profile), Phasor Noise, Gabor Noise or Intensity Field", "Element Size / Element Scale: wave width, with per-axis scaling", "Offset / Tile Size: shift and repeat period", "Wave Bias / Blending Radius / Kernels / Seed: peak position, kernel overlap, kernel count, randomness", "3D Noise (Animate, Pulse Length, Time Scale, Loop Length): third dimension for animation and seamless loops", "Rotate Pattern / Rotation Varying: kernel angles, uniform or randomised, with optional secondary set", "Post Processing (Fold, Complement, Bias, Gain, Gamma, Contrast, Clamp Minimum, Clamp Maximum): applied in the listed order"]
+
+- Caveats: ["Procedural patterns can look more artificial than simulation-based results.", "Values can fall outside 0 to 1 after amplitude or contrast changes; use a Clamp COP to enforce a range.", "Element Size values outside 0 to 1 can give unwanted results.", "With Tile Size enabled, some parameters are rounded or clamped to stay tileable."]
+
+## Parameters (exact, from the installed Houdini)
+
+| parameter | label | type | default | range | menu tokens |
+|---|---|---|---|---|---|
+| `signature` | Signature | String | ["default"] |  |  |
+| `settypeinfo` | Set Type Info | Toggle | false |  |  |
+| `typeinfo` | Type Info | Menu | 0 |  | none, color, position, vector, normal, offsetnormal, texturecoord, id, mask, sdf, height |
+| `folder0` |  | FolderSet |  |  |  |
+| `amp` | Amplitude | Float | [0.5] | 0.0 .. 1.0 |  |
+| `center` | Center | Float | [0.5] | 0.0 .. 1.0 |  |
+| `noisecontrast` | Noise Contrast | Float | [0.0] | -1.0 .. 1.0 |  |
+| `folder1` |  | FolderSet |  |  |  |
+| `type` | Type | Menu | 0 |  | phasorwave, phasornoise, gabornoise, intensityfield |
+| `wavetype` | Wave Type | Menu | 0 |  | sine, rectangle, saw |
+| `element` | Element Size | Float | [0.5] | 0.0 .. 1.0 (strict) |  |
+| `elementsizetype` | Element Size Type | Menu | 0 |  | BUTTONS_decompose_transforms |
+| `elementscalex` | Element Scale | Float | 1.0 | 0.0 .. 1.0 (strict) |  |
+| `elementscaley` | Element Scale | Float | 1.0 | 0.0 .. 1.0 (strict) |  |
+| `offsetx` | Offset | Float | 0.0 | -1.0 .. 1.0 |  |
+| `offsety` | Offset | Float | 0.0 | -1.0 .. 1.0 |  |
+| `tilesizetoggle` | Tile Size Toggle | Toggle | true |  |  |
+| `tilesizex` | Tile Size | Float | 2.0 | -1.0 .. 1.0 |  |
+| `tilesizey` | Tile Size | Float | 2.0 | -1.0 .. 1.0 |  |
+| `wavebias` | Wave Bias | Float | [0.0] | -1.0 .. 1.0 |  |
+| `blend` | Blending Radius | Float | [1.0] | 0.0 .. 1.0 (strict) |  |
+| `seed` | Seed | Int | [0] | 0 .. 100 |  |
+| `kernels` | Kernels | Int | [6] | 1 .. 20 (strict) |  |
+| `folder3` |  | FolderSet |  |  |  |
+| `biasblur` | Blur | Float | [0.01] | 0.0 .. 0.1 |  |
+| `biasstr` | Strength | Float | [0.5] | 0.0 .. 1.0 |  |
+| `folder4` |  | FolderSet |  |  |  |
+| `scaleblur` | Blur | Float | [0.03] | 0.0 .. 0.1 |  |
+| `scalestr` | Strength | Float | [0.3] | 0.0 .. 1.0 |  |
+| `use3d` | 3D Noise | Toggle | false |  |  |
+| `folder6` |  | FolderSet |  |  |  |
+| `animate` | Animate | Toggle | false |  |  |
+| `pulselength` | Pulse Length | Float | [1.0] | 0.001 .. 1.0 (strict) |  |
+| `timeoffset` | Time Offset | Float | [0.0] | 0.0 .. 1.0 |  |
+| `timescale` | Time Scale | Float | [1.0] | 0.0 .. 1.0 |  |
+| `doloop` | Do Loop | Toggle | false |  |  |
+| `looplength` | Loop Length (sec) | Float | [10.0] | 0.0 .. 10.0 |  |
+| `folder2` |  | FolderSet |  |  |  |
+| `firstrotatepattern` | Rotate Pattern | Float | [0.0] | 0.0 .. 1.0 |  |
+| `firstrotmenu` | First Rotation Menu | Menu | 1 |  | uniform, varying |
+| `firstrotationvarying` | Rotation Varying | Float | [0.5] | 0.0 .. 1.0 |  |
+| `usesecondrotation` | Use Secondary Rotation | Toggle | false |  |  |
+| `secondrotatepattern` | Rotate Pattern | Float | [0.0] | 0.0 .. 1.0 |  |
+| `secondrotmenu` | Second Rotation Menu | Menu | 0 |  | uniform, varying |
+| `secondrotationvarying` | Rotation Varying | Float | [0.0] | 0.0 .. 1.0 |  |
+| `folder5` |  | FolderSet |  |  |  |
+| `fold` | Fold | Toggle | false |  |  |
+| `complement` | Complement | Toggle | false |  |  |
+| `dobias` | Dobias | Toggle | false |  |  |
+| `bias` | Bias | Float | [0.5] | 0.0 .. 1.0 |  |
+| `dogain` | Dogain | Toggle | false |  |  |
+| `gain` | Gain | Float | [0.5] | 0.0 .. 1.0 |  |
+| `dogamma` | Dogamma | Toggle | false |  |  |
+| `gamma` | Gamma | Float | [2.2] | 0.0 .. 1.0 |  |
+| `docontrast` | Docontrast | Toggle | false |  |  |
+| `contrast` | Contrast | Float | [0.0] | 0.0 .. 1.0 |  |
+| `doclampmin` | Doclampmin | Toggle | false |  |  |
+| `minimum` | Clamp Minimum | Float | [0.0] | 0.0 .. 1.0 |  |
+| `doclampmax` | Doclampmax | Toggle | false |  |  |
+| `clampmaximum` | Clamp Maximum | Float | [1.0] | 0.0 .. 1.0 |  |

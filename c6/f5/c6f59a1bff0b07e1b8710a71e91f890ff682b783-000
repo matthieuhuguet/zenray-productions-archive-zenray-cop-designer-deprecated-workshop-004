@@ -1,0 +1,130 @@
+# sdfshape
+
+- Label: SDF Shape
+- Category: Copernicus (`Cop`), Houdini 22.0.368
+- Inputs: 0 to 1
+- Parameters: 106 (exact, read from Houdini by hython)
+- Used by the height graph: no
+
+## Feature summary (web, SideFX reference)
+
+- Source: https://www.sidefx.com/docs/houdini/nodes/cop/sdfshape.html
+- Summary (EN): SDF Shape builds a 2D signed distance field for a selected shape, negative inside and positive outside. Its Mono output can be combined with SDF Blend, or converted with SDF to Mono or SDF to RGB.
+- Résumé (FR) : Le nœud SDF Shape construit un champ de distance signé 2D pour une forme choisie, négatif à l'intérieur et positif à l'extérieur.
+
+- Inputs meaning: ["size_ref: sets the output image size and metadata (the only input)"]
+
+- Key parameters: ["Shape Class: Basic, Marker or Compound", "Basic shapes: Circle (Radius, Arc, Thickness, Round Ends, Quadratic Circle); Diamond and Rectangle (Size, Rectangle adds Round Corners and Separate Controls); Line (Length, Use Points, Add Thickness, Bulge); Polygon and Star (Radius, Number of Sides, Star adds Angle Factor); Spiral (Radius, Arc Bend, Number of Arcs); Squircle (Radius, Blend); Trapezoid (Height, Bottom Length, Top Length); Triangle (Width, Height, or Points 0 to 2); Wave (Arc, Element Size)", "Marker: Size, the radius of the marker", "Compound: Arch, Arrow, Cross, Egg, Fishscale, Horseshoe, Moon, Octagon-Dot, Vesica, each with its own controls", "Transform: Translate, Rotate, Shear, Uniform Scale"]
+
+- Caveats: ["The node shows the field through a visualizer by default; add a Layer Properties node with Type Info on and set to None to read the raw values"]
+
+## Parameters (exact, from the installed Houdini)
+
+| parameter | label | type | default | range | menu tokens |
+|---|---|---|---|---|---|
+| `signature` | Signature | Float | [0.0] | 0.0 .. 10.0 |  |
+| `folder2` |  | FolderSet |  |  |  |
+| `shapeclass` | Shape Class | Menu | 0 |  | basic, marker, compound |
+| `basictype` | Basic Shapes | String | ["circle"] |  | circle, diamond, line, rect, regpolygon, spiral, squircle, star, trapezoid, triangle, circlewave |
+| `markertype` | Markers | String | ["masterisk"] |  | masterisk, mcheck, mchevron, mclobber, mcross, minfinity, mring, mt, mtag |
+| `compoundtype` | Compund Shapes | String | ["archway"] |  | archway, arrow, cross, egg, fishscale, heart, horseshoe, moon, octagondot, roundedx, vesica |
+| `folder4` |  | FolderSet |  |  |  |
+| `circle_radius` | Radius | Float | [1.0] | 0.0 .. 1.0 (strict) |  |
+| `circle_doarc` | Arc | Toggle | false |  |  |
+| `circle_arc` | Arc | Float | [1.0] | 0.0 .. 1.0 (strict) |  |
+| `circle_dothickness` | Thickness | Toggle | false |  |  |
+| `circle_thickness` | Thickness | Float | [1.0] | 0.0 .. 1.0 (strict) |  |
+| `circle_roundends` | Round Ends | Toggle | false |  |  |
+| `circle_quadratic` | Quadratic Circle | Toggle | false |  |  |
+| `diamond_sizex` | Size | Float | 1.0 | 0.0 .. 1.0 (strict) |  |
+| `diamond_sizey` | Size | Float | 1.0 | 0.0 .. 1.0 (strict) |  |
+| `line_length` | Length | Float | [1.6] | 0.0 .. 2.0 (strict) |  |
+| `line_usepoints` | Use Points | Toggle | false |  |  |
+| `line_pt0x` | Start Point | Float | -1.0 | 0.0 .. 1.0 |  |
+| `line_pt0y` | Start Point | Float | 0.0 | 0.0 .. 1.0 |  |
+| `line_pt1x` | End Point | Float | 1.0 | 0.0 .. 1.0 |  |
+| `line_pt1y` | End Point | Float | 0.0 | 0.0 .. 1.0 |  |
+| `line_addthickness` | Add Thickness | Toggle | false |  |  |
+| `line_sthickness` | Start Thickness | Float | [0.2] | 0.0 .. 1.0 (strict) |  |
+| `line_ethickness` | End Thickness | Float | [0.2] | 0.0 .. 1.0 (strict) |  |
+| `line_dobulge` | Bulge | Toggle | false |  |  |
+| `line_bulge` | Bulge | Float | [0.0] | -1.0 .. 1.0 (strict) |  |
+| `rect_sizex` | Size | Float | 2.0 | 0.0 .. 1.0 (strict) |  |
+| `rect_sizey` | Size | Float | 2.0 | 0.0 .. 1.0 (strict) |  |
+| `rect_round` | Round Corners | Toggle | false |  |  |
+| `rect_roundness` | Round Corners | Float | [0.5] | 0.0 .. 1.0 (strict) |  |
+| `rect_doseproundness` | Separate Controls | Toggle | false |  |  |
+| `rect_tlroundness` | Top Left | Float | [0.5] | 0.0 .. 1.0 (strict) |  |
+| `rect_trroundness` | Top Right | Float | [0.5] | 0.0 .. 1.0 (strict) |  |
+| `rect_blroundness` | Bottom Left | Float | [0.5] | 0.0 .. 1.0 (strict) |  |
+| `rect_brroundness` | Bottom Right | Float | [0.5] | 0.0 .. 1.0 (strict) |  |
+| `regpolygon_radius` | Radius | Float | [1.0] | 0.0 .. 1.0 (strict) |  |
+| `regpolygon_sides` | Number of Sides | Int | [6] | 3 .. 10 (strict) |  |
+| `spiral_radius` | Radius | Float | [1.0] | 0.0 .. 1.0 (strict) |  |
+| `spiral_arclen` | Arc Bend | Float | [0.25] | 0.0 .. 1.0 (strict) |  |
+| `spiral_arcnum` | Number of Arcs | Int | [8] | 1 .. 12 (strict) |  |
+| `squircle_radius` | Radius | Float | [1.0] | 0.0 .. 1.0 (strict) |  |
+| `squircle_blend` | Blend | Float | [5.0] | 0.0 .. 10.0 (strict) |  |
+| `star_radius` | Radius | Float | [1.0] | 0.0 .. 1.0 (strict) |  |
+| `star_sides` | Number of Sides | Int | [5] | 3 .. 10 (strict) |  |
+| `star_anglefactor` | Angle Factor | Float | [3.0] | 2.0 .. 10.0 (strict) |  |
+| `trapezoid_height` | Height | Float | [2.0] | 0.0 .. 2.0 (strict) |  |
+| `trapezoid_blength` | Bottom Length | Float | [2.0] | 0.0 .. 2.0 (strict) |  |
+| `trapezoid_tlength` | Top Length | Float | [0.5] | 0.0 .. 2.0 (strict) |  |
+| `triangle_width` | Width | Float | [1.0] | 0.0 .. 1.0 (strict) |  |
+| `triangle_height` | Height | Float | [2.0] | 0.0 .. 2.0 (strict) |  |
+| `triangle_usepoints` | Use Points | Toggle | false |  |  |
+| `triangle_pt0x` | Point 0 | Float | -1.0 | 0.0 .. 1.0 |  |
+| `triangle_pt0y` | Point 0 | Float | -1.0 | 0.0 .. 1.0 |  |
+| `triangle_pt1x` | Point 1 | Float | -1.0 | 0.0 .. 1.0 |  |
+| `triangle_pt1y` | Point 1 | Float | 1.0 | 0.0 .. 1.0 |  |
+| `triangle_pt2x` | Point 2 | Float | 1.0 | 0.0 .. 1.0 |  |
+| `triangle_pt2y` | Point 2 | Float | -1.0 | 0.0 .. 1.0 |  |
+| `circlewave_arc` | Arc | Float | [0.5] | 0.0 .. 1.0 (strict) |  |
+| `circlewave_freq` | Element Size | Float | [6.0] | 0.0 .. 10.0 (strict) |  |
+| `folder3` |  | FolderSet |  |  |  |
+| `marker_asterisk_size` | Size | Float | [1.0] | 0.0 .. 1.0 (strict) |  |
+| `marker_check_size` | Size | Float | [0.7] | 0.0 .. 1.0 (strict) |  |
+| `marker_chevron_size` | Size | Float | [1.0] | 0.0 .. 1.0 (strict) |  |
+| `marker_clobber_size` | Size | Float | [0.9] | 0.0 .. 1.0 (strict) |  |
+| `marker_cross_size` | Size | Float | [1.0] | 0.0 .. 1.0 (strict) |  |
+| `marker_infinity_size` | Size | Float | [0.85] | 0.0 .. 1.0 (strict) |  |
+| `marker_ring_size` | Size | Float | [1.0] | 0.0 .. 1.0 (strict) |  |
+| `marker_tag_size` | Size | Float | [1.0] | 0.0 .. 1.0 (strict) |  |
+| `marker_t_size` | Size | Float | [1.0] | 0.0 .. 1.0 (strict) |  |
+| `folder5` |  | FolderSet |  |  |  |
+| `archway_width` | Width | Float | [1.0] | 0.0 .. 1.0 (strict) |  |
+| `archway_height` | Height | Float | [1.0] | 0.0 .. 1.0 (strict) |  |
+| `arrow_length` | Length | Float | [2.0] | 0.0 .. 2.0 (strict) |  |
+| `arrow_usepoints` | Use Points | Toggle | false |  |  |
+| `arrow_pt0x` | Start Point | Float | -1.0 | 0.0 .. 1.0 |  |
+| `arrow_pt0y` | Start Point | Float | 0.0 | 0.0 .. 1.0 |  |
+| `arrow_pt1x` | End Point | Float | 1.0 | 0.0 .. 1.0 |  |
+| `arrow_pt1y` | End Point | Float | 0.0 | 0.0 .. 1.0 |  |
+| `arrow_shaft_thickness` | Shaft Thickness | Float | [0.2] | 0.0 .. 1.0 (strict) |  |
+| `arrow_head_thickness` | Head Thickness | Float | [0.4] | 0.0 .. 1.0 (strict) |  |
+| `arrow_head_ratio` | Head Ratio | Float | [0.3] | 0.0 .. 1.0 (strict) |  |
+| `cross_size` | Cross Size | Float | [1.0] | 0.0 .. 1.0 (strict) |  |
+| `cross_inset` | Cross Inset | Float | [0.6] | 0.0 .. 1.0 (strict) |  |
+| `cross_bevel` | Cross Bevel | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `egg_radius` | Radius | Float | [0.6] | 0.0 .. 1.0 (strict) |  |
+| `egg_roundness` | Roundness | Float | [0.2] | 0.0 .. 1.0 (strict) |  |
+| `fishscale_thickness` | Thickness | Float | [0.2] | 0.0 .. 1.0 (strict) |  |
+| `horseshoe_size` | Size | Float | [0.7] | 0.0 .. 1.0 (strict) |  |
+| `horseshoe_separation` | Separation | Float | [0.4] | 0.0 .. 1.0 (strict) |  |
+| `horseshoe_length` | Length | Float | [0.45] | 0.0 .. 1.0 (strict) |  |
+| `horseshoe_thickness` | Thickness | Float | [0.25] | 0.0 .. 1.0 (strict) |  |
+| `moon_outter_radius` | Outter Radius | Float | [1.0] | 0.0 .. 1.0 (strict) |  |
+| `moon_inner_radius` | Inner Radius | Float | [0.5] | 0.0 .. 1.0 (strict) |  |
+| `moon_inner_offset` | Inner Offset | Float | [0.75] | 0.0 .. 1.0 (strict) |  |
+| `octagondot_thickness` | Thickness | Float | [0.1] | 0.0 .. 1.0 (strict) |  |
+| `roundedx_size` | Size | Float | [1.6] | 0.0 .. 2.0 (strict) |  |
+| `roundedx_width` | Thickness | Float | [0.2] | 0.0 .. 1.0 (strict) |  |
+| `vesica_radius` | Radius | Float | [1.0] | 0.0 .. 1.0 (strict) |  |
+| `vesica_roundness` | Roundness | Float | [0.35] | 0.0 .. 1.0 (strict) |  |
+| `folder1` |  | FolderSet |  |  |  |
+| `tx` | Translate | Float | 0.0 | 0.0 .. 1.0 |  |
+| `ty` | Translate | Float | 0.0 | 0.0 .. 1.0 |  |
+| `r` | Rotate | Float | [0.0] | -180.0 .. 180.0 |  |
+| `shear` | Shear | Float | [0.0] | -1.0 .. 1.0 |  |
+| `scale` | Uniform Scale | Float | [1.0] | 0.0 .. 5.0 (strict) |  |

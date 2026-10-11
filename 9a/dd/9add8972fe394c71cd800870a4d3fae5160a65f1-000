@@ -1,0 +1,95 @@
+# vdbvisualize
+
+- Label: VDB Visualize
+- Category: Copernicus (`Cop`), Houdini 22.0.368
+- Inputs: 1 to 4
+- Parameters: 71 (exact, read from Houdini by hython)
+- Used by the height graph: no
+
+## Feature summary (web, SideFX reference)
+
+- Source: https://www.sidefx.com/docs/houdini/nodes/cop/vdbvisualize.html
+- Summary (EN): Builds a Geometry output that displays several VDBs together as one coloured volume. It works like the Volume Visualization SOP, usable inside COPs without switching context.
+- Résumé (FR) : Assemble plusieurs VDB (densité, couleur, émission, couleur d'émission) en un volume coloré affichable directement dans un réseau COP.
+
+- Inputs meaning: ["density: Float VDB giving the fog density", "Cd: Float or Vector VDB giving the colour of each voxel", "emit: Float VDB giving the magnitude of self-emission", "emitcd: Float or Vector VDB giving the emission colour"]
+
+- Key parameters: ["Signature: the VDB type the source accepts", "Density Scale: fixed multiplier controlling opacity; Density Ramp remaps the density colour", "Diffuse Color: Input Range remaps the input colour to 0-1; Mode sets how the ramp applies; Diffuse Ramp maps to the final colour", "Emission: Emission Scale sets glow intensity; Input Range, Mode and Emission Ramp shape the emission amount", "Emission Color: Input Range, Mode and Emission Color Ramp shape the emission colour", "Shadows: Shadow Scale adds density for light-driven shadowing; Set Ambient Colors enables Exposed Color and Occluded Color; Ambient Shadow Scale sets self-shadow intensity from ambient lights; Shadow Color tints shadows"]
+
+- Caveats: ["Use no ramp when unbounded values are needed, such as light-field colours or emission", "At a larger scene scale, a smaller Density Scale may be needed", "The page states that turning off a checkbox does not disable ambient shadowing; without an Ambient Shadow Scale, the Ambient Occlusion setting in Display Options controls default self-shadowing"]
+
+## Parameters (exact, from the installed Houdini)
+
+| parameter | label | type | default | range | menu tokens |
+|---|---|---|---|---|---|
+| `signature` | Signature | String | ["auto"] |  |  |
+| `folder0` |  | FolderSet |  |  |  |
+| `densityscale` | Density Scale | Float | [1.0] | 0.0 .. 10.0 (strict) |  |
+| `densityrampmode` | Mode | Menu | 0 |  | none, clamp, periodic |
+| `densityramp` | Density Ramp | Ramp | 2 |  |  |
+| `folder1` |  | FolderSet |  |  |  |
+| `cdrangeoverride` | Diffuse Range | Toggle | false |  |  |
+| `cdrange1` | Input Range | Float | 0.0 | 0.0 .. 10.0 |  |
+| `cdrange2` | Input Range | Float | 1.0 | 0.0 .. 10.0 |  |
+| `cdrampmode` | Mode | Menu | 1 |  | none, clamp, periodic |
+| `cdramp` | Diffuse Ramp | Ramp | 2 |  |  |
+| `folder2` |  | FolderSet |  |  |  |
+| `emitscale` | Emission Scale | Float | [0.0] | 0.0 .. 10.0 (strict) |  |
+| `emitrangeoverride` | Emit Range | Toggle | false |  |  |
+| `emitrange1` | Input Range | Float | 0.0 | 0.0 .. 10.0 |  |
+| `emitrange2` | Input Range | Float | 1.0 | 0.0 .. 10.0 |  |
+| `emitrampmode` | Mode | Menu | 0 |  | none, clamp, periodic |
+| `emitramp` | Emission Ramp | Ramp | 2 |  |  |
+| `folder3` |  | FolderSet |  |  |  |
+| `emitcdrangeoverride` | Emission Color Range | Toggle | false |  |  |
+| `emitcdrange1` | Input Range | Float | 0.0 | 0.0 .. 10.0 |  |
+| `emitcdrange2` | Input Range | Float | 1.0 | 0.0 .. 10.0 |  |
+| `emitcdrampmode` | Mode | Menu | 1 |  | none, clamp, periodic |
+| `emitcdramp` | Emission Color Ramp | Ramp | 2 |  |  |
+| `folder4` |  | FolderSet |  |  |  |
+| `shadowscale` | Shadow Scale | Float | [1.0] | 0.0 .. 10.0 (strict) |  |
+| `setambientcolors` | Set Ambient Colors | Toggle | false |  |  |
+| `ambientexposedr` | Exposed Color | Float | 1.0 | 0.0 .. 1.0 (strict) |  |
+| `ambientexposedg` | Exposed Color | Float | 1.0 | 0.0 .. 1.0 (strict) |  |
+| `ambientexposedb` | Exposed Color | Float | 1.0 | 0.0 .. 1.0 (strict) |  |
+| `ambientoccludedr` | Occluded Color | Float | 0.0 | 0.0 .. 1.0 (strict) |  |
+| `ambientoccludedg` | Occluded Color | Float | 0.0 | 0.0 .. 1.0 (strict) |  |
+| `ambientoccludedb` | Occluded Color | Float | 0.0 | 0.0 .. 1.0 (strict) |  |
+| `setambientshadows` | Ambient Shadow Scale | Toggle | false |  |  |
+| `ambientshadows` | Ambient Shadow Scale | Float | [1.0] | 0.0 .. 1.0 (strict) |  |
+| `setshadowcolor` | Shadow Color | Toggle | false |  |  |
+| `shadowcolorr` | Shadow Color | Float | 1.0 | 0.0 .. 1.0 (strict) |  |
+| `shadowcolorg` | Shadow Color | Float | 1.0 | 0.0 .. 1.0 (strict) |  |
+| `shadowcolorb` | Shadow Color | Float | 1.0 | 0.0 .. 1.0 (strict) |  |
+| `densityramp1pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `densityramp1value` | Value | Float | [0.0] | 0.0 .. 10.0 |  |
+| `densityramp1interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `densityramp2pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `densityramp2value` | Value | Float | [0.0] | 0.0 .. 10.0 |  |
+| `densityramp2interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `cdramp1pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `cdramp1cr` | Color | Float | 0.0 | 0.0 .. 10.0 |  |
+| `cdramp1cg` | Color | Float | 0.0 | 0.0 .. 10.0 |  |
+| `cdramp1cb` | Color | Float | 0.0 | 0.0 .. 10.0 |  |
+| `cdramp1interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `cdramp2pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `cdramp2cr` | Color | Float | 0.0 | 0.0 .. 10.0 |  |
+| `cdramp2cg` | Color | Float | 0.0 | 0.0 .. 10.0 |  |
+| `cdramp2cb` | Color | Float | 0.0 | 0.0 .. 10.0 |  |
+| `cdramp2interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `emitramp1pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `emitramp1value` | Value | Float | [0.0] | 0.0 .. 10.0 |  |
+| `emitramp1interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `emitramp2pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `emitramp2value` | Value | Float | [0.0] | 0.0 .. 10.0 |  |
+| `emitramp2interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `emitcdramp1pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `emitcdramp1cr` | Color | Float | 0.0 | 0.0 .. 10.0 |  |
+| `emitcdramp1cg` | Color | Float | 0.0 | 0.0 .. 10.0 |  |
+| `emitcdramp1cb` | Color | Float | 0.0 | 0.0 .. 10.0 |  |
+| `emitcdramp1interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `emitcdramp2pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `emitcdramp2cr` | Color | Float | 0.0 | 0.0 .. 10.0 |  |
+| `emitcdramp2cg` | Color | Float | 0.0 | 0.0 .. 10.0 |  |
+| `emitcdramp2cb` | Color | Float | 0.0 | 0.0 .. 10.0 |  |
+| `emitcdramp2interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |

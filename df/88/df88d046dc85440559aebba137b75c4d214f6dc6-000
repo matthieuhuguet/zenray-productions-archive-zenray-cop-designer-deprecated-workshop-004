@@ -1,0 +1,25 @@
+# rgbtorgba
+
+- Label: RGB to RGBA
+- Category: Copernicus (`Cop`), Houdini 22.0.368
+- Inputs: 0 to 2
+- Parameters: 1 (exact, read from Houdini by hython)
+- Used by the height graph: no
+
+## Feature summary (web, SideFX reference)
+
+- Source: https://www.sidefx.com/docs/houdini/nodes/cop/rgbtorgba.html
+- Summary (EN): The RGB to RGBA node combines an RGB layer or attribute with a mono layer that supplies the alpha channel, producing an RGBA result.
+- Résumé (FR) : Le nœud RGB to RGBA assemble une couche RGB et une couche mono d'alpha en une couche RGBA, prémultipliée ou non selon son réglage.
+
+- Inputs meaning: ["rgb: the RGB layer or attribute to join", "alpha: the mono layer or attribute used as the alpha channel"]
+
+- Key parameters: ["Premultiply Alpha: when on, premultiplies the inputs to create an associated RGBA layer; when off, joins RGB and alpha directly"]
+
+- Caveats: ["RGBA layers are usually premultiplied, and the output may be premultiplied depending on Premultiply Alpha"]
+
+## Parameters (exact, from the installed Houdini)
+
+| parameter | label | type | default | range | menu tokens |
+|---|---|---|---|---|---|
+| `premult` | Premultiply Alpha | Toggle | true |  |  |

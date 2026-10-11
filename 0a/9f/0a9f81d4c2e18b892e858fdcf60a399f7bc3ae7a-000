@@ -1,0 +1,27 @@
+# prefixsumcore
+
+- Label: Prefix Sum Core
+- Category: Copernicus (`Cop`), Houdini 22.0.368
+- Inputs: 0 to 1
+- Parameters: 3 (exact, read from Houdini by hython)
+- Used by the height graph: no
+
+## Feature summary (web, SideFX reference)
+
+- Source: https://www.sidefx.com/docs/houdini/nodes/cop/prefixsumcore.html
+- Summary (EN): The Prefix Sum Core node computes a prefix sum by scanning the buffer of an input layer. Besides addition, it can produce running minimums, maximums, or counts of non-zero elements.
+- Résumé (FR) : Le nœud Prefix Sum Core est un ancien nœud de préfixe masqué et non supporté, à ne pas utiliser dans un nouveau travail.
+
+- Inputs meaning: ["source: original layer to compute the prefix sum from"]
+
+- Key parameters: ["Signature: layer type accepted by the source", "Operation: Add, Minimum, Maximum or Count Non-Zero", "Inclusive: when on, each prefix includes the current element; when off, the first element becomes the identity value of the operation"]
+
+- Caveats: ["The node type is hidden and no longer supported; do not use it in new work.", "The Copernicus index lists a separate Prefix Sum node, which this page does not cover."]
+
+## Parameters (exact, from the installed Houdini)
+
+| parameter | label | type | default | range | menu tokens |
+|---|---|---|---|---|---|
+| `signature` | Signature | String | ["auto"] |  |  |
+| `op` | Operation | Menu | 0 |  | add, min, max, countnonzero |
+| `inclusive` | Inclusive | Toggle | true |  |  |

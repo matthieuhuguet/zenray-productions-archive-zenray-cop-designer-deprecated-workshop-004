@@ -1,0 +1,31 @@
+# testgeometry_shaderball
+
+- Label: Test Geometry: Shader Ball
+- Category: Copernicus (`Cop`), Houdini 22.0.368
+- Inputs: 0 to 0
+- Parameters: 9 (exact, read from Houdini by hython)
+- Used by the height graph: no
+
+## Feature summary (web, SideFX reference)
+
+- Source: https://www.sidefx.com/docs/houdini/nodes/cop/testgeometry_shaderball.html
+- Summary (EN): Creates a shader ball, a standardized test geometry for checking shaders. It is a Copernicus node available since Houdini 22.0, and its only documented output is geo.
+- Résumé (FR) : Ce nœud crée une shader ball, géométrie de test normalisée pour vérifier des shaders, disponible depuis Houdini 22.0.
+
+- Key parameters: [{"name": "Signature", "meaning": "Sets whether the output is polygons or a VDB signed distance field (SDF)."}, {"name": "Voxel Size", "meaning": "Voxel size for SDF output. Smaller is more accurate but slower and uses more memory."}, {"name": "Translate", "meaning": "Positions the centre of the geometry."}, {"name": "Rotate", "meaning": "Rotates the geometry about its centre."}, {"name": "Uniform Scale", "meaning": "Scales the geometry evenly on all axes."}]
+
+- Caveats: ["Output is either surface geometry (polygons) or a float VDB containing the SDF, depending on Signature.", "The page gives no default values for the parameters.", "Accuracy and cost trade off through Voxel Size."]
+
+## Parameters (exact, from the installed Houdini)
+
+| parameter | label | type | default | range | menu tokens |
+|---|---|---|---|---|---|
+| `signature` | Signature | String | ["default"] |  |  |
+| `voxelsize` | Voxel Size | Float | [0.1] | 0.0 .. 1.0 (strict) |  |
+| `tx` | Translate | Float | 0.0 | -1.0 .. 1.0 |  |
+| `ty` | Translate | Float | 0.0 | -1.0 .. 1.0 |  |
+| `tz` | Translate | Float | 0.0 | -1.0 .. 1.0 |  |
+| `rx` | Rotate | Float | 0.0 | 0.0 .. 360.0 |  |
+| `ry` | Rotate | Float | 0.0 | 0.0 .. 360.0 |  |
+| `rz` | Rotate | Float | 0.0 | 0.0 .. 360.0 |  |
+| `scale` | Uniform Scale | Float | [1.0] | 0.0 .. 10.0 |  |

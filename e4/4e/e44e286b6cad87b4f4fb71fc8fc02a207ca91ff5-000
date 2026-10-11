@@ -1,0 +1,87 @@
+# 11 October 2026 10:16 : measures a reference height (any target) into measures/<name>.json. Measures only, never pixels in a graph.
+# EN: row profile and joints (boards), column profile and black gutters (grid of tiles), global statistics.
+# FR : mesure une référence (planches et grille de tuiles). Les nombres règlent les paramètres ; les pixels n'entrent jamais.
+import argparse
+import json
+import os
+
+import numpy as np
+from PIL import Image
+
+HERE = os.path.dirname(os.path.abspath(__file__))
+MEASURES_DIR = '/Users/zenray/Create/Build/Productions/ZenRayHoudini/LouisianaBayou/Heights/CopDesigner/measures'
+
+
+def stats(x):
+    q = np.percentile(x, [1, 5, 25, 50, 75, 95, 99])
+    return {'mean': round(float(x.mean()), 2), 'std': round(float(x.std()), 2),
+            'p01': round(float(q[0]), 1), 'p05': round(float(q[1]), 1), 'p25': round(float(q[2]), 1),
+            'p50': round(float(q[3]), 1), 'p75': round(float(q[4]), 1), 'p95': round(float(q[5]), 1),
+            'p99': round(float(q[6]), 1)}
+
+
+def runs_below(profile, threshold, min_len):
+    # EN: intervals where the profile stays under threshold (gutters). FR : intervalles sous le seuil (gouttières).
+    out, start = [], None
+    for i, v in enumerate(profile):
+        if v < threshold and start is None:
+            start = i
+        if (v >= threshold or i == len(profile) - 1) and start is not None:
+            end = i if v >= threshold else i + 1
+            if end - start >= min_len:
+                out.append([start, end])
+            start = None
+    return out
+
+
+def seams_of(profile, depth_min, radius=14, smooth=5):
+    h = len(profile)
+    k = smooth
+    sm = np.convolve(np.pad(profile, k, mode='edge'), np.ones(2 * k + 1) / (2 * k + 1), mode='valid')
+    cands = []
+    for y in range(radius, h - radius):
+        if sm[y] <= sm[y - radius:y + radius + 1].min():
+            left = sm[max(0, y - 40):y].max()
+            right = sm[y + 1:min(h, y + 41)].max()
+            depth = min(left, right) - sm[y]
+            if depth >= depth_min:
+                cands.append((float(depth), y))
+    seams = []
+    for depth, y in sorted(cands, reverse=True):
+        if all(abs(y - s['y']) > 12 for s in seams):
+            seams.append({'y': y, 'value': round(float(sm[y]), 2), 'depth': round(depth, 2)})
+    seams.sort(key=lambda s: s['y'])
+    return sm, seams
+
+
+def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument('ref')
+    ap.add_argument('name')
+    ap.add_argument('--seam-depth', type=float, default=25.0)
+    ap.add_argument('--gutter', type=float, default=20.0, help='gutter threshold in levels')
+    args = ap.parse_args()
+    img = Image.open(args.ref)
+    a = np.asarray(img.convert('L'), dtype=np.float64)
+    h, w = a.shape
+    row = a.mean(axis=1)
+    col = a.mean(axis=0)
+    sm, seams = seams_of(row, args.seam_depth)
+    # EN: gutters are rows and columns that are almost black on average. FR : gouttières noires en lignes et colonnes.
+    row_gutters = runs_below(row, args.gutter, 6)
+    col_gutters = runs_below(col, args.gutter, 6)
+    out = {'name': args.name, 'source': args.ref, 'size': [w, h], 'mode': img.mode,
+           'global': stats(a), 'row_profile_every_8': [round(float(v), 1) for v in sm[::8]],
+           'seams': seams, 'row_gutters': row_gutters, 'col_gutters': col_gutters,
+           'black_fraction': round(float((a < args.gutter).mean()), 4)}
+    os.makedirs(MEASURES_DIR, exist_ok=True)
+    with open(os.path.join(MEASURES_DIR, args.name + '.json'), 'w', encoding='utf-8') as fh:
+        json.dump(out, fh, indent=1)
+    print(args.name, 'size', (w, h), 'mean', out['global']['mean'], 'std', out['global']['std'])
+    print('seams', len(seams), [s['y'] for s in seams])
+    print('row gutters', len(row_gutters), row_gutters[:12])
+    print('col gutters', len(col_gutters), col_gutters[:12], 'black fraction', out['black_fraction'])
+
+
+if __name__ == '__main__':
+    main()

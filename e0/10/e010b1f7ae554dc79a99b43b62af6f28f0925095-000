@@ -1,0 +1,25 @@
+# twowayswitchifwired
+
+- Label: Two Way Switch If Wired
+- Category: Copernicus (`Cop`), Houdini 22.0.368
+- Inputs: 0 to 3
+- Parameters: 1 (exact, read from Houdini by hython)
+- Used by the height graph: no
+
+## Feature summary (web, SideFX reference)
+
+- Source: https://www.sidefx.com/docs/houdini/nodes/cop/twowayswitchifwired.html
+- Summary (EN): Chooses between two inputs based on whether a third input, test, is wired. It passes the selected input to its single output.
+- Résumé (FR) : Ce nœud transmet l'une de ses deux entrées selon que l'entrée test est câblée ou non.
+
+- Inputs meaning: ["test: optional. Its wiring determines which input is passed through. It can be a different type from the other inputs.", "first: used by default when test is wired.", "second: used by default when test is not wired."]
+
+- Key parameters: [{"name": "Selection", "meaning": "First Input If Wired uses first when test is wired, and second when it is not. Second Input If Wired does the reverse."}]
+
+- Caveats: ["A test input may look wired but still behave as unwired if it comes from a subnet input or another source that is effectively empty."]
+
+## Parameters (exact, from the installed Houdini)
+
+| parameter | label | type | default | range | menu tokens |
+|---|---|---|---|---|---|
+| `rule` | Selection | Menu | 0 |  | first, second |

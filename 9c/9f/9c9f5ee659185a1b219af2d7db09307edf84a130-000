@@ -1,0 +1,35 @@
+# posmap
+
+- Label: Position Map
+- Category: Copernicus (`Cop`), Houdini 22.0.368
+- Inputs: 0 to 1
+- Parameters: 11 (exact, read from Houdini by hython)
+- Used by the height graph: no
+
+## Feature summary (web, SideFX reference)
+
+- Source: https://www.sidefx.com/docs/houdini/nodes/cop/posmap.html
+- Summary (EN): The Position Map node generates an RGB position map in which each pixel stores a 3D location. The map can serve as the reference position for noise nodes such as Fractal Noise 3D.
+- Résumé (FR) : Le nœud Position Map produit une carte RGB où chaque pixel stocke une position 3D, utilisable comme référence pour les bruits 3D.
+
+- Inputs meaning: ["size_ref: representative layer that sets output image size and metadata"]
+
+- Key parameters: ["Signature: layer type accepted by the source (no further detail on the page)", "Source Position: world-space pixel location (Position), camera origin (Camera Origin) or normalised direction from the camera origin (View Direction)", "X/Y/Z Border: mapping outside the canonical cube (sides of size 2): Clamp, Mirror, Wrap or Extend", "X/Y/Z Shift: offset added before border correction", "X/Y/Z Cycles: scale applied before border correction; with Wrap it acts as a cycle count for periodic patterns", "Output: pos, an RGB layer or a Vector VDB"]
+
+- Caveats: ["With Camera Origin, the origin can vary per pixel for orthographic cameras.", "Border and Cycles take effect only for values outside the cube, so results depend on the scene scale."]
+
+## Parameters (exact, from the installed Houdini)
+
+| parameter | label | type | default | range | menu tokens |
+|---|---|---|---|---|---|
+| `signature` | Signature | String | ["auto"] |  |  |
+| `source` | Source Position | Menu | 0 |  | pos, origin, view |
+| `xborder` | X Border | Menu | 3 |  | clamp, mirror, wrap, extend |
+| `xshift` | X Shift | Float | [0.0] | -1.0 .. 1.0 |  |
+| `xcycle` | X Cycles | Float | [1.0] | 0.0 .. 10.0 |  |
+| `yborder` | Y Border | Menu | 3 |  | clamp, mirror, wrap, extend |
+| `yshift` | Y Shift | Float | [0.0] | -1.0 .. 1.0 |  |
+| `ycycle` | Y Cycles | Float | [1.0] | 0.0 .. 10.0 |  |
+| `zborder` | Z Border | Menu | 3 |  | clamp, mirror, wrap, extend |
+| `zshift` | Z Shift | Float | [0.0] | -1.0 .. 1.0 |  |
+| `zcycle` | Z Cycles | Float | [1.0] | 0.0 .. 10.0 |  |

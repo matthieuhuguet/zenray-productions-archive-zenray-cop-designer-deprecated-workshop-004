@@ -1,0 +1,32 @@
+# testgeometry_rubbertoy
+
+- Label: Test Geometry: Rubber Toy
+- Category: Copernicus (`Cop`), Houdini 22.0.368
+- Inputs: 0 to 0
+- Parameters: 10 (exact, read from Houdini by hython)
+- Used by the height graph: no
+
+## Feature summary (web, SideFX reference)
+
+- Source: https://www.sidefx.com/docs/houdini/nodes/cop/testgeometry_rubbertoy.html
+- Summary (EN): Generates a rubber toy model as test geometry. It gives a more representative shape than a simple torus, with several components, holes and imperfect surfaces.
+- Résumé (FR) : Ce nœud génère un modèle de jouet en caoutchouc comme géométrie de test, plus représentatif qu'un tore simple grâce à ses composants multiples, ses trous et ses surfaces imparfaites.
+
+- Key parameters: [{"name": "Signature", "meaning": "Chooses polygons or a VDB signed distance field (SDF) as output."}, {"name": "Voxel Size", "meaning": "Voxel size for SDF output. Smaller is more accurate but costs more time and memory."}, {"name": "Translate", "meaning": "Position of the centre."}, {"name": "Rotate", "meaning": "Rotation about the centre."}, {"name": "Uniform Scale", "meaning": "Even scale on all axes."}, {"name": "Add Shader", "meaning": "Attaches a default shader with embedded texture maps for rendering."}]
+
+- Caveats: ["Outputs documented as geo (surface geometry or float VDB SDF), basecolor (RGB diffuse layer) and specular (mono specular strength). No inputs documented.", "Lowering Voxel Size improves SDF accuracy at a higher cost.", "The page notes the node was added in Houdini 22.0."]
+
+## Parameters (exact, from the installed Houdini)
+
+| parameter | label | type | default | range | menu tokens |
+|---|---|---|---|---|---|
+| `signature` | Signature | String | ["default"] |  |  |
+| `voxelsize` | Voxel Size | Float | [0.1] | 0.0 .. 1.0 (strict) |  |
+| `tx` | Translate | Float | 0.0 | -1.0 .. 1.0 |  |
+| `ty` | Translate | Float | 0.0 | -1.0 .. 1.0 |  |
+| `tz` | Translate | Float | 0.0 | -1.0 .. 1.0 |  |
+| `rx` | Rotate | Float | 0.0 | 0.0 .. 360.0 |  |
+| `ry` | Rotate | Float | 0.0 | 0.0 .. 360.0 |  |
+| `rz` | Rotate | Float | 0.0 | 0.0 .. 360.0 |  |
+| `scale` | Uniform Scale | Float | [1.0] | 0.0 .. 10.0 |  |
+| `addshader` | Add Shader | Toggle | false |  |  |

@@ -1,0 +1,112 @@
+# __STAMP__ : the designer's own graph format (IR): nodes, inputs, parameters, tags. Pure Python, no Houdini needed.
+# EN: a graph is an ordered list of real Copernicus nodes; add() refuses unknown inputs, so no cycle can exist.
+# FR : le format de graphe du designer : une liste ordonnée de vrais nœuds Copernicus ; add() refuse une entrée inconnue.
+import json
+import re
+
+from cop_catalog import Catalog, CatalogError
+
+NAME_RE = re.compile(r'^[A-Za-z_][A-Za-z0-9_]*$')
+
+
+class GraphError(Exception):
+    pass
+
+
+class Node:
+    def __init__(self, nid, ntype, inputs, tag, params):
+        self.id = nid
+        self.type = ntype
+        self.inputs = list(inputs)
+        self.tag = tag
+        self.params = dict(params)
+
+
+class Graph:
+    def __init__(self, name='CopDesign'):
+        self.name = name
+        self.nodes = {}
+        self.order = []
+        self.output = None
+
+    def add(self, nid, ntype, inputs=(), tag='', params=None):
+        # EN: ids are valid Houdini node names; inputs must already exist. FR : identifiants valides, entrées existantes.
+        if not NAME_RE.match(nid):
+            raise GraphError("node id '%s' is not a valid name" % nid)
+        if nid in self.nodes:
+            raise GraphError("node id '%s' used twice" % nid)
+        for src in inputs:
+            if src not in self.nodes:
+                raise GraphError("node '%s' reads '%s' which does not exist yet" % (nid, src))
+        node = Node(nid, ntype, inputs, tag, params or {})
+        self.nodes[nid] = node
+        self.order.append(nid)
+        return nid
+
+    def set_output(self, nid):
+        if nid not in self.nodes:
+            raise GraphError("output '%s' does not exist" % nid)
+        self.output = nid
+
+    def validate(self, catalog):
+        # EN: collects every problem, so one run shows all of them. FR : toutes les erreurs d'un coup.
+        errors = []
+        if self.output is None:
+            errors.append('no output node set')
+        for nid in self.order:
+            node = self.nodes[nid]
+            try:
+                catalog.node(node.type)
+            except CatalogError as exc:
+                errors.append('%s: %s' % (nid, exc))
+                continue
+            low, high = catalog.input_limits(node.type)
+            if len(node.inputs) < (low or 0) or (high is not None and len(node.inputs) > high):
+                errors.append('%s (%s): %d inputs, allowed %s..%s' % (nid, node.type, len(node.inputs), low, high))
+            for pname, value in node.params.items():
+                try:
+                    catalog.check_value(node.type, pname, value)
+                except CatalogError as exc:
+                    errors.append('%s: %s' % (nid, exc))
+        if self.output is not None:
+            reach = set()
+            stack = [self.output]
+            while stack:
+                cur = stack.pop()
+                if cur in reach:
+                    continue
+                reach.add(cur)
+                stack.extend(self.nodes[cur].inputs)
+            unused = [nid for nid in self.order if nid not in reach]
+            if unused:
+                errors.append('nodes not feeding the output (dead code): %s' % ', '.join(unused))
+        return errors
+
+    def check(self, catalog):
+        errors = self.validate(catalog)
+        if errors:
+            raise GraphError('graph %s is invalid:\n  ' % self.name + '\n  '.join(errors))
+        return True
+
+    def to_dict(self):
+        return {'name': self.name, 'output': self.output,
+                'nodes': [{'id': n.id, 'type': n.type, 'inputs': n.inputs, 'tag': n.tag, 'params': n.params}
+                          for n in (self.nodes[i] for i in self.order)]}
+
+    @classmethod
+    def from_dict(cls, data):
+        g = cls(data.get('name', 'CopDesign'))
+        for rec in data['nodes']:
+            g.add(rec['id'], rec['type'], rec.get('inputs', []), rec.get('tag', ''), rec.get('params', {}))
+        if data.get('output'):
+            g.set_output(data['output'])
+        return g
+
+    def save(self, path):
+        with open(path, 'w', encoding='utf-8') as fh:
+            json.dump(self.to_dict(), fh, ensure_ascii=False, indent=1)
+
+    @classmethod
+    def load(cls, path):
+        with open(path, encoding='utf-8') as fh:
+            return cls.from_dict(json.load(fh))

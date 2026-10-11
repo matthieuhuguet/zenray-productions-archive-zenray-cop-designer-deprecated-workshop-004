@@ -1,0 +1,25 @@
+# uvtorgb
+
+- Label: UV to RGB
+- Category: Copernicus (`Cop`), Houdini 22.0.368
+- Inputs: 1 to 2
+- Parameters: 1 (exact, read from Houdini by hython)
+- Used by the height graph: no
+
+## Feature summary (web, SideFX reference)
+
+- Source: https://www.sidefx.com/docs/houdini/nodes/cop/uvtorgb.html
+- Summary (EN): Combines a UV layer or attribute with a mono layer or attribute into one RGB layer or attribute. The UV input supplies the red and green channels, and the mono input supplies the blue channel.
+- Résumé (FR) : Ce nœud assemble une couche UV et une couche mono en une seule image RGB, l'UV fournissant le rouge et le vert, et la mono le bleu.
+
+- Inputs meaning: ["1. uv: the UV layer or attribute that provides the red and green channels.", "2. mono: the mono layer or attribute that provides the blue channel."]
+
+- Key parameters: [{"name": "Signature", "meaning": "The layer type the source accepts. Details are in the Signatures entry of the Copernicus glossary. No other parameters are described."}]
+
+- Caveats: ["The page states no explicit limitations.", "Input order matters: the first input is the UV source and the second is the mono source.", "The page does not describe how mismatched input sizes or types are handled."]
+
+## Parameters (exact, from the installed Houdini)
+
+| parameter | label | type | default | range | menu tokens |
+|---|---|---|---|---|---|
+| `signature` | Signature | String | ["auto"] |  |  |

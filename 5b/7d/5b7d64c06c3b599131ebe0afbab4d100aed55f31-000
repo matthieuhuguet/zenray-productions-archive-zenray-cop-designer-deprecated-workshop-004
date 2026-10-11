@@ -1,0 +1,26 @@
+# premult
+
+- Label: Premultiply
+- Category: Copernicus (`Cop`), Houdini 22.0.368
+- Inputs: 0 to 2
+- Parameters: 2 (exact, read from Houdini by hython)
+- Used by the height graph: no
+
+## Feature summary (web, SideFX reference)
+
+- Source: https://www.sidefx.com/docs/houdini/nodes/cop/premult.html
+- Summary (EN): The Premult node converts an RGBA layer between straight and premultiplied alpha, multiplying or dividing the R, G and B channels by alpha.
+- Résumé (FR) : Le nœud Premult convertit un RGBA entre alpha droit et alpha prémultiplié, en multipliant ou divisant RGB par alpha ; la page ne précise pas le cas d'un alpha nul.
+
+- Inputs meaning: ["source: layer to premultiply or un-premultiply", "mask (optional): per-pixel mask amount, scaled by Mask"]
+
+- Key parameters: ["Mask: how much of the new result mixes in; default 1 uses only the new value", "Operation: Premultiply by Alpha (multiplies RGB by alpha) or Un-Premultiply by Alpha (divides RGB by alpha)"]
+
+- Caveats: ["The page does not say how zero-alpha pixels are handled during un-premultiply, where division by alpha is undefined; check in practice if layers contain fully transparent pixels."]
+
+## Parameters (exact, from the installed Houdini)
+
+| parameter | label | type | default | range | menu tokens |
+|---|---|---|---|---|---|
+| `mask` | Mask | Float | [1.0] | 0.0 .. 1.0 (strict) |  |
+| `op` | Operation | Menu | 0 |  | mult, divide |

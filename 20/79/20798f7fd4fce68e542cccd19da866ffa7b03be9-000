@@ -1,0 +1,27 @@
+# stash
+
+- Label: Stash
+- Category: Copernicus (`Cop`), Houdini 22.0.368
+- Inputs: 0 to 1
+- Parameters: 3 (exact, read from Houdini by hython)
+- Used by the height graph: no
+
+## Feature summary (web, SideFX reference)
+
+- Source: https://www.sidefx.com/docs/houdini/nodes/cop/stash.html
+- Summary (EN): Stash caches whatever its input produces when the Stash Input button is clicked, then outputs that saved copy. It never passes the input through live, so it can break a live dependency that would otherwise create a cycle.
+- Résumé (FR) : Stash met en cache le résultat de son entrée au clic sur un bouton, puis renvoie cette copie figée, ce qui permet de briser un cycle de dépendance.
+
+- Inputs meaning: ["source: original layer to stash"]
+
+- Key parameters: ["Signature: Select Automatically (matches the stashed input type) or Cable (stash several inputs at once)", "Layer Stash (internal name stash): data parameter storing the cached input", "Stash Input: cooks the input and caches it into Layer Stash, click again to recache after the input changes"]
+
+- Caveats: ["Stashed data is saved inside the node with the scene, so large geometry can significantly increase the .hip file size", "Caching is manual and does not follow time, the output does not update until Stash Input is clicked again"]
+
+## Parameters (exact, from the installed Houdini)
+
+| parameter | label | type | default | range | menu tokens |
+|---|---|---|---|---|---|
+| `signature` | Signature | String | ["auto"] |  |  |
+| `stash` | Layer Stash | Data |  |  |  |
+| `stashinput` | Stash Input | Button |  |  |  |

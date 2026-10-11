@@ -1,0 +1,25 @@
+# vdbfromlayer
+
+- Label: VDB from Layer
+- Category: Copernicus (`Cop`), Houdini 22.0.368
+- Inputs: 0 to 3
+- Parameters: 1 (exact, read from Houdini by hython)
+- Used by the height graph: no
+
+## Feature summary (web, SideFX reference)
+
+- Source: https://www.sidefx.com/docs/houdini/nodes/cop/vdbfromlayer.html
+- Summary (EN): Sets the values of an existing VDB from the closest matching values in a layer. Each VDB location is mapped onto the layer through the layer's camera projection, so the output keeps the reference VDB structure. Output: sample.
+- Résumé (FR) : Remplit les valeurs d'un VDB existant à partir d'une couche, en projetant chaque voxel avec la caméra de la couche tout en gardant la structure du VDB de référence.
+
+- Inputs meaning: ["vdb_ref: float or vector VDB serving as the activation topology for the sampled output", "layer: the layer to sample values from", "pos (optional): vector VDB whose values replace the voxels' world positions"]
+
+- Key parameters: ["Signature: the layer type the source accepts (the only parameter the page lists)"]
+
+- Caveats: ["The page does not describe parameters beyond Signature", "Edge behaviour is not described, such as voxels that project outside the layer's camera view"]
+
+## Parameters (exact, from the installed Houdini)
+
+| parameter | label | type | default | range | menu tokens |
+|---|---|---|---|---|---|
+| `signature` | Signature | String | ["auto"] |  |  |

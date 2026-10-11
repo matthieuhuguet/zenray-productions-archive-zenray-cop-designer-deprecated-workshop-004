@@ -1,0 +1,81 @@
+# uvshape
+
+- Label: UV Shape
+- Category: Copernicus (`Cop`), Houdini 22.0.368
+- Inputs: 0 to 1
+- Parameters: 57 (exact, read from Houdini by hython)
+- Used by the height graph: no
+
+## Feature summary (web, SideFX reference)
+
+- Source: https://www.sidefx.com/docs/houdini/nodes/cop/uvshape.html
+- Summary (EN): Generates UV coordinates, a filter scale and a mask for procedural 2D shapes, so an image can be mapped onto a shape. Wire its uv output into a UV Sample COP to do this. Marked Since 22.0.
+- Résumé (FR) : Ce nœud génère des coordonnées UV, une échelle de filtrage et un masque pour des formes 2D procédurales (disque, carré, fer à cheval, spirale, anneau, écailles).
+
+- Inputs meaning: ["size_ref: representative layer that sets the output image size and controls metadata."]
+
+- Key parameters: [{"name": "Shapes", "meaning": "Disk, Square, Horseshoe, Spiral, Annulus or Fishscale."}, {"name": "Disk Mode and Radius", "meaning": "Disk-to-square mapping (Linear, Polar, Equal Area, Squircle, Elliptic Arc, Conformal). Radius sets the disk size in image space."}, {"name": "Square Mode and Folds", "meaning": "Linear or Conformal mapping, with 2-fold or 4-fold symmetry. Vertex and Flip Tile Orientation adjust the tile."}, {"name": "Horseshoe controls", "meaning": "Size, Separation, Length, Thickness and U Adjust control the curve, gap, sides, band width and U split."}, {"name": "Spiral controls", "meaning": "Spiral Type (Archimedean, Log, Loxodrome), U Mode (Angle or Arc Length), Size, Start Radius, Turns and Thickness."}, {"name": "Annulus controls", "meaning": "Mode (Polar or Log), Inner Radius and Outer Radius."}, {"name": "Fishscale controls", "meaning": "Mode (Offset or Fill), Disk Mode, Radius, Grid Scale and Center Blend."}, {"name": "Transform", "meaning": "Offset, Angle and Shear adjust the generated uv."}, {"name": "UV Filter Bound, U/V Border, U/V Scale", "meaning": "UV Filter Bound limits the uvscale output for anti-aliasing. Border modes (Clamp, Mirror, Wrap, Extend) handle values outside -1 to 1. Scale multiplies the coordinates."}]
+
+- Caveats: ["UVs are in image coordinates, with a valid range generally -1 to 1.", "Some parameters only appear in certain modes. Do Tiled and Grid Scale apply in Offset mode, and Center Blend applies in Fill mode.", "Per-axis Grid Scale control requires Per-Component Controls to be turned on.", "Wire uvscale into the filterscale of a UV Sample COP for the proper filter width. The mask output is 1 inside the shape and 0 outside."]
+
+## Parameters (exact, from the installed Houdini)
+
+| parameter | label | type | default | range | menu tokens |
+|---|---|---|---|---|---|
+| `shapes` | Shapes | Menu | 0 |  | 0, 1, 2, 3, 4, 5 |
+| `disk_mode` | Mode | Menu | 1 |  | 0, 1, 2, 3, 4, 5 |
+| `square_mode` | Mode | Menu | 1 |  | 0, 1 |
+| `square_fold` | Fold | Menu | 0 |  | 0, 1 |
+| `squre_vertex` | Vertex | Menu | 0 |  | 0, 1, 2 |
+| `square_fliptileorientation` | Flip Tile Orientation | Toggle | false |  |  |
+| `spiraltype` | Spiral Type | Menu | 0 |  | 0, 1, 2 |
+| `spiral_umode` | U Mode | Menu | 0 |  | 0, 1 |
+| `annulus_mode` | Mode | Menu | 0 |  | 0, 1 |
+| `disk_radius` | Radius | Float | [1.0] | 0.0 .. 2.0 |  |
+| `folder7` |  | FolderSet |  |  |  |
+| `fishscale_mode` | Mode | Menu | 0 |  | offset, fill |
+| `fishscale_diskmode` | Disk Mode | Menu | 1 |  | 0, 1, 2, 3, 4, 5 |
+| `fishscale_radius` | Radius | Float | [1.0] | 0.0 .. 2.0 |  |
+| `fishscale_centerblend` | Center Blend | Float | [0.01] | 0.0 .. 1.0 |  |
+| `fishscale_centerexp` | Center Blend Exponent | Float | [0.5] | 0.5 .. 2.0 |  |
+| `fishscale_dotiled` | Do Tiled | Toggle | true |  |  |
+| `fishscale_gridsize` | Grid Scale | Float | [1.0] | 0.01 .. 1.0 (strict) |  |
+| `fishscale_gridsizetype` | Grid Size Type | Menu | 0 |  | BUTTONS_decompose_transforms |
+| `fishscale_gridscalex` | Grid Scale | Float | 1.0 | 0.1 .. 1.0 (strict) |  |
+| `fishscale_gridscaley` | Grid Scale | Float | 1.0 | 0.1 .. 1.0 (strict) |  |
+| `folder2` |  | FolderSet |  |  |  |
+| `horseshoe_size` | Size | Float | [0.55] | 0.0 .. 2.0 |  |
+| `horseshoe_separation` | Separation | Float | [0.5] | 0.0 .. 1.0 |  |
+| `horseshoe_length` | Length | Float | [1.0] | 0.0 .. 1.0 |  |
+| `horseshoe_thickness` | Thickness | Float | [0.45] | 0.0 .. 1.0 |  |
+| `horseshoe_uadjust` | U Adjust | Float | [0.5] | 0.0 .. 1.0 |  |
+| `folder3` |  | FolderSet |  |  |  |
+| `spiral_archimedean_size` | Size | Float | [0.05] | 0.0 .. 1.0 |  |
+| `spiral_archimedean_startradius` | Start Radius | Float | [0.2] | 0.0 .. 1.0 |  |
+| `spiral_archimedean_turns` | Turns | Float | [2.0] | 0.0 .. 10.0 |  |
+| `spiral_archimedean_thickness` | Thickness | Float | [1.0] | 0.0 .. 1.0 |  |
+| `folder4` |  | FolderSet |  |  |  |
+| `spiral_log_size` | Size | Float | [0.2] | 0.0 .. 1.0 |  |
+| `spiral_log_startradius` | Start Radius | Float | [0.04] | 0.0 .. 1.0 |  |
+| `spiral_log_turns` | Turns | Float | [2.0] | 0.0 .. 10.0 |  |
+| `spiral_log_thickness` | Thickness | Float | [1.0] | 0.0 .. 1.0 |  |
+| `folder5` |  | FolderSet |  |  |  |
+| `spiral_loxodrome_size` | Size | Float | [3.0] | 0.0 .. 10.0 |  |
+| `spiral_loxodrome_turns` | Turns | Float | [5.0] | 0.0 .. 10.0 |  |
+| `spiral_loxodrome_thickness` | Thickness | Float | [1.0] | 0.0 .. 1.0 |  |
+| `spiral_loxodrome_negativecenter` | Negative Center | Float | [-0.5] | -0.75 .. -0.25 (strict) |  |
+| `spiral_loxodrome_positivecenter` | Positive Center | Float | [0.5] | 0.25 .. 0.75 (strict) |  |
+| `folder6` |  | FolderSet |  |  |  |
+| `annulus_innerradius` | Inner Radius | Float | [0.5] | 0.0 .. 1.0 |  |
+| `annulus_outerradius` | Outer Radius | Float | [1.0] | 0.0 .. 1.0 |  |
+| `folder0` |  | FolderSet |  |  |  |
+| `offsetx` | Offset | Float | 0.0 | 0.0 .. 1.0 |  |
+| `offsety` | Offset | Float | 0.0 | 0.0 .. 1.0 |  |
+| `angle` | Angle | Float | [0.0] | -180.0 .. 180.0 |  |
+| `shear` | Shear | Float | [0.0] | -1.0 .. 1.0 |  |
+| `folder1` |  | FolderSet |  |  |  |
+| `uvfilterbound` | UV Filter Bound | Float | [0.005] | 0.0 .. 1.0 |  |
+| `uborder` | U Border | Menu | 3 |  | 0, 1, 2, 3 |
+| `uscale` | U Scale | Float | [1.0] | 0.0 .. 2.0 |  |
+| `vborder` | V Border | Menu | 3 |  | 0, 1, 2, 3 |
+| `vscale` | V Scale | Float | [1.0] | 0.0 .. 2.0 |  |

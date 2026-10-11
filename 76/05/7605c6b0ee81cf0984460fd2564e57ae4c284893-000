@@ -1,0 +1,25 @@
+# rgbtouv
+
+- Label: RGB to UV
+- Category: Copernicus (`Cop`), Houdini 22.0.368
+- Inputs: 1 to 1
+- Parameters: 1 (exact, read from Houdini by hython)
+- Used by the height graph: no
+
+## Feature summary (web, SideFX reference)
+
+- Source: https://www.sidefx.com/docs/houdini/nodes/cop/rgbtouv.html
+- Summary (EN): The RGB to UV node splits an RGB layer or attribute into a UV output made of the red and green channels and a mono output made of the blue channel.
+- Résumé (FR) : Le nœud RGB to UV sépare une couche RGB en une sortie UV, faite du rouge et du vert, et une sortie mono, faite du bleu.
+
+- Inputs meaning: ["rgb: the RGB layer or attribute to split"]
+
+- Key parameters: ["Signature: the layer type the source accepts (see the Signatures glossary entry)"]
+
+- Caveats: ["The page lists no caveats", "It does not say how an alpha channel or other non-RGB data is handled"]
+
+## Parameters (exact, from the installed Houdini)
+
+| parameter | label | type | default | range | menu tokens |
+|---|---|---|---|---|---|
+| `signature` | Signature | String | ["auto"] |  |  |

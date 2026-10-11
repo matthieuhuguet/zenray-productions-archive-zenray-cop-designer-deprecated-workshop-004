@@ -1,0 +1,45 @@
+# remap
+
+- Label: Remap
+- Category: Copernicus (`Cop`), Houdini 22.0.368
+- Inputs: 0 to 7
+- Parameters: 21 (exact, read from Houdini by hython)
+- Used by the height graph: yes
+
+## Feature summary (web, SideFX reference)
+
+- Source: https://www.sidefx.com/docs/houdini/nodes/cop/remap.html
+- Summary (EN): Remap rescales the values of a layer, VDB or attribute from one range to another. It can also apply a threshold, which turns values into a hard or soft step around a midpoint. The page is documented for Houdini 22.0.
+- Résumé (FR) : Ce nœud remet à l'échelle les valeurs d'un calque, d'un VDB ou d'un attribut d'une plage à une autre, ou les coupe en seuil.
+
+- Inputs meaning: ["source: original layer, VDB or attribute to remap", "input_min: optional per-pixel override for the Input Min parameter; must match the source type", "input_max: optional per-pixel override for the Input Max parameter", "output_min: optional per-pixel override for the Output Min parameter", "output_max: optional per-pixel override for the Output Max parameter", "ramp: optional per-pixel remap ramp that overrides the Ramp parameter", "mask: optional per-pixel mask amount, scaled by the Mask parameter"]
+
+- Key parameters: ["Signature: layer type the source accepts", "Mask: how much of the new value is mixed with the original; default 1 uses only the new value; also sets which RGBA channels are affected", "Toggle RGB, Red, Green, Blue, Alpha: channels the node affects", "Operation: Remap (range to range) or Threshold (midpoint-based step)", "Compute Range: sets Input Min and Input Max from the source's minimum and maximum", "Input Min / Input Max: the input range used in Remap mode", "Outside Range: in Remap mode, Clamp at End, Repeat or Extend", "Threshold When: in Threshold mode, Greater, Greater or Equal, Less, or Less or Equal", "Threshold: in Threshold mode, the input value mapped to the midpoint of the output range", "Width: in Threshold mode, the span on each side of the threshold that defines the input range", "Output Min / Output Max: the output range", "Use Ramp / Ramp: shapes the remapped output with a mono ramp"]
+
+- Caveats: ["Input Min, Input Max and Outside Range apply only in Remap mode; Threshold, Threshold When and Width apply only in Threshold mode.", "A Threshold of 0.5 with a Width of 0 gives a hard split, with values becoming 0 or 1.", "Per-pixel inputs must be the same type as the source.", "The Ramp parameter and the ramp input are used only when Use Ramp is enabled.", "The Mask parameter sets the blend amount, so a value below 1 mixes in less of the remapped result."]
+
+## Parameters (exact, from the installed Houdini)
+
+| parameter | label | type | default | range | menu tokens |
+|---|---|---|---|---|---|
+| `signature` | Signature | String | ["auto"] |  |  |
+| `mask` | Mask | Float | [1.0] | 0.0 .. 1.0 (strict) |  |
+| `scopergba` | Channel Scope | Int | [15] | 0 .. 10 |  |
+| `op` | Operation | Menu | 0 |  | remap, threshold |
+| `computerange` | Compute Range | Button |  |  |  |
+| `side` | Threshold When | Menu | 0 |  | greater, greaterequal, less, lessequal |
+| `threshold` | Threshold | Float | [0.5] | 0.0 .. 1.0 |  |
+| `width` | Width | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `inputmin` | Input Min | Float | [0.0] | 0.0 .. 1.0 |  |
+| `inputmax` | Input Max | Float | [1.0] | 0.0 .. 1.0 |  |
+| `outputmin` | Output Min | Float | [0.0] | 0.0 .. 1.0 |  |
+| `outputmax` | Output Max | Float | [1.0] | 0.0 .. 1.0 |  |
+| `method` | Outside Range | Menu | 0 |  | clamp, repeat, extend |
+| `useramp` | Use Ramp | Toggle | true |  |  |
+| `ramp` | Ramp | Ramp | 2 |  |  |
+| `ramp1pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `ramp1value` | Value | Float | [0.0] | 0.0 .. 10.0 |  |
+| `ramp1interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `ramp2pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `ramp2value` | Value | Float | [0.0] | 0.0 .. 10.0 |  |
+| `ramp2interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |

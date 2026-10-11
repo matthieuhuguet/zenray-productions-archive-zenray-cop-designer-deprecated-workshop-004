@@ -1,0 +1,188 @@
+# __STAMP__ : the window height written as a designer graph (IR). Same nodes and parameters as SimpleHeight L00 to L05.
+# EN: builds the graph from a parameter dict; measured tables come from the reference measure file, never from its pixels.
+# FR : construit le graphe IR de la fenêtre à partir d'un dictionnaire de paramètres et des mesures (jamais des pixels).
+import json
+import math
+import os
+import sys
+
+HERE = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, HERE)
+from cop_graph import Graph  # noqa: E402
+
+H_REF = 1254
+MEASURES = '/Users/zenray/Create/Build/Productions/ZenRayHoudini/LouisianaBayou/Heights/SimpleHeight/measures/ref_measures.json'
+
+# EN: parameters at the values reached by SimpleHeight L05 (11 October 2026). FR : valeurs atteintes au calque L05.
+DEFAULTS = {
+    'base': 0.43,
+    'seam_min_depth': 25.0,
+    'louver_top': 730.0 / H_REF,
+    'louver_soft': 16.0 / H_REF,
+    'bevel_px': [[0, 0.09], [2, 0.05], [6, -0.02], [14, -0.035], [26, -0.05], [38, -0.04], [50, -0.02], [60, 0.0], [80, 0.0]],
+    'bevel_range': 0.1,
+    'flake_t0': 0.545, 'flake_w': 0.030, 'flake_gain': 0.45, 'flake_cover': 0.20,
+    'flake_elementsize': 0.05,
+    'grain_gain': 0.12, 'grain_width': 0.03, 'grain_length': 110.0, 'grain_elementsize': 0.006,
+    'chip_t0': 0.595, 'chip_w': 0.010, 'chip_gain': 0.35, 'chip_cover': 0.10, 'chip_elementsize': 0.012,
+    'bevel_scale': 1.0,
+    'mean_trim': 0.0,   # EN: last level calibration, keeps the mean on the reference. FR : calage de moyenne.
+}
+
+REF = '/Users/zenray/Create/Build/Productions/ZenRayHoudini/LouisianaBayou/Heights/refs/window_height_ref.png'
+
+SPACE = [
+    ('flake_t0', 0.50, 0.60, 0.02),
+    ('flake_w', 0.01, 0.06, 0.008),
+    ('flake_gain', 0.20, 0.60, 0.06),
+    ('flake_cover', 0.10, 0.30, 0.03),
+    ('flake_elementsize', 0.03, 0.09, 0.01),
+    ('grain_gain', 0.02, 0.14, 0.02),
+    ('grain_width', 0.01, 0.06, 0.01),
+    ('grain_length', 60.0, 130.0, 15.0),
+    ('grain_elementsize', 0.004, 0.012, 0.002),
+    ('chip_t0', 0.56, 0.63, 0.01),
+    ('chip_w', 0.004, 0.02, 0.003),
+    ('chip_gain', 0.15, 0.50, 0.05),
+    ('chip_cover', 0.05, 0.20, 0.02),
+    ('chip_elementsize', 0.006, 0.03, 0.004),
+    ('louver_top', 0.56, 0.60, 0.005),
+    ('louver_soft', 0.004, 0.02, 0.003),
+    ('bevel_scale', 0.5, 2.0, 0.3),
+    ('mean_trim', -0.05, 0.05, 0.01),
+]
+
+
+def smoothstep_keys():
+    # EN: the eleven point smoothstep used by every mask edge. FR : rampe smoothstep à onze points.
+    return [[i / 10.0, 3 * (i / 10.0) ** 2 - 2 * (i / 10.0) ** 3] for i in range(11)]
+
+
+def band_keys(measures, seam_min_depth):
+    # EN: one plateau per board (two keys, flat) and one key per strong joint. FR : plateau par planche, une clé par joint.
+    seams = [s for s in measures['seams'] if s['depth'] >= seam_min_depth]
+    prof = measures['row_profile_every_8']
+    h = float(measures['size'][1])
+
+    def level(y0, y1):
+        i0 = int(y0 // 8)
+        i1 = max(i0 + 1, int(y1 // 8))
+        seg = prof[i0:i1]
+        return sum(seg) / len(seg)
+
+    keys = []
+    bounds = [0.0] + [float(s['y']) for s in seams] + [h]
+    for i in range(len(bounds) - 1):
+        a, b = bounds[i], bounds[i + 1]
+        lo = 0.0 if i == 0 else a + 2.0
+        hi = h if i == len(bounds) - 2 else b - 2.0
+        v = level(lo, hi) / 255.0
+        keys.append([lo / h, v])
+        keys.append([hi / h, v])
+    for s in seams:
+        keys.append([s['y'] / h, s['value'] / 255.0])
+    # EN: same rule as TrimNodes.key_ramp: clamp to 0..1, round positions to 6 decimals, the last value wins, sorted.
+    # FR : même règle que key_ramp : bornes 0 à 1, positions arrondies, dernière valeur gagnante, tri croissant.
+    clean = {}
+    for t, v in keys:
+        clean[round(min(max(t, 0.0), 1.0), 6)] = min(max(v, 0.0), 1.0)
+    return [[t, clean[t]] for t in sorted(clean)]
+
+
+def coord_params(axis):
+    # EN: a 0..1 ramp; rotation 90 makes it vertical (top = 0). FR : rampe 0..1, rotation 90 pour l'axe vertical.
+    return {'signature': 'f1', 'rampType': 0, 'method': 0, 'cycles': 1.0, 'phase': 0.0,
+            'rotation': 90.0 if axis == 'y' else 0.0, 'startposx': 0.0, 'startposy': 0.0,
+            'endposx': 1.0, 'endposy': 0.0}
+
+
+def build(P, measures=None):
+    # EN: returns the Graph. Every number used here is in P or in the measure file. FR : toutes les valeurs sont dans P.
+    if measures is None:
+        with open(MEASURES, encoding='utf-8') as fh:
+            measures = json.load(fh)
+    g = Graph('WindowHeight')
+    # EN: L00 (a flat plate) was a baseline only and feeds nothing, so it is not part of the graph.
+    # FR : L00 (plateau plat) n'alimente rien : base de comparaison seulement, absent du graphe.
+
+    g.add('L01_y', 'ramp', tag='L01_bands', params=coord_params('y'))
+    g.add('L01_bands', 'remap', ['L01_y'], tag='L01_bands', params={
+        'inputmin': 0.0, 'inputmax': 1.0, 'outputmin': 0.0, 'outputmax': 1.0, 'useramp': 1,
+        'ramp': {'basis': 'linear', 'keys': band_keys(measures, P['seam_min_depth'])}})
+    base = 'L01_bands'
+
+    # L02 : peeling paint
+    g.add('L02_flake_noise', 'fractalnoise', tag='L02_flakes', params={
+        'elementsize': P['flake_elementsize'], 'oct': 4.0, 'rough': 0.55, 'amp': 0.5, 'center': 0.5})
+    g.add('L02_flake_mask', 'remap', ['L02_flake_noise'], tag='L02_flakes', params={
+        'inputmin': P['flake_t0'], 'inputmax': P['flake_t0'] + P['flake_w'], 'outputmin': 0.0, 'outputmax': 1.0,
+        'useramp': 1, 'ramp': {'basis': 'linear', 'keys': smoothstep_keys()}})
+    g.add('L02_flake_delta', 'remap', ['L02_flake_mask'], tag='L02_flakes', params={
+        'inputmin': 0.0, 'inputmax': 1.0, 'outputmin': 0.0, 'outputmax': P['flake_gain'], 'useramp': 0})
+    shift = P['flake_gain'] * P['flake_cover']
+    g.add('L02_plate', 'remap', [base], tag='L02_flakes', params={
+        'inputmin': 0.0, 'inputmax': 1.0, 'outputmin': -shift, 'outputmax': 1.0 - shift, 'useramp': 0})
+    g.add('L02_flakes', 'blend', ['L02_plate', 'L02_flake_delta'], tag='L02_flakes', params={'mode': 3})
+    base = 'L02_flakes'
+
+    # L03 : wood fibres
+    g.add('L03_grain_noise', 'fractalnoise', tag='L03_grain', params={
+        'elementsize': P['grain_elementsize'], 'oct': 3.0, 'rough': 0.6, 'amp': 0.5, 'center': 0.5})
+    g.add('L03_grain_streak', 'streakblur', ['L03_grain_noise'], tag='L03_grain', params={
+        'dirtype': 0, 'dirx': 1.0, 'diry': 0.0, 'units': 1, 'length_pixels': P['grain_length']})
+    w, span = P['grain_width'], P['grain_gain']
+    g.add('L03_grain_delta', 'remap', ['L03_grain_streak'], tag='L03_grain', params={
+        'inputmin': 0.5 - w, 'inputmax': 0.5 + w, 'outputmin': 0.0, 'outputmax': span, 'useramp': 0})
+    g.add('L03_plate', 'remap', [base], tag='L03_grain', params={
+        'inputmin': 0.0, 'inputmax': 1.0, 'outputmin': -span / 2.0, 'outputmax': 1.0 - span / 2.0, 'useramp': 0})
+    g.add('L03_grain', 'blend', ['L03_plate', 'L03_grain_delta'], tag='L03_grain', params={'mode': 3})
+    base = 'L03_grain'
+
+    # L04 : bevelled louver ends
+    g.add('L04_y', 'ramp', tag='L04_bevel', params=coord_params('y'))
+    g.add('L04_louver', 'remap', ['L04_y'], tag='L04_bevel', params={
+        'inputmin': P['louver_top'], 'inputmax': P['louver_top'] + P['louver_soft'], 'outputmin': 0.0,
+        'outputmax': 1.0, 'useramp': 1, 'ramp': {'basis': 'linear', 'keys': smoothstep_keys()}})
+    g.add('L04_x', 'ramp', tag='L04_bevel', params=coord_params('x'))
+    g.add('L04_x_inv', 'remap', ['L04_x'], tag='L04_bevel', params={
+        'inputmin': 0.0, 'inputmax': 1.0, 'outputmin': 1.0, 'outputmax': 0.0, 'useramp': 0})
+    g.add('L04_edge_dist', 'blend', ['L04_x', 'L04_x_inv'], tag='L04_bevel', params={'mode': 13})
+    rng = P['bevel_range']
+    keys = [[px / float(H_REF), (d * P['bevel_scale'] + rng) / (2.0 * rng)] for px, d in P['bevel_px']]
+    if keys[-1][0] < 1.0:
+        keys.append([1.0, keys[-1][1]])   # EN: the curve holds its last value to the edge, as TrimNodes.curve does.
+    g.add('L04_bevel', 'remap', ['L04_edge_dist'], tag='L04_bevel', params={
+        'inputmin': 0.0, 'inputmax': 1.0, 'outputmin': -rng, 'outputmax': rng, 'useramp': 1,
+        'ramp': {'basis': 'monotone', 'keys': keys}})
+    g.add('L04_bevel_masked', 'blend', ['L04_bevel', 'L04_louver'], tag='L04_bevel', params={'mode': 5})
+    g.add('L04_bevel_on', 'blend', [base, 'L04_bevel_masked'], tag='L04_bevel', params={'mode': 3})
+    base = 'L04_bevel_on'
+
+    # L05 : fine paint chips
+    g.add('L05_chip_noise', 'fractalnoise', tag='L05_chips', params={
+        'elementsize': P['chip_elementsize'], 'oct': 3.0, 'rough': 0.6, 'amp': 0.5, 'center': 0.5})
+    g.add('L05_chip_mask', 'remap', ['L05_chip_noise'], tag='L05_chips', params={
+        'inputmin': P['chip_t0'], 'inputmax': P['chip_t0'] + P['chip_w'], 'outputmin': 0.0, 'outputmax': 1.0,
+        'useramp': 1, 'ramp': {'basis': 'linear', 'keys': smoothstep_keys()}})
+    g.add('L05_chip_delta', 'remap', ['L05_chip_mask'], tag='L05_chips', params={
+        'inputmin': 0.0, 'inputmax': 1.0, 'outputmin': 0.0, 'outputmax': P['chip_gain'], 'useramp': 0})
+    cshift = P['chip_gain'] * P['chip_cover']
+    g.add('L05_plate', 'remap', [base], tag='L05_chips', params={
+        'inputmin': 0.0, 'inputmax': 1.0, 'outputmin': -cshift, 'outputmax': 1.0 - cshift, 'useramp': 0})
+    g.add('L05_chips', 'blend', ['L05_plate', 'L05_chip_delta'], tag='L05_chips', params={'mode': 3})
+
+    # L06 : level calibration. EN: an identity remap at mean_trim 0; it only moves the whole height up or down.
+    # FR : calage de niveau, identité à mean_trim 0.
+    trim = P['mean_trim']
+    g.add('L06_level', 'remap', ['L05_chips'], tag='L06_level', params={
+        'inputmin': 0.0, 'inputmax': 1.0, 'outputmin': -trim, 'outputmax': 1.0 - trim, 'useramp': 0})
+    g.set_output('L06_level')
+    return g
+
+
+if __name__ == '__main__':
+    out = sys.argv[1] if len(sys.argv) > 1 else '/Users/zenray/Create/Build/Productions/ZenRayHoudini/LouisianaBayou/Heights/CopDesigner/runs/window_L05.json'
+    os.makedirs(os.path.dirname(out), exist_ok=True)
+    graph = build(dict(DEFAULTS))
+    graph.save(out)
+    print('graph written', out, 'nodes', len(graph.order))

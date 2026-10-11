@@ -1,0 +1,25 @@
+# uvtorgba
+
+- Label: UV to RGBA
+- Category: Copernicus (`Cop`), Houdini 22.0.368
+- Inputs: 1 to 2
+- Parameters: 1 (exact, read from Houdini by hython)
+- Used by the height graph: no
+
+## Feature summary (web, SideFX reference)
+
+- Source: https://www.sidefx.com/docs/houdini/nodes/cop/uvtorgba.html
+- Summary (EN): Combines two UV layers or attributes into one RGBA layer or attribute. The red and green channels come from the first input, the blue and alpha channels from the second. Output: rgba.
+- Résumé (FR) : Assemble deux couches UV en une couche RGBA : le rouge et le vert viennent de la première entrée, le bleu et l'alpha de la seconde.
+
+- Inputs meaning: ["rg: UV layer or attribute supplying the red and green channels", "ba: UV layer or attribute supplying the blue and alpha channels"]
+
+- Key parameters: ["Signature: sets the layer type the source accepts"]
+
+- Caveats: ["The page lists no specific limitations or edge-case behaviour", "Signature options are only briefly described"]
+
+## Parameters (exact, from the installed Houdini)
+
+| parameter | label | type | default | range | menu tokens |
+|---|---|---|---|---|---|
+| `signature` | Signature | String | ["auto"] |  |  |

@@ -1,0 +1,26 @@
+# sopimport
+
+- Label: SOP Import
+- Category: Copernicus (`Cop`), Houdini 22.0.368
+- Inputs: 0 to 0
+- Parameters: 2 (exact, read from Houdini by hython)
+- Used by the height graph: no
+
+## Feature summary (web, SideFX reference)
+
+- Source: https://www.sidefx.com/docs/houdini/nodes/cop/sopimport.html
+- Summary (EN): SOP Import brings SOP geometry into Copernicus as a geometry wire. The geometry comes either from an external SOP network selected by path or from the node's own internal contents.
+- Résumé (FR) : SOP Import fait entrer une géométrie SOP dans Copernicus comme un fil de géométrie, soit depuis un réseau SOP externe, soit depuis son propre contenu.
+
+- Inputs meaning: ["None documented: the node takes geometry from an external SOP path or from its own contents"]
+
+- Key parameters: ["Use External SOP: on takes geometry from the SOP at SOP Path, off uses the node's own geometry", "SOP Path: path of the SOP to use as source, available when Use External SOP is on", "Output: single geometry output carrying the SOP geometry"]
+
+- Caveats: ["No space transform is applied to the geometry", "To bake a transform, place an Object Merge SOP inside the node"]
+
+## Parameters (exact, from the installed Houdini)
+
+| parameter | label | type | default | range | menu tokens |
+|---|---|---|---|---|---|
+| `usesoppath` | Use External SOP | Toggle | false |  |  |
+| `soppath` | SOP Path | String | [""] |  |  |

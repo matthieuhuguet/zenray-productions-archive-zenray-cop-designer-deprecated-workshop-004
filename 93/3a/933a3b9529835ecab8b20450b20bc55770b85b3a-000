@@ -1,0 +1,46 @@
+# pyro_activate::2.0
+
+- Label: Pyro Activate
+- Category: Copernicus (`Cop`), Houdini 22.0.368
+- Inputs: 1 to 5
+- Parameters: 22 (exact, read from Houdini by hython)
+- Used by the height graph: no
+
+## Feature summary (web, SideFX reference)
+
+- Source: https://www.sidefx.com/docs/houdini/nodes/cop/pyro_activate.html
+- Summary (EN): Pyro Activate changes which voxels are active in the VDBs of a Pyro simulation. The solve only runs where voxels are active, so the node keeps the simulated volume active with a buffer of surrounding air. Activation works per leaf, in blocks of 8x8x8 voxels. Fewer active leaves use less memory and speed up the simulation. The output is a VDB reference with leaves activated per these rules. The page recommends VDB Visualize Tree to inspect the activated regions.
+- Résumé (FR) : Pyro Activate choisit quels voxels restent actifs dans les VDB d'une simulation Pyro. Le solveur ne calcule que là où les voxels sont actifs, donc le nœud garde le volume simulé actif avec une marge d'air autour et désactive le reste. Moins de feuilles actives économisent la mémoire et accélèrent le calcul. Requiert les permissions DOP, donc absent de Houdini Core.
+
+- Inputs meaning: ["density: Float VDB, reference for activation and source of values for culling", "temperature: Float VDB, same role as density", "v: Vector VDB supplying velocities for velocity dilation", "flame: Float VDB, same role as density", "activate_pts: optional points, any leaf containing a point is activated"]
+
+- Key parameters: ["References: fields that contribute to activation", "Density Cutoff: leaves whose max combined reference value falls below it become eligible for deactivation", "Leaf Dilation / Leaf Dilation Dist: expand the active region by leaves or by world distance, the larger of the two is used", "Velocity Dilation: expands each leaf by its max velocity", "Velocity Scale, Tangential Scale, Ambient Velocity: listed on the page but not described", "Clip Min/Max X, Y, Z: deactivate leaves whose world positions fall outside the bounds"]
+
+- Caveats: ["Requires DOP-level permissions, not available in Houdini Core (only FX, Apprentice, Indie, Education)", "Available since Houdini 21.0", "Leaf Dilation Dist is rounded up to the nearest leaf", "Deactivation only applies to leaves below the density cutoff, so cutoff and buffer must be balanced", "The page does not explain Velocity Scale, Tangential Scale or Ambient Velocity"]
+
+## Parameters (exact, from the installed Houdini)
+
+| parameter | label | type | default | range | menu tokens |
+|---|---|---|---|---|---|
+| `refvdbs` | References | Menu | 1 |  | density, temperature, flame |
+| `refcutoff` | Reference Cutoff | Float | [0.01] | 0.0 .. 1.0 |  |
+| `leafdilation` | Leaf Dilation | Int | [1] | 0 .. 5 (strict) |  |
+| `leafdilationdist` | Leaf Dilation Dist | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `veldilate` | Velocity Dilation | Toggle | false |  |  |
+| `velscale` | Velocity Scale | Float | [1.0] | 0.0 .. 1.0 |  |
+| `tangscale` | Tangential Scale | Float | [0.5] | 0.0 .. 1.0 |  |
+| `ambientx` | Ambient Velocity | Float | 0.0 | 0.0 .. 1.0 |  |
+| `ambienty` | Ambient Velocity | Float | 0.0 | 0.0 .. 1.0 |  |
+| `ambientz` | Ambient Velocity | Float | 0.0 | 0.0 .. 1.0 |  |
+| `doclipxmin` | Clip Min X | Toggle | false |  |  |
+| `clipminx` | Clip Min X | Float | [-1.0] | -10.0 .. 10.0 |  |
+| `doclipxmax` | Clip Max X | Toggle | false |  |  |
+| `clipmaxx` | Clip Max X | Float | [1.0] | -10.0 .. 10.0 |  |
+| `doclipymin` | Clip Min Y | Toggle | false |  |  |
+| `clipminy` | Clip Min Y | Float | [-1.0] | -10.0 .. 10.0 |  |
+| `doclipymax` | Clip Max Y | Toggle | false |  |  |
+| `clipmaxy` | Clip Max Y | Float | [1.0] | -10.0 .. 10.0 |  |
+| `doclipzmin` | Clip Min Z | Toggle | false |  |  |
+| `clipminz` | Clip Min Z | Float | [-1.0] | -10.0 .. 10.0 |  |
+| `doclipzmax` | Clip Max Z | Toggle | false |  |  |
+| `clipmaxz` | Clip Max Z | Float | [1.0] | -10.0 .. 10.0 |  |

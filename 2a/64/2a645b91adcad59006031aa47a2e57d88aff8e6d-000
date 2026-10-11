@@ -1,0 +1,26 @@
+# pyro_block_begin::2.0
+
+- Label: Pyro Block Begin
+- Category: Copernicus (`Cop`), Houdini 22.0.368
+- Inputs: 0 to 13
+- Parameters: 2 (exact, read from Houdini by hython)
+- Used by the height graph: no
+
+## Feature summary (web, SideFX reference)
+
+- Source: https://www.sidefx.com/docs/houdini/nodes/cop/pyro_block_begin.html
+- Summary (EN): Pyro Block Begin marks the start of a Pyro smoke simulation loop. Work that does not depend on earlier frames should go before the block so it cooks once. Post-processing that does not feed back into the simulation should go after the Block End node. The block closes at a matching Pyro Block End node. Pyro Configure can set up the initial VDBs.
+- Résumé (FR) : Pyro Block Begin ouvre un bloc de simulation Pyro (fumée) dans les COP. Il se referme sur un Pyro Block End de même niveau de réseau, désigné par son chemin. Ce qui ne dépend pas des images précédentes se place avant le bloc, et ce qui ne réinjecte rien dans la simulation se place après le Block End. Requiert les permissions DOP.
+
+- Inputs meaning: ["vdb_ref: VDB metadata that sets the simulation voxel size", "density, temperature, v, flame, divergence: Float or Vector VDBs feeding the simulation", "collision: optional Float SDF of colliders, negative values act as colliders", "collisionv: optional Vector VDB of collider velocities in world space", "feedback: cable of values fed back into each iteration, read only on the initial frame", "passthrough: optional cable of layers and VDBs computed outside the simulation, read every frame", "bounds_geo: optional geometry limiting the simulation domain extent", "source_points: optional geometry for sourcing from implicit surfaces", "collision_points: optional geometry for collision from implicit surfaces"]
+
+- Key parameters: ["Block Path: path to the matching Pyro Block End node, which must be at the same network level"]
+
+- Caveats: ["Requires DOP-level permissions, not available in Houdini Core (only FX, Apprentice, Indie, Education)", "The feedback cable structure must exactly match the Block End node input", "Passthrough inputs cannot depend on the simulation results", "Newly activated voxels start with temperature 0, so that value is usually a baseline", "Time Shift nodes needing inputs at different times cannot be used inside the block, workaround is Time Pack before the block"]
+
+## Parameters (exact, from the installed Houdini)
+
+| parameter | label | type | default | range | menu tokens |
+|---|---|---|---|---|---|
+| `blockpath` | Block Path | String | [""] |  |  |
+| `signature` | Signature | Float | [0.0] | 0.0 .. 10.0 |  |

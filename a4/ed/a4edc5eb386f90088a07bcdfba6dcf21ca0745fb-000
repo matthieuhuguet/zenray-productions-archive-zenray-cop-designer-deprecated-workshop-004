@@ -1,0 +1,97 @@
+# pyro_buoyancy::2.0
+
+- Label: Pyro Buoyancy
+- Category: Copernicus (`Cop`), Houdini 22.0.368
+- Inputs: 0 to 7
+- Parameters: 73 (exact, read from Houdini by hython)
+- Used by the height graph: no
+
+## Feature summary (web, SideFX reference)
+
+- Source: https://www.sidefx.com/docs/houdini/nodes/cop/pyro_buoyancy.html
+- Summary (EN): Pyro Buoyancy Force applies a buoyancy force to a velocity VDB. Hot gas rises and cooler gas sinks, based on each voxel temperature relative to an ambient reference and to the gravity scale.
+- Résumé (FR) : Pyro Buoyancy Force applique une force de flottabilité à un VDB de vitesse : le gaz chaud monte et le gaz froid descend, selon la température de chaque voxel par rapport à une référence ambiante et à l'échelle de gravité. Le mode Set sert au débogage et casse la simulation. Requiert les permissions DOP.
+
+- Inputs meaning: ["v: Vector VDB with the original velocities", "temperature: Float VDB of temperature values", "temperature (equilibrium): Float VDB of equilibrium values", "direction: Vector VDB for per-voxel up direction", "threshold: Float or Vector VDB used as a threshold mask", "control: Float or Vector VDB used as a control mask", "angledir: Vector VDB for per-voxel angle mask direction"]
+
+- Key parameters: ["Activation: turns the node on or off", "Operation: Set replaces velocities with the force, Add adds the force to them", "Buoyancy Scale: global strength", "Ambient Temp (K) / Reference Temp (K): temperature range that sets force strength", "Equilibrium Temp: temperature above or below which gas rises or falls", "Gravity Acceleration: scales buoyancy strength", "Direction: direction hotter gas is pushed", "Threshold, Control, Angle and Axis masks: volume or direction, range, optional ramp limiting where the force applies"]
+
+- Caveats: ["Set mode is meant for debugging and the page warns it breaks the simulation", "Equilibrium Temp is usually left at zero so empty regions are unaffected", "Vector VDBs used for threshold or control masks are read by their length", "Requires DOP-level permissions, not available in Houdini Core"]
+
+## Parameters (exact, from the installed Houdini)
+
+| parameter | label | type | default | range | menu tokens |
+|---|---|---|---|---|---|
+| `signature` | Signature | String | ["auto"] |  |  |
+| `activation` | Activation | Int | [1] | 0 .. 1 (strict) |  |
+| `folder0` |  | FolderSet |  |  |  |
+| `operation` | Operation | Menu | 1 |  | set, add |
+| `scale` | Buoyancy Scale | Float | [1.0] | 0.0 .. 10.0 |  |
+| `temp0` | Ambient Temp (K) | Float | [300.0] | 0.0 .. 500.0 (strict) |  |
+| `temp1` | Reference Temp (K) | Float | [3000.0] | 0.0 .. 5000.0 (strict) |  |
+| `ambient` | Equilibrium Temp | Float | [0.0] | 0.0 .. 10.0 |  |
+| `gravaccel` | Gravity Acceleration | Float | [9.806] | 0.0 .. 10.0 (strict) |  |
+| `directionx` | Direction | Float | 0.0 | 0.0 .. 1.0 |  |
+| `directiony` | Direction | Float | 1.0 | 0.0 .. 1.0 |  |
+| `directionz` | Direction | Float | 0.0 | 0.0 .. 1.0 |  |
+| `usethreshold` | Threshold Volume | Toggle | false |  |  |
+| `folder3` |  | FolderSet |  |  |  |
+| `thresholdrangemin` | Threshold Range | Float | 0.01 | 0.0 .. 10.0 |  |
+| `thresholdrangemax` | Threshold Range | Float | 0.0 | 0.0 .. 10.0 |  |
+| `remapthreshold` | Use Ramp | Toggle | false |  |  |
+| `folder1` |  | FolderSet |  |  |  |
+| `thresholdramp` | Threshold Ramp | Ramp | 2 |  |  |
+| `usecontrol` | Control Volume | Toggle | false |  |  |
+| `folder5` |  | FolderSet |  |  |  |
+| `controlrangemin` | Control Range | Float | 0.0 | 0.0 .. 10.0 |  |
+| `controlrangemax` | Control Range | Float | 1.0 | 0.0 .. 10.0 |  |
+| `remapcontrol` | Remap Control | Toggle | false |  |  |
+| `folder6` |  | FolderSet |  |  |  |
+| `controlramp` | Control Ramp | Ramp | 2 |  |  |
+| `useanglecontrol` | Use Normal Control | Toggle | false |  |  |
+| `folder10` |  | FolderSet |  |  |  |
+| `angledirx` | Angle Direction | Int | 0 | -1 .. 1 |  |
+| `anglediry` | Angle Direction | Int | 1 | -1 .. 1 |  |
+| `angledirz` | Angle Direction | Int | 0 | -1 .. 1 |  |
+| `angle` | Spread Angle | Float | [90.0] | 0.0 .. 180.0 (strict) |  |
+| `folder11` |  | FolderSet |  |  |  |
+| `remapanglecontrol` | Remap Angle Control | Toggle | false |  |  |
+| `anglecontrolramp` | Angle Control Ramp | Ramp | 2 |  |  |
+| `useaxiscontrol` | Use Axis Control | Toggle | false |  |  |
+| `folder8` |  | FolderSet |  |  |  |
+| `axiscontroldir` | Direction | Menu | 1 |  | x, y, z, custom |
+| `axiscontrolmin` | Axis Range | Float | 0.0 | 0.0 .. 1.0 |  |
+| `axiscontrolmax` | Axis Range | Float | 1.0 | 0.0 .. 1.0 |  |
+| `startposx` | Start Position | Float | 0.0 | -1.0 .. 1.0 |  |
+| `startposy` | Start Position | Float | 0.0 | -1.0 .. 1.0 |  |
+| `startposz` | Start Position | Float | 0.0 | -1.0 .. 1.0 |  |
+| `endposx` | End Position | Float | 0.0 | -1.0 .. 1.0 |  |
+| `endposy` | End Position | Float | 1.0 | -1.0 .. 1.0 |  |
+| `endposz` | End Position | Float | 0.0 | -1.0 .. 1.0 |  |
+| `remapaxiscontrol` | Remap Axis Control | Toggle | false |  |  |
+| `folder9` |  | FolderSet |  |  |  |
+| `axiscontrolramp` | Axis Control Ramp | Ramp | 2 |  |  |
+| `thresholdramp1pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `thresholdramp1value` | Value | Float | [0.0] | 0.0 .. 10.0 |  |
+| `thresholdramp1interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `thresholdramp2pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `thresholdramp2value` | Value | Float | [0.0] | 0.0 .. 10.0 |  |
+| `thresholdramp2interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `controlramp1pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `controlramp1value` | Value | Float | [0.0] | 0.0 .. 10.0 |  |
+| `controlramp1interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `controlramp2pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `controlramp2value` | Value | Float | [0.0] | 0.0 .. 10.0 |  |
+| `controlramp2interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `anglecontrolramp1pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `anglecontrolramp1value` | Value | Float | [0.0] | 0.0 .. 10.0 |  |
+| `anglecontrolramp1interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `anglecontrolramp2pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `anglecontrolramp2value` | Value | Float | [0.0] | 0.0 .. 10.0 |  |
+| `anglecontrolramp2interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `axiscontrolramp1pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `axiscontrolramp1value` | Value | Float | [0.0] | 0.0 .. 10.0 |  |
+| `axiscontrolramp1interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `axiscontrolramp2pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `axiscontrolramp2value` | Value | Float | [0.0] | 0.0 .. 10.0 |  |
+| `axiscontrolramp2interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |

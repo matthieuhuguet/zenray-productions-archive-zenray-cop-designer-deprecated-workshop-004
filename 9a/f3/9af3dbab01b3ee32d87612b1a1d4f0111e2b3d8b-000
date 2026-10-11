@@ -1,0 +1,107 @@
+# pyro_axisforce
+
+- Label: Pyro Axis Force
+- Category: Copernicus (`Cop`), Houdini 22.0.368
+- Inputs: 1 to 2
+- Parameters: 83 (exact, read from Houdini by hython)
+- Used by the height graph: no
+
+## Feature summary (web, SideFX reference)
+
+- Source: https://www.sidefx.com/docs/houdini/nodes/cop/pyro_axisforce.html
+- Summary (EN): Applies forces around a line segment to a velocity VDB. Forces can pull velocities toward or push them away from the axis (suction), drive them along the axis (axis force), or make them spin around it (orbit). Outputs v (updated Vector VDB) and div (Float VDB driving the suction force).
+- Résumé (FR) : Pyro Axis Force applique aspiration, entraînement et rotation autour d'un segment de ligne sur un champ de vitesses VDB.
+
+- Inputs meaning: ["v: Vector VDB with the initial velocities", "mask: Float VDB controlling where the force is applied"]
+
+- Key parameters: ["Start / End: endpoints of the line segment defining the axis", "Influence Distance: radius of the cylindrical region where forces act", "Global Strength: multiplier on all force components", "Operation: Directional Drag and Full Drag steer velocities toward a goal without overshoot; Force adds to the velocity field", "Scale by Timestep: keeps the force consistent when substepping", "Suction Force (Strength): positive pulls toward the axis, negative pushes outward, 0 disables", "Pump Thickness: tube thickness where divergence is set", "Axis Force (Speed Range, Strength): goal speed along the axis and its strength", "Orbit (Speed Range, Speed Falloff, Strength): rotational speed around the axis, falloff with distance, strength", "Mask Range / Remap Mask / Mask Ramp: remap and optionally reshape mask values"]
+
+- Caveats: ["Suction does not modify v directly; it works through div, which must be wired to the divergence input of a Pyro Block End COP", "Force mode is additive and unbounded, so it can produce very high velocities", "Pump Thickness should be larger than the simulation voxel size to avoid aliasing", "Requires DOP-level permissions; available in Houdini FX, Apprentice, Indie and Education, not Houdini Core", "Added in Houdini 21.0"]
+
+## Parameters (exact, from the installed Houdini)
+
+| parameter | label | type | default | range | menu tokens |
+|---|---|---|---|---|---|
+| `startx` | Start | Float | 0.0 | -1.0 .. 1.0 |  |
+| `starty` | Start | Float | -1.0 | -1.0 .. 1.0 |  |
+| `startz` | Start | Float | 0.0 | -1.0 .. 1.0 |  |
+| `endx` | End | Float | 0.0 | -1.0 .. 1.0 |  |
+| `endy` | End | Float | 1.0 | -1.0 .. 1.0 |  |
+| `endz` | End | Float | 0.0 | -1.0 .. 1.0 |  |
+| `radius` | Influence Distance | Float | [1.0] | 0.0 .. 10.0 (strict) |  |
+| `strength` | Global Strength | Float | [1.0] | 0.0 .. 10.0 |  |
+| `operation` | Operation | Menu | 3 |  | set, add, drag, ldrag |
+| `dotimestep` | Scale by Timestep | Toggle | true |  |  |
+| `folder01` |  | FolderSet |  |  |  |
+| `suction_strength` | Strength | Float | [1.0] | 0.0 .. 10.0 |  |
+| `suction_thickness` | Pump Thickness | Float | [0.5] | 0.0 .. 10.0 |  |
+| `suction_alongramp` | Suction Along Axis | Ramp | 2 |  |  |
+| `folder2` |  | FolderSet |  |  |  |
+| `axis_speedrangemin` | Speed Range | Float | 0.0 | 0.0 .. 10.0 |  |
+| `axis_speedrangemax` | Speed Range | Float | 1.0 | 0.0 .. 10.0 |  |
+| `axis_speedalongramp` | Speed Along Axis | Ramp | 2 |  |  |
+| `folder3` |  | FolderSet |  |  |  |
+| `axis_strength` | Strength | Float | [1.0] | 0.0 .. 10.0 |  |
+| `axis_strengthalongramp` | Strength Along Axis | Ramp | 2 |  |  |
+| `axis_strengthawayramp` | Strength Away from Axis | Ramp | 2 |  |  |
+| `folder5` |  | FolderSet |  |  |  |
+| `orbit_speedrangemin` | Speed Range | Float | 0.0 | 0.0 .. 10.0 |  |
+| `orbit_speedrangemax` | Speed Range | Float | 1.0 | 0.0 .. 10.0 |  |
+| `orbit_speedfalloff` | Speed Falloff | Menu | 1 |  | inv, const, lin |
+| `orbit_speedalongramp` | Speed Along Axis | Ramp | 2 |  |  |
+| `folder6` |  | FolderSet |  |  |  |
+| `orbit_strength` | Strength | Float | [1.0] | 0.0 .. 10.0 |  |
+| `orbit_strengthalongramp` | Strength Along Axis | Ramp | 2 |  |  |
+| `orbit_strengthawayramp` | Strength Away from Axis | Ramp | 2 |  |  |
+| `mask_rangemin` | Mask Range | Float | 0.0 | 0.0 .. 10.0 |  |
+| `mask_rangemax` | Mask Range | Float | 1.0 | 0.0 .. 10.0 |  |
+| `mask_remap` | Remap Mask | Toggle | false |  |  |
+| `mask_ramp` | Mask Ramp | Ramp | 2 |  |  |
+| `suction_alongramp1pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `suction_alongramp1value` | Value | Float | [0.0] | 0.0 .. 10.0 |  |
+| `suction_alongramp1interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `suction_alongramp2pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `suction_alongramp2value` | Value | Float | [0.0] | 0.0 .. 10.0 |  |
+| `suction_alongramp2interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `axis_speedalongramp1pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `axis_speedalongramp1value` | Value | Float | [0.0] | 0.0 .. 10.0 |  |
+| `axis_speedalongramp1interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `axis_speedalongramp2pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `axis_speedalongramp2value` | Value | Float | [0.0] | 0.0 .. 10.0 |  |
+| `axis_speedalongramp2interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `axis_strengthalongramp1pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `axis_strengthalongramp1value` | Value | Float | [0.0] | 0.0 .. 10.0 |  |
+| `axis_strengthalongramp1interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `axis_strengthalongramp2pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `axis_strengthalongramp2value` | Value | Float | [0.0] | 0.0 .. 10.0 |  |
+| `axis_strengthalongramp2interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `axis_strengthawayramp1pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `axis_strengthawayramp1value` | Value | Float | [0.0] | 0.0 .. 10.0 |  |
+| `axis_strengthawayramp1interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `axis_strengthawayramp2pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `axis_strengthawayramp2value` | Value | Float | [0.0] | 0.0 .. 10.0 |  |
+| `axis_strengthawayramp2interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `orbit_speedalongramp1pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `orbit_speedalongramp1value` | Value | Float | [0.0] | 0.0 .. 10.0 |  |
+| `orbit_speedalongramp1interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `orbit_speedalongramp2pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `orbit_speedalongramp2value` | Value | Float | [0.0] | 0.0 .. 10.0 |  |
+| `orbit_speedalongramp2interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `orbit_strengthalongramp1pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `orbit_strengthalongramp1value` | Value | Float | [0.0] | 0.0 .. 10.0 |  |
+| `orbit_strengthalongramp1interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `orbit_strengthalongramp2pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `orbit_strengthalongramp2value` | Value | Float | [0.0] | 0.0 .. 10.0 |  |
+| `orbit_strengthalongramp2interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `orbit_strengthawayramp1pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `orbit_strengthawayramp1value` | Value | Float | [0.0] | 0.0 .. 10.0 |  |
+| `orbit_strengthawayramp1interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `orbit_strengthawayramp2pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `orbit_strengthawayramp2value` | Value | Float | [0.0] | 0.0 .. 10.0 |  |
+| `orbit_strengthawayramp2interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `mask_ramp1pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `mask_ramp1value` | Value | Float | [0.0] | 0.0 .. 10.0 |  |
+| `mask_ramp1interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `mask_ramp2pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `mask_ramp2value` | Value | Float | [0.0] | 0.0 .. 10.0 |  |
+| `mask_ramp2interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |

@@ -1,0 +1,61 @@
+# pyro_sourcefromlayer::2.0
+
+- Label: Pyro Source from Layer
+- Category: Copernicus (`Cop`), Houdini 22.0.368
+- Inputs: 2 to 4
+- Parameters: 37 (exact, read from Houdini by hython)
+- Used by the height graph: no
+
+## Feature summary (web, SideFX reference)
+
+- Source: https://www.sidefx.com/docs/houdini/nodes/cop/pyro_sourcefromlayer.html
+- Summary (EN): Pyro Source from Layer adds density to a float VDB based on an envelope defined by Mono layers, useful for pyro sourcing. The combination method is chosen by the user, the envelope can be modulated with noise or its shape distorted. Output: result (the modified source VDB). Introduced in Houdini 22.0.
+- Résumé (FR) : Pyro Source from Layer ajoute de la densité à un VDB flottant selon une enveloppe définie par des calques Mono (épaisseur, hauteur centrale, densité). La méthode de combinaison (Add, Copy, Maximum, Average, Blend, Pull) et un bruit ou une distorsion peuvent moduler l'enveloppe. Il n'active aucun voxel, donc une source hors des zones activées n'a aucun effet. Requiert les permissions DOP.
+
+- Inputs meaning: ["source: Float VDB to modify", "thickness: Mono layer setting the envelope thickness at each pixel", "height: Mono layer setting the envelope centre line", "density: Mono layer setting the envelope density"]
+
+- Key parameters: ["Method: how the envelope updates the VDB (Add, Copy, Maximum, Average, Blend, Pull)", "Border: overrides the border mode used when sampling reference layers, Auto uses the input layer mode", "Shape: Acceleration, Deceleration, Blend weight, Scale, Thickness (global scale), Scale by Timestep, Falloff", "Enable Noise: Noise Scale, Element Size, Element Scale, Noise Offset, Noise Pulse", "Enable Distortion: Distort Scale, Element Size, Element Scale, Distort Offset, Distort Pulse"]
+
+- Caveats: ["The node does not activate voxels: sources outside activated areas have no effect", "Requires DOP-level permissions, not available in Houdini Core"]
+
+## Parameters (exact, from the installed Houdini)
+
+| parameter | label | type | default | range | menu tokens |
+|---|---|---|---|---|---|
+| `activation` | Activation | Int | [1] | 0 .. 1 (strict) |  |
+| `folder2` |  | FolderSet |  |  |  |
+| `operation` | Operation | Menu | 0 |  | add, copy, max, average, blend, pull |
+| `scale` | Scale | Float | [1.0] | 0.0 .. 10.0 |  |
+| `usetimeinc` | Scale by Timestep | Toggle | true |  |  |
+| `thickness` | Thickness | Float | [0.1] | 0.0 .. 1.0 |  |
+| `blend` | Blend | Float | [0.5] | 0.0 .. 1.0 (strict) |  |
+| `accel` | Acceleration | Float | [0.5] | 0.0 .. 1.0 (strict) |  |
+| `decel` | Deceleration | Float | [0.5] | 0.0 .. 1.0 (strict) |  |
+| `border` | Border | Menu | 1 |  | input, constant, clamp, mirror, wrap |
+| `falloff` | Falloff | Ramp | 2 |  |  |
+| `noise_enable` | Noise Enable | Toggle | false |  |  |
+| `folder0` |  | FolderSet |  |  |  |
+| `noise_amp` | Amplitude | Float | [0.5] | 0.0 .. 1.0 |  |
+| `noise_elemsize` | Element Size | Float | [0.1] | 0.0 .. 1.0 |  |
+| `noise_elemsizetype` | Element Size Type | Menu | 0 |  | BUTTONS_decompose_transforms |
+| `noise_elemscalex` | Element Scale | Float | 1.0 | 0.0 .. 1.0 |  |
+| `noise_elemscaley` | Element Scale | Float | 1.0 | 0.0 .. 1.0 |  |
+| `noise_elemscalez` | Element Scale | Float | 1.0 | 0.0 .. 1.0 |  |
+| `noise_pulseduration` | Pulse Duration | Float | [1.0] | 0.0 .. 10.0 (strict) |  |
+| `noise_seed` | Seed | Float | [0.0] | 0.0 .. 100.0 |  |
+| `distort_enable` | Distort Enable | Toggle | false |  |  |
+| `folder1` |  | FolderSet |  |  |  |
+| `distort_amp` | Amplitude | Float | [0.1] | 0.0 .. 1.0 |  |
+| `distort_elemsize` | Element Size | Float | [0.1] | 0.0 .. 1.0 |  |
+| `distort_elemsizetype` | Element Size Type | Menu | 0 |  | BUTTONS_decompose_transforms |
+| `distort_elemscalex` | Element Scale | Float | 1.0 | 0.0 .. 1.0 |  |
+| `distort_elemscaley` | Element Scale | Float | 1.0 | 0.0 .. 1.0 |  |
+| `distort_elemscalez` | Element Scale | Float | 1.0 | 0.0 .. 1.0 |  |
+| `distort_pulseduration` | Pulse Duration | Float | [1.0] | 0.0 .. 10.0 (strict) |  |
+| `distort_seed` | Seed | Float | [0.0] | 0.0 .. 100.0 |  |
+| `falloff1pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `falloff1value` | Value | Float | [0.0] | 0.0 .. 10.0 |  |
+| `falloff1interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `falloff2pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `falloff2value` | Value | Float | [0.0] | 0.0 .. 10.0 |  |
+| `falloff2interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |

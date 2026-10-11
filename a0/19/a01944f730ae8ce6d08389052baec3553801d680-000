@@ -1,0 +1,31 @@
+# subnet
+
+- Label: Subnetwork
+- Category: Copernicus (`Cop`), Houdini 22.0.368
+- Inputs: 0 to 2048
+- Parameters: 7 (exact, read from Houdini by hython)
+- Used by the height graph: no
+
+## Feature summary (web, SideFX reference)
+
+- Source: https://www.sidefx.com/docs/houdini/nodes/cop/subnet.html
+- Summary (EN): Subnetwork groups a set of COP nodes into a single node to keep higher-level networks tidy. Inside it, Input and Output nodes bring data in from outside and send results back out.
+- Résumé (FR) : Subnetwork regroupe plusieurs nœuds COP dans un seul nœud, dont les entrées et sorties se définissent par des multiparms de types et d'étiquettes.
+
+- Inputs meaning: ["No fixed list: the number of inputs is set by the Inputs multiparm, and each input port's type and label are set by its own parameters. Inside, each input is read through an Input COP node"]
+
+- Key parameters: ["Rename Wires Using Output Labels: when on, each output wire takes its port label name", "Inputs: number of input ports", "Input Label: label of each input port", "Input Type: data type of each input port, which determines what can be connected", "Outputs: number of output ports", "Output Label: label of each output port", "Output Type: data type of each output port"]
+
+- Caveats: ["The signature comes from the Inputs and Outputs multiparms, and the contained Input and Output nodes inherit it", "Wire names pass through from inputs unless label renaming is enabled", "Can be converted into an HDA with Create Digital Asset from the right-click menu", "Identity matched from the page title and the Copernicus index entry, the page body does not repeat the internal name"]
+
+## Parameters (exact, from the installed Houdini)
+
+| parameter | label | type | default | range | menu tokens |
+|---|---|---|---|---|---|
+| `cablerenamebylabel` | Rename Wires Using Output Labels | Toggle | false |  |  |
+| `inputs` | Inputs | Folder | 0 |  |  |
+| `outputs` | Outputs | Folder | 0 |  |  |
+| `inputlabel1` | Input Label | String | [""] |  |  |
+| `inputtype1` | Input Type | Menu | 4 |  | int, float, vector2, vector, vector4, geo, metadata, ivdb, fvdb, vvdb, aint, afloat, avector2, avector, avector4, cable |
+| `outputlabel1` | Output Label | String | [""] |  |  |
+| `outputtype1` | Output Type | Menu | 4 |  | int, float, vector2, vector, vector4, geo, metadata, ivdb, fvdb, vvdb, aint, afloat, avector2, avector, avector4, cable |

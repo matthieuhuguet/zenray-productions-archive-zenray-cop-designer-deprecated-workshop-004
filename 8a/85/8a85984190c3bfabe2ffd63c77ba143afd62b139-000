@@ -1,0 +1,31 @@
+# pointgenerate
+
+- Label: Point Generate
+- Category: Copernicus (`Cop`), Houdini 22.0.368
+- Inputs: 0 to 3
+- Parameters: 7 (exact, read from Houdini by hython)
+- Used by the height graph: no
+
+## Feature summary (web, SideFX reference)
+
+- Source: https://www.sidefx.com/docs/houdini/nodes/cop/pointgenerate.html
+- Summary (EN): The Point Generate node adds new points to a point cloud. It always outputs a point cloud, and if the geometry has an id point attribute, the new points receive sequential IDs.
+- Résumé (FR) : Le nœud Point Generate ajoute des points à un nuage, selon un nombre fixe, un attribut de comptage ou un débit par seconde.
+
+- Inputs meaning: ["points: geometry to append to, or reference for point attributes", "ref (optional): source for the count attribute and original point values", "count (optional): integer attribute used as the count; in point mode it must match the size of the source points"]
+
+- Key parameters: ["Method: fixed Number of Points, per-point or detail count attribute, or Points per Second using the current timestep", "Seed: decides whether fractional points in Points per Second mode are kept; must change over time to avoid bias", "Count Attribute: name of the attribute holding the count", "Copy Attributes: pattern of source point attributes copied to new points; unmatched attributes keep defaults", "Append Points: on adds to the input geometry; off outputs only the new points", "nextid / idstep (detail attributes): starting ID and spacing for new points"]
+
+- Caveats: ["The output is always a point cloud, so incoming primitives are lost.", "Available since Houdini 22.0."]
+
+## Parameters (exact, from the installed Houdini)
+
+| parameter | label | type | default | range | menu tokens |
+|---|---|---|---|---|---|
+| `method` | Method | Menu | 0 |  | parm, point, detail |
+| `impulserate` | Number of Points | Int | [0] | 0 .. 10000 |  |
+| `constantrate` | Points per Second | Float | [0.0] | 0.0 .. 100000.0 |  |
+| `seed` | Seed | Float | [0.0] | 0.0 .. 10.0 |  |
+| `countattrib` | Count Attribute | String | ["count"] |  |  |
+| `copyattribs` | Copy Attributes | String | ["*"] |  |  |
+| `append` | Append Points | Toggle | true |  |  |

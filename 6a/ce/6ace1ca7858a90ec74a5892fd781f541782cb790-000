@@ -1,0 +1,27 @@
+# sequenceblend
+
+- Label: Sequence Blend
+- Category: Copernicus (`Cop`), Houdini 22.0.368
+- Inputs: 0 to 2048
+- Parameters: 3 (exact, read from Houdini by hython)
+- Used by the height graph: no
+
+## Feature summary (web, SideFX reference)
+
+- Source: https://www.sidefx.com/docs/houdini/nodes/cop/sequenceblend.html
+- Summary (EN): Sequence Blend mixes several image layers with a blend factor, interpolating across the numbered image inputs. The page recommends the Blend COP when only two layers need blending.
+- Résumé (FR) : Le nœud Sequence Blend mélange plusieurs couches image à l'aide d'un facteur de fondu réparti sur ses entrées numérotées.
+
+- Inputs meaning: ["blend (optional): per-pixel blend amount, scaled by the Blend parameter", "image#: the layers to blend, one per numbered input"]
+
+- Key parameters: ["Signature: the layer type the source image accepts", "Invert: inverts the Blend value", "Blend: blend factor from 0 to 1, mapped across all image inputs"]
+
+- Caveats: ["Use the Blend COP instead when you only need to blend two layers"]
+
+## Parameters (exact, from the installed Houdini)
+
+| parameter | label | type | default | range | menu tokens |
+|---|---|---|---|---|---|
+| `signature` | Signature | String | ["auto"] |  |  |
+| `invert` | Invert | Toggle | false |  |  |
+| `blend` | Blend | Float | [0.0] | 0.0 .. 1.0 (strict) |  |

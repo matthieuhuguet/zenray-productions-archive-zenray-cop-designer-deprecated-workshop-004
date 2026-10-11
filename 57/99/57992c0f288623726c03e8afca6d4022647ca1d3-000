@@ -1,0 +1,37 @@
+# quantize
+
+- Label: Quantize
+- Category: Copernicus (`Cop`), Houdini 22.0.368
+- Inputs: 0 to 2
+- Parameters: 13 (exact, read from Houdini by hython)
+- Used by the height graph: no
+
+## Feature summary (web, SideFX reference)
+
+- Source: https://www.sidefx.com/docs/houdini/nodes/cop/quantize.html
+- Summary (EN): Quantize snaps input values to a set of discrete levels, reducing the number of colour levels in an image for a posterized look. Its documented input is a single source layer, and a Mask parameter blends the result with the original.
+- Résumé (FR) : Ce nœud ramène les valeurs d'un calque à un nombre limité de paliers, ce qui produit un effet posterisé.
+
+- Inputs meaning: ["source: layer to quantize; the Signature parameter sets the layer type it accepts"]
+
+- Key parameters: ["Signature: layer type accepted by source", "Mask: blend between the quantized and original values; default 1 uses only the new value", "Method: Width and Offset, or Number of Segments", "Width: spacing between levels as a fraction of the 0 to 1 range; 0.1 gives 11 levels", "Offset: shifts where the quantization levels fall", "Segments: number of levels when using Number of Segments; 3 gives 0, 0.5 and 1", "Minimum Value / Maximum Value: the range divided into segments", "Compute Range: fills Minimum and Maximum from the source layer's actual values", "Rounding: Floor, Closest, Ceiling or Custom", "Rounding Threshold: cutoff between the two nearest levels, used only with Custom; 0, 0.5 and 1 behave like Floor, Closest and Ceiling", "Clamp Below / Clamp Above: clamp input values to Minimum or Maximum before quantizing"]
+
+- Caveats: ["Width/Offset and Segments/Minimum/Maximum apply under different Method settings, so only the relevant fields matter for a given setup.", "Rounding Threshold has no effect unless Rounding is set to Custom.", "The page does not say how multichannel or non-layer data is handled beyond the Signature setting, and gives no performance details."]
+
+## Parameters (exact, from the installed Houdini)
+
+| parameter | label | type | default | range | menu tokens |
+|---|---|---|---|---|---|
+| `signature` | Signature | String | ["auto"] |  |  |
+| `mask` | Mask | Float | [1.0] | 0.0 .. 1.0 (strict) |  |
+| `method` | Method | Menu | 1 |  | width, segments |
+| `width` | Width | Float | [0.1] | 0.0 .. 1.0 |  |
+| `offset` | Offset | Float | [0.0] | 0.0 .. 1.0 |  |
+| `segments` | Segments | Int | [16] | 0 .. 20 |  |
+| `round` | Rounding | Menu | 0 |  | floor, rint, ceil, custom |
+| `roundoffset` | Rounding Threshold | Float | [0.5] | 0.0 .. 1.0 |  |
+| `computerange` | Compute Range | Button |  |  |  |
+| `minval` | Minimum Value | Float | [0.0] | 0.0 .. 1.0 |  |
+| `maxval` | Maximum Value | Float | [1.0] | 0.0 .. 1.0 |  |
+| `clampbelow` | Clamp Below | Toggle | false |  |  |
+| `clampabove` | Clamp Above | Toggle | false |  |  |

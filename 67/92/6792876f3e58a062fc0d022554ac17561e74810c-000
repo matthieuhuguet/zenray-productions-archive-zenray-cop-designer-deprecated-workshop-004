@@ -1,0 +1,45 @@
+# pyro_advect::2.0
+
+- Label: Pyro Advect
+- Category: Copernicus (`Cop`), Houdini 22.0.368
+- Inputs: 0 to 2
+- Parameters: 21 (exact, read from Houdini by hython)
+- Used by the height graph: no
+
+## Feature summary (web, SideFX reference)
+
+- Source: https://www.sidefx.com/docs/houdini/nodes/cop/pyro_advect.html
+- Summary (EN): Pyro Advect moves the contents of VDBs along a provided velocity VDB ('Advects VDBs by Velocity'). It can also apply an ambient wind velocity and advect the velocity field itself. Outputs: data (the advected VDBs) and v (the velocity VDB, possibly self-advected).
+- Résumé (FR) : Pyro Advect déplace le contenu des VDB le long d'un champ de vitesse fourni. Il peut aussi ajouter un vent ambiant et advecter le champ de vitesse lui-même. Les schémas vont de Forward Euler, le plus rapide mais le plus flou, à Runge-Kutta 4 et BFECC, plus coûteux et plus nets. Requiert les permissions DOP.
+
+- Inputs meaning: ["data: cable of VDBs to advect", "v: vector VDB supplying the velocity, can optionally be self-advected"]
+
+- Key parameters: ["Advection: Scale (global velocity multiplier), Ambient Velocity (constant wind added to the field), Scale by Timestep", "Tracing: Trace Method (Forward Euler, Average of Two, Explicit Midpoint, Runge-Kutta 3, Runge-Kutta 4, by increasing accuracy and cost), Path Tracing, Maximum Steps, CFL Condition, Adaptive Step Size", "Data Advection: Enable Data Advection, Scheme (BFECC, Euler + Sharpen, Euler), Sharpen", "Velocity: Enable Velocity Advection, Method (same scheme options), Sharpen"]
+
+- Caveats: ["Requires DOP-level permissions, not available in Houdini Core (only FX, Apprentice, Indie, Education)", "Forward Euler is fastest but tends to blur smoke and flatten turbulence, higher orders cost more", "BFECC preserves sharpness best but needs considerable time and memory", "Excessive Sharpen can create grid artifacts", "For very fast motion, raising CFL Condition may work better than raising Maximum Steps", "Disable Velocity Advection if the velocity was already advected by another Pyro Advect COP"]
+
+## Parameters (exact, from the installed Houdini)
+
+| parameter | label | type | default | range | menu tokens |
+|---|---|---|---|---|---|
+| `folder3` |  | FolderSet |  |  |  |
+| `scale` | Scale | Float | [1.0] | 0.0 .. 1.0 |  |
+| `ambientx` | Ambient Velocity | Float | 0.0 | 0.0 .. 1.0 |  |
+| `ambienty` | Ambient Velocity | Float | 0.0 | 0.0 .. 1.0 |  |
+| `ambientz` | Ambient Velocity | Float | 0.0 | 0.0 .. 1.0 |  |
+| `usetimeinc` | Scale by Timestep | Toggle | true |  |  |
+| `folder4` |  | FolderSet |  |  |  |
+| `tracemethod` | Trace Method | Menu | 0 |  | forwardeuler, average, midpoint, rk3, rk4 |
+| `usepathtrace` | Path Trace | Toggle | true |  |  |
+| `folder2` |  | FolderSet |  |  |  |
+| `maxstep` | Maximum Steps | Int | [100] | 1 .. 200 (strict) |  |
+| `cflcond` | CFL Condition | Float | [1.5] | 0.0 .. 10.0 (strict) |  |
+| `adaptive` | Adaptive Step Size | Toggle | false |  |  |
+| `data_enable` | Enable Data Advection | Toggle | true |  |  |
+| `folder0` |  | FolderSet |  |  |  |
+| `data_scheme` | Scheme | Menu | 1 |  | bfecc, sharpen, sl |
+| `data_sharpen` | Sharpen | Float | [1.0] | 0.0 .. 1.0 |  |
+| `v_enable` | Enable Velocity Advection | Toggle | true |  |  |
+| `folder1` |  | FolderSet |  |  |  |
+| `v_scheme` | Scheme | Menu | 1 |  | bfecc, sharpen, sl |
+| `v_sharpen` | Sharpen | Float | [1.0] | 0.0 .. 1.0 |  |

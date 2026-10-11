@@ -1,0 +1,27 @@
+# udimpack
+
+- Label: UDIM Pack
+- Category: Copernicus (`Cop`), Houdini 22.0.368
+- Inputs: 0 to 2048
+- Parameters: 3 (exact, read from Houdini by hython)
+- Used by the height graph: no
+
+## Feature summary (web, SideFX reference)
+
+- Source: https://www.sidefx.com/docs/houdini/nodes/cop/udimpack.html
+- Summary (EN): Takes one input and samples it at several UDIM tiles, packaging the samples into a cable, a Copernicus data type that carries multiple layers. Added in Houdini 22.0.
+- Résumé (FR) : Ce nœud échantillonne son entrée sur plusieurs tuiles UDIM et regroupe les résultats dans un câble, nœud disponible depuis Houdini 22.0.
+
+- Inputs meaning: ["Single input: the source sampled at each UDIM tile. The node has no input ordering."]
+
+- Key parameters: [{"name": "UDIMs", "meaning": "List of UDIM tiles to sample, comma-separated, with hyphens for ranges. If this list is not enabled, the node uses the default UDIM list from the COP Network."}, {"name": "Add UDIM As", "meaning": "Adds the UDIM number to the output name as a Prefix or a Suffix."}]
+
+- Caveats: ["The page does not describe how UDIM numbers are formatted in the names, how the input is sampled at each tile, or how invalid or out-of-range entries are handled.", "Time Pack is listed as a related node. It works similarly, but across times instead of UDIM tiles."]
+
+## Parameters (exact, from the installed Houdini)
+
+| parameter | label | type | default | range | menu tokens |
+|---|---|---|---|---|---|
+| `setudim` | UDIM | Toggle | false |  |  |
+| `udims` | UDIMs | String | [""] |  |  |
+| `namepos` | Add UDIM As | Menu | 1 |  | prefix, suffix |

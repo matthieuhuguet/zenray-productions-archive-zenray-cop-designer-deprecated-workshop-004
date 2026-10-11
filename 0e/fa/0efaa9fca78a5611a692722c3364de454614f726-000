@@ -1,0 +1,69 @@
+# swirl
+
+- Label: Swirl
+- Category: Copernicus (`Cop`), Houdini 22.0.368
+- Inputs: 0 to 11
+- Parameters: 45 (exact, read from Houdini by hython)
+- Used by the height graph: no
+
+## Feature summary (web, SideFX reference)
+
+- Source: https://www.sidefx.com/docs/houdini/nodes/cop/swirl.html
+- Summary (EN): Swirl twists an image layer into one or more spiral-shaped deformation regions. Combined with noise layers it can add organic variation such as tides, tree knots or lichen on rocks.
+- Résumé (FR) : Swirl tord une couche image en une ou plusieurs zones de déformation en spirale, dont les centres et les échelles peuvent venir de points de géométrie.
+
+- Inputs meaning: ["size_ref: sets output image size and metadata", "source: layer to twist", "points: geometry setting the swirl centres and scale values", "stength (spelled this way on the page): strength scale", "bulge: bulge scale", "radius: radius scale", "blendregion: blend region scale", "innerradius: inner radius scale", "innerblendregion: inner blend region scale", "rotate: rotate scale", "roundness: roundness scale", "The last eight inputs are optional, each sampled at every swirl centre"]
+
+- Key parameters: ["Wrap Mode: Auto, Off (clamps at the boundary), On (wraps at the boundary)", "Filter: sampling filter when the deformation reads between pixels", "Tile Size: size of the base deformation region", "Parameter Mode: Uniform (same controls for all swirls) or Random (variation from a standard deviation)", "Translation: moves the deformation regions in image space", "Strength: spiral amount, positive counterclockwise, negative clockwise", "Bulge: radial deformation, lens-distortion effect", "Radius and Blend Region: size of the deformed area and its soft edge", "Inner Radius and Inner Blend Region: undeformed centre and its soft edge", "Rotate: rotation of the deformation ellipse, in degrees", "Roundness: 1 is circular, lower values are elliptical", "Number of Points: number of swirl centres, each with its own Position and scale controls", "Randomize (Seed, Position Random, Central Value, Scatter): random variation of the shape"]
+
+- Caveats: ["When geometry is wired into points, the Match Attributes Names parameters replace the manual Swirl parameters", "Each Match Attributes field takes a point attribute name, and scales default to 1 if the attribute is not set", "The page lists the input as 'stength', which looks like a typo for strength, check the real input name in the network before wiring"]
+
+## Parameters (exact, from the installed Houdini)
+
+| parameter | label | type | default | range | menu tokens |
+|---|---|---|---|---|---|
+| `signature` | Signature | String | ["auto"] |  |  |
+| `wrapmode` | Wrap Mode | Menu | 1 |  | auto, off, on |
+| `filter` | Filter | Menu | 2 |  | point, bilinear, box, triangle, cubic, mitchell, bspline |
+| `tilesizex` | Tile Size | Float | 2.0 | -1.0 .. 1.0 |  |
+| `tilesizey` | Tile Size | Float | 2.0 | -1.0 .. 1.0 |  |
+| `parametermode` | Parameter Mode | Menu | 0 |  | uniform, random |
+| `folder0` |  | FolderSet |  |  |  |
+| `translationx` | Translation | Float | 0.0 | -1.0 .. 1.0 |  |
+| `translationy` | Translation | Float | 0.0 | -1.0 .. 1.0 |  |
+| `strength` | Strength | Float | [0.25] | -2.0 .. 2.0 |  |
+| `bulge` | Bulge | Float | [0.25] | -2.0 .. 2.0 |  |
+| `radius` | Radius | Float | [0.25] | 0.0 .. 2.0 |  |
+| `blendregion` | Blend Region | Float | [0.25] | 0.0 .. 2.0 |  |
+| `innerradius` | Inner Radius | Float | [0.0] | 0.0 .. 2.0 |  |
+| `innerblendregion` | Inner Blend Region | Float | [0.0] | 0.0 .. 2.0 |  |
+| `rotate` | Rotate | Float | [45.0] | 0.0 .. 360.0 |  |
+| `roundness` | Roundness | Float | [1.0] | 0.0 .. 1.0 |  |
+| `folder2` |  | FolderSet |  |  |  |
+| `seed` | Seed | Int | [1] | 1 .. 100 |  |
+| `activatepositionrandom` | Activate Position Random | Toggle | false |  |  |
+| `centralpositionx` | Central Position | Float | 0.0 | -1.0 .. 1.0 |  |
+| `centralpositiony` | Central Position | Float | 0.0 | -1.0 .. 1.0 |  |
+| `centralvalue` | Central Value | Float | [0.5] | 0.0 .. 1.0 |  |
+| `scatter` | Scatter | Float | [1.0] | 0.0 .. 1.0 |  |
+| `folder5` |  | FolderSet |  |  |  |
+| `numberofpoints` | Number of Points | Folder | 1 |  |  |
+| `folder1` |  | FolderSet |  |  |  |
+| `geo_strength` | Strength | String | ["strength"] |  |  |
+| `geo_bulge` | Bulge | String | ["bulge"] |  |  |
+| `geo_radius` | Radius | String | ["radius"] |  |  |
+| `geo_blendregion` | Blend Region | String | ["blendregion"] |  |  |
+| `geo_innerradius` | Inner Radius | String | ["radius"] |  |  |
+| `geo_innerblendregion` | Inner Blend Region | String | ["blendregion"] |  |  |
+| `geo_rotate` | Rotate | String | ["rotate"] |  |  |
+| `geo_roundness` | Roundness | String | ["roundness"] |  |  |
+| `position0x` | Position 0 | Float | 0.0 | -1.0 .. 1.0 |  |
+| `position0y` | Position 0 | Float | 0.0 | -1.0 .. 1.0 |  |
+| `strengthscale0` | Strength Scale 0 | Float | [1.0] | -2.0 .. 2.0 |  |
+| `bulgescale0` | Bulge Scale 0 | Float | [1.0] | -1.0 .. 1.0 |  |
+| `radiusscale0` | Radius Scale 0 | Float | [1.0] | 0.0 .. 1.0 |  |
+| `blendregionscale0` | Blend Region Scale 0 | Float | [1.0] | 0.0 .. 1.0 |  |
+| `innerradiusscale0` | Inner Radius Scale 0 | Float | [1.0] | 0.0 .. 1.0 |  |
+| `innerblendregionscale0` | Inner Blend Region Scale 0 | Float | [1.0] | 0.0 .. 1.0 |  |
+| `rotatescale0` | Rotate Scale 0 | Float | [1.0] | 0.0 .. 1.0 |  |
+| `roundnessscale0` | Roundness Scale 0 | Float | [1.0] | 0.0 .. 1.0 |  |

@@ -1,0 +1,96 @@
+# pyro_uniformforce
+
+- Label: Pyro Uniform Force
+- Category: Copernicus (`Cop`), Houdini 22.0.368
+- Inputs: 1 to 5
+- Parameters: 72 (exact, read from Houdini by hython)
+- Used by the height graph: no
+
+## Feature summary (web, SideFX reference)
+
+- Source: https://www.sidefx.com/docs/houdini/nodes/cop/pyro_uniformforce.html
+- Summary (EN): Pyro Uniform Force adds a constant directional force, such as a gravity-like pull on smoke or fire, to a velocity VDB. It combines the force with the incoming velocities using a chosen operation, and masks can limit where it applies. Available since Houdini 21.0.
+- Résumé (FR) : Ce nœud ajoute une force uniforme et directionnelle, comme une pesanteur, au champ de vitesse d'une simulation pyro, avec des masques optionnels.
+
+- Inputs meaning: ["v: Vector VDB containing the original velocities", "direction: optional Vector VDB that sets the force direction per voxel", "threshold: optional Float or Vector VDB used as a threshold mask; a Vector VDB contributes its length", "control: optional Float or Vector VDB used as a control mask; a Vector VDB contributes its length", "angledir: optional Vector VDB that sets the per-voxel direction for the angle mask"]
+
+- Key parameters: ["Activation: turns the node on or off, runs only when 1", "Operation: Set (replaces velocities), Add (adds to them), or Drag (blends velocities toward the direction, which is treated as a target velocity)", "Uniform Scale: global multiplier for the force", "Gravity Acceleration: strength of the uniform force", "Direction: direction in which the force is applied", "Use Terminal Velocity / Terminal Velocity: no additional force for fluid moving at or above this speed in the force direction", "Scale by Timestep: consistency under substepping", "Threshold Mask (Volume, Range, Ramp): default range 0.01 to 0 concentrates the effect on edges and empty regions", "Control Mask (Volume, Range, Ramp): default range 0 to 1 concentrates the effect where control values are higher", "Angle Mask (Angle Direction, Spread Angle, Ramp): strongest where velocities align with the reference direction; default 90 degrees", "Axis Mask (Axis Direction, Axis Range, Ramp): scales the effect along a world-space axis range"]
+
+- Caveats: ["Requires DOP-level permissions. Not available in Houdini Core.", "If fluid accelerates too much, enable Terminal Velocity. If the force stops affecting the fluid too early, raise that value.", "In Drag mode, Direction acts as a target velocity, not as a force.", "Each mask has its own range and ramp, so the defaults may need adjusting for your setup."]
+
+## Parameters (exact, from the installed Houdini)
+
+| parameter | label | type | default | range | menu tokens |
+|---|---|---|---|---|---|
+| `signature` | Signature | String | ["auto"] |  |  |
+| `folder0` |  | FolderSet |  |  |  |
+| `operation` | Operation | Menu | 1 |  | set, add, drag |
+| `scale` | Uniform Scale | Float | [1.0] | 0.0 .. 10.0 |  |
+| `gravaccel` | Gravity Acceleration | Float | [9.806] | 0.0 .. 10.0 (strict) |  |
+| `directionx` | Direction | Float | 0.0 | 0.0 .. 1.0 |  |
+| `directiony` | Direction | Float | -1.0 | 0.0 .. 1.0 |  |
+| `directionz` | Direction | Float | 0.0 | 0.0 .. 1.0 |  |
+| `useterminalvel` | Use Terminal Velocity | Toggle | false |  |  |
+| `terminalvel` | Terminal Velocity | Float | [1.0] | 0.0 .. 10.0 (strict) |  |
+| `dotimestep` | Scale by Timestep | Toggle | true |  |  |
+| `usethreshold` | Threshold Volume | Toggle | false |  |  |
+| `folder3` |  | FolderSet |  |  |  |
+| `thresholdrangemin` | Threshold Range | Float | 0.01 | 0.0 .. 10.0 |  |
+| `thresholdrangemax` | Threshold Range | Float | 0.0 | 0.0 .. 10.0 |  |
+| `remapthreshold` | Remap Threshold | Toggle | false |  |  |
+| `folder7` |  | FolderSet |  |  |  |
+| `thresholdramp` | Threshold Ramp | Ramp | 2 |  |  |
+| `usecontrol` | Control Volume | Toggle | false |  |  |
+| `folder5` |  | FolderSet |  |  |  |
+| `controlrangemin` | Control Range | Float | 0.0 | 0.0 .. 10.0 |  |
+| `controlrangemax` | Control Range | Float | 1.0 | 0.0 .. 10.0 |  |
+| `remapcontrol` | Remap Control | Toggle | false |  |  |
+| `folder6` |  | FolderSet |  |  |  |
+| `controlramp` | Control Ramp | Ramp | 2 |  |  |
+| `useanglecontrol` | Use Normal Control | Toggle | false |  |  |
+| `folder10` |  | FolderSet |  |  |  |
+| `angledirx` | Angle Direction | Int | 0 | -1 .. 1 |  |
+| `anglediry` | Angle Direction | Int | 1 | -1 .. 1 |  |
+| `angledirz` | Angle Direction | Int | 0 | -1 .. 1 |  |
+| `angle` | Spread Angle | Float | [90.0] | 0.0 .. 180.0 (strict) |  |
+| `folder11` |  | FolderSet |  |  |  |
+| `remapanglecontrol` | Remap Angle Control | Toggle | false |  |  |
+| `anglecontrolramp` | Angle Control Ramp | Ramp | 2 |  |  |
+| `useaxiscontrol` | Use Axis Control | Toggle | false |  |  |
+| `folder8` |  | FolderSet |  |  |  |
+| `axiscontroldir` | Direction | Menu | 1 |  | x, y, z, custom |
+| `axiscontrolmin` | Axis Range | Float | 0.0 | 0.0 .. 1.0 |  |
+| `axiscontrolmax` | Axis Range | Float | 1.0 | 0.0 .. 1.0 |  |
+| `startposx` | Start Position | Float | 0.0 | -1.0 .. 1.0 |  |
+| `startposy` | Start Position | Float | 0.0 | -1.0 .. 1.0 |  |
+| `startposz` | Start Position | Float | 0.0 | -1.0 .. 1.0 |  |
+| `endposx` | End Position | Float | 0.0 | -1.0 .. 1.0 |  |
+| `endposy` | End Position | Float | 1.0 | -1.0 .. 1.0 |  |
+| `endposz` | End Position | Float | 0.0 | -1.0 .. 1.0 |  |
+| `remapaxiscontrol` | Remap Axis Control | Toggle | false |  |  |
+| `folder9` |  | FolderSet |  |  |  |
+| `axiscontrolramp` | Axis Control Ramp | Ramp | 2 |  |  |
+| `thresholdramp1pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `thresholdramp1value` | Value | Float | [0.0] | 0.0 .. 10.0 |  |
+| `thresholdramp1interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `thresholdramp2pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `thresholdramp2value` | Value | Float | [0.0] | 0.0 .. 10.0 |  |
+| `thresholdramp2interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `controlramp1pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `controlramp1value` | Value | Float | [0.0] | 0.0 .. 10.0 |  |
+| `controlramp1interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `controlramp2pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `controlramp2value` | Value | Float | [0.0] | 0.0 .. 10.0 |  |
+| `controlramp2interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `anglecontrolramp1pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `anglecontrolramp1value` | Value | Float | [0.0] | 0.0 .. 10.0 |  |
+| `anglecontrolramp1interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `anglecontrolramp2pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `anglecontrolramp2value` | Value | Float | [0.0] | 0.0 .. 10.0 |  |
+| `anglecontrolramp2interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `axiscontrolramp1pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `axiscontrolramp1value` | Value | Float | [0.0] | 0.0 .. 10.0 |  |
+| `axiscontrolramp1interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `axiscontrolramp2pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `axiscontrolramp2value` | Value | Float | [0.0] | 0.0 .. 10.0 |  |
+| `axiscontrolramp2interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |

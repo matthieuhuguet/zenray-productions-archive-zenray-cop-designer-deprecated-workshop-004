@@ -1,0 +1,146 @@
+# pyro_emitfromflame
+
+- Label: Pyro Emit from Flame
+- Category: Copernicus (`Cop`), Houdini 22.0.368
+- Inputs: 1 to 8
+- Parameters: 122 (exact, read from Houdini by hython)
+- Used by the height graph: no
+
+## Feature summary (web, SideFX reference)
+
+- Source: https://www.sidefx.com/docs/houdini/nodes/cop/pyro_emitfromflame.html
+- Summary (EN): Burns up the flame field. Dissipates the flame over time and emits smoke (density) and temperature from the burned flame; can also add divergence to drive expansion in the simulation. Available since Houdini 22.0.
+- Résumé (FR) : Pyro Emit from Flame consume le champ de flamme et en tire de la fumée, de la chaleur et, si besoin, de la divergence pour faire gonfler la simulation.
+
+- Inputs meaning: ["flame: Float VDB representing the flame", "density: Float VDB that emitted smoke is combined with", "temperature: Float VDB that emitted heat is combined with", "divergence: Float VDB that flame expansion is combined with", "control_cooling (optional): control field for flame cooling", "control_density (optional): control field for density emission", "control_temperature (optional): control field for temperature emission", "control_divergence (optional): control field for flame expansion"]
+
+- Key parameters: ["Activation: enables the node; runs only when the value is 1", "Cool Flame: when on, emitted amounts scale by how much flame was dissipated", "Dissipation Mode, Dissipation Rate, Subtraction Rate, Lifespan, Half-Life: flame decay controls", "Goal Value and Goal Tolerance: value the flame cools toward (usually zero), snapped there once close enough", "Emit Density / Emit Temperature / Enable Expansion: on or off switches for each output", "Operation: how emitted values combine with the incoming field (Add, Maximum, Average, Blend, Pull)", "Emission Scale (or Expansion Scale): output amount multiplier", "Flame Range and Emission Range: select the part of the flame field that emits, optionally remapped", "Acceleration, Deceleration, Blend: strength of push toward or mix with the incoming field (Pull and Blend)", "Use Ramp and Flame Ramp: shape the mapping from flame values to output", "Control Mask subsections (per section): Use Control Field, Control Range, Use Ramp, Control Ramp for spatial scaling"]
+
+- Caveats: ["Requires DOP-level permissions; not in Houdini Core, only in Houdini FX, Apprentice, Indie and Education", "The Blend description under Expansion contains a typo on the page, so that wording may be imprecise"]
+
+## Parameters (exact, from the installed Houdini)
+
+| parameter | label | type | default | range | menu tokens |
+|---|---|---|---|---|---|
+| `activation` | Activation | Int | [1] | 0 .. 1 (strict) |  |
+| `folder81` |  | FolderSet |  |  |  |
+| `coolflame` | Cool Flame | Toggle | true |  |  |
+| `folder0` |  | FolderSet |  |  |  |
+| `flame_dissipationmode` | Dissipation Mode | Menu | 0 |  | evaprate, subtractrate, lifespan, halflife |
+| `flame_dissipationrate` | Dissipation Rate | Float | [0.1] | 0.0 .. 1.0 (strict) |  |
+| `flame_subtractrate` | Subtraction Rate | Float | [0.1] | 0.0 .. 1.0 |  |
+| `flame_lifespan` | Lifespan | Float | [1.0] | 0.0 .. 10.0 |  |
+| `flame_halflife` | Half-Life | Float | [1.0] | 0.0 .. 10.0 |  |
+| `usegoalvalue` | Use Goal Value | Toggle | false |  |  |
+| `goalvalue` | Goal Value | Float | [0.0] | 0.0 .. 1.0 |  |
+| `usegoaltolerance` | Use Goal Tolerance | Toggle | false |  |  |
+| `goaltolerance` | Goal Tolerance | Float | [0.005] | 0.0 .. 1.0 |  |
+| `flame_usecontrol` | Use Control Field | Toggle | false |  |  |
+| `folder1` |  | FolderSet |  |  |  |
+| `flame_controlrangemin` | Control Range | Float | 0.0 | 0.0 .. 1.0 |  |
+| `flame_controlrangemax` | Control Range | Float | 1.0 | 0.0 .. 1.0 |  |
+| `flame_remapcontrol` | Use Ramp | Toggle | false |  |  |
+| `folder2` |  | FolderSet |  |  |  |
+| `flame_controlramp` | Control Ramp | Ramp | 2 |  |  |
+| `emitdensity` | Density | Toggle | false |  |  |
+| `folder3` |  | FolderSet |  |  |  |
+| `density_operation` | Operation | Menu | 0 |  | add, max, pull |
+| `density_scale` | Emission Scale | Float | [1.0] | 0.0 .. 10.0 |  |
+| `density_flamerangemin` | Flame Range | Float | 0.2 | 0.0 .. 10.0 |  |
+| `density_flamerangemax` | Flame Range | Float | 0.5 | 0.0 .. 10.0 |  |
+| `density_doemissionrange` | Emission Range | Toggle | false |  |  |
+| `density_emissionrangemin` | Emission Range | Float | 0.0 | 0.0 .. 10.0 |  |
+| `density_emissionrangemax` | Emission Range | Float | 1.0 | 0.0 .. 10.0 |  |
+| `density_accel` | Strength | Float | [0.5] | 0.0 .. 1.0 (strict) |  |
+| `density_remapsource` | Use Ramp | Toggle | false |  |  |
+| `folder4` |  | FolderSet |  |  |  |
+| `density_sourceramp` | Flame Ramp | Ramp | 2 |  |  |
+| `density_usecontrol` | Use Control Field | Toggle | true |  |  |
+| `folder5` |  | FolderSet |  |  |  |
+| `density_controlrangemin` | Control Range | Float | 0.0 | 0.0 .. 1.0 |  |
+| `density_controlrangemax` | Control Range | Float | 1.0 | 0.0 .. 1.0 |  |
+| `density_remapcontrol` | Use Ramp | Toggle | false |  |  |
+| `folder6` |  | FolderSet |  |  |  |
+| `density_controlramp` | Control Ramp | Ramp | 2 |  |  |
+| `emittemperature` | Temperature | Toggle | false |  |  |
+| `folder10` |  | FolderSet |  |  |  |
+| `temperature_operation` | Operation | Menu | 0 |  | add, max, pull |
+| `temperature_scale` | Emission Scale | Float | [1.0] | 0.0 .. 10.0 |  |
+| `temperature_flamerangemin` | Flame Range | Float | 0.2 | 0.0 .. 10.0 |  |
+| `temperature_flamerangemax` | Flame Range | Float | 0.5 | 0.0 .. 10.0 |  |
+| `temperature_doemissionrange` | Emission Range | Toggle | false |  |  |
+| `temperature_emissionrangemin` | Emission Range | Float | 0.0 | 0.0 .. 10.0 |  |
+| `temperature_emissionrangemax` | Emission Range | Float | 1.0 | 0.0 .. 10.0 |  |
+| `temperature_accel` | Strength | Float | [0.5] | 0.0 .. 1.0 (strict) |  |
+| `temperature_remapsource` | Use Ramp | Toggle | false |  |  |
+| `folder11` |  | FolderSet |  |  |  |
+| `temperature_sourceramp` | Flame Ramp | Ramp | 2 |  |  |
+| `temperature_usecontrol` | Use Control Field | Toggle | true |  |  |
+| `folder12` |  | FolderSet |  |  |  |
+| `temperature_controlrangemin` | Control Range | Float | 0.0 | 0.0 .. 1.0 |  |
+| `temperature_controlrangemax` | Control Range | Float | 1.0 | 0.0 .. 1.0 |  |
+| `temperature_remapcontrol` | Use Ramp | Toggle | false |  |  |
+| `folder13` |  | FolderSet |  |  |  |
+| `temperature_controlramp` | Control Ramp | Ramp | 2 |  |  |
+| `doexpansion` | Expansion | Toggle | false |  |  |
+| `folder15` |  | FolderSet |  |  |  |
+| `div_operation` | Operation | Menu | 0 |  | add, max, pull |
+| `div_scale` | Expansion Scale | Float | [1.0] | 0.0 .. 1.0 |  |
+| `div_flamerangemin` | Flame Range | Float | 0.2 | 0.0 .. 10.0 |  |
+| `div_flamerangemax` | Flame Range | Float | 0.5 | 0.0 .. 10.0 |  |
+| `div_doemissionrange` | Emission Range | Toggle | false |  |  |
+| `div_emissionrangemin` | Emission Range | Float | 0.0 | 0.0 .. 10.0 |  |
+| `div_emissionrangemax` | Emission Range | Float | 1.0 | 0.0 .. 10.0 |  |
+| `div_accel` | Strength | Float | [0.5] | 0.0 .. 1.0 (strict) |  |
+| `div_remapsource` | Use Ramp | Toggle | false |  |  |
+| `folder16` |  | FolderSet |  |  |  |
+| `div_sourceramp` | Flame Ramp | Ramp | 2 |  |  |
+| `div_usecontrol` | Use Control Field | Toggle | true |  |  |
+| `folder17` |  | FolderSet |  |  |  |
+| `div_controlrangemin` | Control Range | Float | 0.0 | 0.0 .. 1.0 |  |
+| `div_controlrangemax` | Control Range | Float | 1.0 | 0.0 .. 1.0 |  |
+| `div_remapcontrol` | Use Ramp | Toggle | false |  |  |
+| `folder18` |  | FolderSet |  |  |  |
+| `div_controlramp` | Control Ramp | Ramp | 2 |  |  |
+| `flame_controlramp1pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `flame_controlramp1value` | Value | Float | [0.0] | 0.0 .. 10.0 |  |
+| `flame_controlramp1interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `flame_controlramp2pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `flame_controlramp2value` | Value | Float | [0.0] | 0.0 .. 10.0 |  |
+| `flame_controlramp2interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `density_sourceramp1pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `density_sourceramp1value` | Value | Float | [0.0] | 0.0 .. 10.0 |  |
+| `density_sourceramp1interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `density_sourceramp2pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `density_sourceramp2value` | Value | Float | [0.0] | 0.0 .. 10.0 |  |
+| `density_sourceramp2interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `density_controlramp1pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `density_controlramp1value` | Value | Float | [0.0] | 0.0 .. 10.0 |  |
+| `density_controlramp1interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `density_controlramp2pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `density_controlramp2value` | Value | Float | [0.0] | 0.0 .. 10.0 |  |
+| `density_controlramp2interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `temperature_sourceramp1pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `temperature_sourceramp1value` | Value | Float | [0.0] | 0.0 .. 10.0 |  |
+| `temperature_sourceramp1interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `temperature_sourceramp2pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `temperature_sourceramp2value` | Value | Float | [0.0] | 0.0 .. 10.0 |  |
+| `temperature_sourceramp2interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `temperature_controlramp1pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `temperature_controlramp1value` | Value | Float | [0.0] | 0.0 .. 10.0 |  |
+| `temperature_controlramp1interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `temperature_controlramp2pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `temperature_controlramp2value` | Value | Float | [0.0] | 0.0 .. 10.0 |  |
+| `temperature_controlramp2interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `div_sourceramp1pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `div_sourceramp1value` | Value | Float | [0.0] | 0.0 .. 10.0 |  |
+| `div_sourceramp1interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `div_sourceramp2pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `div_sourceramp2value` | Value | Float | [0.0] | 0.0 .. 10.0 |  |
+| `div_sourceramp2interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `div_controlramp1pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `div_controlramp1value` | Value | Float | [0.0] | 0.0 .. 10.0 |  |
+| `div_controlramp1interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `div_controlramp2pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `div_controlramp2value` | Value | Float | [0.0] | 0.0 .. 10.0 |  |
+| `div_controlramp2interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |

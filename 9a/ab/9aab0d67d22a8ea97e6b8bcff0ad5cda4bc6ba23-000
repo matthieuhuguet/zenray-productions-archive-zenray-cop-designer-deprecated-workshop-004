@@ -1,0 +1,29 @@
+# timeblend
+
+- Label: Time Blend
+- Category: Copernicus (`Cop`), Houdini 22.0.368
+- Inputs: 0 to 1
+- Parameters: 5 (exact, read from Houdini by hython)
+- Used by the height graph: no
+
+## Feature summary (web, SideFX reference)
+
+- Source: https://www.sidefx.com/docs/houdini/nodes/cop/timeblend.html
+- Summary (EN): Produces in-between results for a Copernicus source that exists only on whole frames. It cooks the input at the frames surrounding the current fractional time and mixes the two results by the fractional position, for layers and VDBs.
+- Résumé (FR) : Ce nœud crée des valeurs intermédiaires entre deux images entières d'une source, en mélangeant les deux images voisines selon la position fractionnaire du temps.
+
+- Inputs meaning: ["source: the VDB or Layer to blend at fractional time values."]
+
+- Key parameters: [{"name": "Signature", "meaning": "The layer type the source accepts. The options are referenced to the Copernicus glossary."}, {"name": "Hold First Frame", "meaning": "When enabled, evaluations before the first frame use the first frame's value."}, {"name": "Hold Last Frame", "meaning": "When enabled, evaluations after the last frame use the last frame's value."}]
+
+- Caveats: ["The Signature options are not listed on the page.", "Performance, memory use and behaviour with inputs of different topology or resolution are not covered."]
+
+## Parameters (exact, from the installed Houdini)
+
+| parameter | label | type | default | range | menu tokens |
+|---|---|---|---|---|---|
+| `signature` | Signature | String | ["auto"] |  |  |
+| `holdfirst` | Hold First Frame | Toggle | true |  |  |
+| `firstframe` | Hold First Frame | Int | [0] | 0 .. 240 |  |
+| `holdlast` | Hold Last Frame | Toggle | false |  |  |
+| `lastframe` | Hold Last Frame | Int | [0] | 0 .. 240 |  |

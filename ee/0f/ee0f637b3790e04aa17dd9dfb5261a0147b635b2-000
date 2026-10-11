@@ -1,0 +1,25 @@
+# rgbatorgb
+
+- Label: RGBA to RGB
+- Category: Copernicus (`Cop`), Houdini 22.0.368
+- Inputs: 0 to 1
+- Parameters: 1 (exact, read from Houdini by hython)
+- Used by the height graph: no
+
+## Feature summary (web, SideFX reference)
+
+- Source: https://www.sidefx.com/docs/houdini/nodes/cop/rgbatorgb.html
+- Summary (EN): The RGBA to RGB node splits an RGBA layer or attribute into an RGB output and a mono alpha output. It can also undo the premultiplication of the colour channels.
+- Résumé (FR) : Le nœud RGBA to RGB sépare une couche RGBA en une sortie RGB et une sortie mono d'alpha, en pouvant annuler la prémultiplication.
+
+- Inputs meaning: ["rgba: the RGBA layer or attribute to split"]
+
+- Key parameters: ["Remove Premultiplied Alpha: when on, undoes premultiplication to give unassociated RGB; when off, RGB and alpha are split directly"]
+
+- Caveats: ["With the toggle off, the RGB output keeps the premultiplied values", "The page does not state the toggle's default value"]
+
+## Parameters (exact, from the installed Houdini)
+
+| parameter | label | type | default | range | menu tokens |
+|---|---|---|---|---|---|
+| `unpremult` | Remove Premultiplied Alpha | Toggle | true |  |  |

@@ -1,0 +1,51 @@
+# weave
+
+- Label: Weave
+- Category: Copernicus (`Cop`), Houdini 22.0.368
+- Inputs: 0 to 2
+- Parameters: 27 (exact, read from Houdini by hython)
+- Used by the height graph: no
+
+## Feature summary (web, SideFX reference)
+
+- Source: https://www.sidefx.com/docs/houdini/nodes/cop/weave.html
+- Summary (EN): Generates a woven fabric texture by interlacing horizontal weft fibres and vertical warp fibres. Useful for fabric, basket-weave and similar textile patterns.
+- Résumé (FR) : Génère une texture de tissage en entrelaçant des fibres de trame et de chaîne, avec réglage des rangées, colonnes, croisements et ombrages.
+
+- Inputs meaning: ["size_ref: reference layer that sets the output image size and metadata", "pattern (optional): Mono layer supplying a custom over/under arrangement"]
+
+- Key parameters: ["Rows / Columns: number of weft (horizontal) and warp (vertical) fibres", "Weave Multiplier: increases the number of over/under crossings for a tighter weave", "Arrangement (Every Nth Column, Every Nth Tile, Checkerboard): controls which fibres pass over at each tile, including a classic plain-weave checkerboard", "Row Inset / Column Inset: gap spacing between rows and between columns", "Edge Gradient: softens fibre edges for a rounder profile", "Overlap Gradient / Overlap Gradient Ramp: shading at crossings and its falloff", "Fiber Scale / Fiber Strength: fineness, elongation and intensity of procedural strand detail"]
+
+- Caveats: ["The Arrangement parameters are disabled when a custom arrangement is connected to the pattern input, which overrides them"]
+
+## Parameters (exact, from the installed Houdini)
+
+| parameter | label | type | default | range | menu tokens |
+|---|---|---|---|---|---|
+| `folder0` |  | FolderSet |  |  |  |
+| `folder4` |  | FolderSet |  |  |  |
+| `rows` | Rows | Int | [4] | 1 .. 10 (strict) |  |
+| `cols` | Columns | Int | [4] | 1 .. 10 (strict) |  |
+| `numw` | Weave Multiplier | Int | [1] | 1 .. 10 (strict) |  |
+| `folder3` |  | FolderSet |  |  |  |
+| `docolumnidselection` | Every Nth Column | Toggle | false |  |  |
+| `columnidselection` | Every Nth Column | Int | [2] | 2 .. 10 (strict) |  |
+| `doidselection` | Every Nth Tile | Toggle | false |  |  |
+| `idselection` | Every Nth Tile | Int | [3] | 2 .. 10 (strict) |  |
+| `docheckerboard` | Checkerboard | Toggle | true |  |  |
+| `folder1` |  | FolderSet |  |  |  |
+| `rowinset` | Row Inset | Float | [0.1] | 0.0 .. 1.0 |  |
+| `colinset` | Column Inset | Float | [0.1] | 0.0 .. 1.0 |  |
+| `edgegrad` | Edge Gradient | Float | [0.0] | 0.0 .. 0.2 |  |
+| `overlapgrad` | Overlap Gradient | Float | [0.1] | 0.0 .. 1.0 |  |
+| `overlapramp` | Overlap Gradient Ramp | Ramp | 2 |  |  |
+| `folder2` |  | FolderSet |  |  |  |
+| `fiberscalex` | Fiber Scale | Float | 0.1 | 0.0 .. 2.0 |  |
+| `fiberscaley` | Fiber Scale | Float | 2.0 | 0.0 .. 2.0 |  |
+| `fibermask` | Fiber Strength | Float | [0.6] | 0.0 .. 1.0 (strict) |  |
+| `overlapramp1pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `overlapramp1value` | Value | Float | [0.0] | 0.0 .. 10.0 |  |
+| `overlapramp1interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `overlapramp2pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `overlapramp2value` | Value | Float | [0.0] | 0.0 .. 10.0 |  |
+| `overlapramp2interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |

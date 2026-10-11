@@ -1,0 +1,34 @@
+# vdbvisualizevelocity
+
+- Label: VDB Visualize Velocity
+- Category: Copernicus (`Cop`), Houdini 22.0.368
+- Inputs: 1 to 1
+- Parameters: 10 (exact, read from Houdini by hython)
+- Used by the height graph: no
+
+## Feature summary (web, SideFX reference)
+
+- Source: https://www.sidefx.com/docs/houdini/nodes/cop/vdbvisualizevelocity.html
+- Summary (EN): Traces streamers through a velocity VDB to show its flow. Outputs polylines and points representing the paths as geometry.
+- Résumé (FR) : Trace des lignes de courant dans un VDB de vélocité et les sort en polylignes et points colorés selon la vitesse.
+
+- Inputs meaning: ["v: a Vector VDB of velocities through which the streamers are traced"]
+
+- Key parameters: ["Trail per Voxel: uses every voxel in the slicing plane as a streamer source", "Number Trails: scatters a fixed number of streamer sources, keeping density consistent across resolutions", "Plane: axis to extract, in the volume's local space", "Relative Location: slicing plane relative to the volume or in world coordinates", "Position: centre point where slicing starts in world coordinate mode", "Offset: positions the plane; relative mode range -1 to 1, 0 at the centre", "Trail Length: how long each trail lasts, in seconds", "Maximum Velocity: divides point speeds by this value to colour trails by speed"]
+
+- Caveats: ["Trail per Voxel can get heavy with high resolutions", "In world coordinate mode the offset follows the world axis perpendicular to the plane, so it does not align with a rotated volume's axes"]
+
+## Parameters (exact, from the installed Houdini)
+
+| parameter | label | type | default | range | menu tokens |
+|---|---|---|---|---|---|
+| `trailpervoxel` | Trail per Voxel | Toggle | false |  |  |
+| `npts` | Number Trails | Int | [1000] | 1 .. 100000 |  |
+| `plane` | Plane | Menu | 0 |  | xy, yz, zx |
+| `relative` | Relative Location | Toggle | false |  |  |
+| `planeposx` | Position | Float | 0.0 | -1.0 .. 1.0 |  |
+| `planeposy` | Position | Float | 0.0 | -1.0 .. 1.0 |  |
+| `planeposz` | Position | Float | 0.0 | -1.0 .. 1.0 |  |
+| `planeoffset` | Offset | Float | [0.0] | -1.0 .. 1.0 |  |
+| `traillen` | Trail Length | Float | [0.1] | 0.0 .. 10.0 |  |
+| `vismax` | Maximum Velocity | Float | [0.1] | 0.0 .. 10.0 |  |

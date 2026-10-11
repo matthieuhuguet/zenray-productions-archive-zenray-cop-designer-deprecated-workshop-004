@@ -1,0 +1,45 @@
+# pyro_advect
+
+- Label: Pyro Advect
+- Category: Copernicus (`Cop`), Houdini 22.0.368
+- Inputs: 0 to 2
+- Parameters: 21 (exact, read from Houdini by hython)
+- Used by the height graph: no
+
+## Feature summary (web, SideFX reference)
+
+- Source: https://www.sidefx.com/docs/houdini/nodes/cop/pyro_advect.html
+- Summary (EN): Pyro Advect moves the contents of VDB volumes along a velocity VDB, the core step for transporting smoke or fire in a Pyro simulation. It can also advect the velocity field itself, or skip that step when another Pyro Advect already did it.
+- Résumé (FR) : Le nœud Pyro Advect transporte les volumes VDB le long d'un champ de vitesse, étape centrale du transport de fumée ou de feu ; la page ne couvre pas la version 2.0.
+
+- Inputs meaning: ["data: cable of all the VDBs to advect", "v: vector VDB driving the advection, which can optionally be self-advected"]
+
+- Key parameters: ["Scale: global multiplier on velocity values", "Ambient Velocity: constant global velocity added to the advection, usable as a wind effect", "Scale by Timestep: scales velocity by the timestep", "Trace Method: integration scheme per trace step, from Forward Euler (fastest, most diffusion) to Runge-Kutta 4 (most accurate, most expensive)", "Path Tracing: several trace steps to follow curved paths, preserving fine detail and vortices", "Maximum Steps: cap on path-tracing steps", "CFL Condition: approximate voxels stepped per trace step; lower is more stable but slower", "Adaptive Step Size: adjusts the step size dynamically", "Enable Data Advection / Scheme: BFECC, Euler + Sharpen or Euler; BFECC preserves sharpness best but costs the most", "Sharpen: counters diffusion; values that are too high cause grid artifacts", "Enable Velocity Advection / Method: self-advection of the velocity VDB and its scheme; can be turned off if another node already advected it", "Outputs: the advected data VDBs and the velocity VDB"]
+
+- Caveats: ["Requires DOP-level permissions; not in Houdini Core, only in FX, Apprentice, Indie and Education.", "The page covers the base node available since 21.0 and does not describe a 2.0 variant.", "Search snippets listed different Trace Method options than the fetched page; the fetched page text is used here."]
+
+## Parameters (exact, from the installed Houdini)
+
+| parameter | label | type | default | range | menu tokens |
+|---|---|---|---|---|---|
+| `folder3` |  | FolderSet |  |  |  |
+| `scale` | Scale | Float | [1.0] | 0.0 .. 1.0 |  |
+| `ambientx` | Ambient Velocity | Float | 0.0 | 0.0 .. 1.0 |  |
+| `ambienty` | Ambient Velocity | Float | 0.0 | 0.0 .. 1.0 |  |
+| `ambientz` | Ambient Velocity | Float | 0.0 | 0.0 .. 1.0 |  |
+| `usetimeinc` | Scale by Timestep | Toggle | true |  |  |
+| `folder4` |  | FolderSet |  |  |  |
+| `tracemethod` | Trace Method | Menu | 0 |  | forwardeuler, average, midpoint, rk3, rk4 |
+| `usepathtrace` | Path Trace | Toggle | true |  |  |
+| `folder2` |  | FolderSet |  |  |  |
+| `maxstep` | Maximum Steps | Int | [100] | 1 .. 200 (strict) |  |
+| `cflcond` | CFL Condition | Float | [1.5] | 0.0 .. 10.0 (strict) |  |
+| `adaptive` | Adaptive Step Size | Toggle | false |  |  |
+| `data_enable` | Enable Data Advection | Toggle | true |  |  |
+| `folder0` |  | FolderSet |  |  |  |
+| `data_scheme` | Scheme | Menu | 1 |  | bfecc, sharpen, sl |
+| `data_sharpen` | Sharpen | Float | [1.0] | 0.0 .. 1.0 |  |
+| `v_enable` | Enable Velocity Advection | Toggle | true |  |  |
+| `folder1` |  | FolderSet |  |  |  |
+| `v_scheme` | Scheme | Menu | 1 |  | bfecc, sharpen, sl |
+| `v_sharpen` | Sharpen | Float | [1.0] | 0.0 .. 1.0 |  |

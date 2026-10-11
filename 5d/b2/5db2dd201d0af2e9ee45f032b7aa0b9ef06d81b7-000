@@ -1,0 +1,48 @@
+# vectorxform
+
+- Label: Vector Transform
+- Category: Copernicus (`Cop`), Houdini 22.0.368
+- Inputs: 0 to 2
+- Parameters: 24 (exact, read from Houdini by hython)
+- Used by the height graph: no
+
+## Feature summary (web, SideFX reference)
+
+- Source: https://www.sidefx.com/docs/houdini/nodes/cop/vectorxform.html
+- Summary (EN): Applies a 3D transform to the values of an RGB layer, attribute or Vector VDB. Each value is treated as an XYZ position, transformed and written back. Output: transform.
+- Résumé (FR) : Transforme en 3D les valeurs XYZ d'une couche RGB, d'un attribut ou d'un VDB vectoriel, sans déplacer les pixels.
+
+- Inputs meaning: ["source: the RGB layer, attribute or Vector VDB whose values define the XYZ positions", "mask (optional): per-pixel mask scaled by the Mask parameter"]
+
+- Key parameters: ["Mask: how much of the new value mixes with the original (default 1 uses only the new value); also selects which RGBA channels are affected", "Transform Order and Rotate Order", "Translate, Rotate (degrees), Scale (non-uniform), Shear, Uniform Scale", "Pivot Translate and Pivot Rotate: local pivot space", "Invert Transformation: applies the inverse transform"]
+
+- Caveats: ["The node does not move pixels; each pixel is processed in place, so only its values change"]
+
+## Parameters (exact, from the installed Houdini)
+
+| parameter | label | type | default | range | menu tokens |
+|---|---|---|---|---|---|
+| `mask` | Mask | Float | [1.0] | 0.0 .. 1.0 (strict) |  |
+| `xOrd` | Transform Order | Menu | 0 |  | srt, str, rst, rts, tsr, trs |
+| `rOrd` | Rotate Order | Menu | 0 |  | xyz, xzy, yxz, yzx, zxy, zyx |
+| `tx` | Translate | Float | 0.0 | -1.0 .. 1.0 |  |
+| `ty` | Translate | Float | 0.0 | -1.0 .. 1.0 |  |
+| `tz` | Translate | Float | 0.0 | -1.0 .. 1.0 |  |
+| `rx` | Rotate | Float | 0.0 | 0.0 .. 360.0 |  |
+| `ry` | Rotate | Float | 0.0 | 0.0 .. 360.0 |  |
+| `rz` | Rotate | Float | 0.0 | 0.0 .. 360.0 |  |
+| `sx` | Scale | Float | 1.0 | -1.0 .. 1.0 |  |
+| `sy` | Scale | Float | 1.0 | -1.0 .. 1.0 |  |
+| `sz` | Scale | Float | 1.0 | -1.0 .. 1.0 |  |
+| `shear1` | Shear | Float | 0.0 | 0.0 .. 10.0 |  |
+| `shear2` | Shear | Float | 0.0 | 0.0 .. 10.0 |  |
+| `shear3` | Shear | Float | 0.0 | 0.0 .. 10.0 |  |
+| `scale` | Uniform Scale | Float | [1.0] | 0.1 .. 10.0 |  |
+| `parmgroup_pivotxform` |  | FolderSet |  |  |  |
+| `px` | Pivot Translate | Float | 0.0 | -1.0 .. 1.0 |  |
+| `py` | Pivot Translate | Float | 0.0 | -1.0 .. 1.0 |  |
+| `pz` | Pivot Translate | Float | 0.0 | -1.0 .. 1.0 |  |
+| `prx` | Pivot Rotate | Float | 0.0 | 0.0 .. 360.0 |  |
+| `pry` | Pivot Rotate | Float | 0.0 | 0.0 .. 360.0 |  |
+| `prz` | Pivot Rotate | Float | 0.0 | 0.0 .. 360.0 |  |
+| `invertxform` | Invert Transformation | Toggle | false |  |  |

@@ -1,0 +1,37 @@
+# pyro_buildadvectionmap
+
+- Label: Pyro Build Advection Map
+- Category: Copernicus (`Cop`), Houdini 22.0.368
+- Inputs: 1 to 1
+- Parameters: 13 (exact, read from Houdini by hython)
+- Used by the height graph: no
+
+## Feature summary (web, SideFX reference)
+
+- Source: https://www.sidefx.com/docs/houdini/nodes/cop/pyro_buildadvectionmap.html
+- Summary (EN): Takes a velocity field stored as a VDB and builds a new vector VDB recording, for each voxel, where its contents would have come from if the flow carried them there. This map is then used by other Pyro nodes, such as Pyro Advect by Map, to move VDBs along the flow.
+- Résumé (FR) : Pyro Build Advection Map construit, à partir d'un champ de vitesse VDB, une carte qui indique d'où vient le contenu de chaque voxel pour transporter les champs le long du flux.
+
+- Inputs meaning: ["v: vector VDB containing the velocity"]
+
+- Key parameters: ["Scale: global multiplier on velocity values", "Ambient Velocity: constant global velocity added to the field, for wind-like motion", "Scale by Timestep: scales velocity by the timestep", "Trace Method: integration scheme per trace step, least to most accurate and costly: Forward Euler, Average of Two, Explicit Midpoint, Runge-Kutta 3, Runge-Kutta 4", "Path Tracing: multiple trace steps to follow curved paths and preserve fine detail, vortices and fast motion", "CFL Condition: approximate voxels stepped per trace step; lower is more stable but slower", "Maximum Steps: global cap on path-tracing steps", "Adaptive Step Size: changes step size during tracing based on the maximum step count"]
+
+- Caveats: ["Requires DOP-level permissions; not in Houdini Core, only in Houdini FX, Apprentice, Indie and Education", "Higher-accuracy trace methods and path tracing cost more compute; Forward Euler is fastest but blurs detail", "For very fast motion, raise the CFL Condition before raising Maximum Steps", "Available since Houdini 21.0"]
+
+## Parameters (exact, from the installed Houdini)
+
+| parameter | label | type | default | range | menu tokens |
+|---|---|---|---|---|---|
+| `signature` | Signature | Float | [0.0] | 0.0 .. 10.0 |  |
+| `folder1` |  | FolderSet |  |  |  |
+| `scale` | Scale | Float | [1.0] | -1.0 .. 1.0 |  |
+| `ambientx` | Ambient Velocity | Float | 0.0 | 0.0 .. 1.0 |  |
+| `ambienty` | Ambient Velocity | Float | 0.0 | 0.0 .. 1.0 |  |
+| `ambientz` | Ambient Velocity | Float | 0.0 | 0.0 .. 1.0 |  |
+| `usetimeinc` | Scale by Timestep | Toggle | true |  |  |
+| `folder0` |  | FolderSet |  |  |  |
+| `tracemethod` | Trace Method | Menu | 0 |  | forwardeuler, average, midpoint, rk3, rk4 |
+| `usepathtrace` | Path Trace | Toggle | true |  |  |
+| `cflcond` | CFL Condition | Float | [1.5] | 0.0 .. 10.0 (strict) |  |
+| `maxstep` | Maximum Steps | Int | [100] | 1 .. 200 (strict) |  |
+| `adaptive` | Adaptive Step Size | Toggle | false |  |  |

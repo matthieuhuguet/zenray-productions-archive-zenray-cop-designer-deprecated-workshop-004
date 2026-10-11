@@ -1,0 +1,104 @@
+# visualizevelocity
+
+- Label: Visualize Velocity
+- Category: Copernicus (`Cop`), Houdini 22.0.368
+- Inputs: 0 to 1
+- Parameters: 80 (exact, read from Houdini by hython)
+- Used by the height graph: no
+
+## Feature summary (web, SideFX reference)
+
+- Source: https://www.sidefx.com/docs/houdini/nodes/cop/visualizevelocity.html
+- Summary (EN): Turns a 2D velocity field into an RGBA layer with the visualization baked in, for debugging or final output. Output: result.
+- Résumé (FR) : Transforme un champ de vélocité 2D en image RGBA visible, en mode HSV, en traînées (streak) ou en flèches (quiver plot).
+
+- Inputs meaning: ["source: a UV layer providing 2D velocity values"]
+
+- Key parameters: ["Method: HSV (velocity length sets value, direction sets hue; Scale controls magnitude-to-value mapping)", "Method: Streak (particles traced through the flow; Density, Scale, Brightness, Gamma, Seed, Visualize Speed, Speed Min/Max, Ramp, Maximum Steps)", "Method: Quiver Plot (arrows on a grid oriented to velocity; Tile Size, Tile Padding, Shaft Thickness, Head Thickness, Head Ratio, Scale Arrows with Speed, Visualize Speed, Speed Min/Max, Visualization Ramp)", "Speed Min/Max (Streak and Quiver Plot): speed range mapped to the colour ramp or arrow scaling; the Compute Range button fills it from the source length"]
+
+- Caveats: ["Maximum Steps caps streak steps, preventing excessive computation in very fast flows", "The page describes no other limitations"]
+
+## Parameters (exact, from the installed Houdini)
+
+| parameter | label | type | default | range | menu tokens |
+|---|---|---|---|---|---|
+| `method` | Method | Menu | 1 |  | hsv, streak, quiver |
+| `folder2` |  | FolderSet |  |  |  |
+| `hsv_scale` | Scale | Float | [1.0] | 0.0 .. 10.0 |  |
+| `folder1` |  | FolderSet |  |  |  |
+| `streak_density` | Density | Float | [0.1] | 0.0 .. 1.0 (strict) |  |
+| `streak_scale` | Scale | Float | [0.025] | -0.05 .. 0.05 |  |
+| `streak_bright` | Brightness | Float | [1.0] | 0.0 .. 10.0 |  |
+| `streak_gamma` | Gamma | Float | [1.0] | 0.0 .. 3.0 |  |
+| `streak_seed` | Seed | Float | [0.0] | 0.0 .. 100.0 (strict) |  |
+| `streak_visbyspeed` | Visualize Speed | Toggle | false |  |  |
+| `streak_visscalemin` | Speed Min/Max | Float | 0.0 | 0.0 .. 10.0 |  |
+| `streak_visscalemax` | Speed Min/Max | Float | 1.0 | 0.0 .. 10.0 |  |
+| `streak_visscalecompute` | Compute Range | Button |  |  |  |
+| `streak_visramp` | Ramp | Ramp | 5 |  |  |
+| `streak_maxsteps` | Maximum Steps | Int | [100] | 1 .. 1000 |  |
+| `folder0` |  | FolderSet |  |  |  |
+| `quiver_tilesize` | Tile Size | Float | [0.1] | 0.0001 .. 1.0 (strict) |  |
+| `tilepadding` | Tile Padding | Float | [0.05] | 0.0 .. 0.1 (strict) |  |
+| `quiver_shaftthickness` | Shaft Thickness | Float | [0.15] | 0.0 .. 1.0 (strict) |  |
+| `quiver_headthickness` | Head Thickness | Float | [0.4] | 0.0 .. 1.0 (strict) |  |
+| `quiver_headratio` | Head Ratio | Float | [0.675] | 0.0 .. 1.0 (strict) |  |
+| `quiver_scalebyspeed` | Scale Arrows with Speed | Toggle | false |  |  |
+| `quiver_speedscalemin` | Speed Min/Max | Float | 0.0 | 0.0 .. 10.0 |  |
+| `quiver_speedscalemax` | Speed Min/Max | Float | 1.0 | 0.0 .. 10.0 |  |
+| `quiver_speedscalecompute` | Compute Range | Button |  |  |  |
+| `quiver_visbyspeed` | Visualize Speed | Toggle | true |  |  |
+| `quiver_visscalemin` | Speed Min/Max | Float | 0.0 | 0.0 .. 10.0 |  |
+| `quiver_visscalemax` | Speed Min/Max | Float | 1.0 | 0.0 .. 10.0 |  |
+| `quiver_visscalecompute` | Compute Range | Button |  |  |  |
+| `quiver_visramp` | Visualization Ramp | Ramp | 5 |  |  |
+| `streak_visramp1pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `streak_visramp1cr` | Color | Float | 0.0 | 0.0 .. 10.0 |  |
+| `streak_visramp1cg` | Color | Float | 0.0 | 0.0 .. 10.0 |  |
+| `streak_visramp1cb` | Color | Float | 0.0 | 0.0 .. 10.0 |  |
+| `streak_visramp1interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `streak_visramp2pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `streak_visramp2cr` | Color | Float | 0.0 | 0.0 .. 10.0 |  |
+| `streak_visramp2cg` | Color | Float | 0.0 | 0.0 .. 10.0 |  |
+| `streak_visramp2cb` | Color | Float | 0.0 | 0.0 .. 10.0 |  |
+| `streak_visramp2interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `streak_visramp3pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `streak_visramp3cr` | Color | Float | 0.0 | 0.0 .. 10.0 |  |
+| `streak_visramp3cg` | Color | Float | 0.0 | 0.0 .. 10.0 |  |
+| `streak_visramp3cb` | Color | Float | 0.0 | 0.0 .. 10.0 |  |
+| `streak_visramp3interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `streak_visramp4pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `streak_visramp4cr` | Color | Float | 0.0 | 0.0 .. 10.0 |  |
+| `streak_visramp4cg` | Color | Float | 0.0 | 0.0 .. 10.0 |  |
+| `streak_visramp4cb` | Color | Float | 0.0 | 0.0 .. 10.0 |  |
+| `streak_visramp4interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `streak_visramp5pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `streak_visramp5cr` | Color | Float | 0.0 | 0.0 .. 10.0 |  |
+| `streak_visramp5cg` | Color | Float | 0.0 | 0.0 .. 10.0 |  |
+| `streak_visramp5cb` | Color | Float | 0.0 | 0.0 .. 10.0 |  |
+| `streak_visramp5interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `quiver_visramp1pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `quiver_visramp1cr` | Color | Float | 0.0 | 0.0 .. 10.0 |  |
+| `quiver_visramp1cg` | Color | Float | 0.0 | 0.0 .. 10.0 |  |
+| `quiver_visramp1cb` | Color | Float | 0.0 | 0.0 .. 10.0 |  |
+| `quiver_visramp1interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `quiver_visramp2pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `quiver_visramp2cr` | Color | Float | 0.0 | 0.0 .. 10.0 |  |
+| `quiver_visramp2cg` | Color | Float | 0.0 | 0.0 .. 10.0 |  |
+| `quiver_visramp2cb` | Color | Float | 0.0 | 0.0 .. 10.0 |  |
+| `quiver_visramp2interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `quiver_visramp3pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `quiver_visramp3cr` | Color | Float | 0.0 | 0.0 .. 10.0 |  |
+| `quiver_visramp3cg` | Color | Float | 0.0 | 0.0 .. 10.0 |  |
+| `quiver_visramp3cb` | Color | Float | 0.0 | 0.0 .. 10.0 |  |
+| `quiver_visramp3interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `quiver_visramp4pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `quiver_visramp4cr` | Color | Float | 0.0 | 0.0 .. 10.0 |  |
+| `quiver_visramp4cg` | Color | Float | 0.0 | 0.0 .. 10.0 |  |
+| `quiver_visramp4cb` | Color | Float | 0.0 | 0.0 .. 10.0 |  |
+| `quiver_visramp4interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `quiver_visramp5pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `quiver_visramp5cr` | Color | Float | 0.0 | 0.0 .. 10.0 |  |
+| `quiver_visramp5cg` | Color | Float | 0.0 | 0.0 .. 10.0 |  |
+| `quiver_visramp5cb` | Color | Float | 0.0 | 0.0 .. 10.0 |  |
+| `quiver_visramp5interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |

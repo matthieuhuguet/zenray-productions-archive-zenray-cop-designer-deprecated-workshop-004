@@ -1,0 +1,213 @@
+# __STAMP__ : coordinate descent with random restarts over the window graph parameters. Runs inside hython. Resumable.
+# EN: every candidate is validated, compiled into REAL Copernicus nodes, exported and measured (evaluate.py).
+# The global best is saved at every improvement. Parameters stay inside LOOK limits set from the planches.
+# FR : descente par coordonnées et redémarrages aléatoires reproductibles. Le meilleur global est sauvé à chaque gain.
+import argparse
+import datetime
+import json
+import os
+import random
+import shutil
+import subprocess
+import sys
+import time
+
+HERE = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, HERE)
+import window_height as W  # noqa: E402
+import cop_catalog as C  # noqa: E402
+import hou_compile as HC  # noqa: E402
+
+EVAL = os.path.join(HERE, 'evaluate.py')
+PY3 = os.environ.get('ZR_PY3', 'python3')   # EN: python with numpy and PIL, set by the watchdog. FR : python avec numpy.
+EPS = 1e-4
+MAX_EVALS_DEFAULT = 6000
+
+# EN: name, lower bound, upper bound, first step. LOOK limits: 11 October 2026 planches showed that grain above
+# 0.15 or streaks longer than 130 px read as brushed metal, not wood. Those values are a visual judgment to validate.
+# FR : bornes d'aspect (jugement visuel du 11 October 2026, à valider par Matthieu).
+SPACE = [
+    ('flake_t0', 0.50, 0.60, 0.02),
+    ('flake_w', 0.01, 0.06, 0.008),
+    ('flake_gain', 0.20, 0.60, 0.06),
+    ('flake_cover', 0.10, 0.30, 0.03),
+    ('flake_elementsize', 0.03, 0.09, 0.01),
+    ('grain_gain', 0.02, 0.14, 0.02),
+    ('grain_width', 0.01, 0.06, 0.01),
+    ('grain_length', 60.0, 130.0, 15.0),
+    ('grain_elementsize', 0.004, 0.012, 0.002),
+    ('chip_t0', 0.56, 0.63, 0.01),
+    ('chip_w', 0.004, 0.02, 0.003),
+    ('chip_gain', 0.15, 0.50, 0.05),
+    ('chip_cover', 0.05, 0.20, 0.02),
+    ('chip_elementsize', 0.006, 0.03, 0.004),
+    ('louver_top', 0.56, 0.60, 0.005),
+    ('louver_soft', 0.004, 0.02, 0.003),
+    ('bevel_scale', 0.5, 2.0, 0.3),
+    ('mean_trim', -0.05, 0.05, 0.01),
+]
+BOUNDS = {name: (lo, hi) for name, lo, hi, _ in SPACE}
+STEP0 = {name: step for name, _, _, step in SPACE}
+
+
+def now():
+    return datetime.datetime.now().isoformat(timespec='seconds')
+
+
+class Search:
+    def __init__(self, run_dir, max_evals):
+        self.run_dir = run_dir
+        self.max_evals = max_evals
+        os.makedirs(run_dir, exist_ok=True)
+        self.catalog = C.Catalog()
+        self.scratch = os.path.join(run_dir, 'scratch.png')
+        self.best_png = os.path.join(run_dir, 'best.png')
+        self.best_json = os.path.join(run_dir, 'best.json')
+        self.best_graph = os.path.join(run_dir, 'best_graph.json')
+        self.state_json = os.path.join(run_dir, 'state.json')
+        self.evals_log = os.path.join(run_dir, 'evals.jsonl')
+        self.n = 0
+        self.consecutive_failures = 0
+        self.global_P = None
+        self.global_res = None
+
+    def write_state(self, status):
+        score = self.global_res['score'] if self.global_res else None
+        with open(self.state_json, 'w', encoding='utf-8') as fh:
+            json.dump({'status': status, 'evals': self.n, 'best_score': score, 'updated': now()}, fh, indent=1)
+
+    def evaluate(self, P):
+        # EN: a failed candidate gets score -1 and its reason, never a silent pass. FR : échec = -1 et la raison.
+        t0 = time.time()
+        graph = W.build(P)
+        errors = graph.validate(self.catalog)
+        if errors:
+            return {'score': -1.0, 'error': 'validation', 'detail': errors[:4]}
+        problems = HC.compile_graph(graph, self.scratch, 1254, 'OptDesign', None, self.catalog)
+        if problems:
+            return {'score': -1.0, 'error': 'houdini', 'detail': problems[:4]}
+        run = subprocess.run([PY3, EVAL, self.scratch], capture_output=True, text=True)
+        if run.returncode != 0 or not run.stdout.strip():
+            return {'score': -1.0, 'error': 'evaluate', 'detail': (run.stderr or run.stdout)[-300:]}
+        res = json.loads(run.stdout.strip().splitlines()[-1])
+        res['seconds'] = round(time.time() - t0, 2)
+        return res
+
+    def record(self, P, res, label):
+        self.n += 1
+        line = {'n': self.n, 'date': now(), 'label': label, 'score': res.get('score'), 'equiv': res.get('equiv'),
+                'mean': res.get('mean'), 'std': res.get('std'), 'row_corr': res.get('row_corr'),
+                'quantile_err': res.get('quantile_err'), 'grad_log_err': res.get('grad_log_err'),
+                'error': res.get('error'), 'detail': res.get('detail'), 'seconds': res.get('seconds'),
+                'params': {k: P[k] for k, _, _, _ in SPACE}}
+        with open(self.evals_log, 'a', encoding='utf-8') as fh:
+            fh.write(json.dumps(line, ensure_ascii=False) + '\n')
+        if res.get('error'):
+            self.consecutive_failures += 1
+            if self.consecutive_failures >= 5:
+                raise RuntimeError('five failures in a row, last: %s %s' % (res.get('error'), res.get('detail')))
+        else:
+            self.consecutive_failures = 0
+
+    def offer(self, P, res, png_source):
+        # EN: keeps the global best on disk at every improvement, with its image, parameters and graph.
+        # FR : garde le meilleur global sur disque à chaque gain, avec son image, ses paramètres et son graphe.
+        if self.global_res is not None and res.get('score', -1) <= self.global_res['score'] + EPS:
+            return False
+        self.global_P, self.global_res = dict(P), res
+        shutil.copy2(png_source, self.best_png)
+        with open(self.best_json, 'w', encoding='utf-8') as fh:
+            json.dump({'score': res['score'], 'equiv': res.get('equiv'), 'mean': res.get('mean'),
+                       'quantile_err': res.get('quantile_err'), 'grad_log_err': res.get('grad_log_err'),
+                       'params': P, 'updated': now()}, fh, ensure_ascii=False, indent=1)
+        W.build(P).save(self.best_graph)
+        return True
+
+    def clamp(self, name, value):
+        lo, hi = BOUNDS[name]
+        return min(max(value, lo), hi)
+
+    def descend(self, start_P, start_res, tag):
+        best, best_res = dict(start_P), start_res
+        steps = dict(STEP0)
+        while self.n < self.max_evals:
+            improved = False
+            for name, _, _, _ in SPACE:
+                for sign in (1, -1):
+                    while self.n < self.max_evals:
+                        cand = dict(best)
+                        cand[name] = self.clamp(name, best[name] + sign * steps[name])
+                        if cand[name] == best[name]:
+                            break
+                        res = self.evaluate(cand)
+                        self.record(cand, res, '%s %s %+d' % (tag, name, sign))
+                        if res.get('score', -1) > best_res['score'] + EPS:
+                            best, best_res = cand, res
+                            improved = True
+                            self.offer(cand, res, self.scratch)
+                            print('n %d %s %s %+d -> score %.5f (equiv %.4f, quantile %.2f, grad %.3f)' % (
+                                self.n, tag, name, sign, res['score'], res.get('equiv') or -1,
+                                res['quantile_err'], res['grad_log_err']), flush=True)
+                            continue
+                        break
+            self.write_state('running')
+            if not improved:
+                steps = {k: v / 2.0 for k, v in steps.items()}
+                if max(steps[k] / STEP0[k] for k in steps) < 1.0 / 16.0:
+                    break
+        return best, best_res
+
+    def perturb(self, P, seed):
+        # EN: reproducible random restart (seed = round number): each parameter may move up to 4 first steps.
+        # FR : redémarrage aléatoire reproductible (graine = numéro du tour).
+        rng = random.Random(seed)
+        Q = dict(P)
+        for name, _, _, step in SPACE:
+            if rng.random() < 0.5:
+                Q[name] = self.clamp(name, P[name] + rng.uniform(-4.0, 4.0) * step)
+        return Q
+
+    def run(self):
+        if os.path.exists(self.best_json):
+            with open(self.best_json, encoding='utf-8') as fh:
+                start = json.load(fh)['params']
+            print('resuming from', self.best_json, flush=True)
+        else:
+            start = dict(W.DEFAULTS)
+        base = self.evaluate(start)
+        self.record(start, base, 'baseline')
+        if base.get('error'):
+            raise RuntimeError('baseline failed: %s %s' % (base['error'], base.get('detail')))
+        print('baseline score %.5f (equiv %.5f, quantile %.2f, grad %.3f, mean %.2f)' % (
+            base['score'], base['equiv'], base['quantile_err'], base['grad_log_err'], base['mean']), flush=True)
+        self.offer(start, base, self.scratch)
+        rnd = 0
+        while self.n < self.max_evals:
+            cand_start = dict(self.global_P) if rnd == 0 else self.perturb(self.global_P, rnd)
+            res = self.evaluate(cand_start)
+            self.record(cand_start, res, 'round %d start' % rnd)
+            if not res.get('error'):
+                self.offer(cand_start, res, self.scratch)
+                self.descend(cand_start, res, 'r%d' % rnd)
+            print('round %d done: global %.5f, evals %d' % (rnd, self.global_res['score'], self.n), flush=True)
+            rnd += 1
+        self.write_state('done')
+        print('finished: evals %d global score %.5f equiv %.5f' % (self.n, self.global_res['score'], self.global_res['equiv']), flush=True)
+
+
+def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument('--run-dir', required=True)
+    ap.add_argument('--max-evals', type=int, default=MAX_EVALS_DEFAULT)
+    args = ap.parse_args(sys.argv[1:])
+    search = Search(args.run_dir, args.max_evals)
+    try:
+        search.run()
+    except Exception as exc:   # EN: state says crashed, the watchdog relaunches. FR : l'état dit « crashed ».
+        search.write_state('crashed')
+        print('CRASHED:', exc, flush=True)
+        raise
+
+
+if __name__ == '__main__':
+    main()

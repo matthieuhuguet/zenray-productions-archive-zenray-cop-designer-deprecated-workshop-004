@@ -1,0 +1,25 @@
+# possample
+
+- Label: Position Sample
+- Category: Copernicus (`Cop`), Houdini 22.0.368
+- Inputs: 0 to 2
+- Parameters: 1 (exact, read from Houdini by hython)
+- Used by the height graph: no
+
+## Feature summary (web, SideFX reference)
+
+- Source: https://www.sidefx.com/docs/houdini/nodes/cop/possample.html
+- Summary (EN): The Position Sample node reads values from a texture by looking up each pixel or voxel's position. It takes the world-space position in one input and fetches the matching value from another. The output, named sample, has the same shape as the pos input.
+- Résumé (FR) : Le nœud Position Sample lit une texture à partir des positions monde d'une première entrée, et renvoie un résultat de même forme que pos.
+
+- Inputs meaning: ["pos: RGB layer, vector VDB or vector attribute giving the world-space position to look up", "texture: layer or VDB from which values are read"]
+
+- Key parameters: ["Signature: layer type accepted by the source; the only documented parameter"]
+
+- Caveats: ["The page gives no further parameter detail.", "Related nodes: Position Map and UV Sample."]
+
+## Parameters (exact, from the installed Houdini)
+
+| parameter | label | type | default | range | menu tokens |
+|---|---|---|---|---|---|
+| `signature` | Signature | String | ["auto"] |  |  |

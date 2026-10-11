@@ -1,0 +1,47 @@
+# pyro_sourcefromvolume
+
+- Label: Pyro Source from Volume
+- Category: Copernicus (`Cop`), Houdini 22.0.368
+- Inputs: 0 to 3
+- Parameters: 23 (exact, read from Houdini by hython)
+- Used by the height graph: no
+
+## Feature summary (web, SideFX reference)
+
+- Source: https://www.sidefx.com/docs/houdini/nodes/cop/pyro_sourcefromvolume.html
+- Summary (EN): Pyro Source from Volume updates one VDB using the values of another VDB of the same type (Float into Float, Vector into Vector). It is part of COP Pyro and is documented since Houdini 22.0.
+- Résumé (FR) : Ce nœud met à jour un VDB avec les valeurs d'un autre VDB de même type, sous le contrôle d'un masque optionnel.
+
+- Inputs meaning: ["target: Float or Vector VDB that receives the mixed source values", "source: Float or Vector VDB whose values are mixed into the target", "control: optional Float or Vector VDB that masks the effect; a Vector VDB contributes its length"]
+
+- Key parameters: ["Activation: enables the node, runs only when set to 1", "Signature: VDB type the source accepts", "Source Mode: Continuous (every solver step), First Frame Only, or Copy on First Frame", "Operation: Add, Copy, Maximum, Average, Blend, Pull or Scale", "Scale by Timestep: keeps sourcing consistent under substepping", "Acceleration / Deceleration: how strongly source values above the target are pushed toward it (used with Pull)", "Blend: weight used when Operation is Blend", "Control Volume, Control Range, Use Ramp, Control Ramp: mask mapped from Control Range to 0-1 and multiplied on top of Scale"]
+
+- Caveats: ["Requires DOP-level permissions. Not available in Houdini Core.", "The node does not activate voxels, so sources outside active regions have no effect.", "In First Frame Only mode, source animation is ignored after the first frame."]
+
+## Parameters (exact, from the installed Houdini)
+
+| parameter | label | type | default | range | menu tokens |
+|---|---|---|---|---|---|
+| `signature` | Signature | String | ["auto"] |  |  |
+| `activation` | Activation | Int | [1] | 0 .. 1 (strict) |  |
+| `folder0` |  | FolderSet |  |  |  |
+| `sourcemode` | Source Mode | Menu | 0 |  | continuous , firstonly, copyonfirst |
+| `operation` | Operation | Menu | 0 |  | add, copy, max, average, blend, pull |
+| `scale` | Scale | Float | [1.0] | 0.0 .. 10.0 (strict) |  |
+| `usetimeinc` | Scale by Timestep | Toggle | true |  |  |
+| `accel` | Acceleration | Float | [0.5] | 0.0 .. 1.0 (strict) |  |
+| `decel` | Deceleration | Float | [0.5] | 0.0 .. 1.0 (strict) |  |
+| `blend` | Blend | Float | [0.5] | 0.0 .. 1.0 (strict) |  |
+| `folder1` |  | FolderSet |  |  |  |
+| `usecontrol` | Control Volume | Toggle | false |  |  |
+| `controlrangemin` | Control Range | Float | 0.0 | 0.0 .. 1.0 |  |
+| `controlrangemax` | Control Range | Float | 1.0 | 0.0 .. 1.0 |  |
+| `folder2` |  | FolderSet |  |  |  |
+| `remapcontrol` | Use Ramp | Toggle | false |  |  |
+| `controlramp` | Control Ramp | Ramp | 2 |  |  |
+| `controlramp1pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `controlramp1value` | Value | Float | [0.0] | 0.0 .. 10.0 |  |
+| `controlramp1interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `controlramp2pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `controlramp2value` | Value | Float | [0.0] | 0.0 .. 10.0 |  |
+| `controlramp2interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |

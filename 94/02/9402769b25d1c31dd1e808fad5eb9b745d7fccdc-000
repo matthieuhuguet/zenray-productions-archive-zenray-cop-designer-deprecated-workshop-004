@@ -1,0 +1,29 @@
+# segmentbyconnectivity
+
+- Label: Segment by Connectivity
+- Category: Copernicus (`Cop`), Houdini 22.0.368
+- Inputs: 1 to 1
+- Parameters: 5 (exact, read from Houdini by hython)
+- Used by the height graph: no
+
+## Feature summary (web, SideFX reference)
+
+- Source: https://www.sidefx.com/docs/houdini/nodes/cop/segmentbyconnectivity.html
+- Summary (EN): Segment by Connectivity splits a layer into connected regions according to a connectivity rule you choose. It outputs an integer ID per region and a mono alpha mask.
+- Résumé (FR) : Le nœud Segment by Connectivity découpe une couche en régions connexes selon une règle de connexité, chaque région recevant un identifiant entier.
+
+- Inputs meaning: ["source: the layer in which connectivity is detected (the only input)"]
+
+- Key parameters: ["Signature: the layer type the source accepts", "Connectivity: Below Threshold, Above Threshold, At Threshold (neighbours on the same side of the threshold connect), At Levels (pixels in the same value band connect; band width equals Threshold)", "Threshold: connectivity threshold, or band width with At Levels; an eyedropper can set it", "Offset: with At Levels, shifts where the bands split", "Collapse IDs: remaps IDs to range from zero to the number of segments", "Outputs: id (unique integer per region, -1 for non-matching regions) and alpha (mono, 1 where the rule is met)"]
+
+- Caveats: ["The id output can change when the resolution changes, since island shapes change the ID order", "Collapse IDs makes results more stable but not fully consistent; the ordering depends on each region's first pixel, so do not rely on it for animated sources", "Without Collapse IDs, the IDs are effectively random when the resolution changes"]
+
+## Parameters (exact, from the installed Houdini)
+
+| parameter | label | type | default | range | menu tokens |
+|---|---|---|---|---|---|
+| `signature` | Signature | String | ["auto"] |  |  |
+| `connectivity` | Connectivity | Menu | 1 |  | below, above, at, levels |
+| `threshold` | Threshold | Float | [0.5] | 0.0 .. 1.0 |  |
+| `offset` | Offset | Float | [0.0] | 0.0 .. 10.0 |  |
+| `collapse` | Collapse IDs | Toggle | false |  |  |

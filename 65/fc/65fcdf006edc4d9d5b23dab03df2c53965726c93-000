@@ -1,0 +1,36 @@
+# vectorxform2d
+
+- Label: Vector Transform 2D
+- Category: Copernicus (`Cop`), Houdini 22.0.368
+- Inputs: 0 to 2
+- Parameters: 12 (exact, read from Houdini by hython)
+- Used by the height graph: no
+
+## Feature summary (web, SideFX reference)
+
+- Source: https://www.sidefx.com/docs/houdini/nodes/cop/vectorxform2d.html
+- Summary (EN): Transforms the values of a UV layer or attribute in 2D space. Each value is treated as an XY location, transformed, and written back as the new values. Output: the transformed layer.
+- Résumé (FR) : Transforme en 2D les valeurs XY d'une couche UV, sans déplacer les pixels.
+
+- Inputs meaning: ["source: the UV layer or attribute whose pixel values define the XY locations", "mask (optional): per-pixel mask scaled by the Mask parameter"]
+
+- Key parameters: ["Mask: how much of the new value is blended with the original (default 1 uses only the new value)", "Order: sequence in which translate, rotate and scale are applied", "Translate, Rotate (degrees about the pivot), Scale (non-uniform), Shear (XY), Uniform Scale", "Pivot: pivot point for rotations and scales, in the value's coordinates", "Invert Transformation: inverts the computed transform before it is applied"]
+
+- Caveats: ["The node does not move pixels; each pixel operates in place"]
+
+## Parameters (exact, from the installed Houdini)
+
+| parameter | label | type | default | range | menu tokens |
+|---|---|---|---|---|---|
+| `mask` | Mask | Float | [1.0] | 0.0 .. 1.0 (strict) |  |
+| `xOrd` | Order | Menu | 0 |  | srt, str, rst, rts, tsr, trs |
+| `tx` | Translate | Float | 0.0 | -1.0 .. 1.0 |  |
+| `ty` | Translate | Float | 0.0 | -1.0 .. 1.0 |  |
+| `rz` | Rotate | Float | [0.0] | -180.0 .. 180.0 |  |
+| `sx` | Scale | Float | 1.0 | -1.0 .. 1.0 |  |
+| `sy` | Scale | Float | 1.0 | -1.0 .. 1.0 |  |
+| `shear1` | Shear | Float | [0.0] | -1.0 .. 1.0 |  |
+| `scale` | Uniform Scale | Float | [1.0] | 0.1 .. 10.0 |  |
+| `px` | Pivot | Float | 0.0 | -1.0 .. 1.0 |  |
+| `py` | Pivot | Float | 0.0 | -1.0 .. 1.0 |  |
+| `invertxform` | Invert Transformation | Toggle | false |  |  |

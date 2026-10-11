@@ -1,0 +1,16 @@
+# shopnet
+
+- Label: SHOP Network
+- Category: Copernicus (`Cop`), Houdini 22.0.368
+- Inputs: 0 to 0
+- Parameters: 0 (exact, read from Houdini by hython)
+- Used by the height graph: no
+
+## Feature summary
+
+NOT DOCUMENTED FROM THE WEB YET (status: missing). The parameter table below is still exact.
+
+## Parameters (exact, from the installed Houdini)
+
+| parameter | label | type | default | range | menu tokens |
+|---|---|---|---|---|---|

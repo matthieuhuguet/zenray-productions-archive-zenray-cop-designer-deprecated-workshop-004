@@ -1,0 +1,45 @@
+# resample
+
+- Label: Resample
+- Category: Copernicus (`Cop`), Houdini 22.0.368
+- Inputs: 0 to 2
+- Parameters: 21 (exact, read from Houdini by hython)
+- Used by the height graph: no
+
+## Feature summary (web, SideFX reference)
+
+- Source: https://www.sidefx.com/docs/houdini/nodes/cop/resample.html
+- Summary (EN): The Resample node scales an image by changing its width, height and pixel size, producing a new output canvas that can have a different aspect ratio or resolution. An optional size reference sets the output size and metadata.
+- Résumé (FR) : Le nœud Resample redimensionne une image en changeant sa largeur, sa hauteur et la taille de ses pixels, sur un nouveau canevas de sortie.
+
+- Inputs meaning: ["source: the image to resample", "size_ref: representative layer that sets the output size and metadata; uses source when not wired"]
+
+- Key parameters: ["Size Control: Resolution (pixel count), Aspect Ratio or Pixel Size", "Base Size: Parameter (values entered) or Size Input (inherited from size_ref or source)", "Base Resolution / Base Aspect Ratio / Pixel Size: base values when Base Size is Parameter", "Uniform Scale: scales the Base Size", "Resolution Scale: scales pixel count in width and height (Resolution mode)", "Fixed Dimension: keeps width, height, smaller or larger dimension fixed (Aspect Ratio mode)", "Size Scale: scales pixel width and height (Pixel Size mode)", "Reframe to Destination: stretches input to fill the output boundary so the display window matches the data window", "Filter: Point, Bilinear, Box, Bartlett, Catmull-Rom, Mitchell or B-spline", "Stretch Behavior: Stretch to Fit, Fit Horizontally, Fit Vertically, Fit Maximally or Fit Minimally"]
+
+- Caveats: ["Stretch Behavior has no effect when Reframe to Destination is on", "Fixed Dimension applies only in Aspect Ratio mode; Size Scale only in Pixel Size mode", "The page does not state the default filter"]
+
+## Parameters (exact, from the installed Houdini)
+
+| parameter | label | type | default | range | menu tokens |
+|---|---|---|---|---|---|
+| `signature` | Signature | String | ["auto"] |  |  |
+| `folder0` |  | FolderSet |  |  |  |
+| `sizecontrol` | Size Control | Menu | 0 |  | res, aspect, pixel |
+| `basesize` | Base Size | Menu | 1 |  | parm, input |
+| `resolution1` | Base Resolution | Int | 1920 | 0 .. 10 |  |
+| `resolution2` | Base Resolution | Int | 1080 | 0 .. 10 |  |
+| `resmenu` | Resolution Menu | Menu | 0 |  |  |
+| `aspectx` | Base Aspect Ratio | Float | 1.0 | 0.0 .. 2.0 (strict) |  |
+| `aspecty` | Base Aspect Ratio | Float | 1.0 | 0.0 .. 2.0 (strict) |  |
+| `aspectmenu` | Aspect Menu | Menu | 0 |  | none, 1:1, 3:2, 4:3, 16:9 |
+| `pixelsize` | Pixel Size | Float | [0.001] | 0.0 .. 0.1 (strict) |  |
+| `scale` | Uniform Scale | Float | [1.0] | 0.0 .. 5.0 (strict) |  |
+| `resscalex` | Resolution Scale | Float | 1.0 | 0.0 .. 2.0 (strict) |  |
+| `resscaley` | Resolution Scale | Float | 1.0 | 0.0 .. 2.0 (strict) |  |
+| `fixedside` | Fixed Dimension | Menu | 0 |  | width, height, smaller, larger |
+| `pixelsizescalex` | Size Scale | Float | 1.0 | 0.0 .. 2.0 (strict) |  |
+| `pixelsizescaley` | Size Scale | Float | 1.0 | 0.0 .. 2.0 (strict) |  |
+| `reframe` | Reframe to Destination | Toggle | false |  |  |
+| `folder1` |  | FolderSet |  |  |  |
+| `filter` | Filter | Menu | 2 |  | point, bilinear, box, triangle, cubic, mitchell, bspline |
+| `stretch` | Stretch Behavior | Menu | 0 |  | stretch, horz, vert, max, min |

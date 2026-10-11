@@ -1,0 +1,96 @@
+# 11 October 2026 10:24 : builds the proof manifest for the three heights (window, whitepaint, tile): files, hashes, sizes, metrics.
+# EN: copies the current best of each designer run into outputs/<target>/ and measures EQUIV with the matching Metrics2 mode.
+# The old October results are measured the same way, so the comparison uses one tool. Nothing is typed by hand.
+# FR : rassemble la preuve : fichiers, empreintes, dimensions, métriques. Les anciens résultats sont mesurés avec le même outil.
+import hashlib
+import json
+import os
+import shutil
+import subprocess
+import sys
+
+from PIL import Image
+
+HEIGHTS = '/Users/zenray/Create/Build/Productions/ZenRayHoudini/LouisianaBayou/Heights'
+OUT = os.path.join(HEIGHTS, 'CopDesigner', 'outputs')
+RUNS = os.path.join(HEIGHTS, 'CopDesigner', 'runs')
+METRICS2 = os.path.join(HEIGHTS, 'Scripts', 'Metrics2.py')
+REFS = {'window': os.path.join(HEIGHTS, 'refs', 'window_height_ref.png'),
+        'whitepaint': os.path.join(HEIGHTS, 'refs', 'whitepaint_height_ref.png'),
+        'tile': os.path.join(HEIGHTS, 'refs', 'tile_height_ref.png')}
+# EN: the earlier Houdini results of 10 October 2026 (hand-built loops), kept as they were. FR : anciens résultats, intacts.
+OLD = {'whitepaint': os.path.join(HEIGHTS, 'versions', 'whitepaint', 'IT02_final.png'),
+       'tile': os.path.join(HEIGHTS, 'versions', 'tile', 'IT01.png')}
+RUN_DIRS = {'window': 'window_opt_3', 'whitepaint': 'whitepaint_opt_1', 'tile': 'tile_opt_1'}
+
+
+def sha256(path):
+    h = hashlib.sha256()
+    with open(path, 'rb') as fh:
+        for chunk in iter(lambda: fh.read(1 << 20), b''):
+            h.update(chunk)
+    return h.hexdigest()
+
+
+def metrics2(mode, png):
+    run = subprocess.run(['python3', METRICS2, mode, png], capture_output=True, text=True)
+    lines = [ln for ln in run.stdout.splitlines() if ln.strip().startswith('{')]
+    if not lines:
+        return None, None
+    d = json.loads(lines[-1])
+    return round(float(d['equiv']), 4), d.get('min_name')
+
+
+def row(label, origin, png, mode, score=None, note=''):
+    if not png or not os.path.exists(png):
+        return {'label': label, 'origin': origin, 'file': None, 'note': 'missing: ' + note}
+    im = Image.open(png)
+    equiv, weakest = metrics2(mode, png)
+    return {'label': label, 'origin': origin, 'file': png, 'size': list(im.size), 'mode': im.mode,
+            'bytes': os.path.getsize(png), 'sha256': sha256(png)[:16], 'metrics2_mode': mode,
+            'equiv': equiv, 'weakest_component': weakest, 'designer_score': score, 'note': note}
+
+
+def main():
+    os.makedirs(OUT, exist_ok=True)
+    rows = []
+    for target in ['window', 'whitepaint', 'tile']:
+        run_dir = os.path.join(RUNS, RUN_DIRS[target])
+        best_json = os.path.join(run_dir, 'best.json')
+        best_png = os.path.join(run_dir, 'best.png')
+        dst_dir = os.path.join(OUT, target)
+        os.makedirs(dst_dir, exist_ok=True)
+        score = None
+        if os.path.exists(best_json):
+            with open(best_json, encoding='utf-8') as fh:
+                score = json.load(fh).get('score')
+            dst = os.path.join(dst_dir, target + '_designer_best.png')
+            shutil.copy2(best_png, dst)
+            shutil.copy2(best_json, os.path.join(dst_dir, target + '_designer_best.json'))
+            rows.append(row(target + ' designer best', 'designer (this session)', dst, target, score,
+                            'run ' + RUN_DIRS[target]))
+        else:
+            rows.append({'label': target + ' designer best', 'origin': 'designer', 'file': None,
+                         'note': 'no best yet'})
+        if target in OLD:
+            rows.append(row(target + ' old finals', 'Houdini loops of 10 October 2026', OLD[target],
+                            target, None, 'measured with the same Metrics2 mode'))
+    lines = ['# Proof manifest, three heights (generated %s)' % __import__('datetime').datetime.now().isoformat(timespec='seconds'), '',
+             'Reference files: ' + ', '.join(REFS.values()), '',
+             '| label | origin | file | size | sha256 (first 16) | EQUIV (Metrics2 mode) | weakest | designer score |',
+             '|---|---|---|---|---|---|---|---|']
+    for r in rows:
+        if r.get('file'):
+            lines.append('| %s | %s | %s | %dx%d %s | %s | %s (%s) | %s | %s |' % (
+                r['label'], r['origin'], r['file'], r['size'][0], r['size'][1], r['mode'], r['sha256'],
+                r['equiv'], r['metrics2_mode'], r['weakest_component'], r['designer_score']))
+        else:
+            lines.append('| %s | %s | - | - | - | - | - | %s |' % (r['label'], r['origin'], r['note']))
+    path = os.path.join(OUT, 'MANIFEST.md')
+    with open(path, 'w', encoding='utf-8') as fh:
+        fh.write('\n'.join(lines) + '\n')
+    print('\n'.join(lines))
+
+
+if __name__ == '__main__':
+    main()

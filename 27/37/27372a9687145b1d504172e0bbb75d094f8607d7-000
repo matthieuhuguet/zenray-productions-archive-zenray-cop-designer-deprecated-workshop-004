@@ -1,0 +1,26 @@
+# pyro_block_begin
+
+- Label: Pyro Block Begin
+- Category: Copernicus (`Cop`), Houdini 22.0.368
+- Inputs: 0 to 6
+- Parameters: 2 (exact, read from Houdini by hython)
+- Used by the height graph: no
+
+## Feature summary (web, SideFX reference)
+
+- Source: https://www.sidefx.com/docs/houdini/nodes/cop/pyro_block_begin.html
+- Summary (EN): Opens a Pyro simulation block, paired with a Pyro Block End at the same network level. Work that does not depend on earlier frames belongs before it so it cooks only once; post-processing that feeds nothing back belongs after the block end. Most volume inputs are mixed in through the Source tab on Pyro Block End.
+- Résumé (FR) : Pyro Block Begin ouvre un bloc de simulation Pyro et doit être associé à un Pyro Block End au même niveau de réseau.
+
+- Inputs meaning: ["vdb_ref: VDB metadata setting the simulation voxel size", "density: Float VDB, smoke thickness per voxel", "temperature: Float VDB, per-voxel temperature", "v: Vector VDB, wind speed excluding Ambient Velocity", "flame: Float VDB of current flames", "divergence (optional): Float VDB goal divergence", "collision (optional): Float VDB signed distance field of colliders", "collisionv (optional): Vector VDB collider velocity", "feedback: cable of values fed back each iteration; structure must match the Block End input", "passthrough (optional): cable of layers and VDBs computed outside the simulation, read each frame", "bounds_geo (optional): geometry limiting the simulation domain", "source_points (optional): geometry for sourcing from implicit surfaces", "collision_points (optional): geometry for collision from implicit surfaces"]
+
+- Key parameters: ["Block Path: path to the matching Pyro Block End COP; must be at the same network level"]
+
+- Caveats: ["Requires DOP-level permissions; not available in Houdini Core", "Time Shift nodes cannot be used inside a block when they need inputs at different times; use Time Pack before the block and feed frames in as a cable", "The feedback input is read only on the initial frame", "Passthrough data is read each frame but cannot depend on simulation results", "Newly activated voxels start at temperature 0, so that value works best as a baseline"]
+
+## Parameters (exact, from the installed Houdini)
+
+| parameter | label | type | default | range | menu tokens |
+|---|---|---|---|---|---|
+| `blockpath` | Block Path | String | [""] |  |  |
+| `signature` | Signature | Float | [0.0] | 0.0 .. 10.0 |  |

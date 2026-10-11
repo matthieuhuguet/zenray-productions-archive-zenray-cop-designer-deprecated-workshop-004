@@ -1,0 +1,35 @@
+# vdbvisualizeslice
+
+- Label: VDB Visualize Slice
+- Category: Copernicus (`Cop`), Houdini 22.0.368
+- Inputs: 1 to 1
+- Parameters: 11 (exact, read from Houdini by hython)
+- Used by the height graph: no
+
+## Feature summary (web, SideFX reference)
+
+- Source: https://www.sidefx.com/docs/houdini/nodes/cop/vdbvisualizeslice.html
+- Summary (EN): Extracts a slice from a VDB and outputs it as mesh geometry so the voxels can be viewed directly. It matches the Volume Slice SOP but runs inside COPs. Output: slice (geometry with the extracted points).
+- Résumé (FR) : Extrait une coupe d'un VDB et la sort en géométrie pour voir les voxels directement, sans changer de contexte.
+
+- Inputs meaning: ["vdb: a Float, Vector or Integer VDB to visualize; Integer VDBs are first converted to colour through the ID to RGB COP"]
+
+- Key parameters: ["Signature: the VDB type the source accepts", "Plane: the volume-local axis to slice along", "Relative Location: place the plane relative to the volume, or in world coordinates", "Position: starting point for the slice in world coordinate mode", "Offset: relative mode, -1 to 1 spans the full range (0 is the centre); world mode shifts along the world axis perpendicular to the plane", "Snap to Voxel: slice values come from original voxels rather than blends of two neighbours", "Visualization Min / Max: VDB values mapped to the start and end of the colour ramp", "Visualization Ramp: colour scheme; with multiple volumes the first three map to red, green and blue"]
+
+- Caveats: ["Without Snap to Voxel, slice values may be blends of two voxels when the offset does not fall exactly on a voxel", "In world coordinate mode on a rotated volume, the offset does not align with the volume axes"]
+
+## Parameters (exact, from the installed Houdini)
+
+| parameter | label | type | default | range | menu tokens |
+|---|---|---|---|---|---|
+| `signature` | Signature | String | ["auto"] |  |  |
+| `plane` | Plane | Menu | 0 |  | xy, yz, zx |
+| `relative` | Relative Location | Toggle | false |  |  |
+| `planeposx` | Position | Float | 0.0 | -1.0 .. 1.0 |  |
+| `planeposy` | Position | Float | 0.0 | -1.0 .. 1.0 |  |
+| `planeposz` | Position | Float | 0.0 | -1.0 .. 1.0 |  |
+| `planeoffset` | Offset | Float | [0.0] | -1.0 .. 1.0 |  |
+| `voxelsnap` | Snap to Voxel | Toggle | true |  |  |
+| `visrangemin` | Visualization Min | Float | [0.0] | -10.0 .. 10.0 |  |
+| `visrangemax` | Visualization Max | Float | [1.0] | -10.0 .. 10.0 |  |
+| `vismode` | Visualization Ramp | Menu | 1 |  | none, false, pink, mono, blackbody, bipartite |

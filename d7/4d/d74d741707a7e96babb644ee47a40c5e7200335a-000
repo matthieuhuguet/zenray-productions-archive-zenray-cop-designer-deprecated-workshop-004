@@ -1,0 +1,25 @@
+# statistics
+
+- Label: Statistics
+- Category: Copernicus (`Cop`), Houdini 22.0.368
+- Inputs: 1 to 2
+- Parameters: 1 (exact, read from Houdini by hython)
+- Used by the height graph: no
+
+## Feature summary (web, SideFX reference)
+
+- Source: https://www.sidefx.com/docs/houdini/nodes/cop/statistics.html
+- Summary (EN): Statistics computes the average, minimum and maximum values of an input layer or VDB and reports them through three outputs.
+- Résumé (FR) : Statistics calcule la moyenne, le minimum et le maximum d'un calque ou d'un VDB, en ne retenant que les pixels actifs du masque optionnel.
+
+- Inputs meaning: ["source: layer or VDB whose statistics are computed", "active (optional): per-pixel mask, Mono layer or VDB, which decides which pixels count. Values above 0.5 are active, values at or below 0.5 are ignored"]
+
+- Key parameters: ["Signature: layer type the source accepts (see the Signatures glossary)", "Outputs: average, minimum, maximum, each giving the corresponding value of the source"]
+
+- Caveats: ["When the active input is connected, only pixels passing the mask are included", "The page documents no other parameters or behaviour", "Does not cover Statistics by ID, which computes per ID island"]
+
+## Parameters (exact, from the installed Houdini)
+
+| parameter | label | type | default | range | menu tokens |
+|---|---|---|---|---|---|
+| `signature` | Signature | String | ["auto"] |  |  |

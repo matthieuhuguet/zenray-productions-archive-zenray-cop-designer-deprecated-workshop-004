@@ -1,0 +1,28 @@
+# prefixsum
+
+- Label: Prefix Sum
+- Category: Copernicus (`Cop`), Houdini 22.0.368
+- Inputs: 1 to 2
+- Parameters: 4 (exact, read from Houdini by hython)
+- Used by the height graph: no
+
+## Feature summary (web, SideFX reference)
+
+- Source: https://www.sidefx.com/docs/houdini/nodes/cop/prefixsum.html
+- Summary (EN): The Prefix Sum node accumulates values across a layer's pixels along a chosen scan path. It combines values with addition, or tracks a running minimum, maximum or count.
+- Résumé (FR) : Le nœud Prefix Sum accumule les valeurs d'une couche le long d'un trajet de balayage, en addition, minimum, maximum ou comptage.
+
+- Inputs meaning: ["source: original layer to compute the prefix sum from", "active (optional): per-pixel mask; values above 0.5 are included, values below 0.5 are excluded"]
+
+- Key parameters: ["Signature: layer type accepted by the source", "Direction: scan path: +X, -X, +Y, -Y, a meandering +X+Y path, or Linear (each horizontal line scanned before the next)", "Operation: Add, Minimum, Maximum or Count", "Scale: normalises non-integer sums by pixel size or by texture or image size; None disables scaling; the factor depends on whether the scan includes X, Y or both passes"]
+
+- Caveats: ["Scale applies only to non-integer summation.", "With Image scale, a constant pixel value of 1 across the image sums to 2, not 1.", "The active input only affects which values enter the statistics."]
+
+## Parameters (exact, from the installed Houdini)
+
+| parameter | label | type | default | range | menu tokens |
+|---|---|---|---|---|---|
+| `signature` | Signature | String | ["auto"] |  |  |
+| `sweepdir` | Direction | Menu | 0 |  | px, mx, py, ny, xy, index |
+| `op` | Operation | Menu | 0 |  | add, min, max, count |
+| `scale` | Scale | Menu | 0 |  | none, pixel, texture, image |

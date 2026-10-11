@@ -1,0 +1,31 @@
+# uvmap
+
+- Label: UV Map
+- Category: Copernicus (`Cop`), Houdini 22.0.368
+- Inputs: 0 to 1
+- Parameters: 7 (exact, read from Houdini by hython)
+- Used by the height graph: no
+
+## Feature summary (web, SideFX reference)
+
+- Source: https://www.sidefx.com/docs/houdini/nodes/cop/uvmap.html
+- Summary (EN): Generates a UV layer in which each pixel stores its own position in UV space. Other nodes can use that layer, for example UV Sample for lookups, or Fractal Noise as a reference location.
+- Résumé (FR) : Ce nœud génère une couche UV où chaque pixel stocke sa position dans l'espace UV, réutilisable par UV Sample ou par un bruit fractal comme repère de position.
+
+- Inputs meaning: ["size_ref: representative layer that sets the output image size and controls the metadata."]
+
+- Key parameters: [{"name": "UV Space", "meaning": "Texture: 0 to 1 across the data window, pixels may be non-square. Image: -1 to 1 across a framed display window, with square pixels. Pixel: pixel-centre coordinates, with 0.5, 0.5 at the bottom-left pixel."}, {"name": "U Border / V Border", "meaning": "How out-of-range locations are handled: Clamp, Mirror, Wrap (repeat from the far side) or Extend (leave unchanged, useful for overscan)."}, {"name": "U Shift / V Shift", "meaning": "Offsets the location before border handling is applied."}, {"name": "U Cycles / V Cycles", "meaning": "Multiplies the location by a scale. With Wrap, this creates repeating tiles."}]
+
+- Caveats: ["The page does not give default parameter values.", "The ramp is driven by the data window or display window, so the output depends on the framing of the input.", "Texture space uses non-square pixels for non-square images.", "The second output, uvscale, is a filter scale factor for UV Sample. The page does not explain its application in detail."]
+
+## Parameters (exact, from the installed Houdini)
+
+| parameter | label | type | default | range | menu tokens |
+|---|---|---|---|---|---|
+| `uvspace` | UV Space | Menu | 1 |  | texture, image, pixel |
+| `uborder` | U Border | Menu | 0 |  | clamp, mirror, wrap, extend |
+| `ushift` | U Shift | Float | [0.0] | -1.0 .. 1.0 |  |
+| `ucycle` | U Cycles | Float | [1.0] | 0.0 .. 10.0 |  |
+| `vborder` | V Border | Menu | 0 |  | clamp, mirror, wrap, extend |
+| `vshift` | V Shift | Float | [0.0] | -1.0 .. 1.0 |  |
+| `vcycle` | V Cycles | Float | [1.0] | 0.0 .. 10.0 |  |

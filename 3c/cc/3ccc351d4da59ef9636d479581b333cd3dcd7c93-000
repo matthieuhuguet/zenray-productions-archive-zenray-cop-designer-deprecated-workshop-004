@@ -1,0 +1,30 @@
+# sdfblend
+
+- Label: SDF Blend
+- Category: Copernicus (`Cop`), Houdini 22.0.368
+- Inputs: 0 to 2
+- Parameters: 6 (exact, read from Houdini by hython)
+- Used by the height graph: no
+
+## Feature summary (web, SideFX reference)
+
+- Source: https://www.sidefx.com/docs/houdini/nodes/cop/sdfblend.html
+- Summary (EN): SDF Blend merges two Mono signed distance field layers into a single field, so that complex shapes can be built from simpler ones. It offers boolean-style combine modes and optional fillets where the shapes meet.
+- Résumé (FR) : Le nœud SDF Blend fusionne deux couches SDF mono en un seul champ, avec des modes booléens et des congés optionnels à la jonction.
+
+- Inputs meaning: ["sdfA: the first Mono SDF layer", "sdfB: the second Mono SDF layer"]
+
+- Key parameters: ["Mode: Union (encloses both shapes), Intersect (overlap only), Subtract (cuts sdfB out of sdfA), Difference (removes the shared region)", "Fillet: None, Smooth, Round (quarter-circle join) or Chamfer (45-degree bevel)", "Smooth / Round / Chamfer amount: shown for the matching Fillet type", "Re-Normalize: recalculates the distance field after the blend"]
+
+- Caveats: ["Some blend operations leave the distance field values incorrect; enable Re-Normalize to correct them, at the cost of an extra recalculation"]
+
+## Parameters (exact, from the installed Houdini)
+
+| parameter | label | type | default | range | menu tokens |
+|---|---|---|---|---|---|
+| `mode` | Mode | Menu | 0 |  | union, intersect, subtract, diff |
+| `fillet` | Fillet | Menu | 0 |  | none, smooth, round, chamfer |
+| `smooth` | Smooth | Float | [0.1] | 0.0 .. 1.0 (strict) |  |
+| `round` | Round | Float | [0.1] | 0.0 .. 1.0 (strict) |  |
+| `chamfer` | Chamfer | Float | [0.1] | 0.0 .. 1.0 (strict) |  |
+| `renormalize` | Re-Normalize | Toggle | true |  |  |

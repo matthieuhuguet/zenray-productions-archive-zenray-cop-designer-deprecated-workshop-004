@@ -1,0 +1,33 @@
+# segmentbyvalue
+
+- Label: Segment by Value
+- Category: Copernicus (`Cop`), Houdini 22.0.368
+- Inputs: 1 to 1
+- Parameters: 9 (exact, read from Houdini by hython)
+- Used by the height graph: no
+
+## Feature summary (web, SideFX reference)
+
+- Source: https://www.sidefx.com/docs/houdini/nodes/cop/segmentbyvalue.html
+- Summary (EN): Segment by Value takes a mono layer and outputs an ID layer in which pixels with similar values share an ID. It forms a series of iso-contours, even between pixels that are not connected.
+- Résumé (FR) : Le nœud Segment by Value transforme une couche mono en couche d'identifiants, où les pixels de valeurs voisines partagent le même numéro.
+
+- Inputs meaning: ["source: the mono layer to segment"]
+
+- Key parameters: ["Method: Width and Offset, or Number of Segments", "Width: maximum value difference inside one segment (Width and Offset method)", "Offset: where the first segment starts (Width and Offset method)", "Segments: number of segments between the minimum and maximum values (Number of Segments method)", "Segment Location: Starts at Value (floor) or Centered at Value (round)", "Minimum Value / Maximum Value: input range; a dropper can set them from the layer", "Values Below / Values Above: Extend, Invalid (-1), Clamp or Wrap"]
+
+- Caveats: ["Several parameters apply to one method only", "With Invalid (-1), out-of-range pixels receive the explicit segment ID -1", "The page does not state default parameter values"]
+
+## Parameters (exact, from the installed Houdini)
+
+| parameter | label | type | default | range | menu tokens |
+|---|---|---|---|---|---|
+| `method` | Method | Menu | 1 |  | width, segments |
+| `width` | Width | Float | [0.1] | 0.0 .. 1.0 |  |
+| `offset` | Offset | Float | [0.0] | 0.0 .. 1.0 |  |
+| `segments` | Segments | Int | [3] | 1 .. 10 |  |
+| `center` | Segment Location | Menu | 0 |  | floor, rint |
+| `minval` | Minimum Value | Float | [0.0] | 0.0 .. 1.0 |  |
+| `maxval` | Maximum Value | Float | [1.0] | 0.0 .. 1.0 |  |
+| `belowmethod` | Values Below | Menu | 0 |  | extend, invalid, clamp, wrap |
+| `abovemethod` | Values Above | Menu | 0 |  | extend, invalid, clamp, wrap |

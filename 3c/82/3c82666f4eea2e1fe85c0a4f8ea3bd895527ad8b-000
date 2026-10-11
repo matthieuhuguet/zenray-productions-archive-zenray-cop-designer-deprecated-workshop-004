@@ -1,0 +1,29 @@
+# slapcompimport
+
+- Label: Slap Comp Import
+- Category: Copernicus (`Cop`), Houdini 22.0.368
+- Inputs: 0 to 2048
+- Parameters: 5 (exact, read from Houdini by hython)
+- Used by the height graph: no
+
+## Feature summary (web, SideFX reference)
+
+- Source: https://www.sidefx.com/docs/houdini/nodes/cop/slapcompimport.html
+- Summary (EN): Slap Comp Import brings live layers from the Solaris interactive viewport, namely Karma CPU and XPU renders, into a COP network. If no layers have been posted by an interactive render, it passes its inputs through unchanged.
+- Résumé (FR) : Le nœud Slap Comp Import importe dans un réseau COP les couches rendues en direct depuis la vue interactive de Solaris, et les transmet telles quelles s'il n'y en a aucune.
+
+- Inputs meaning: ["input#: AOV input layers, numbered; the page does not specify their order beyond the numbering"]
+
+- Key parameters: ["Reload Image: dirties the node and tries to reload the last layers posted by an interactive render", "Live Recook: each new interactive render frame dirties the node, giving continuous live output", "Import Cameras with Slap Comp Inputs: when off, layers are always imported in canonical coordinates", "Add AOVs from Last Render: fills the AOV list with every AOV exported by the last render", "Number of AOVs, with per-AOV Slap Comp AOV name and Channel Type: which AOVs are imported and their data types"]
+
+- Caveats: ["An interactive render must already have been run in the Solaris viewport; the node cannot trigger renders itself", "Live Recook may slow the render process if the COP network is visible", "The AOV list from Add AOVs from Last Render may contain unneeded entries, and the page says this method is more reliable than entering names and types by hand"]
+
+## Parameters (exact, from the installed Houdini)
+
+| parameter | label | type | default | range | menu tokens |
+|---|---|---|---|---|---|
+| `reload` | Reload Image | Button |  |  |  |
+| `live` | Live Recook | Toggle | true |  |  |
+| `slapcompcameraspace` | Import Cameras with Slap Comp Inputs | Toggle | true |  |  |
+| `slapcompaddaovs` | Add AOVs from Last Render | Button |  |  |  |
+| `aovs` | Number of AOVs | Folder | 0 |  |  |

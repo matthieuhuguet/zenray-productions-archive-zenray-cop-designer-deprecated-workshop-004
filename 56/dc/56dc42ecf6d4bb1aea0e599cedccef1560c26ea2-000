@@ -1,0 +1,173 @@
+# __STAMP__ : unit tests of the catalog and the graph format. Plain Python, no Houdini needed.
+# EN: every test has a negative twin: a wrong name or value must fail loudly. Run: python3 test_designer.py
+# FR : chaque test positif a son jumeau négatif : un nom ou une valeur fausse doit échouer bruyamment.
+import os
+import sys
+import tempfile
+import unittest
+
+HERE = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, HERE)
+import cop_catalog as C  # noqa: E402
+import cop_graph as G  # noqa: E402
+import window_height as W  # noqa: E402
+
+
+class CatalogTests(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls.cat = C.Catalog()
+
+    def test_inventory_has_every_copernicus_node(self):
+        self.assertGreaterEqual(len(self.cat.nodes), 370)   # EN: 384 declared, 384 instantiated. FR : 384 déclarés.
+
+    def test_height_nodes_exist(self):
+        for name in ['fractalnoise', 'streakblur', 'ramp', 'remap', 'blend', 'rop_image', 'heighttonormal']:
+            self.assertIn(name, self.cat.nodes)
+
+    def test_unknown_node_fails(self):
+        with self.assertRaises(C.CatalogError):
+            self.cat.node('notarealnode')
+
+    def test_forbidden_nodes_fail(self):
+        for name in ['wrangle', 'vopnet', 'pythonsnippet']:
+            with self.assertRaises(C.CatalogError):
+                self.cat.node(name)
+
+    def test_unknown_parameter_fails(self):
+        with self.assertRaises(C.CatalogError):
+            self.cat.check_value('remap', 'notaparm', 1.0)
+
+    def test_float_accepts_number_and_refuses_text(self):
+        self.assertEqual(self.cat.check_value('remap', 'inputmin', 0.25), 0.25)
+        with self.assertRaises(C.CatalogError):
+            self.cat.check_value('remap', 'inputmin', 'high')
+
+    def test_menu_accepts_token_and_index(self):
+        self.assertEqual(self.cat.check_value('blend', 'mode', 3), 3)
+        self.assertEqual(self.cat.check_value('blend', 'mode', 'add'), 'add')
+
+    def test_menu_refuses_unknown_token_and_index(self):
+        with self.assertRaises(C.CatalogError):
+            self.cat.check_value('blend', 'mode', 'notamode')
+        with self.assertRaises(C.CatalogError):
+            self.cat.check_value('blend', 'mode', 999)
+
+    def test_ramp_keys_must_increase(self):
+        good = {'basis': 'linear', 'keys': [[0.0, 0.0], [0.5, 1.0], [1.0, 0.0]]}
+        self.assertEqual(self.cat.check_value('remap', 'ramp', good)['keys'][1], [0.5, 1.0])
+        bad = {'basis': 'linear', 'keys': [[0.0, 0.0], [0.5, 1.0], [0.4, 0.0]]}
+        with self.assertRaises(C.CatalogError):
+            self.cat.check_value('remap', 'ramp', bad)
+
+    def test_ramp_position_outside_unit_fails(self):
+        with self.assertRaises(C.CatalogError):
+            self.cat.check_value('remap', 'ramp', {'basis': 'linear', 'keys': [[0.0, 0.0], [1.5, 1.0]]})
+
+    def test_unknown_ramp_basis_fails(self):
+        with self.assertRaises(C.CatalogError):
+            self.cat.check_value('remap', 'ramp', {'basis': 'wavy', 'keys': [[0.0, 0.0], [1.0, 1.0]]})
+
+    def test_toggle_accepts_bool_and_refuses_text(self):
+        self.assertEqual(self.cat.check_value('remap', 'useramp', True), 1)
+        with self.assertRaises(C.CatalogError):
+            self.cat.check_value('remap', 'useramp', 'yes')
+
+
+class GraphTests(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls.cat = C.Catalog()
+
+    def small(self):
+        g = G.Graph('small')
+        g.add('src', 'fractalnoise', tag='t', params={'elementsize': 0.1})
+        g.add('lvl', 'remap', ['src'], tag='t', params={'inputmin': 0.0, 'inputmax': 1.0})
+        g.set_output('lvl')
+        return g
+
+    def test_small_graph_is_valid(self):
+        self.assertEqual(self.small().validate(self.cat), [])
+
+    def test_reading_a_missing_input_fails_at_once(self):
+        g = G.Graph('bad')
+        with self.assertRaises(G.GraphError):
+            g.add('x', 'remap', ['nothing'])
+
+    def test_duplicate_id_fails(self):
+        g = self.small()
+        with self.assertRaises(G.GraphError):
+            g.add('src', 'constant')
+
+    def test_invalid_id_fails(self):
+        g = G.Graph('bad')
+        with self.assertRaises(G.GraphError):
+            g.add('1bad name', 'constant')
+
+    def test_dead_node_is_reported(self):
+        g = self.small()
+        g.add('dead', 'constant', tag='t')
+        errors = g.validate(self.cat)
+        self.assertTrue(any('dead code' in e and 'dead' in e for e in errors), errors)
+
+    def test_missing_output_is_reported(self):
+        g = G.Graph('none')
+        g.add('src', 'constant')
+        self.assertIn('no output node set', g.validate(self.cat))
+
+    def test_too_many_inputs_is_reported(self):
+        g = G.Graph('many')
+        g.add('a', 'constant')
+        g.add('b', 'constant')
+        g.add('c', 'constant')
+        g.add('m', 'constant', ['a', 'b', 'c'])
+        g.set_output('m')
+        errors = g.validate(self.cat)
+        self.assertTrue(any('inputs' in e for e in errors), errors)
+
+    def test_bad_parameter_is_reported_with_its_node(self):
+        g = self.small()
+        g.nodes['lvl'].params['notaparm'] = 1.0
+        errors = g.validate(self.cat)
+        self.assertTrue(any(e.startswith('lvl:') for e in errors), errors)
+
+    def test_save_and_load_round_trip(self):
+        g = self.small()
+        with tempfile.TemporaryDirectory() as tmp:
+            path = os.path.join(tmp, 'g.json')
+            g.save(path)
+            h = G.Graph.load(path)
+        self.assertEqual(g.to_dict(), h.to_dict())
+
+
+class WindowGraphTests(unittest.TestCase):
+    def test_window_graph_validates_with_defaults(self):
+        cat = C.Catalog()
+        graph = W.build(dict(W.DEFAULTS))
+        self.assertEqual(graph.validate(cat), [])
+        self.assertEqual(graph.output, 'L06_level')
+
+    def test_window_graph_has_no_dead_nodes_and_expected_layers(self):
+        graph = W.build(dict(W.DEFAULTS))
+        tags = {graph.nodes[n].tag for n in graph.order}
+        self.assertEqual(tags, {'L01_bands', 'L02_flakes', 'L03_grain', 'L04_bevel', 'L05_chips', 'L06_level'})
+
+    def test_band_keys_are_sorted_and_unique(self):
+        import json
+        with open(W.MEASURES, encoding='utf-8') as fh:
+            measures = json.load(fh)
+        keys = W.band_keys(measures, 25.0)
+        positions = [k[0] for k in keys]
+        self.assertEqual(positions, sorted(positions))
+        self.assertEqual(len(positions), len(set(positions)))
+
+    def test_mean_trim_moves_the_output_range(self):
+        P = dict(W.DEFAULTS)
+        P['mean_trim'] = 0.05
+        node = W.build(P).nodes['L06_level']
+        self.assertAlmostEqual(node.params['outputmin'], -0.05)
+        self.assertAlmostEqual(node.params['outputmax'], 0.95)
+
+
+if __name__ == '__main__':
+    unittest.main(verbosity=2)

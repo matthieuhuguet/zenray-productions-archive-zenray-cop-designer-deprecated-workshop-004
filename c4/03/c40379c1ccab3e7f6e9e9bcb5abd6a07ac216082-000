@@ -1,0 +1,107 @@
+# Mapping Substance 3D Designer vers Copernicus (11 October 2026)
+
+Source lue en entier : `/Applications/Houdini/Current/Frameworks/Houdini.framework/Versions/Current/Resources/houdini/help/copernicus/substance_designer.txt` (281 lignes).
+
+Noms Copernicus vérifiés contre `/Users/zenray/.claude/skills/zenray-cop-designer/inventory/cop_names.txt` (553 lignes). Une mention `cop X` désigne le nœud `Cop X` de cette liste.
+
+Statut : `documented_only` sur chaque ligne. Substance 3D Designer n'est pas installé ici et rien n'est exécuté. La colonne difference reprend ce que la page dit. Quand la page ne dit rien, la cellule l'écrit. Toutes les lignes datent du 11 October 2026.
+
+Format : SD name | Copernicus equivalent | difference | status.
+
+## Concepts
+
+| SD name | Copernicus equivalent | difference | status |
+|---|---|---|---|
+| Package | Fichier .hip, Network editor avec sous-réseaux, recipes et shelf tools | Pas de découpage en éléments : une instance Houdini se charge comme fichier .hip, et les recipes ainsi que les shelf tools remplacent les templates de package | documented_only |
+| Nodes | Réseaux et sous-réseaux, les nœuds jouant le rôle de fichiers | Le réseau Houdini ressemble à un système de fichiers (réseaux = dossiers, nœuds = fichiers) ; un nœud peut être un sous-réseau qui contient d'autres nœuds ; la référence de nœuds et de paramètres est possible | documented_only |
+| Project | Houdini Digital Asset (HDA) | Un HDA joue le rôle d'un projet composé de fichiers .sbs dans Substance 3D Designer | documented_only |
+| Explorer panel | Hiérarchie du réseau au-dessus de la barre Operation et du Network editor, également dans le Tree View pane | Même information, à un autre endroit de l'interface | documented_only |
+| Main toolbar | Main menus | Aucune différence énoncée | documented_only |
+| Properties panel | Parameter editor | Les paramètres propres à un nœud apparaissent dans son Parameter editor | documented_only |
+| Attributes (valeurs de type Attributes) | Fenêtre d'information du nœud (info window) | Ces valeurs ne sont pas dans l'éditeur de paramètres mais dans l'info window | documented_only |
+| Base parameters (valeurs de type Base) | Parameter editor du seul réseau COP | Ces paramètres n'apparaissent pas sur chaque nœud, mais une seule fois dans l'éditeur du réseau COP | documented_only |
+| Graph viewport and toolbar | Network editor et sa barre d'outils | Aucune différence énoncée | documented_only |
+| 2D and 3D viewports | Scene Viewer (sortie volume) et Composite Viewer (sortie image) | Le Scene Viewer affiche un volume, le Composite Viewer affiche une image ; les matériaux de scène passent par LOPs ou par des COPs utilisés comme matériaux | documented_only |
+| Library panel | Menu Tab (Tab menu) pour ajouter des nœuds cop | Pas de panneau bibliothèque : on cherche le nœud dans le menu Tab | documented_only |
+| Assets library | HDA installés et stockés dans un fichier de bibliothèque | Aucune différence énoncée au-delà du stockage dans un fichier de bibliothèque | documented_only |
+| Frame | Network box | Aucune différence énoncée | documented_only |
+| Substance function graphs | VOP (cop vopnet) et VEX (cop wrangle) | La page renvoie vers vop/index et vex/index sans nommer de nœud cop ; cop vopnet et cop wrangle existent dans cop_names.txt, leur usage pour ce mapping n'est pas documenté par la page | documented_only |
+| Grayscale | Mono (cop mono) | Aucune différence énoncée | documented_only |
+| Links | Wires (fils) | Aucune différence énoncée | documented_only |
+| Built-in variables | Variables et attributs Houdini (network expressions) | Les variables intégrées de Substance 3D Designer sont remplacées par les variables et attributs Houdini | documented_only |
+
+## Fonctions et raccourcis
+
+Dans cette section, la première colonne donne la fonction telle que la page la nomme côté Substance 3D Designer.
+
+| SD name | Copernicus equivalent | difference | status |
+|---|---|---|---|
+| Connect nodes (connexion à la sortie du nœud sélectionné) | Shift+Entrée après recherche du nœud dans le menu Tab | La page n'en décrit pas d'autre différence | documented_only |
+| Connect nodes (insertion entre deux nœuds) | Glisser le nœud sur le fil reliant les deux nœuds | Insertion par glisser-déposer sur le fil | documented_only |
+| Cut wires | Maintenir la touche Y et passer la souris sur le fil à couper | La page ajoute qu'on peut aussi secouer un nœud pour déconnecter tous ses fils | documented_only |
+| Swap wires | Sélectionner le nœud dont on veut inverser les entrées, puis Shift+R | Aucune différence énoncée | documented_only |
+| Reposition wires | Glisser le fil vers une autre entrée | Aucune différence énoncée | documented_only |
+| Change wire style | Shift+S dans le Network editor : fils droits ou arrondis | Bascule entre fils droits et fils arrondis | documented_only |
+| Reset to default values | Clic droit sur le paramètre, puis Revert to Defaults | Aucune différence énoncée | documented_only |
+| Create anchors | Alt et clic sur un fil | La page ne précise pas la touche équivalente sur macOS | documented_only |
+| Reframe nodes | Touche F dans le Network editor : cadre le nœud sélectionné, ou tous les nœuds si rien n'est sélectionné | Aucune différence énoncée | documented_only |
+| Align nodes | Touche L dans le Network editor | Aucune différence énoncée | documented_only |
+| Turn transparency on and off | Clic droit dans le Composite Viewer, Display Options, puis bouton Toggle Transparency ; la page écrit aussi Ctrl+Shift+T | Sur macOS, la note de plateforme demande Cmd à la place de Ctrl, soit Cmd+Shift+T (raccourci non vérifié ici) | documented_only |
+| Referencing parameters | Clic droit sur le paramètre, Copy Parameter, puis clic droit sur la cible et Paste Relative References | Copie d'un paramètre dans le même nœud ou entre nœuds, avec référence relative | documented_only |
+| Promoting functions | Bouton gear Parameter Edit Menu, puis Edit Parameter Interface | Fenêtre semblable à l'onglet Parameters des propriétés du type d'opérateur, pour exposer les paramètres d'un HDA | documented_only |
+| Inspect pixels | Clic droit dans le Composite Viewer, activer Inspect, survoler l'image | Aucune différence énoncée (la page écrit « Inpsect ») | documented_only |
+
+## Nœuds
+
+| SD name | Copernicus equivalent | difference | status |
+|---|---|---|---|
+| Alpha Merge | cop blend, Mode réglé sur Add, alpha branché sur bg ou fg | Pas de nœud Alpha Merge : le blend en mode Add en tient lieu | documented_only |
+| Ambient Occlusion (HBAO) | cop heighttoambientocclusion | Nœud propre à Copernicus ; la page ne compare pas les paramètres | documented_only |
+| Auto Levels | cop equalize | La page ne compare pas les paramètres | documented_only |
+| Base Material | cop previewmaterial | La page ne compare pas les paramètres | documented_only |
+| Bevel | cop feather | La page ne documente pas ce mapping ; d'après ses étapes, feather étend et adoucit les formes | documented_only |
+| Directional Blur | cop streakblur | La page ne compare pas les paramètres | documented_only |
+| Distance | cop feather et cop extrapolateboundaries | Pas de nœud Distance ; le procédé, en deux variantes, est détaillé dans la section des cas d'usage | documented_only |
+| Dot (Portal) | cop null et cop fetch | Deux nœuds au lieu d'un ; la page ne détaille pas le rôle de chacun | documented_only |
+| Flood Fill nodes | cop segmentbyconnectivity et cop uvmapbyid | La page ne détaille pas le rôle de chacun | documented_only |
+| Flood Fill to Random Grayscale | cop randommono | La page dit que ce nœud remplit une fonction similaire | documented_only |
+| Flood Fill to Random Color | cop randomrgb | La page dit que ce nœud remplit une fonction similaire | documented_only |
+| Gradient nodes | cop ramp (Ramp nodes) | Nom différent, équivalence énoncée par la page | documented_only |
+| Histogram nodes | cop remap (Remap nodes) | Équivalence énoncée, sans différence décrite | documented_only |
+| Histogram Scan (cas particulier de Histogram nodes) | cop remap, Operation réglé sur Threshold | Équivalence donnée par la page pour ce cas précis | documented_only |
+| HSL | cop hsv (HSV nodes) | La valeur (value) remplace la luminosité (lightness) | documented_only |
+| Levels | cop remap | Aucune différence énoncée | documented_only |
+| Make It Tile | cop tilepattern et cop feather | Nettoyage des contours des bords ; voir la section des cas d'usage | documented_only |
+| Min Max | cop statistics | Aucune différence énoncée | documented_only |
+| Output | cop null et cop rop_image | Aucune différence énoncée | documented_only |
+| Perlin Noise | cop fractalnoise | Aucune différence énoncée | documented_only |
+| RGBA Split | cop channelsplit | Aucune différence énoncée | documented_only |
+| Shape | cop sdfshape branché sur cop sdftomono | La forme passe par un SDF (champ de distance signée, d'après le nom du nœud) puis est ramenée en mono ; la page ne détaille pas davantage | documented_only |
+| Slope Blur | Recipe Distort by Slope (cop distort) | Pas de nœud natif : la page le remplace par une recipe | documented_only |
+| Splatter nodes | cop shapescatter et cop curvescatter | La page ne détaille pas la répartition entre les deux | documented_only |
+| Tile Generator | cop tilepattern | Aucune différence énoncée | documented_only |
+| Tile Sampler | cop shapescatter | Aucune différence énoncée | documented_only |
+| Uniform Color | cop constant | Aucune différence énoncée | documented_only |
+| Warp | cop distort | Aucune différence énoncée | documented_only |
+
+## Cas d'usage : Distance et Extrapolate Boundaries
+
+Dans cette section, la première colonne donne l'étape ou le paramètre décrit par la page.
+
+| SD name | Copernicus equivalent | difference | status |
+|---|---|---|---|
+| Distance (étape : sortie tiles vers entrée source) | cop tilepattern (sortie tiles) branché sur cop feather (entrée source) | Étape de préparation du cas Distance ; la page ne détaille pas d'autre différence | documented_only |
+| Distance (paramètre Feather Direction) | cop feather, Feather Direction réglé sur Circle | Résultats plus lisses, selon la page | documented_only |
+| Distance (paramètre Feather from High to Low) | cop feather, paramètre activé ou désactivé | Activé, les bords extérieurs s'étendent vers le fond ; désactivé, ils se rétractent vers l'intérieur | documented_only |
+| Distance (paramètre Distance for Unit Change) | cop feather, Distance for Unit Change réglé jusqu'au résultat voulu | La page ne relie ce paramètre à aucun paramètre Substance | documented_only |
+| Agrandir ou rétrécir une forme | cop feather suivi de cop remap, Operation Threshold, Threshold When Greater, paramètre Threshold | Procédé de remplacement pour agrandir ou rétrécir une forme | documented_only |
+| Extrapolate Boundaries (entrée source) | cop extrapolateboundaries, entrée source reçoit le design | Sert à nettoyer le contour, à la place du nœud Distance | documented_only |
+| Extrapolate Boundaries (entrée fillarea) | cop extrapolateboundaries, entrée fillarea reçoit la forme de base | La page conseille un cop blur sur la forme de base avant cette entrée, pour lisser les petits segments | documented_only |
+| Extrapolate Boundaries (entrée mask) | cop extrapolateboundaries, entrée mask reçoit les fissures (cracks) | Le mélange reste confiné aux fissures | documented_only |
+| Extrapolate Boundaries (paramètre Exterior) | cop extrapolateboundaries, Exterior réglé sur Unchanged | Aucune différence énoncée | documented_only |
+| Extrapolate Boundaries (paramètres Threshold et Edge Padding) | cop extrapolateboundaries, Threshold et Edge Padding réglés jusqu'au résultat voulu | Si fillarea est l'inverse de source, Edge Padding étend la valeur de chaque point jusqu'au bord du point suivant, ce qui donne des motifs de cellules | documented_only |
+| Blur (forme de base avant fillarea) | cop blur appliqué à la forme de base | Lisse les petits segments qui produisent un grain | documented_only |
+
+## Total
+
+70 lignes de mapping, toutes au statut `documented_only` : 17 concepts, 14 fonctions et raccourcis, 28 nœuds, 11 cas d'usage.

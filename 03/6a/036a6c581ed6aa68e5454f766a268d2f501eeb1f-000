@@ -1,0 +1,118 @@
+# usdmaterial
+
+- Label: USD Material
+- Category: Copernicus (`Cop`), Houdini 22.0.368
+- Inputs: 0 to 2048
+- Parameters: 96 (exact, read from Houdini by hython)
+- Used by the height graph: no
+
+## Feature summary (web, SideFX reference)
+
+- Source: https://www.sidefx.com/docs/houdini/nodes/cop/usdmaterial.html
+- Summary (EN): Represents a USD material referenced from disk, giving USD a representation of it. It is also the target that the Texture Material Library LOP writes texture inputs into, and those inputs are driven by COPs.
+- Résumé (FR) : Ce nœud représente un matériau USD référencé depuis le disque et sert de cible où la bibliothèque de matériaux LOP écrit les textures pilotées par les COP.
+
+- Inputs meaning: ["Texture map parameters are exposed as inputs, but the page does not list them or give their order. Connected inputs appear as op: references to the LOP node when the material is inspected."]
+
+- Caveats: ["The page does not describe individual parameters. It says they are similar to the Quick Surface Material, with texture map parameters exposed as inputs. Meanings must be read in the Quick Surface Material documentation.", "In Houdini 22.0, many defaults and assumptions are hardwired around the Quick Surface Material.", "Texture inputs multiply with parameter values and primvars, a behaviour the page attributes to the Quick Surface Material.", "On export, the USD ROP writes the connected textures to disk."]
+
+## Parameters (exact, from the installed Houdini)
+
+| parameter | label | type | default | range | menu tokens |
+|---|---|---|---|---|---|
+| `shader_materialmenu` | Material | String | [""] |  |  |
+| `shader_baseassetpath` | Base Asset File Path | String | [""] |  |  |
+| `shader_baseprimpath` | Base Primitive Path | String | [""] |  |  |
+| `folder0_0` |  | FolderSet |  |  |  |
+| `base` | Base | Float | [1.0] | 0.0 .. 1.0 |  |
+| `base_colorr` | Color | Float | 1.0 | 0.0 .. 1.0 |  |
+| `base_colorg` | Color | Float | 1.0 | 0.0 .. 1.0 |  |
+| `base_colorb` | Color | Float | 1.0 | 0.0 .. 1.0 |  |
+| `base_color_file` | Color Map | String | [""] |  |  |
+| `base_color_primvar` | Color Primvar | String | ["displayColor"] |  |  |
+| `metalness` | Metalness | Float | [0.0] | 0.0 .. 1.0 |  |
+| `metalness_file` | Metalness Map | String | [""] |  |  |
+| `folder0_1` |  | FolderSet |  |  |  |
+| `specular` | Specular | Float | [1.0] | 0.0 .. 1.0 |  |
+| `specular_colorr` | Color | Float | 1.0 | 0.0 .. 1.0 |  |
+| `specular_colorg` | Color | Float | 1.0 | 0.0 .. 1.0 |  |
+| `specular_colorb` | Color | Float | 1.0 | 0.0 .. 1.0 |  |
+| `specular_color_file` | Color Map | String | [""] |  |  |
+| `specular_roughness` | Roughness | Float | [0.2] | 0.0 .. 1.0 |  |
+| `specular_roughness_file` | Roughness Map | String | [""] |  |  |
+| `roughness_primvar` | Roughness Primvar | String | [""] |  |  |
+| `specular_IOR` | Index of Refraction | Float | [1.5] | 0.0 .. 3.0 |  |
+| `specular_anisotropy` | Specular Anisotropy | Float | [0.0] | 0.0 .. 1.0 |  |
+| `specular_rotation` | Specular Rotation | Float | [0.0] | 0.0 .. 1.0 |  |
+| `folder0_5` |  | FolderSet |  |  |  |
+| `coat` | Coat | Float | [0.0] | 0.0 .. 1.0 |  |
+| `coat_colorr` | Color | Float | 1.0 | 0.0 .. 1.0 |  |
+| `coat_colorg` | Color | Float | 1.0 | 0.0 .. 1.0 |  |
+| `coat_colorb` | Color | Float | 1.0 | 0.0 .. 1.0 |  |
+| `coat_color_file` | Color Map | String | [""] |  |  |
+| `coat_roughness` | Roughness | Float | [0.1] | 0.0 .. 1.0 |  |
+| `coat_roughness_file` | Roughness Map | String | [""] |  |  |
+| `folder0_2` |  | FolderSet |  |  |  |
+| `transmission` | Transmission | Float | [0.0] | 0.0 .. 1.0 |  |
+| `transmission_colorr` | Transmission Color | Float | 1.0 | 0.0 .. 1.0 |  |
+| `transmission_colorg` | Transmission Color | Float | 1.0 | 0.0 .. 1.0 |  |
+| `transmission_colorb` | Transmission Color | Float | 1.0 | 0.0 .. 1.0 |  |
+| `transmission_color_file` | Color Map | String | [""] |  |  |
+| `transmission_color_primvar` | Color Primvar | String | [""] |  |  |
+| `transmission_depth` | Depth | Float | [0.0] | 0.0 .. 100.0 |  |
+| `transmission_dispersion` | Dispersion | Float | [0.0] | 0.0 .. 100.0 |  |
+| `folder0_4` |  | FolderSet |  |  |  |
+| `sheen` | Sheen | Float | [0.0] | 0.0 .. 1.0 |  |
+| `sheen_colorr` | Sheen Color | Float | 1.0 | 0.0 .. 1.0 |  |
+| `sheen_colorg` | Sheen Color | Float | 1.0 | 0.0 .. 1.0 |  |
+| `sheen_colorb` | Sheen Color | Float | 1.0 | 0.0 .. 1.0 |  |
+| `sheen_color_file` | Color Map | String | [""] |  |  |
+| `sheen_roughness` | Sheen Roughness | Float | [0.3] | 0.0 .. 1.0 |  |
+| `sheen_roughness_file` | Roughness Map | String | [""] |  |  |
+| `folder0_3` |  | FolderSet |  |  |  |
+| `subsurface` | Subsurface | Float | [0.0] | 0.0 .. 1.0 |  |
+| `subsurface_colorr` | Color | Float | 1.0 | 0.0 .. 1.0 |  |
+| `subsurface_colorg` | Color | Float | 1.0 | 0.0 .. 1.0 |  |
+| `subsurface_colorb` | Color | Float | 1.0 | 0.0 .. 1.0 |  |
+| `subsurface_color_file` | Color Map | String | [""] |  |  |
+| `subsurface_color_primvar` | Color Primvar | String | [""] |  |  |
+| `subsurface_radiusr` | Radius | Float | 1.0 | 0.0 .. 1.0 |  |
+| `subsurface_radiusg` | Radius | Float | 1.0 | 0.0 .. 1.0 |  |
+| `subsurface_radiusb` | Radius | Float | 1.0 | 0.0 .. 1.0 |  |
+| `subsurface_scale` | Scale | Float | [1.0] | 0.0 .. 10.0 |  |
+| `subsurface_scale_file` | Scale Map | String | [""] |  |  |
+| `folder0_7` |  | FolderSet |  |  |  |
+| `emission` | Emission | Float | [0.0] | 0.0 .. 1.0 |  |
+| `emission_colorr` | Color | Float | 1.0 | 0.0 .. 1.0 |  |
+| `emission_colorg` | Color | Float | 1.0 | 0.0 .. 1.0 |  |
+| `emission_colorb` | Color | Float | 1.0 | 0.0 .. 1.0 |  |
+| `emission_color_file` | Color Map | String | [""] |  |  |
+| `emission_color_primvar` | Color Primvar | String | [""] |  |  |
+| `folder3_1` |  | FolderSet |  |  |  |
+| `bump_style` | Bump Style | Int | [0] | 0 .. 10 | 0, 1 |
+| `bump_height_file` | Bump Height Map | String | [""] |  |  |
+| `bump_normal_file` | Bump Normal Map | String | [""] |  |  |
+| `bump_scale` | Bump Scale | Float | [0.025] | 0.0 .. 10.0 |  |
+| `true_displacements` | True Displacements | Toggle | false |  |  |
+| `folder0_6` |  | FolderSet |  |  |  |
+| `thin_film_IOR` | Thin Film IOR | Float | [1.5] | 0.0 .. 3.0 |  |
+| `thin_film_thickness` | Thickness | Float | [0.0] | 0.0 .. 2000.0 |  |
+| `thin_film_thickness_primvar` | Thickness Primvar | String | [""] |  |  |
+| `thin_film_thickness_file` | Thickness File | String | [""] |  |  |
+| `folder0_8` |  | FolderSet |  |  |  |
+| `thin_walled` | Thin Walled | Toggle | false |  |  |
+| `opacityr` | Opacity | Float | 1.0 | 0.0 .. 1.0 |  |
+| `opacityg` | Opacity | Float | 1.0 | 0.0 .. 1.0 |  |
+| `opacityb` | Opacity | Float | 1.0 | 0.0 .. 1.0 |  |
+| `opacity_file` | Opacity Map | String | [""] |  |  |
+| `opacity_primvar` | Opacity Primvar | String | [""] |  |  |
+| `folder0_9` |  | FolderSet |  |  |  |
+| `filtertype` | Image Filter Type | String | ["linear"] |  | closest, linear, cubic |
+| `projection` | Projection Type | Int | [0] | 0 .. 1 | 0, 1 |
+| `uv_offset1` | UV Offset | Float | 0.0 | 0.0 .. 10.0 |  |
+| `uv_offset2` | UV Offset | Float | 0.0 | 0.0 .. 10.0 |  |
+| `uv_scale1` | UV Scale | Float | 1.0 | 0.0 .. 10.0 |  |
+| `uv_scale2` | UV Scale | Float | 1.0 | 0.0 .. 10.0 |  |
+| `uv_primvar` | UV Primvar | String | ["st"] |  |  |
+| `triplanar_blend` | Tri-Planar Blend | Float | [0.25] | 0.0 .. 1.0 |  |
+| `triplanar_upaxis` | Tri-Planar Up Axis | Int | [1] | 0 .. 10 | 0, 1, 2 |

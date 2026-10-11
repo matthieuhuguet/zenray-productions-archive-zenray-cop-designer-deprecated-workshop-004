@@ -1,0 +1,67 @@
+# objnet
+
+- Label: Object Network
+- Category: Copernicus (`Cop`), Houdini 22.0.368
+- Inputs: 0 to 0
+- Parameters: 51 (exact, read from Houdini by hython)
+- Used by the height graph: no
+
+## Feature summary
+
+NOT DOCUMENTED FROM THE WEB YET (status: missing). The parameter table below is still exact.
+
+## Parameters (exact, from the installed Houdini)
+
+| parameter | label | type | default | range | menu tokens |
+|---|---|---|---|---|---|
+| `stdswitcher1` |  | FolderSet |  |  |  |
+| `xOrd` | Transform Order | Menu | 0 |  | srt, str, rst, rts, tsr, trs |
+| `rOrd` | Rotate Order | Menu | 0 |  | xyz, xzy, yxz, yzx, zxy, zyx |
+| `tx` | Translate | Float | 0.0 | 0.0 .. 10.0 |  |
+| `ty` | Translate | Float | 0.0 | 0.0 .. 10.0 |  |
+| `tz` | Translate | Float | 0.0 | 0.0 .. 10.0 |  |
+| `rx` | Rotate | Float | 0.0 | 0.0 .. 360.0 |  |
+| `ry` | Rotate | Float | 0.0 | 0.0 .. 360.0 |  |
+| `rz` | Rotate | Float | 0.0 | 0.0 .. 360.0 |  |
+| `sx` | Scale | Float | 1.0 | 0.0 .. 10.0 |  |
+| `sy` | Scale | Float | 1.0 | 0.0 .. 10.0 |  |
+| `sz` | Scale | Float | 1.0 | 0.0 .. 10.0 |  |
+| `px` | Pivot Translate | Float | 0.0 | 0.0 .. 10.0 |  |
+| `py` | Pivot Translate | Float | 0.0 | 0.0 .. 10.0 |  |
+| `pz` | Pivot Translate | Float | 0.0 | 0.0 .. 10.0 |  |
+| `prx` | Pivot Rotate | Float | 0.0 | 0.0 .. 10.0 |  |
+| `pry` | Pivot Rotate | Float | 0.0 | 0.0 .. 10.0 |  |
+| `prz` | Pivot Rotate | Float | 0.0 | 0.0 .. 10.0 |  |
+| `scale` | Uniform Scale | Float | [1.0] | 0.0 .. 10.0 |  |
+| `pre_xform` | Modify Pre-Transform | Button |  |  | clean, cleantrans, cleanrot, cleanscales, extract, reset |
+| `keeppos` | Keep Position When Parenting | Toggle | false |  |  |
+| `childcomp` | Child Compensation | Toggle | false |  |  |
+| `constraints_on` | Enable Constraints | Toggle | false |  |  |
+| `constraints_path` | Constraints | String | [""] |  |  |
+| `lookatpath` | Look At | String | [""] |  |  |
+| `lookupobjpath` | Look Up Object | String | [""] |  |  |
+| `lookup` | Look At Up Vector | String | ["on"] |  | off, on, quat, pos, obj |
+| `pathobjpath` | Path Object | String | [""] |  |  |
+| `roll` | Roll | Float | [0.0] | -360.0 .. 360.0 |  |
+| `pos` | Position | Float | [0.0] | 0.0 .. 10.0 (strict) |  |
+| `uparmtype` | Parameterization | Menu | 1 |  | uniform, arc |
+| `pathorient` | Orient Along Path | Int | [1] | 0 .. 1 |  |
+| `upx` | Orient Up Vector | Float | 0.0 | 0.0 .. 10.0 |  |
+| `upy` | Orient Up Vector | Float | 1.0 | 0.0 .. 10.0 |  |
+| `upz` | Orient Up Vector | Float | 0.0 | 0.0 .. 10.0 |  |
+| `bank` | Auto-Bank factor | Float | [0.0] | -1.0 .. 1.0 |  |
+| `label1` | Input #1 Label | String | ["Sub-Network Input #1"] |  |  |
+| `label2` | Input #2 Label | String | ["Sub-Network Input #2"] |  |  |
+| `label3` | Input #3 Label | String | ["Sub-Network Input #3"] |  |  |
+| `label4` | Input #4 Label | String | ["Sub-Network Input #4"] |  |  |
+| `tdisplay` | Display | Toggle | false |  |  |
+| `display` | Display | Int | [1] | 0 .. 1 (strict) |  |
+| `outputobj` | Output Transform | String | ["_input1_obj_"] |  |  |
+| `visibleobjects` | Visible Children | String | ["*"] |  |  |
+| `picking` | Viewport Selecting Enabled | Toggle | true |  |  |
+| `pickscript` | Select Script | String | [""] |  |  |
+| `caching` | Cache Object Transform | Toggle | true |  |  |
+| `use_dcolor` | Set Wireframe Color | Toggle | true |  |  |
+| `dcolorr` | Wireframe Color | Float | 1.0 | 0.0 .. 1.0 (strict) |  |
+| `dcolorg` | Wireframe Color | Float | 1.0 | 0.0 .. 1.0 (strict) |  |
+| `dcolorb` | Wireframe Color | Float | 1.0 | 0.0 .. 1.0 (strict) |  |

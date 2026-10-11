@@ -1,0 +1,30 @@
+# solvepoisson
+
+- Label: Solve Poisson
+- Category: Copernicus (`Cop`), Houdini 22.0.368
+- Inputs: 0 to 6
+- Parameters: 6 (exact, read from Houdini by hython)
+- Used by the height graph: no
+
+## Feature summary (web, SideFX reference)
+
+- Source: https://www.sidefx.com/docs/houdini/nodes/cop/solvepoisson.html
+- Summary (EN): Solve Poisson computes a solution to Poisson's equation for a single-channel (mono) layer, using the rhs input as the right-hand side. The solve is limited to a region defined by a signed distance field.
+- Résumé (FR) : Solve Poisson résout l'équation de Poisson sur un calque mono, à l'intérieur d'une région délimitée par un champ de distance signé.
+
+- Inputs meaning: ["rhs (required): mono layer holding the right side of Poisson's equation", "boundary (required): mono signed distance field defining the solve region, values <= 0 are inside", "dirichlet (optional): prescribed solution values on the boundary", "neumann (optional): prescribed normal-derivative values on the boundary", "blend (optional): per-pixel mix between Dirichlet and Neumann conditions", "initial (optional): starting estimate for the solution"]
+
+- Key parameters: ["Iterations: solver iteration count, more is more converged but slower", "Boundary Blend: global mix between Dirichlet (0) and Neumann (1), overridden by a connected blend input", "Pre-conditioner Iterations: pre-conditioner passes during the solve", "Smoothing Iterations: smoothing passes inside the pre-conditioner", "Coarsest Smoothing Iterations: smoothing passes at the coarsest level, used in place of an exact coarse solve"]
+
+- Caveats: ["A connected blend input overrides the Boundary Blend parameter", "Boundary sign convention matters: a mis-signed distance field solves over the wrong area", "Raising iteration counts improves accuracy at the cost of cook time", "Distinct from Solve Poisson Multigrid, which solves over a rectangular layer"]
+
+## Parameters (exact, from the installed Houdini)
+
+| parameter | label | type | default | range | menu tokens |
+|---|---|---|---|---|---|
+| `iterations` | Iterations | Int | [25] | 1 .. 100 (strict) |  |
+| `boundaryblend` | Boundary Blend | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `folder1` |  | FolderSet |  |  |  |
+| `pre_iterations` | Iterations | Int | [5] | 1 .. 10 (strict) |  |
+| `pre_smoothingiterations` | Smoothing Iterations | Int | [5] | 1 .. 10 (strict) |  |
+| `pre_coarsestsmoothingiterations` | Coarsest Smoothing Iterations | Int | [100] | 1 .. 200 (strict) |  |

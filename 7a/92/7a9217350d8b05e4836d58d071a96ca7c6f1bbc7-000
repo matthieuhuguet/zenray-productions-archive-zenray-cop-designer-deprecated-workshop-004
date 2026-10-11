@@ -1,0 +1,40 @@
+# 11 October 2026 10:19 : contact sheet for any target: reference, generated, difference, and two 1:1 zooms. Written to disk, read by eye.
+# EN: usage: python3 planche.py REF GEN OUT TITLE. FR : planche de contrôle visuel pour toute cible (référence, résultat, écart, zooms).
+import sys
+
+import numpy as np
+from PIL import Image, ImageDraw
+
+
+def load(p):
+    return np.asarray(Image.open(p).convert('L'), dtype=np.float64)
+
+
+def main(ref_path, gen_path, out_path, title):
+    ref, gen = load(ref_path), load(gen_path)
+    W = 627
+    diff = np.clip(np.abs(ref - gen) * 3.0, 0, 255)
+    panels = [(ref, 'reference'), (gen, title), (diff, 'ecart x3')]
+    h, w = ref.shape
+    zoom = min(300, h // 4)
+    cx, cy = w // 2 - zoom // 2, h // 2 - zoom // 2
+    crops = [((cx, cy, cx + zoom, cy + zoom), 'centre'), ((0, 0, zoom, zoom), 'coin haut gauche')]
+    gap = 12
+    canvas = Image.new('L', (3 * W + 2 * gap, W + 34 + zoom + 60), 40)
+    draw = ImageDraw.Draw(canvas)
+    for i, (arr, text) in enumerate(panels):
+        im = Image.fromarray(np.clip(arr, 0, 255).astype(np.uint8)).resize((W, W), Image.LANCZOS)
+        x = i * (W + gap)
+        canvas.paste(im, (x, 34))
+        draw.text((x + 8, 10), text, fill=255)
+    for i, ((x0, y0, x1, y1), text) in enumerate(crops):
+        x = i * (W + gap)
+        canvas.paste(Image.fromarray(ref[y0:y1, x0:x1].astype(np.uint8)), (x, W + 34 + 26))
+        canvas.paste(Image.fromarray(gen[y0:y1, x0:x1].astype(np.uint8)), (x + zoom + 6, W + 34 + 26))
+        draw.text((x + 8, W + 34 + 6), 'ref / gen ' + text, fill=255)
+    canvas.save(out_path)
+    print('planche', out_path, 'mean ref %.1f gen %.1f' % (ref.mean(), gen.mean()))
+
+
+if __name__ == '__main__':
+    main(sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4])

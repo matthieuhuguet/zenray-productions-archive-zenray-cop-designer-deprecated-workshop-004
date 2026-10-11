@@ -1,0 +1,26 @@
+# triplanaruv
+
+- Label: Triplanar UV
+- Category: Copernicus (`Cop`), Houdini 22.0.368
+- Inputs: 0 to 3
+- Parameters: 2 (exact, read from Houdini by hython)
+- Used by the height graph: no
+
+## Feature summary (web, SideFX reference)
+
+- Source: https://www.sidefx.com/docs/houdini/nodes/cop/triplanaruv.html
+- Summary (EN): Produces UV coordinates for three orthogonal projections (X, Y and Z) from a position layer. It also outputs a float weight for each projection so the projections can be blended.
+- Résumé (FR) : Ce nœud calcule des coordonnées UV pour les trois projections orthogonales à partir d'une couche de position, avec un poids par projection pour les mélanger.
+
+- Inputs meaning: ["position: the layer the UVs are generated from.", "normal: the layer that defines the projection weights.", "blend: optional per-pixel blend amount, scaled by the Blend parameter."]
+
+- Key parameters: [{"name": "Normal Type", "meaning": "Signed (-1 to 1) for normals likely from geometry. Offset (0 to 1) for normals likely from a normal map."}, {"name": "Blend", "meaning": "How much the projection weights are smoothed."}]
+
+- Caveats: ["Normal Type must match the actual range of the normal layer. The page does not describe what happens if it does not.", "The weight calculation, the UV output ranges and the smoothing method are not explained.", "Available since version 21.0, and the page is written for Houdini 22.0.", "The page points to the Triplanar and Hex Tile nodes for related functionality but does not explain how they differ from this one."]
+
+## Parameters (exact, from the installed Houdini)
+
+| parameter | label | type | default | range | menu tokens |
+|---|---|---|---|---|---|
+| `normaltype` | Normal Type | Menu | 0 |  | signed, offset |
+| `blend` | Blend | Float | [0.02] | 0.0 .. 1.0 |  |

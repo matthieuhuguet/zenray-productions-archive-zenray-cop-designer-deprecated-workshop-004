@@ -1,0 +1,28 @@
+# projectonlayer
+
+- Label: Project on Layer
+- Category: Copernicus (`Cop`), Houdini 22.0.368
+- Inputs: 0 to 2
+- Parameters: 4 (exact, read from Houdini by hython)
+- Used by the height graph: no
+
+## Feature summary (web, SideFX reference)
+
+- Source: https://www.sidefx.com/docs/houdini/nodes/cop/projectonlayer.html
+- Summary (EN): The Project On Layer node projects a source layer onto a target layer. It treats the source like a slide projector and uses camera information to decide which target pixels receive which source values.
+- Résumé (FR) : Le nœud Project On Layer projette une couche source sur une couche cible, à la manière d'un projecteur de diapositives guidé par la caméra.
+
+- Inputs meaning: ["target: layer that receives the projection", "source: layer to project onto the target"]
+
+- Key parameters: ["Signature: layer type accepted by the source", "Invert Transformation: inverts the transform computed to project the source onto the camera reference", "Border: edge handling during rasterisation: Auto, Constant (edges fade to black), Clamp, Mirror, Wrap or Clip; Auto uses the input's border type unless it is Constant, in which case it uses Clip", "Filter: sampling method, default Box"]
+
+- Caveats: ["The output takes the resolution and location of the target, not of the source.", "The page gives no further detail on edge cases or performance."]
+
+## Parameters (exact, from the installed Houdini)
+
+| parameter | label | type | default | range | menu tokens |
+|---|---|---|---|---|---|
+| `signature` | Signature | String | ["auto"] |  |  |
+| `invertxform` | Invert Transformation | Toggle | false |  |  |
+| `border` | Border | Menu | 0 |  | auto, constant, clamp, mirror, wrap, clip |
+| `filter` | Filter | Menu | 2 |  | point, bilinear, box, triangle, cubic, mitchell, bspline |

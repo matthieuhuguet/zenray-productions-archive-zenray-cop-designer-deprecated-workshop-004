@@ -1,0 +1,78 @@
+# triplanar
+
+- Label: Triplanar
+- Category: Copernicus (`Cop`), Houdini 22.0.368
+- Inputs: 0 to 6
+- Parameters: 54 (exact, read from Houdini by hython)
+- Used by the height graph: no
+
+## Feature summary (web, SideFX reference)
+
+- Source: https://www.sidefx.com/docs/houdini/nodes/cop/triplanar.html
+- Summary (EN): Generates a texture by projecting X, Y and Z textures onto a position layer. When position and normal layers come from rasterized geometry, it blends the three projections so they join without visible seams.
+- Résumé (FR) : Ce nœud projette des textures selon X, Y et Z sur une couche de position, puis mélange les trois projections pour éviter les coutures sur une géométrie rastérisée.
+
+- Inputs meaning: ["position: the position layer from a geometry.", "world normal: the normal vector field layer from a geometry.", "texture: a uniform texture used for all three projections.", "x_texture: texture for the X projection.", "y_texture: texture for the Y projection.", "z_texture: texture for the Z projection."]
+
+- Key parameters: [{"name": "Normal Type", "meaning": "Signed (-1 to 1) for geometry normals, or Offset (0 to 1) for normal maps."}, {"name": "Texture Source", "meaning": "Uniform Texture uses the single texture input. Texture Per Axis uses the X, Y and Z inputs."}, {"name": "Scale, Rotate, Offset", "meaning": "Global controls for the texture in each projection direction. A smaller scale tiles the texture more."}, {"name": "Per-axis Scale, Rotation, Offset", "meaning": "Separate settings for the X, Y and Z projections."}, {"name": "Blend, X-Z Blending, Y Blend", "meaning": "Ramp controls that adjust how the projections mix."}, {"name": "Filter Scale", "meaning": "Anti-aliasing for non-identity UV maps. Defaults to the voxel size."}, {"name": "Filter", "meaning": "Sampling method used for the image."}]
+
+- Caveats: ["Seamless blending depends on position and normal layers being in image coordinates, typically from rasterized geometry.", "If the blend ramps are not properly interpolated, visible seams can appear between the projections.", "The output is a single triplanar cable containing both colour information and normal vectors."]
+
+## Parameters (exact, from the installed Houdini)
+
+| parameter | label | type | default | range | menu tokens |
+|---|---|---|---|---|---|
+| `signature` | Signature | String | ["auto"] |  |  |
+| `normaltype` | Normal Type | Menu | 0 |  | signed, offset |
+| `texturetype` | Texture Source | Menu | 0 |  | singletex, uniformtex |
+| `globalscale` | Scale | Float | [1.0] | 0.0 .. 10.0 |  |
+| `globalrotate` | Rotate | Float | [0.0] | -180.0 .. 180.0 |  |
+| `globaloffsetx` | Offset | Float | 0.0 | -1.0 .. 1.0 |  |
+| `globaloffsety` | Offset | Float | 0.0 | -1.0 .. 1.0 |  |
+| `peraxiscontrols` |  | FolderSet |  |  |  |
+| `xaxisheader` | X Axis | Label |  |  |  |
+| `xscale` | Scale | Float | [1.0] | 0.0 .. 10.0 |  |
+| `xrotate` | Rotation | Float | [0.0] | -180.0 .. 180.0 |  |
+| `xoffsetx` | Offset | Float | 0.0 | 0.0 .. 1.0 |  |
+| `xoffsety` | Offset | Float | 0.0 | 0.0 .. 1.0 |  |
+| `yaxisheader` | Y Axis | Label |  |  |  |
+| `yscale` | Scale | Float | [1.0] | 0.0 .. 10.0 |  |
+| `yrotate` | Rotate | Float | [0.0] | -180.0 .. 180.0 |  |
+| `yoffsetx` | Offset | Float | 0.0 | 0.0 .. 1.0 |  |
+| `yoffsety` | Offset | Float | 0.0 | 0.0 .. 1.0 |  |
+| `zaxisheader` | Z Axis | Label |  |  |  |
+| `zscale` | Scale | Float | [1.0] | 0.0 .. 10.0 |  |
+| `zrotate` | Rotate | Float | [0.0] | -180.0 .. 180.0 |  |
+| `zoffsetx` | Offset | Float | 0.0 | 0.0 .. 1.0 |  |
+| `zoffsety` | Offset | Float | 0.0 | 0.0 .. 1.0 |  |
+| `triplanarblendfolder` |  | FolderSet |  |  |  |
+| `triplanarblend` | Blend | Float | [0.25] | 0.0 .. 1.0 |  |
+| `xzramp` | X-Z Blending | Ramp | 4 |  |  |
+| `yramp` | Y Blend | Ramp | 4 |  |  |
+| `folder0` |  | FolderSet |  |  |  |
+| `filterscale` | Filter Scale | Float | [1.0] | 0.0 .. 1.0 |  |
+| `filter` | Filter | Menu | 2 |  | point, bilinear, box, triangle, cubic, mitchell, bspline |
+| `xzramp1pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `xzramp1value` | Value | Float | [0.0] | 0.0 .. 10.0 |  |
+| `xzramp1interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `xzramp2pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `xzramp2value` | Value | Float | [0.0] | 0.0 .. 10.0 |  |
+| `xzramp2interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `xzramp3pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `xzramp3value` | Value | Float | [0.0] | 0.0 .. 10.0 |  |
+| `xzramp3interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `xzramp4pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `xzramp4value` | Value | Float | [0.0] | 0.0 .. 10.0 |  |
+| `xzramp4interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `yramp1pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `yramp1value` | Value | Float | [0.0] | 0.0 .. 10.0 |  |
+| `yramp1interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `yramp2pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `yramp2value` | Value | Float | [0.0] | 0.0 .. 10.0 |  |
+| `yramp2interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `yramp3pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `yramp3value` | Value | Float | [0.0] | 0.0 .. 10.0 |  |
+| `yramp3interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `yramp4pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `yramp4value` | Value | Float | [0.0] | 0.0 .. 10.0 |  |
+| `yramp4interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |

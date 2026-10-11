@@ -1,0 +1,30 @@
+# paintinternals
+
+- Label: Paint Internals
+- Category: Copernicus (`Cop`), Houdini 22.0.368
+- Inputs: 0 to 1
+- Parameters: 14 (exact, read from Houdini by hython)
+- Used by the height graph: no
+
+## Feature summary
+
+NOT DOCUMENTED FROM THE WEB YET (status: missing). The parameter table below is still exact.
+
+## Parameters (exact, from the installed Houdini)
+
+| parameter | label | type | default | range | menu tokens |
+|---|---|---|---|---|---|
+| `channelcount` | Channel Count | Int | [0] | 1 .. 3 (strict) |  |
+| `block_begin` | Block Begin | Menu | 0 |  |  |
+| `block_end` | Block End | Menu | 0 |  |  |
+| `bright` | Bright | String | [""] |  |  |
+| `fetch` | Fetch | Menu | 0 |  |  |
+| `file` | File | Menu | 0 |  |  |
+| `switchbytype2` | Switch by Type | Menu | 0 |  |  |
+| `opencl_input` | OpenCL Input | Menu | 0 |  |  |
+| `opencl_output` | OpenCL Output | Menu | 0 |  |  |
+| `geotolayer` | Geometry To Layer | Menu | 0 |  |  |
+| `layer` | Layer | String | [""] |  |  |
+| `stash` | Stash | String | [""] |  |  |
+| `invokeblockoutput` | Invoke Block Output | Menu | 0 |  |  |
+| `invokegeooutput` | Invoke Geometry Output | Menu | 0 |  |  |

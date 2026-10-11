@@ -1,0 +1,64 @@
+# opencl
+
+- Label: OpenCL
+- Category: Copernicus (`Cop`), Houdini 22.0.368
+- Inputs: 0 to 2048
+- Parameters: 40 (exact, read from Houdini by hython)
+- Used by the height graph: no
+
+## Feature summary (web, SideFX reference)
+
+- Source: https://www.sidefx.com/docs/houdini/nodes/cop/opencl.html
+- Summary (EN): Runs a custom OpenCL kernel on Copernicus layers, attributes, volumes and VDBs. It binds constants and data to kernel parameters so processing stays on the GPU, which the page recommends over VEX for COPs.
+- Résumé (FR) : Exécute un noyau OpenCL personnalisé sur des calques, attributs et volumes COP en gardant le calcul sur le GPU, ce que la page recommande plutôt que VEX pour les COP.
+
+- Inputs meaning: ["No fixed list. Inputs are defined on the Signature tab, and each has a name that the #bind command references. Types include Varying, ID, Mono, UV, RGB and RGBA layers; Geometry (referenced by name in attribute or volume bindings); Metadata (used for size and metadata only); Integer, Float, Vector and Varying VDB; and an Optional flag."]
+
+- Key parameters: ["Kernel Code: the #bind commands and an @KERNEL function containing the kernel logic", "Run Over: the target, first writeable layer, attribute, volume or VDB", "Kernel Name / Write Back Kernel Name: the main kernel, and an optional @WRITEBACK kernel run with the same parameters to avoid write races", "Compiler Options: compile flags, typically -D defines", "Layer Tile Size / VDB Tile Size: block size each kernel run processes", "Kernel Iterations: re-runs the kernel repeatedly while data stays on the GPU", "Include Time / Include Timestep / Time Scale: bind @Time and @TimeInc", "Precision: fpreal and exint types at 16, 32 or 64 bits, or Auto", "Signature and Bindings tabs: define ports and parameters; the Create inputs and spare parameters button usually sets these up", "Timing Messages: synchronises kernels so profiling is accurate"]
+
+- Caveats: ["Solid OpenCL knowledge is required, since incorrect code is easy to write.", "Geometry cannot be bound as a layer. Refer to it by name in an attribute or volume binding.", "If the global @P binding exists, binding P again causes a duplicate. Use a different name such as name=P and access it as @geoP.", "@P is not bound when running over attributes.", "16-bit (half) precision often cannot be used for computation in most drivers.", "The page gives no complete kernel code examples."]
+
+## Parameters (exact, from the installed Houdini)
+
+| parameter | label | type | default | range | menu tokens |
+|---|---|---|---|---|---|
+| `stdswitcher1` |  | FolderSet |  |  |  |
+| `kernelcode` | Kernel Code | String | [""] |  |  |
+| `options_runover` | Run Over | Menu | 0 |  | layer, attribute, volume, vdb |
+| `kernelname` | Kernel Name | String | ["generickernel"] |  |  |
+| `writebackkernelname` | Write Back Kernel Name | String | ["writebackkernel"] |  |  |
+| `kerneloptions` | Compiler Options | String | [""] |  |  |
+| `options_tile1` | Layer Tile Size | Int | 1 | 0 .. 10 |  |
+| `options_tile2` | Layer Tile Size | Int | 1 | 0 .. 10 |  |
+| `options_usevdbtile` | Use VDB Tile Size | Toggle | false |  |  |
+| `options_vdbtile1` | VDB Tile Size | Int | 1 | 0 .. 10 |  |
+| `options_vdbtile2` | VDB Tile Size | Int | 1 | 0 .. 10 |  |
+| `options_vdbtile3` | VDB Tile Size | Int | 1 | 0 .. 10 |  |
+| `options_iterations` | Kernel Iterations | Int | [1] | 0 .. 10 |  |
+| `options_iteration` | Include Kernel Iteration | Toggle | false |  |  |
+| `usewritebackkernel` | Use Write Back Kernel | Toggle | false |  |  |
+| `options_time` | Include Time | Toggle | false |  |  |
+| `options_timeinccontext` | Use Timestep | Toggle | true |  |  |
+| `options_timeinc` | Include Timestep | Toggle | false |  |  |
+| `options_timescale` | Time Scale | Float | [1.0] | 0.0 .. 10.0 |  |
+| `options_timemethod` | Time Method | Menu | 0 |  | invert, pow |
+| `options_importprequel` | Use #import for Prequel Code | Toggle | true |  |  |
+| `options_timing` | Timing Messages | Toggle | false |  |  |
+| `cablerenamebylabel` | Rename Wires Using Output Labels | Toggle | false |  |  |
+| `filter` | Area Sampling Filter | Menu | 2 |  | point, bilinear, box, triangle, cubic, mitchell, bspline |
+| `options_precision` | Precision | Menu | 2 |  | auto, 16, 32, 64 |
+| `inputs` | Inputs | Folder | 0 |  |  |
+| `outputs` | Outputs | Folder | 0 |  |  |
+| `bindings` | Bindings | Folder | 0 |  |  |
+| `displaycode` | Display Code | Button |  |  |  |
+| `generatedcode` | Generated Code | String | [""] |  |  |
+| `input1_name` | Input 1 | String | [""] |  |  |
+| `input1_type` | Type | Menu | 0 |  | floatn, int, float, float2, float3, float4, geo, metadata, ivdb, fvdb, vvdb, fnvdb, aint, afloat, afloat2, afloat3, afloat4, afloatn |
+| `input1_optional` | Optional | Toggle | false |  |  |
+| `output1_name` | Output 1 | String | [""] |  |  |
+| `output1_type` | Type | Menu | 0 |  | floatn, int, float, float2, float3, float4, geo, ivdb, fvdb, vvdb, fnvdb, aint, afloat, afloat2, afloat3, afloat4, afloatn |
+| `output1_metadata` | Metadata | Menu | 0 |  | first, match, name |
+| `output1_precision` | Precision | Menu | 0 |  | node, 16, 32 |
+| `output1_typeinfo` | Type Info | Menu | 0 |  | node, none, color, position, vector, normal, offsetnormal, texturecoord, id, mask, sdf, height |
+| `output1_attribtypeinfo` | Type Info | Menu | 0 |  | node, none, point, vector, normal, color, quaternion, transform, texturecoord |
+| `output1_metaname` | Input for Metadata | String | [""] |  |  |

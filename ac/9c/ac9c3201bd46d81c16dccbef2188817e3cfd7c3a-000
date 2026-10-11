@@ -1,0 +1,30 @@
+# spacetransform
+
+- Label: Space Transform
+- Category: Copernicus (`Cop`), Houdini 22.0.368
+- Inputs: 1 to 3
+- Parameters: 6 (exact, read from Houdini by hython)
+- Used by the height graph: no
+
+## Feature summary (web, SideFX reference)
+
+- Source: https://www.sidefx.com/docs/houdini/nodes/cop/spacetransform.html
+- Summary (EN): Space Transform converts position, vector and UV values from one coordinate space to another. It uses the camera from the coord input, or the reference cameras when they are wired in, to perform the conversion.
+- Résumé (FR) : Space Transform convertit des positions, vecteurs et coordonnées UV d'un espace de coordonnées vers un autre, à l'aide des caméras de référence.
+
+- Inputs meaning: ["coord: layer or attribute supplying the coordinate values to transform", "src_ref (optional): camera reference for the source space, uses coord if unwired", "dst_ref (optional): camera reference for the destination space, uses coord if unwired"]
+
+- Key parameters: ["Signature: layer type the source accepts", "Vector Type: Position (translates, rotates, scales) or Vector/Displacement/Velocity (rotates and scales only)", "Source Space and Destination Space, each one of Buffer, Pixel, Texture (0 to 1 over the data window), Image (unstretched -1 to 1 in the fitted display window), World"]
+
+- Caveats: ["Source space is interpreted relative to src_ref if wired, otherwise coord; destination works the same with dst_ref", "Choosing Position versus Vector changes the result, because only Position applies translation", "Buffer and Pixel coordinates diverge when a pixel scale is in use", "Available since version 21.0", "Identity matched from the URL and the Copernicus index listing, the page body does not repeat the internal name", "Does not cover the separate Space Transform with Adjacency node"]
+
+## Parameters (exact, from the installed Houdini)
+
+| parameter | label | type | default | range | menu tokens |
+|---|---|---|---|---|---|
+| `signature` | Signature | String | ["auto"] |  |  |
+| `vectype` | Vector Type | Menu | 0 |  | position, vector |
+| `srcspace` | Source Space | Menu | 3 |  | buffer, pixel, texture, image, world |
+| `labelparm` | No src_ref: Using World | Label |  |  |  |
+| `dstspace` | Destination Space | Menu | 3 |  | buffer, pixel, texture, image, world |
+| `labelparm2` | No dst_ref: Using World | Label |  |  |  |

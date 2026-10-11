@@ -1,0 +1,68 @@
+# triplanarhextile
+
+- Label: Triplanar Hex Tile
+- Category: Copernicus (`Cop`), Houdini 22.0.368
+- Inputs: 0 to 10
+- Parameters: 44 (exact, read from Houdini by hython)
+- Used by the height graph: no
+
+## Feature summary (web, SideFX reference)
+
+- Source: https://www.sidefx.com/docs/houdini/nodes/cop/triplanarhextile.html
+- Summary (EN): Applies seamless texturing and normal mapping to triplanar projections so large surfaces show no obvious repetition. It tiles adjacent hexagonal cells in the X, Y and Z projections and randomly scales and rotates each cell for a more natural surface.
+- Résumé (FR) : Ce nœud applique un texturage triplanaire sans répétition visible, en pavant des cellules hexagonales mises à l'échelle et tournées au hasard sur les trois projections.
+
+- Inputs meaning: ["1. texture: the pattern to tile.", "2. position: custom position used to project texture coordinates.", "3. normal: layer that sets a custom basis for orienting the hex tiles.", "4. size: controls tile size based on UV coordinates.", "5. scale: controls the global scale of the tiles.", "6. rot: controls the global rotation of the tiles.", "7. contrast: controls contrast between blended cells.", "8. contrast_falloff: controls contrast falloff between cells.", "9. weightexp: controls the exponential weight of transition areas.", "10. blend: controls blending between triplanar projections."]
+
+- Key parameters: [{"name": "Signature", "meaning": "The layer type the source accepts."}, {"name": "Normal Type", "meaning": "Signed (-1 to 1, typically from geometry) or Offset (0 to 1, typically from a normal map)."}, {"name": "Size, Scale, Rotate", "meaning": "Tile size, global scale and global rotation."}, {"name": "Scale Random, Rotate Random", "meaning": "Randomize each cell's scale and rotation."}, {"name": "Random Seed", "meaning": "Changes the randomized result."}, {"name": "Contrast, Falloff, Weight Exp", "meaning": "Look of the transitions between cells. A Falloff of 0 gives a hard transition."}, {"name": "Per-axis Scale, Rotate, Offset (X, Y, Z)", "meaning": "Adjusts the texture in each projection."}, {"name": "Blend, XZ Blend, Y Blend", "meaning": "Control transitions between projections. XZ and Y Blend are ramp parameters."}]
+
+- Caveats: ["The texture should contain a non-structural, non-repetitive pattern, such as photos of grass or stone.", "The page does not describe how the hex layout or the random transforms are computed.", "No performance guidance is given.", "The exact effect of Weight Exp beyond its description is not explained.", "The node was introduced in version 21.0. The page is written for Houdini 22.0."]
+
+## Parameters (exact, from the installed Houdini)
+
+| parameter | label | type | default | range | menu tokens |
+|---|---|---|---|---|---|
+| `signature` | Signature | String | ["auto"] |  |  |
+| `normaltype` | Normal Type | Menu | 0 |  | signed, offset |
+| `sizex` | Size | Float | 1.0 | -1.0 .. 1.0 |  |
+| `sizey` | Size | Float | 1.0 | -1.0 .. 1.0 |  |
+| `scale` | Scale | Float | [1.0] | 0.0 .. 10.0 |  |
+| `scalerand` | Scale Random | Float | [0.0] | 0.0 .. 1.0 |  |
+| `rot` | Rotate | Float | [0.0] | 0.0 .. 10.0 |  |
+| `rotrand` | Rotate Random | Float | [0.0] | 0.0 .. 1.0 |  |
+| `seed` | Random Seed | Float | [0.0] | 0.0 .. 10.0 |  |
+| `contrast` | Contrast | Float | [0.5] | 0.0 .. 1.0 |  |
+| `contrast_falloff` | Falloff | Float | [0.6] | 0.0 .. 1.0 |  |
+| `weightexp` | Weight Exp | Float | [7.0] | 0.0 .. 10.0 |  |
+| `axis_controls` |  | FolderSet |  |  |  |
+| `labelparmx` | Headingx | Label |  |  |  |
+| `scalex` | Scale | Float | [1.0] | 0.0 .. 10.0 |  |
+| `rotx` | Rotate | Float | [0.0] | 0.0 .. 10.0 |  |
+| `offsetxx` | Offset | Float | 0.0 | -1.0 .. 1.0 |  |
+| `offsetxy` | Offset | Float | 0.0 | -1.0 .. 1.0 |  |
+| `labelparmy` | Headingy | Label |  |  |  |
+| `scaley` | Scale | Float | [1.0] | 0.0 .. 10.0 |  |
+| `roty` | Rotate | Float | [0.0] | 0.0 .. 10.0 |  |
+| `offsetyx` | Offset | Float | 0.0 | -1.0 .. 1.0 |  |
+| `offsetyy` | Offset | Float | 0.0 | -1.0 .. 1.0 |  |
+| `labelparmz` | Headingz | Label |  |  |  |
+| `scalez` | Scale | Float | [1.0] | 0.0 .. 10.0 |  |
+| `rotz` | Rotate | Float | [0.0] | 0.0 .. 10.0 |  |
+| `offsetzx` | Offset | Float | 0.0 | -1.0 .. 1.0 |  |
+| `offsetzy` | Offset | Float | 0.0 | -1.0 .. 1.0 |  |
+| `blending` |  | FolderSet |  |  |  |
+| `blend` | Blend | Float | [0.02] | 0.0 .. 1.0 |  |
+| `xzblend` | XZ Blend | Ramp | 2 |  |  |
+| `yblend` | Y Blend | Ramp | 2 |  |  |
+| `xzblend1pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `xzblend1value` | Value | Float | [0.0] | 0.0 .. 10.0 |  |
+| `xzblend1interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `xzblend2pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `xzblend2value` | Value | Float | [0.0] | 0.0 .. 10.0 |  |
+| `xzblend2interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `yblend1pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `yblend1value` | Value | Float | [0.0] | 0.0 .. 10.0 |  |
+| `yblend1interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `yblend2pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `yblend2value` | Value | Float | [0.0] | 0.0 .. 10.0 |  |
+| `yblend2interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |

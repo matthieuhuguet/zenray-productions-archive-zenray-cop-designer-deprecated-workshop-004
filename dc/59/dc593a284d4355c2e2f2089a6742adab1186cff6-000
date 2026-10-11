@@ -1,0 +1,38 @@
+# wipe
+
+- Label: Wipe
+- Category: Copernicus (`Cop`), Houdini 22.0.368
+- Inputs: 2 to 4
+- Parameters: 14 (exact, read from Houdini by hython)
+- Used by the height graph: no
+
+## Feature summary (web, SideFX reference)
+
+- Source: https://www.sidefx.com/docs/houdini/nodes/cop/wipe.html
+- Summary (EN): Creates a gradual transition between two image sequences by overlaying input b on input a. Unlike the Blend COP, which keeps the layers fully overlapped, Wipe lets the user control where and how they overlap. Output: the transition result.
+- Résumé (FR) : Crée une transition progressive entre deux séquences d'images, en Cross Dissolve, Per-Pixel Flip ou Wipe, avec contrôle de la forme et de la ligne de séparation.
+
+- Inputs meaning: ["a: the base layer the wipe starts from", "b: the overlaying layer the wipe transitions to", "shape (optional): controls when pixels switch from one image to the other", "mask (optional): per-pixel mask amount, scaled by the Mask parameter"]
+
+- Key parameters: ["Operation: Cross Dissolve, Per-Pixel Flip, or Wipe (default)", "Amount: how much of the Operation is applied; higher brings in more of b; default 0.5", "Mask: how much of the new value is mixed in; default 1", "Seed: randomness for Per-Pixel Flip", "Shape (Wipe only): Line (default), Rectangle, Circle, 4 Corner Shrink", "Direction (Line wipe): orientation in degrees; default 0", "Filter Scale: anti-aliasing of the boundary; lower values give a sharper transition", "Line Width and Line Color (Wipe only): thickness and colour, with alpha, of the line between inputs"]
+
+- Caveats: ["Shape, Direction, Line Width and Line Color only apply when Operation is set to Wipe", "A wired shape input overrides the Shape parameter"]
+
+## Parameters (exact, from the installed Houdini)
+
+| parameter | label | type | default | range | menu tokens |
+|---|---|---|---|---|---|
+| `signature` | Signature | String | ["auto"] |  |  |
+| `mask` | Mask | Float | [1.0] | 0.0 .. 1.0 |  |
+| `amount` | Amount | Float | [0.5] | 0.0 .. 1.0 |  |
+| `op` | Operation | Menu | 2 |  | cross, dissolve, wipe |
+| `shape` | Shape | Menu | 0 |  | line, rectangle, circle, cornershrink |
+| `direction` | Direction | Float | [0.0] | 0.0 .. 360.0 |  |
+| `filterscale` | Filter Scale | Float | [1.0] | 0.0 .. 1.0 |  |
+| `useline` | Use Line | Toggle | false |  |  |
+| `lwidth` | Line Width | Float | [0.001] | 0.0 .. 1.0 |  |
+| `lcolorr` | Line Color | Float | 1.0 | 0.0 .. 1.0 |  |
+| `lcolorg` | Line Color | Float | 1.0 | 0.0 .. 1.0 |  |
+| `lcolorb` | Line Color | Float | 1.0 | 0.0 .. 1.0 |  |
+| `lcolora` | Line Color | Float | 1.0 | 0.0 .. 1.0 |  |
+| `seed` | Seed | Float | [0.0] | 0.0 .. 100.0 (strict) |  |

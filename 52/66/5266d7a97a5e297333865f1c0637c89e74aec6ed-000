@@ -1,0 +1,32 @@
+# testgeometry_squab
+
+- Label: Test Geometry: Squab
+- Category: Copernicus (`Cop`), Houdini 22.0.368
+- Inputs: 0 to 0
+- Parameters: 10 (exact, read from Houdini by hython)
+- Used by the height graph: no
+
+## Feature summary (web, SideFX reference)
+
+- Source: https://www.sidefx.com/docs/houdini/nodes/cop/testgeometry_squab.html
+- Summary (EN): Generates a procedurally built test model, called a squab, for prototyping and experimenting with effects. The page presents it as a more realistic alternative to a basic torus, with several components, holes and imperfect geometry.
+- Résumé (FR) : Ce nœud produit un modèle de test construit procéduralement, le squab, pour prototyper et tester des effets, avec des composants multiples, des trous et une géométrie imparfaite.
+
+- Key parameters: [{"name": "Signature", "meaning": "Sets whether the output is polygon geometry or a VDB signed distance field (SDF)."}, {"name": "Voxel Size", "meaning": "Voxel size for SDF output."}, {"name": "Translate", "meaning": "Positions the centre of the geometry."}, {"name": "Rotate", "meaning": "Rotates the geometry about its centre."}, {"name": "Uniform Scale", "meaning": "Scales the geometry evenly on all axes."}, {"name": "Add Shader", "meaning": "Attaches a default shader with embedded texture maps for rendering."}]
+
+- Caveats: ["Smaller voxel sizes represent the geometry more accurately but increase time and memory cost.", "The page lists outputs geo and basecolor, with no further technical limitations given."]
+
+## Parameters (exact, from the installed Houdini)
+
+| parameter | label | type | default | range | menu tokens |
+|---|---|---|---|---|---|
+| `signature` | Signature | String | ["default"] |  |  |
+| `voxelsize` | Voxel Size | Float | [0.1] | 0.0 .. 1.0 (strict) |  |
+| `tx` | Translate | Float | 0.0 | -1.0 .. 1.0 |  |
+| `ty` | Translate | Float | 0.0 | -1.0 .. 1.0 |  |
+| `tz` | Translate | Float | 0.0 | -1.0 .. 1.0 |  |
+| `rx` | Rotate | Float | 0.0 | 0.0 .. 360.0 |  |
+| `ry` | Rotate | Float | 0.0 | 0.0 .. 360.0 |  |
+| `rz` | Rotate | Float | 0.0 | 0.0 .. 360.0 |  |
+| `scale` | Uniform Scale | Float | [1.0] | 0.0 .. 10.0 |  |
+| `addshader` | Add Shader | Toggle | false |  |  |

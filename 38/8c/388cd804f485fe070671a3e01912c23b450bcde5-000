@@ -1,0 +1,49 @@
+# rasterizesetup
+
+- Label: Rasterize Setup
+- Category: Copernicus (`Cop`), Houdini 22.0.368
+- Inputs: 1 to 1
+- Parameters: 25 (exact, read from Houdini by hython)
+- Used by the height graph: no
+
+## Feature summary (web, SideFX reference)
+
+- Source: https://www.sidefx.com/docs/houdini/nodes/cop/rasterizesetup.html
+- Summary (EN): Rasterize Setup prepares geometry for the Rasterize Geometry COP. It fits and aligns the geometry to the default layer camera, a unit-radius cube at the origin, so the geometry renders as expected, and it can unwrap the geometry into UV space. It has one input, source, and one output, result.
+- Résumé (FR) : Ce nœud prépare la géométrie pour Rasterize Geometry en la cadrant sur la caméra par défaut, avec une option de dépliage en UV.
+
+- Inputs meaning: ["source: geometry to prepare for rasterization"]
+
+- Key parameters: ["Space: world position (P), or unwrap into UV space so UVs can be checked in the viewport", "Orientation: Y-Up leaves the geometry unchanged; Z-Up rotates it for top-down rasterization", "Fit From: No Fitting, Bounding Box or Reference Box; Reference Box uses a fixed size and position, which helps with animated sources", "Target Position / Target Size: the box the geometry is fitted into", "Scale to Fit: applies a uniform scale when fitting; otherwise only translation is applied", "Fit Depth: squashes the depth range to given bounds without changing the other axes", "UV Attribute: vertex or point UVs used for unwrapping", "Add Normals If Needed: computes normals when none exist", "Flatten UV Z Values: sets the Z component of float3 UVs to 0 when Space is UV", "Add Depth: creates a normalized depth attribute, 1 nearest the camera and 0 farthest, useful for masks", "Original Position: stores the position before unwrapping or fitting, so the original positions can be rasterized"]
+
+- Caveats: ["Fitting matters because the default camera has a fixed unit-radius frame; geometry outside it may not render as expected.", "The Rasterize Geometry COP does not compute missing normals, so enable Add Normals If Needed when geometry varies over time.", "When Space is UV, UV nodes that output float3 values can cause unexpected results unless the Z values are flattened.", "UV unwrapping splits polygons along UV seams, which changes the topology of the geometry."]
+
+## Parameters (exact, from the installed Houdini)
+
+| parameter | label | type | default | range | menu tokens |
+|---|---|---|---|---|---|
+| `space` | Space | Menu | 0 |  | pos, uv |
+| `orient` | Orientation | Menu | 0 |  | yup, zup |
+| `fit` | Fit From | Menu | 0 |  | none, bbox, refbox |
+| `refsizex` | Reference Size | Float | 2.0 | -1.0 .. 1.0 |  |
+| `refsizey` | Reference Size | Float | 2.0 | -1.0 .. 1.0 |  |
+| `refsizez` | Reference Size | Float | 2.0 | -1.0 .. 1.0 |  |
+| `refposx` | Reference Position | Float | 0.0 | -1.0 .. 1.0 |  |
+| `refposy` | Reference Position | Float | 0.0 | -1.0 .. 1.0 |  |
+| `refposz` | Reference Position | Float | 0.0 | -1.0 .. 1.0 |  |
+| `targetposx` | Target Position | Float | 0.0 | -1.0 .. 1.0 |  |
+| `targetposy` | Target Position | Float | 0.0 | -1.0 .. 1.0 |  |
+| `targetposz` | Target Position | Float | 0.0 | -1.0 .. 1.0 |  |
+| `targetsizex` | Target Size | Float | 2.0 | -1.0 .. 1.0 |  |
+| `targetsizey` | Target Size | Float | 2.0 | -1.0 .. 1.0 |  |
+| `targetsizez` | Target Size | Float | 2.0 | -1.0 .. 1.0 |  |
+| `doscale` | Scale to Fit | Toggle | false |  |  |
+| `dofitdepth` | Fit Depth | Toggle | false |  |  |
+| `fitdepthx` | Fit Depth | Float | -1.0 | -1.0 .. 1.0 |  |
+| `fitdepthy` | Fit Depth | Float | 1.0 | -1.0 .. 1.0 |  |
+| `uvattrib` | UV Attribute | String | ["uv"] |  |  |
+| `addnormal` | Add Normals If Needed | Toggle | true |  |  |
+| `flattenuvz` | Flatten UV Z Values | Toggle | false |  |  |
+| `adddepth` | Add Depth | Toggle | true |  |  |
+| `depthattrib` | Add Depth | String | ["depth"] |  |  |
+| `origpattrib` | Original Position | String | ["origP"] |  |  |

@@ -1,0 +1,27 @@
+# zcomp
+
+- Label: Z Composite
+- Category: Copernicus (`Cop`), Houdini 22.0.368
+- Inputs: 1 to 4
+- Parameters: 3 (exact, read from Houdini by hython)
+- Used by the height graph: no
+
+## Feature summary (web, SideFX reference)
+
+- Source: https://www.sidefx.com/docs/houdini/nodes/cop/zcomp.html
+- Summary (EN): Z Composite combines two layers according to their depth, placing the closer pixel in front of the farther one. Output: the composite layer with combined depth.
+- Résumé (FR) : Compose deux couches selon leur profondeur, en plaçant le pixel le plus proche devant l'autre, avec gestion de la conversion de profondeur et de l'offset anti-z-fighting.
+
+- Inputs meaning: ["bg: background layer; sets the output size and resolution; if it has the lower depth it is placed over fg instead", "bgdepth: per-pixel depth of the background layer", "fg: nominal foreground layer; if it has the greater depth it is placed behind bg instead", "fgdepth: per-pixel depth of the foreground layer"]
+
+- Key parameters: ["Signature: the layer type the source accepts", "Convert Depth: how input depth layers are read; Depth and Distance treat zero as infinity and increase away from the camera; Height has no special zero and increases toward the camera; the combined depth output keeps the input's type", "FG Offset: biases foreground depth toward the camera to prevent z-fighting when both share a depth; does not affect the output depth"]
+
+- Caveats: ["An ID layer cannot be blended, so the node outputs the ID value of the lowest-depth pixel instead"]
+
+## Parameters (exact, from the installed Houdini)
+
+| parameter | label | type | default | range | menu tokens |
+|---|---|---|---|---|---|
+| `signature` | Signature | String | ["auto"] |  |  |
+| `convertdepth` | Convert Detph | Menu | 1 |  | dist, depth, height |
+| `fgoffset` | FG Offset | Float | [0.0] | 0.0 .. 10.0 |  |

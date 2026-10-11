@@ -1,0 +1,34 @@
+# solvepoissonmultigrid
+
+- Label: Solve Poisson Multigrid
+- Category: Copernicus (`Cop`), Houdini 22.0.368
+- Inputs: 0 to 1
+- Parameters: 10 (exact, read from Houdini by hython)
+- Used by the height graph: no
+
+## Feature summary (web, SideFX reference)
+
+- Source: https://www.sidefx.com/docs/houdini/nodes/cop/solvepoissonmultigrid.html
+- Summary (EN): Solve Poisson Multigrid solves Poisson's equation over a rectangular layer using a geometric multigrid V-cycle. It is commonly used for pressure projection in fluid simulations, including inside the Flow Project Non-Divergent Multigrid and Flow Block nodes.
+- Résumé (FR) : Solve Poisson Multigrid résout l'équation de Poisson sur un calque rectangulaire par un cycle V multigrille, typiquement pour la projection de pression en simulation de fluide.
+
+- Inputs meaning: ["rhs: mono layer containing the residual"]
+
+- Key parameters: ["Output: mono layer named solution", "Iterations: number of V-cycles, more improves accuracy and costs time", "Smoothing Method: Gauss-Seidel (in place, less memory, converges better) or Jacobi (avoids checkerboard residuals, needs an extra copy)", "Up / Down Smoothing Iterations: smoothing passes after prolongation and before restriction", "Coarsest Smoothing Iterations: smoothing passes at the coarsest level, used in place of an exact solve", "Target Coarse Dimensions: sets when coarsening stops, larger gives fewer levels and more unknowns at the coarsest level", "X Borders / Y Borders: Open = Dirichlet (value 0), Closed = Neumann (zero normal derivative), Periodic = wrapped edges"]
+
+- Caveats: ["Coarsest Smoothing Iterations should be on the order of the square of Target Coarse Dimensions", "Raising Target Coarse Dimensions generally requires more coarsest-level iterations", "Higher iteration counts trade speed for accuracy", "Separate from Solve Poisson, which solves inside a 2D signed distance boundary"]
+
+## Parameters (exact, from the installed Houdini)
+
+| parameter | label | type | default | range | menu tokens |
+|---|---|---|---|---|---|
+| `iterations` | Iterations | Int | [2] | 1 .. 10 (strict) |  |
+| `smoothingmethod` | Smoothing Method | Menu | 0 |  | gs, jacobi |
+| `upsmooth` | Up Smoothing Iterations | Int | [2] | 1 .. 10 (strict) |  |
+| `downsmooth` | Down Smoothing Iterations | Int | [2] | 1 .. 10 (strict) |  |
+| `coarseiter` | Coarsest Smoothing Iterations | Int | [50] | 1 .. 100 (strict) |  |
+| `targetdim` | Target Coarse Dimensions | Int | [5] | 3 .. 10 (strict) |  |
+| `borderxneg` | X Borders | Menu | 0 |  | open, closed, periodic |
+| `borderxpos` | X Borders | Menu | 0 |  | open, closed |
+| `borderyneg` | Y Borders | Menu | 0 |  | open, closed, periodic |
+| `borderypos` | Y Borders | Menu | 0 |  | open, closed |

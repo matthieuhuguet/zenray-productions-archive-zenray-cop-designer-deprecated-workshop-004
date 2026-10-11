@@ -1,0 +1,26 @@
+# pyro_packedmipmap
+
+- Label: Pyro Packed MipMap
+- Category: Copernicus (`Cop`), Houdini 22.0.368
+- Inputs: 1 to 1
+- Parameters: 2 (exact, read from Houdini by hython)
+- Used by the height graph: no
+
+## Feature summary (web, SideFX reference)
+
+- Source: https://www.sidefx.com/docs/houdini/nodes/cop/pyro_packedmipmap.html
+- Summary (EN): Builds an in-place mipmap of a VDB: several half-resolution copies of the same VDB packed so many levels fit in roughly the original storage. A technical node meant to be computed once and sampled by other nodes, not an end-user effect.
+- Résumé (FR) : Pyro Packed MipMap construit un conteneur multi-résolution d'un VDB, réutilisable par les autres nœuds Pyro, et non un VDB exploitable directement.
+
+- Inputs meaning: ["source: Float or Vector VDB to compute the mipmap for"]
+
+- Key parameters: ["Signature: sets which VDB types the node accepts (see the Signatures glossary entry on the page)", "MipMap Depth: number of resolution levels stored, each half the resolution of the previous; most nodes use the first three levels; maximum 10"]
+
+- Caveats: ["The output is not a valid VDB and must not be used as one; it is a mipmap container with the input topology but values encoding several resolutions", "Requires DOP-level permissions; not in Houdini Core, works in Houdini FX, Apprentice, Indie and Education"]
+
+## Parameters (exact, from the installed Houdini)
+
+| parameter | label | type | default | range | menu tokens |
+|---|---|---|---|---|---|
+| `signature` | Signature | String | ["auto"] |  |  |
+| `maxdepth` | MipMap Depth | Int | [3] | 1 .. 10 |  |

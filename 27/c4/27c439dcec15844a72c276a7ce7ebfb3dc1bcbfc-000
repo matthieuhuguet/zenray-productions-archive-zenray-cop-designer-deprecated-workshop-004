@@ -1,0 +1,40 @@
+# vdbactivatefrompoints
+
+- Label: VDB Activate from Points
+- Category: Copernicus (`Cop`), Houdini 22.0.368
+- Inputs: 0 to 2048
+- Parameters: 16 (exact, read from Houdini by hython)
+- Used by the height graph: no
+
+## Feature summary (web, SideFX reference)
+
+- Source: https://www.sidefx.com/docs/houdini/nodes/cop/vdbactivatefrompoints.html
+- Summary (EN): Turns on the leaves of a VDB that contain points from one or more point clouds. The reference VDB sets the original size and origin of the result.
+- Résumé (FR) : Active les feuilles d'un VDB qui contiennent des points de nuages de points, en gardant la taille et l'origine du VDB de référence.
+
+- Inputs meaning: ["refvdb: reference VDB; its origin and voxel size are the starting point", "activate_pts1: one or more geometry inputs; any leaf containing one of their points is activated"]
+
+- Key parameters: ["Leaf Dilation: expands the active region by a fixed number of leaves", "Leaf Dilation Dist: expands the active region by a world-space distance rounded to the nearest leaf; the larger of this and Leaf Dilation is used", "Voxel Scale: scales the reference voxel size to produce a higher or lower resolution VDB", "Sort Leaves: makes leaf processing order repeatable, at extra time cost", "Clip Min X/Y/Z and Clip Max X/Y/Z: deactivate leaves whose world positions fall outside the bounds"]
+
+- Caveats: ["Leaf order is non-deterministic by default; enable Sort Leaves if the algorithm depends on processing order", "Reads optional point attributes: integer invalid (non-zero means the point is ignored) and integer dilation (packs per-direction dilation hints)"]
+
+## Parameters (exact, from the installed Houdini)
+
+| parameter | label | type | default | range | menu tokens |
+|---|---|---|---|---|---|
+| `leafdilation` | Leaf Dilation | Int | [0] | 0 .. 5 (strict) |  |
+| `leafdilationdist` | Leaf Dilation Dist | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `voxelscale` | Voxel Scale | Float | [1.0] | 0.0 .. 10.0 (strict) |  |
+| `sortleaves` | Sort Leaves | Toggle | false |  |  |
+| `doclipxmin` | Clip Min X | Toggle | false |  |  |
+| `clipxmin` | Clip Min X | Float | [-1.0] | -10.0 .. 10.0 |  |
+| `doclipxmax` | Clip Max X | Toggle | false |  |  |
+| `clipxmax` | Clip Max X | Float | [1.0] | -10.0 .. 10.0 |  |
+| `doclipymin` | Clip Min Y | Toggle | false |  |  |
+| `clipymin` | Clip Min Y | Float | [-1.0] | -10.0 .. 10.0 |  |
+| `doclipymax` | Clip Max Y | Toggle | false |  |  |
+| `clipymax` | Clip Max Y | Float | [1.0] | -10.0 .. 10.0 |  |
+| `doclipzmin` | Clip Min Z | Toggle | false |  |  |
+| `clipzmin` | Clip Min Z | Float | [-1.0] | -10.0 .. 10.0 |  |
+| `doclipzmax` | Clip Max Z | Toggle | false |  |  |
+| `clipzmax` | Clip Max Z | Float | [1.0] | -10.0 .. 10.0 |  |

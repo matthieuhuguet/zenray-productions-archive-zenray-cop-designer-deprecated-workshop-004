@@ -1,0 +1,43 @@
+# surfacedither
+
+- Label: Surface Dither
+- Category: Copernicus (`Cop`), Houdini 22.0.368
+- Inputs: 1 to 3
+- Parameters: 19 (exact, read from Houdini by hython)
+- Used by the height graph: no
+
+## Feature summary (web, SideFX reference)
+
+- Source: https://www.sidefx.com/docs/houdini/nodes/cop/surfacedither.html
+- Summary (EN): Surface Dither applies a halftone dither pattern whose scale is set in UV (texture map) space, so the pattern stays attached to the object rather than the camera. It switches texture levels in UV space so the dots do not become too small and alias.
+- Résumé (FR) : Surface Dither applique une trame de points dont l'échelle est fixée dans l'espace UV, pour que le motif reste attaché à la surface et non à la caméra.
+
+- Inputs meaning: ["uv: UV layer giving surface locations as a texture map, required for the surface-stable behaviour", "dotscale (optional): layer scaling the size of the dots", "shape (optional): SDF layer defining the dot shape, a plain dot is used when unwired"]
+
+- Key parameters: ["Density Scale: overall scale of the surface-stable pattern in UV space", "Pattern Scale / Pattern Scale XY: uniform and per-axis scale in UV space", "Pattern Offset / Pattern Rotate: translation and rotation in UV space", "Dot Scale: global scale for dotscale and the Level Transition", "Output Type: Mask (black and white, uses Iso Offset and Smooth) or raw SDF", "Iso Offset: threshold converting the SDF to a mask, adjusts dot size without changing level transitions", "Smooth: softness of the edge when converting the SDF to a mask", "Level Transition: adjusts dot scale when switching texture levels", "Shape Resolution: resolution the shape input is resampled to, trading filtering detail for speed"]
+
+- Caveats: ["The pattern is computed in texture map space, so the UV input must be valid for the dither to stick to the surface", "The pattern repeats, so large Pattern Offset changes may look like little or no effect", "A custom shape or a lower Shape Resolution changes the look and filtering, results may need tuning", "Introduced in Houdini 21.0"]
+
+## Parameters (exact, from the installed Houdini)
+
+| parameter | label | type | default | range | menu tokens |
+|---|---|---|---|---|---|
+| `densityscale` | Density Scale | Float | [1.0] | 0.1 .. 3.0 |  |
+| `patternscale` | Pattern Scale | Float | [1.0] | 0.0 .. 10.0 |  |
+| `patternscalexyx` | Pattern Scale XY | Float | 1.0 | 0.0 .. 1.0 |  |
+| `patternscalexyy` | Pattern Scale XY | Float | 1.0 | 0.0 .. 1.0 |  |
+| `patternoffsetx` | Pattern Offset | Float | 0.0 | 0.0 .. 1.0 |  |
+| `patternoffsety` | Pattern Offset | Float | 0.0 | 0.0 .. 1.0 |  |
+| `patternrotate` | Pattern Rotate | Float | [0.0] | -180.0 .. 180.0 |  |
+| `dotscale` | Dot Scale | Float | [0.2] | 0.0 .. 1.0 |  |
+| `output` | Output Type | Menu | 0 |  | mask, sdf |
+| `maskiso` | Iso Offset | Float | [0.0] | -1.0 .. 1.0 |  |
+| `masksmooth` | Smooth | Float | [0.01] | 0.0 .. 0.1 (strict) |  |
+| `leveltransitionramp` | Level Transition | Ramp | 2 |  |  |
+| `shaperes` | Shape Resolution | Int | [128] | 0 .. 256 |  |
+| `leveltransitionramp1pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `leveltransitionramp1value` | Value | Float | [0.0] | 0.0 .. 10.0 |  |
+| `leveltransitionramp1interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `leveltransitionramp2pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `leveltransitionramp2value` | Value | Float | [0.0] | 0.0 .. 10.0 |  |
+| `leveltransitionramp2interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |

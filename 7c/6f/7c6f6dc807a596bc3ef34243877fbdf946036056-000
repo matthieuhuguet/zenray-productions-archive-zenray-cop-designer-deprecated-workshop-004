@@ -1,0 +1,941 @@
+# Substance 3D Designer filter nodes, documentation only
+
+- Date: 11 October 2026
+- Scope of this pass: Filters > Adjustments, Filters > Blending, Filters > Blurs, Filters > Effects (warp and distance nodes only), Filters > Transforms, and the atomic nodes Blend, Blur, Directional blur, Directional warp, Warp, Curve, Levels, Distance and Transformation 2D.
+- Not in this pass: the other Filters > Effects nodes (Bevel, Glow, Edge Detect, Emboss, Shadows and others), Filters > Channels, Filters > Normal Map, Filters > Tiling, Material filters, texture generators, mesh-based generators, 3D view nodes, function graph nodes.
+- Method: Substance 3D Designer is not installed on this machine. Every node and page below was read with WebSearch and WebFetch on Adobe's official Substance 3D Designer documentation (Experience League). The node list comes from the official node library index: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/node-library (read 11 October 2026). The HelpX copies of the same pages returned HTTP 403 to WebFetch, so the Experience League pages were used.
+- Names: node titles are written exactly as the official pages title them. Grayscale variants named on a page are listed inside their parent section and are not counted as separate nodes.
+- Copernicus names: taken only from /Users/zenray/.claude/skills/zenray-cop-designer/inventory/cop_names.txt. The "Cop" family is the Copernicus context. The "Cop2" family is the legacy COP2 context and is still listed in cop_names.txt. A Cop2 name is used only when no Cop-family name is close, and it is flagged "legacy COP2".
+- Fit levels: close (same operation), approximate (similar operation, different parameters or behaviour), none (no equivalent in cop_names.txt).
+- Mapping status: every mapping on this page is documented_only. No mapping was tested in Houdini.
+- Defaults and numeric ranges: written "not stated" wherever the official page does not give them. No value was guessed.
+- Blend modes: the Blend node takes 12 blend modes. They are listed once, inside section 1, and are not counted as nodes.
+
+## Index
+
+- 1 Blend (atomic): Cop blend (close)
+- 2 Blur (atomic): Cop blur (close)
+- 3 Directional blur (atomic): Cop streakblur (approximate)
+- 4 Directional warp (atomic): Cop distort (approximate)
+- 5 Warp (atomic): Cop distort (approximate)
+- 6 Curve (atomic): Cop remap (approximate)
+- 7 Levels (atomic): Cop2 levels (approximate, legacy COP2)
+- 8 Distance (atomic): Cop eikonal (approximate)
+- 9 Transformation 2D (atomic): Cop xform2d (close)
+- 10 Anisotropic Blur: Cop streakblur (approximate)
+- 11 Blur HQ: Cop blur (approximate)
+- 12 Non Uniform Blur: Cop defocus (approximate)
+- 13 Radial Blur: Cop2 radialblur (approximate, legacy COP2)
+- 14 Slope Blur: Cop streakblur (approximate)
+- 15 Color (Blend Node): Cop blend (approximate)
+- 16 Color Burn: Cop blend (approximate)
+- 17 Color Dodge: Cop blend (approximate)
+- 18 Difference: Cop blend (approximate)
+- 19 Dissolve: Cop blend (approximate)
+- 20 Linear Burn: Cop blend (approximate)
+- 21 Luminosity (Blend Node): Cop blend (approximate)
+- 22 Multi Switch: Cop switch (approximate)
+- 23 Switch: Cop switch (close)
+- 24 Directional distance: Cop eikonal (approximate)
+- 25 Multi Directional Warp: Cop distort (approximate)
+- 26 Non Uniform Directional Warp: Cop distort (approximate)
+- 27 Swirl: Cop swirl (close)
+- 28 Vector Warp: Cop distort (approximate)
+- 29 Vector Morph: Cop distort (approximate)
+- 30 3D Texture Offset: none
+- 31 Auto Crop: Cop crop (approximate)
+- 32 Cartesian To Polar: Cop uvtopolar (approximate)
+- 33 Polar to Cartesian: Cop polartouv (close)
+- 34 Clone (Filter Node): none
+- 35 Mirror (Filter Node): Cop mirror (close)
+- 36 Noise Upscale 1: Cop resample (approximate)
+- 37 Noise Upscale 2: Cop resample (approximate)
+- 38 Noise Upscale 3: Cop resample (approximate)
+- 39 Safe Transform: Cop xform2d (approximate)
+- 40 Non-Square Transform: Cop xform2d (approximate)
+- 41 Non-Uniform Rotation: Cop distort (approximate)
+- 42 Skew: Cop xform2d (approximate)
+- 43 Symmetry: Cop mirror (approximate)
+- 44 Symmetry Slice: Cop mirror (approximate)
+- 45 Trapezoid Transform: Cop cornerpin (approximate)
+- 46 Quad Transform: Cop cornerpin (close)
+- 47 Auto Levels: Cop contrast (approximate)
+- 48 Channel Mixer: Cop channelswap (approximate)
+- 49 Chrominance Extract: none
+- 50 Clamp: Cop clamp (close)
+- 51 Color Match: Cop colorcorrect (approximate)
+- 52 Color To Mask: Cop chromakey (approximate)
+- 53 Contrast/Luminosity: Cop contrast (close)
+- 54 Convert To Linear: Cop gamma (approximate)
+- 55 Convert to sRGB: Cop ociotransform (approximate)
+- 56 Grayscale Conversion Advanced: Cop mono (approximate)
+- 57 Hald CLUT: Cop ociotransform (approximate)
+- 58 HDR Range Viewer: none
+- 59 Height Map Frequencies Mapper: Cop filterfrequencies (approximate)
+- 60 Highpass: Cop filterfrequencies (approximate)
+- 61 Histogram Range: Cop histogram (approximate)
+- 62 Histogram Scan: Cop histogram (approximate)
+- 63 Histogram Scan Non-Uniform: Cop histogram (approximate)
+- 64 Histogram Select: Cop histogram (approximate)
+- 65 Histogram Shift: Cop histogram (approximate)
+- 66 Invert: Cop invert (close)
+- 67 Lighting Cancel High Frequencies: Cop filterfrequencies (approximate)
+- 68 Lighting Cancel Low Frequencies: Cop filterfrequencies (approximate)
+- 69 Luminance Highpass: Cop filterfrequencies (approximate)
+- 70 Min Max: Cop statistics (approximate)
+- 71 Pow: Cop gamma (close)
+- 72 Quantize (named Quantize Color (Simple) on its page): Cop quantize (close)
+- 73 Replace Color: Cop colorcorrect (approximate)
+- 74 Replace Color Range: Cop colorcorrect (approximate)
+- 75 Threshold: Cop clamp (approximate)
+
+## Atomic nodes
+
+## 1. Blend (atomic)
+
+- Date: 11 October 2026
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/atomic-nodes/blend/blend
+- Category: Atomic nodes
+- Purpose: Combines a Foreground and a Background with a chosen blending mode, optionally limited by a mask.
+- Inputs: Foreground (Grayscale or Color), Background (Grayscale or Color, primary), Opacity (Grayscale, optional alpha mask). Foreground and Background must have the same type.
+- Parameters: Opacity (Float, multiplies the Opacity input), Blending mode (Integer, static), Alpha blending (Integer, static: Use source alpha, Ignore alpha, Straight alpha blending, Premultiplied alpha blending), Cropping area (Float4, static, acts as an extra opacity mask).
+- Blend modes (values of the Blending mode parameter, source https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/atomic-nodes/blend/blending-modes-description, read 11 October 2026): Copy, Add (Linear dodge), Subtract, Multiply, Add sub, Max (Lighten), Min (Darken), Switch, Divide, Overlay, Screen, Soft light. The page lists 12 modes.
+- Defaults and ranges: not stated.
+- Copernicus nearest: Cop blend (fit: close)
+- Mapping status: documented_only
+
+## 2. Blur (atomic)
+
+- Date: 11 October 2026
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/atomic-nodes/blur
+- Category: Atomic nodes, simplest and fastest blur
+- Purpose: Applies a box blur that averages neighbouring pixel values over a set distance, giving a fuzzy result.
+- Inputs: not stated on the fetched page.
+- Parameters: Intensity (blur distance, range 0 to unlimited; type and default not stated). Values above the useful range turn the image into one averaged colour.
+- Notes: The page points to Blur HQ (section 11) for demanding work.
+- Copernicus nearest: Cop blur (fit: close)
+- Mapping status: documented_only
+
+## 3. Directional blur (atomic)
+
+- Date: 11 October 2026
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/atomic-nodes/directional-blur
+- Category: Atomic nodes
+- Purpose: Blurs along a user-defined angle, similar to motion blur.
+- Inputs: Input (Grayscale or Color, primary). The purpose sentence on the page mentions an intensity map, but the fetched input list shows only Input.
+- Parameters: Intensity (Float, blur radius in pixels; default and range not stated), Angle (Float, turns clockwise from horizontal, where 0 points along (1, 0); default and range not stated).
+- Copernicus nearest: Cop streakblur (fit: approximate)
+- Mapping status: documented_only
+
+## 4. Directional warp (atomic)
+
+- Date: 11 October 2026
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/atomic-nodes/directional-warp
+- Category: Atomic nodes
+- Purpose: Pushes pixels in one chosen direction according to an intensity map, which deforms the image.
+- Inputs: Input (Grayscale or Color, primary), Intensity input (Grayscale, controls how much warp each area receives).
+- Parameters: Intensity (Float, warp strength), Warp angle (Float, in turns), Input filtering mode (Boolean, nearest or bilinear sampling), Intensity map offset (Float, subtracted from the Intensity input values). Defaults and ranges not stated.
+- Copernicus nearest: Cop distort (fit: approximate)
+- Mapping status: documented_only
+
+## 5. Warp (atomic)
+
+- Date: 11 October 2026
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/atomic-nodes/warp
+- Category: Atomic nodes
+- Purpose: Displaces the pixels of the Input according to the slopes of a separate gradient input, which deforms the image.
+- Inputs: Input, plus a separate gradient input (its name is not given in the fetched text).
+- Parameters: Intensity (Float, warp strength), Input filtering mode (Boolean, nearest or bilinear). Defaults and ranges not stated.
+- Copernicus nearest: Cop distort (fit: approximate)
+- Mapping status: documented_only
+
+## 6. Curve (atomic)
+
+- Date: 11 October 2026
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/atomic-nodes/curve
+- Category: Atomic nodes
+- Purpose: Remaps the values of an image through a custom curve.
+- Inputs: Input (Grayscale or Color, primary).
+- Parameters: Apply/Expose curve (Boolean, copies the curve to the output instead of applying it), Curve addressing (Boolean, clamps or folds HDR values outside [0, 1]), Curve (array of curve keys, edited in the Curve editor). Defaults not stated.
+- Copernicus nearest: Cop remap (fit: approximate). Legacy COP2 alternative: Cop2 colorcurve.
+- Mapping status: documented_only
+
+## 7. Levels (atomic)
+
+- Date: 11 October 2026
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/atomic-nodes/levels
+- Category: Atomic nodes
+- Purpose: Adjusts the overall tonal range and colour balance of shadows, midtones and highlights.
+- Inputs: Input (Grayscale or Color, primary).
+- Parameters: Level in low, Level in high, Level in mid (Float or Float4, input remapping), Level out low, Level out high (Float or Float4, output clamps), Intermediary clamp (Boolean, clamps the transformed input to [0, 1] before the output level). Defaults and ranges not stated.
+- Copernicus nearest: Cop2 levels (fit: close, legacy COP2 family). No Cop-family levels node is listed in cop_names.txt.
+- Mapping status: documented_only
+
+## 8. Distance (atomic)
+
+- Date: 11 October 2026
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/atomic-nodes/distance
+- Category: Atomic nodes
+- Purpose: Finds the nearest white pixel in a mask and outputs a gradient from that position, or the colour found at that position in a source image.
+- Inputs: a mask input and a Source input (names not given in the fetched text).
+- Parameters: Color mode (Boolean, grayscale or colour output), Maximum distance (Float, in pixels), Combine source/distance (Boolean: Combine blends the Source with the fading linear mask, Only Source outputs the Source colour only), Distance mode (Integer: Euclidean, Manhattan, Chebyshev). Defaults and ranges not stated.
+- Copernicus nearest: Cop eikonal (fit: approximate)
+- Mapping status: documented_only
+
+## 9. Transformation 2D (atomic)
+
+- Date: 11 October 2026
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/atomic-nodes/transformation-2d
+- Category: Atomic nodes
+- Purpose: Applies a 2D transformation matrix (translation, rotation, scaling, symmetry, shearing) to an image.
+- Inputs: Input (Grayscale or Color, primary).
+- Parameters: Transformation matrix (Float4, can be edited with the 2D view gizmo), Offset (Float2), Mipmap mode (Integer), Mipmap level (Integer, only in Manual mode), Matte color (Float4, background where the input does not cover the output when tiling is off), Filtering (Integer, downsampling method). Defaults and ranges not stated.
+- Copernicus nearest: Cop xform2d (fit: close)
+- Mapping status: documented_only
+
+## Filters > Blurs
+
+## 10. Anisotropic Blur
+
+- Date: 11 October 2026
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/filters/blurs/anisotropic-blur
+- Category: Filters > Blurs
+- Purpose: Performs a high-quality directional blur, also called motion blur, with controls for its appearance.
+- Grayscale variant: Anisotropic Blur Grayscale, for grayscale inputs.
+- Inputs: not stated.
+- Parameters: Intensity (range 0.0 to 16.0, blur radius), Anisotropy (range 0.0 to 1.0, where 0.0 is a regular blur), Angle (range 0.0 to 1.0, blur direction), Quality (range 0 to 1, switches between box blur and HQ blur). Types and defaults not stated.
+- Copernicus nearest: Cop streakblur (fit: approximate)
+- Mapping status: documented_only
+
+## 11. Blur HQ
+
+- Date: 11 October 2026
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/filters/blurs/blur-hq
+- Category: Filters > Blurs
+- Purpose: Applies a higher-quality Gaussian blur than the standard atomic Blur, at a higher calculation cost.
+- Grayscale variant: Blur HQ Grayscale, for grayscale inputs.
+- Inputs: not stated.
+- Parameters: Intensity (range 0.0 to 16.0, blur radius), Quality (range 0 to 1, more internal sampling for better quality and lower speed). Types and defaults not stated.
+- Copernicus nearest: Cop blur (fit: approximate, quality model not compared)
+- Mapping status: documented_only
+
+## 12. Non Uniform Blur
+
+- Date: 11 October 2026
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/filters/blurs/non-uniform-blur
+- Category: Filters > Blurs
+- Purpose: Applies a high-quality blur whose strength is controlled per pixel by an input mask, with optional directional effects.
+- Inputs: Blur Map (Grayscale). The main input name is not given in the fetched text.
+- Parameters: Intensity (range 0.0 to 50.0), Anisotropy (range 0.0 to 1.0), Asymmetry (range 0.0 to 1.0), Angle (range 0.0 to 1.0), Samples (range 1 to 16), Blades (range 1 to 9). Types and defaults not stated.
+- Copernicus nearest: Cop defocus (fit: approximate)
+- Mapping status: documented_only
+
+## 13. Radial Blur
+
+- Date: 11 October 2026
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/filters/blurs/radial-blur
+- Category: Filters > Blurs
+- Purpose: Applies a spinning, motion-style blur to the input.
+- Inputs: not stated.
+- Parameters: Samples (range 1 to 128, blur quality), Angle (range 0.0 to 0.5, amount of spin), Center Position (range not stated, centre of the effect). Types and defaults not stated.
+- Copernicus nearest: Cop2 radialblur (fit: approximate, legacy COP2). No Cop-family radial blur is listed in cop_names.txt.
+- Mapping status: documented_only
+
+## 14. Slope Blur
+
+- Date: 11 October 2026
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/filters/blurs/slope-blur
+- Category: Filters > Blurs
+- Purpose: Performs a high-quality blur whose direction is driven by a grayscale slope map.
+- Grayscale variant: Slope Blur Grayscale, for grayscale inputs.
+- Inputs: Slope (Grayscale, drives the angle of the anisotropy; smooth gradients work best).
+- Parameters: Samples (range 0 to 32), Intensity (range 0.0 to 16.0), Mode (Blur, Min, Max: Blur acts as an anisotropic blur, Min erodes existing areas, Max smears white areas). Types and defaults not stated.
+- Copernicus nearest: Cop streakblur (fit: approximate). Whether Cop streakblur accepts a per-pixel direction map was not verified in this pass.
+- Mapping status: documented_only
+
+## Filters > Blending
+
+## 15. Color (Blend Node)
+
+- Date: 11 October 2026
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/filters/blending/color-blend-node
+- Category: Filters > Blending
+- Purpose: Keeps the Background luminance while taking the Foreground hue and chrominance.
+- Inputs: Foreground (Color), Background (Color), Mask (Grayscale, masks the effect of the node).
+- Parameters: Opacity (range 0.0 to 1.0), Alpha Blending (Boolean, False ignores the Foreground alpha). Types and defaults not stated.
+- Copernicus nearest: Cop blend (fit: approximate, the blend mode is a parameter in Cop blend and this mode is fixed here)
+- Mapping status: documented_only
+
+## 16. Color Burn
+
+- Date: 11 October 2026
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/filters/blending/color-burn
+- Category: Filters > Blending
+- Purpose: Blends Foreground and Background colours with the Color Burn mode.
+- Inputs: Foreground (Color), Background (Color), Mask (Grayscale).
+- Parameters: Opacity (range 0.0 to 1.0), Alpha Blending (Boolean). Types and defaults not stated.
+- Copernicus nearest: Cop blend (fit: approximate)
+- Mapping status: documented_only
+
+## 17. Color Dodge
+
+- Date: 11 October 2026
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/filters/blending/color-dodge
+- Category: Filters > Blending
+- Purpose: Blends Foreground and Background with the colour dodge formula, Background divided by (1 minus Foreground).
+- Inputs: Foreground (Color), Background (Color), Mask (Grayscale).
+- Parameters: Opacity (Float, range 0.0 to 1.0), Alpha Blending (Boolean). Defaults not stated.
+- Copernicus nearest: Cop blend (fit: approximate)
+- Mapping status: documented_only
+
+## 18. Difference
+
+- Date: 11 October 2026
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/filters/blending/difference
+- Category: Filters > Blending
+- Purpose: Blends with the Difference mode, returning a non-negative result. The page wording is Background subtracted from Foreground.
+- Inputs: Background (Color), Foreground (Color), Mask (Grayscale, masks the effect of the node).
+- Parameters: Opacity (range 0.0 to 1.0), Alpha Blending (Boolean). Defaults not stated.
+- Copernicus nearest: Cop blend (fit: approximate)
+- Mapping status: documented_only
+
+## 19. Dissolve
+
+- Date: 11 October 2026
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/filters/blending/dissolve
+- Category: Filters > Blending
+- Purpose: Blends two inputs with White Noise as the mask of the transition.
+- Inputs: Foreground (Color), Background (Color), Mask (Grayscale).
+- Parameters: Opacity (range 0.0 to 1.0), Alpha Blending (Boolean). Defaults not stated.
+- Copernicus nearest: Cop blend (fit: approximate, the noise mask is not part of the Cop blend name)
+- Mapping status: documented_only
+
+## 20. Linear Burn
+
+- Date: 11 October 2026
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/filters/blending/linear-burn
+- Category: Filters > Blending
+- Purpose: Blends with the Linear Burn formula, Foreground plus Background minus 1.
+- Inputs: Foreground (Color), Background (Color), Mask (Grayscale).
+- Parameters: Opacity (range 0.0 to 1.0), Alpha Blending (Boolean). Defaults not stated.
+- Copernicus nearest: Cop blend (fit: approximate)
+- Mapping status: documented_only
+
+## 21. Luminosity (Blend Node)
+
+- Date: 11 October 2026
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/filters/blending/luminosity-blend-node
+- Category: Filters > Blending
+- Purpose: Keeps the Background hue and chrominance while taking the Foreground luminance.
+- Inputs: Foreground (Color), Background (Color), Mask (Grayscale, masks the effect of the node).
+- Parameters: Opacity (range 0.0 to 1.0), Alpha Blending (Boolean). Defaults not stated.
+- Copernicus nearest: Cop blend (fit: approximate)
+- Mapping status: documented_only
+
+## 22. Multi Switch
+
+- Date: 11 October 2026
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/filters/blending/multi-switch
+- Category: Filters > Blending
+- Purpose: Returns only the input picked by Input Selection, unmodified.
+- Grayscale variant: Multi Switch Grayscale, for grayscale inputs.
+- Inputs: Input 1 to Input 20 (Color).
+- Parameters: Input Number (range 2 to 20, number of exposed inputs; reducing it keeps existing connections), Input Selection (range 1 to 20, chooses the returned input). Types and defaults not stated.
+- Copernicus nearest: Cop switch (fit: approximate)
+- Mapping status: documented_only
+
+## 23. Switch
+
+- Date: 11 October 2026
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/filters/blending/switch
+- Category: Filters > Blending
+- Purpose: Outputs Input 1 or Input 2 depending on the Switch parameter, without modifying the result.
+- Inputs: Input 1 (True), Input 2 (False), both Color or Grayscale.
+- Parameters: Switch (Boolean, True selects Input 1, False selects Input 2). Default not stated.
+- Notes: Invert Grayscale and other grayscale variants are separate nodes on the official library, not sections here.
+- Copernicus nearest: Cop switch (fit: close)
+- Mapping status: documented_only
+
+## Filters > Effects (warps and distance)
+
+## 24. Directional distance
+
+- Date: 11 October 2026
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/filters/effects/directional-distance
+- Category: Filters > Effects
+- Purpose: Draws a distance gradient from the borders of a mask in a specified direction.
+- Inputs: Input (Grayscale, primary, the source of the mask), Distance map (Grayscale, optional, used when Distance map multiplier is above 0), Angle map (Grayscale, optional, used when Angle map multiplier is above 0).
+- Outputs: Output (Grayscale), UV (Color, a dilated UV map for a UV Mapper node).
+- Parameters: Output mode (Inverted Normalized Distance, Distance), Maximum distance (Float, normalized where 1 is the shorter side of the input), Angle (Float, in turns, 0 points right), Distance map multiplier (Float), Angle map multiplier (Float), Angle map offset (Float, which Angle map value counts as 0). Defaults and ranges not stated.
+- Copernicus nearest: Cop eikonal (fit: approximate)
+- Mapping status: documented_only
+
+## 25. Multi Directional Warp
+
+- Date: 11 October 2026
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/filters/effects/multi-directional-warp
+- Category: Filters > Effects
+- Purpose: Applies a Directional Warp several times in opposite directions while the displaced texture stays in place.
+- Inputs: Input (Grayscale or Color, the base map), Intensity Input (Grayscale, mandatory).
+- Parameters: Intensity (range 0.0 to 20.0), Warp Angle (range 0.0 to 1.0), Mode (Average, Max, Min, Chain; only effective when Directions is 2 or 4), Directions (1, 2 or 4 axes; 1 warps along the angle and its opposite, 2 adds the perpendicular axis, 4 adds 45 degree steps). Defaults not stated.
+- Copernicus nearest: Cop distort (fit: approximate)
+- Mapping status: documented_only
+
+## 26. Non Uniform Directional Warp
+
+- Date: 11 October 2026
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/filters/effects/non-uniform-directional-warp
+- Category: Filters > Effects
+- Purpose: An advanced Directional Warp whose intensity and direction are driven by image inputs.
+- Inputs: Input (Grayscale, base map), Intensity Input (Grayscale, mandatory), Warp Angle Input (Grayscale, mandatory).
+- Parameters: Intensity (range 0.0 to 20.0), Warp Angle (range 0.0 to 1.0), Warp Angle Input Multiplier (range 0.0 to 1.0, how strongly the Warp Angle Input map changes the angle), Trail Mode (Min, Max, Average), Trail Length (range 0.0 to 1.0), Trail Fade (range 0.0 to 1.0), Trail Curve (range -1.0 to 1.0, only effective when Trail Fade is not 0). Defaults not stated.
+- Copernicus nearest: Cop distort (fit: approximate)
+- Mapping status: documented_only
+
+## 27. Swirl
+
+- Date: 11 October 2026
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/filters/effects/swirl
+- Category: Filters > Effects
+- Purpose: Distorts the input into a spiral pattern and lets the effect be repositioned on the canvas.
+- Inputs: not stated.
+- Parameters: Matrix (transformation matrix, moved with handles in the 2D preview), Offset (range 0.0 to 1.0), Amount (range -16.0 to 16.0, strength of the swirl). Defaults not stated.
+- Copernicus nearest: Cop swirl (fit: close)
+- Mapping status: documented_only
+
+## 28. Vector Warp
+
+- Date: 11 October 2026
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/filters/effects/vector-warp
+- Category: Filters > Effects
+- Purpose: Advanced distortion, similar to Warp and Directional Warp, driven by a colour vector map so that the direction can vary.
+- Inputs: Input (Color, the map to distort), Vector Map (Color, the distortion driver).
+- Parameters: Intensity (range 0.0 to 1.0, multiplier of the Vector Map), Vector Format (DirectX or OpenGL, which swaps the Up and Down interpretation of the Green channel).
+- Notes: The fetched page is inconsistent on which Vector Map channels hold X and Y (Red and Blue in one place, Red and Green in another). Verify in the application before relying on it.
+- Copernicus nearest: Cop distort (fit: approximate)
+- Mapping status: documented_only
+
+## 29. Vector Morph
+
+- Date: 11 October 2026
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/filters/effects/vector-morph
+- Category: Filters > Effects
+- Purpose: Distorts the input with a Vector Map by moving pixels with the map Red and Green values, clamping edges instead of tiling.
+- Inputs: Input (Color or Grayscale, the image to warp), Vector Field (Color, the driving map).
+- Parameters: Amount (range 0.0 to 1.0, multiplier on the Vector Map). Defaults not stated.
+- Copernicus nearest: Cop distort (fit: approximate)
+- Mapping status: documented_only
+
+## Filters > Transforms
+
+## 30. 3D Texture Offset
+
+- Date: 11 October 2026
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/filters/transforms/3d-texture-offset
+- Category: The page states "Filter > Transformation", and the library index lists it under Filters > Transforms.
+- Purpose: Shifts an object described by a connected 3D texture along the X, Y and Z axes.
+- Inputs: Input (Grayscale or Color, the 3D texture of the object, commonly a unit cube).
+- Parameters: Offset (Float3, in world space). Defaults and ranges not stated.
+- Copernicus nearest: none
+- Mapping status: documented_only
+
+## 31. Auto Crop
+
+- Date: 11 October 2026
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/filters/transforms/auto-crop
+- Category: Filters > Transforms
+- Purpose: Centres the content without resizing it, or resizes it to span the image, using the bounds of non-black pixels.
+- Inputs: Input.
+- Parameters: Mode (Integer: Crop square, Crop auto, Fit keep ratio, Fill stretch), Use alpha (Boolean, Color version only), Filtering Mode (Integer: Nearest, Bilinear, Auto). Defaults not stated.
+- Copernicus nearest: Cop crop (fit: approximate)
+- Mapping status: documented_only
+
+## 32. Cartesian To Polar
+
+- Date: 11 October 2026
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/filters/transforms/cartesian-to-polar
+- Category: Filters > Transforms
+- Purpose: Converts the input from Cartesian X and Y coordinates to polar angle and radius.
+- Inputs and parameters: not stated on the fetched page.
+- Copernicus nearest: Cop uvtopolar (fit: approximate)
+- Mapping status: documented_only
+
+## 33. Polar to Cartesian
+
+- Date: 11 October 2026
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/filters/transforms/polar-to-cartesian
+- Category: Filters > Transforms
+- Purpose: Converts an input in polar coordinates (angle and radius) into Cartesian X and Y.
+- Inputs and parameters: not stated on the fetched page.
+- Copernicus nearest: Cop polartouv (fit: close)
+- Mapping status: documented_only
+
+## 34. Clone (Filter Node)
+
+- Date: 11 October 2026
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/filters/transforms/clone-filter-node
+- Category: Filters > Transforms
+- Purpose: Clones the input once to a set location, as a rough clone stamp.
+- Inputs: Source (Color), Mask (Grayscale, defaults to black).
+- Parameters: Offset (positive values shift left and up; type and default not stated), Blur Mask (range 0.0 to 10.0, softens the mask edges).
+- Copernicus nearest: none
+- Mapping status: documented_only
+
+## 35. Mirror (Filter Node)
+
+- Date: 11 October 2026
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/filters/transforms/mirror-filter-node
+- Category: Filters > Transforms
+- Purpose: Mirrors the input over a chosen axis, from a chosen side, for quick symmetrical effects.
+- Inputs: not stated.
+- Parameters: Mode (Mirror Axis X, Mirror Axis Y, Mirror Corner), Axis X Offset (range 0.0 to 1.0, Axis X only), Axis Y Offset (range 0.0 to 1.0, Axis Y only), Invert Axis X (Boolean, Axis X only), Invert Axis Y (Boolean, Axis Y only), Corner Type (Top Left, Top Right, Bottom Left, Bottom Right, Mirror Corner only). Defaults not stated.
+- Copernicus nearest: Cop mirror (fit: close)
+- Mapping status: documented_only
+
+## 36. Noise Upscale 1
+
+- Date: 11 October 2026
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/filters/transforms/noise-upscale-1
+- Category: Filters > Transforms
+- Purpose: Scales a noise procedural up to double resolution while keeping detail and limiting tiling.
+- Inputs: not stated.
+- Parameters: Offset1X and Offset1Y (range 0.0 to 1.0, slide the top and bottom parts along X and Y), Offset2X and Offset2Y (range 0.0 to 1.0, slide the left and right parts along X and Y). Defaults not stated.
+- Copernicus nearest: Cop resample (fit: approximate)
+- Mapping status: documented_only
+
+## 37. Noise Upscale 2
+
+- Date: 11 October 2026
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/filters/transforms/noise-upscale-2
+- Category: Filters > Transforms
+- Purpose: Same goal as Noise Upscale 1, mainly to speed up graphs that use heavy noises.
+- Inputs: not stated.
+- Parameters: Offset1X, Offset1Y, Offset2X, Offset2Y (range 0.0 to 1.0 each, same roles as Noise Upscale 1). Defaults not stated.
+- Copernicus nearest: Cop resample (fit: approximate)
+- Mapping status: documented_only
+
+## 38. Noise Upscale 3
+
+- Date: 11 October 2026
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/filters/transforms/noise-upscale-3
+- Category: Filters > Transforms
+- Purpose: Scales a noise procedural up to double resolution while keeping detail and limiting tiling, and uses a mask to blend the noise back over the original scale.
+- Inputs: Grayscale (the target noise image), Mask (Grayscale, masks the effect of the node).
+- Parameters: none listed on the page.
+- Copernicus nearest: Cop resample (fit: approximate)
+- Mapping status: documented_only
+
+## 39. Safe Transform
+
+- Date: 11 October 2026
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/filters/transforms/safe-transform
+- Category: Filters > Transforms
+- Purpose: Tiling-safe version of Transform 2D that scales, rotates and offsets the input while keeping pixels sharp.
+- Inputs: not stated.
+- Parameters: Tile (range 1 to 16), Offset Mode (Manual, Random), Offset (range 0.0 to 1.0), Rotation (range 0.0 to 1.0), Tile Safe Rotation (False, True), Symmetry (none, X, Y, X+Y), Background Color (Color version only), Mipmap Mode (Automatic, Manual), Mipmap Level (range 0 to 10). Types and defaults not stated.
+- Copernicus nearest: Cop xform2d (fit: approximate)
+- Mapping status: documented_only
+
+## 40. Non-Square Transform
+
+- Date: 11 October 2026
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/filters/transforms/non-square-transform
+- Category: Filters > Transforms
+- Purpose: Non-square-safe version of Transform 2D that detects non-square ratios and can place a square input on a non-square canvas.
+- Inputs: not stated.
+- Parameters: Tile Mode (Automatic, Manual), Tile (range 1 to 16, Manual mode only), Offset (range 0.0 to 1.0), Rotation (range 0.0 to 1.0), Safe Rotation (Square Only, Boolean), Background Color (visible when tiling is off). Defaults not stated.
+- Copernicus nearest: Cop xform2d (fit: approximate)
+- Mapping status: documented_only
+
+## 41. Non-Uniform Rotation
+
+- Date: 11 October 2026
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/filters/transforms/non-uniform-rotation
+- Category: Filters > Transforms
+- Purpose: Rotates the Input according to the values of the Rotation Map.
+- Inputs: Input (Grayscale or Color), Rotation Map (Grayscale), Rotation Pivot Position Map (Color).
+- Parameters: Rotation Angle Multiplier (Float), Rotation Angle Offset (Float), Use Pivot Position Map (Boolean), Pivot Position (Float2), Background Color (Float or Float4), Filtering Mode (Integer: Nearest, Bilinear). Defaults and ranges not stated.
+- Copernicus nearest: Cop distort (fit: approximate)
+- Mapping status: documented_only
+
+## 42. Skew
+
+- Date: 11 October 2026
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/filters/transforms/skew
+- Category: Filters > Transforms
+- Purpose: Skews the input image.
+- Inputs: not stated.
+- Parameters: Axis (Horizontal, Vertical), Amount (range -1.0 to 1.0), Align (Center, Top Left, Bottom Right, the origin of the transform). Defaults not stated.
+- Copernicus nearest: Cop xform2d (fit: approximate)
+- Mapping status: documented_only
+
+## 43. Symmetry
+
+- Date: 11 October 2026
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/filters/transforms/symmetry
+- Category: Filters > Transforms
+- Purpose: Performs symmetry operations so that geometric shapes become symmetrical.
+- Inputs: not stated.
+- Parameters: Symmetry Mode (eight options: Mirror Y, Mirror X, Diagonal Left, Diagonal Right, Mirror X/Y, Mirror X / Mirror Y, Diagonal Left / Diagonal Right, Diagonal Right / Diagonal Left), Transfer Mode (range 0 to 6: Copy, Add, Subtract, Multiply, Add Sub, Max, Min). Types and defaults not stated.
+- Copernicus nearest: Cop mirror (fit: approximate)
+- Mapping status: documented_only
+
+## 44. Symmetry Slice
+
+- Date: 11 October 2026
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/filters/transforms/symmetry-slice
+- Category: Filters > Transforms
+- Purpose: Complex symmetry and mirroring node with many geometric operations and full control, which takes some experimentation.
+- Inputs: not stated.
+- Parameters: Symmetry Mode (range 0 to 6: Horizontal, Vertical, Diagonal Left-Right, Diagonal Right-Left, Vertical Invert, Corner, Diagonal Corner), Transfer Mode (range 0 to 6, options not listed), Blend (range 0.0 to 1.0, blends the original image back into the result), Flip Side (Boolean, reverses the origin side), Flip Side2 (Boolean, used only when Symmetry Mode is 5 or 6). Defaults not stated.
+- Copernicus nearest: Cop mirror (fit: approximate)
+- Mapping status: documented_only
+
+## 45. Trapezoid Transform
+
+- Date: 11 October 2026
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/filters/transforms/trapezoid-transform
+- Category: Filters > Transforms
+- Purpose: Modifies the input with a perspective or trapezoid warp, with top and bottom stretch controls.
+- Inputs: not stated.
+- Parameters: Top Stretch (range 0.0 to 1.0, values can be pushed beyond the limits), Bottom Stretch (range 0.0 to 1.0, same behaviour), Background Color (grayscale or colour value, used when tiling is off), Sampling (Bilinear, Nearest). Defaults not stated.
+- Copernicus nearest: Cop cornerpin (fit: approximate)
+- Mapping status: documented_only
+
+## 46. Quad Transform
+
+- Date: 11 October 2026
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/filters/transforms/quad-transform
+- Category: Filters > Transforms
+- Purpose: Transforms a quad shape by moving its four corner points.
+- Inputs: not stated.
+- Parameters: p00 (Top Left point), p01 (Bottom Left point), p10 (Top Right point), p11 (Bottom Right point), Culling (Front only, Back only, Front over Back, Back over Front), Enable Tiling (Boolean), Background Color (grayscale value), Sampling (Bilinear, Nearest). Types, defaults and ranges not stated.
+- Copernicus nearest: Cop cornerpin (fit: close)
+- Mapping status: documented_only
+
+## Filters > Adjustments
+
+## 47. Auto Levels
+
+- Date: 11 October 2026
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/filters/adjustments/auto-levels
+- Category: Filters > Adjustments
+- Purpose: Stretches the levels so the darkest value becomes full black and the brightest becomes full white, which raises contrast.
+- Inputs and parameters: not stated on the fetched page.
+- Copernicus nearest: Cop contrast (fit: approximate)
+- Mapping status: documented_only
+
+## 48. Channel Mixer
+
+- Date: 11 October 2026
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/filters/adjustments/channel-mixer
+- Category: Filters > Adjustments
+- Purpose: Mixes, swaps and blends RGB channels, for swizzles, precise grayscale conversion and channel packing.
+- Inputs: not stated.
+- Parameters: Red Channel, Green Channel, Blue Channel (range -200.0 to 200.0 each, how much input RGB goes into the matching output channel), Monochrome (Boolean, outputs to monochrome). Types and defaults not stated.
+- Copernicus nearest: Cop channelswap (fit: approximate)
+- Mapping status: documented_only
+
+## 49. Chrominance Extract
+
+- Date: 11 October 2026
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/filters/adjustments/chrominance-extract
+- Category: Filters > Adjustments
+- Purpose: Extracts the chrominance of the input and removes its luminance.
+- Inputs and parameters: not stated on the fetched page.
+- Copernicus nearest: none
+- Mapping status: documented_only
+
+## 50. Clamp
+
+- Date: 11 October 2026
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/filters/adjustments/clamp
+- Category: Filters > Adjustments
+- Purpose: Clamps the input values between defined limits.
+- Inputs: not stated.
+- Parameters: Min (range 0.0 to 1.0, lower limit), Max (range 0.0 to 1.0, upper limit), Apply to Alpha (Boolean, Color version only). Defaults not stated.
+- Copernicus nearest: Cop clamp (fit: close)
+- Mapping status: documented_only
+
+## 51. Color Match
+
+- Date: 11 October 2026
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/filters/adjustments/color-match
+- Category: Filters > Adjustments
+- Purpose: Tries to match a defined Source Color range to a Target Color range.
+- Inputs: Input (Color), Source Color (Color), Target Color (Color).
+- Parameters: Source Color Mode (Average, Parameter, Input), Source Color (colour value), Target Color Mode (Parameter, Image Input), Target Color (colour value), Custom Color Variation (Boolean), Color Variation (Hue, Chrominance or Luminance), Use Mask (Boolean), Mask Mode (Parameter, Input), Mask (output mask with smoothing and blur controls). Types, defaults and ranges not stated.
+- Copernicus nearest: Cop colorcorrect (fit: approximate)
+- Mapping status: documented_only
+
+## 52. Color To Mask
+
+- Date: 11 October 2026
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/filters/adjustments/color-to-mask
+- Category: Filters > Adjustments (the page title is "Color to mask")
+- Purpose: Extracts a grayscale mask from selected colours in a colour image.
+- Inputs: Input (Color, the image to extract from), Color Input (Color, per-pixel reference colours, used only when Use color input is True). Output: Output (Grayscale).
+- Parameters: Use color input (Boolean), Color (Float3, used only when Use color input is False), Threshold (Float), Selection fade (Float), Distance color space (RGB Data, Linear sRGB Color, Luminance Color, Lab Color, Angle Normal), Distance weights (Float3, Lab DeltaE2000 lightness, chroma and hue weights; the page cites a 0.5:1:1 ratio). Defaults and ranges not stated.
+- Copernicus nearest: Cop chromakey (fit: approximate)
+- Mapping status: documented_only
+
+## 53. Contrast/Luminosity
+
+- Date: 11 October 2026
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/filters/adjustments/contrast-luminosity
+- Category: Filters > Adjustments
+- Purpose: A simple contrast and brightness adjustment.
+- Inputs: not stated.
+- Parameters: Contrast (range -1.0 to 1.0), Luminosity (range -1.0 to 1.0, brightness). Types and defaults not stated.
+- Copernicus nearest: Cop contrast (fit: close). Cop bright is also listed in cop_names.txt for the brightness part.
+- Mapping status: documented_only
+
+## 54. Convert To Linear
+
+- Date: 11 October 2026
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/filters/adjustments/convert-to-linear
+- Category: Filters > Adjustments
+- Purpose: Converts an sRGB image into linear colour space, useful for photo source material.
+- Inputs and parameters: not stated on the fetched page.
+- Copernicus nearest: Cop gamma (fit: approximate)
+- Mapping status: documented_only
+
+## 55. Convert to sRGB
+
+- Date: 11 October 2026
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/filters/adjustments/convert-to-srgb
+- Category: Filters > Adjustments
+- Purpose: Converts a linear input to the sRGB colour space, useful for photo reference material.
+- Inputs and parameters: not stated on the fetched page.
+- Copernicus nearest: Cop ociotransform (fit: approximate)
+- Mapping status: documented_only
+
+## 56. Grayscale Conversion Advanced
+
+- Date: 11 October 2026
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/filters/adjustments/grayscale-conversion-advanced
+- Category: Filters > Adjustments
+- Purpose: Quick grayscale conversion with preset modes.
+- Inputs: not stated.
+- Parameters: Grayscale Type (Desaturation, Luma, Average, Max, Min). Desaturation sets saturation to 0, Luma uses standard luminance weights, Average matches the atomic node, Max and Min use the brightest or darkest value per channel. Type and default not stated.
+- Copernicus nearest: Cop mono (fit: approximate)
+- Mapping status: documented_only
+
+## 57. Hald CLUT
+
+- Date: 11 October 2026
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/filters/adjustments/hald-clut
+- Category: Filters > Adjustments
+- Purpose: Applies a LUT to the input. The LUT must be in Hald format at 4096 by 4096 pixels.
+- Inputs: input (Color, the image receiving the LUT), lut (Color, the LUT, 4096 by 4096).
+- Parameters: LUT Intensity by Alpha (Boolean, weights the LUT effect by the alpha channel). Defaults not stated.
+- Copernicus nearest: Cop ociotransform (fit: approximate)
+- Mapping status: documented_only
+
+## 58. HDR Range Viewer
+
+- Date: 11 October 2026
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/filters/adjustments/hdr-range-viewer
+- Category: Filters > Adjustments
+- Purpose: Debug tool that marks the areas with High Dynamic Range values. Colour and Grayscale versions exist.
+- Inputs: not stated.
+- Parameters: Range Min (range -2.0 to 0.0, where highlighting starts), Range Max (range 1.0 to 3.0, upper bound of the highlighting). Types and defaults not stated.
+- Copernicus nearest: none
+- Mapping status: documented_only
+
+## 59. Height Map Frequencies Mapper
+
+- Date: 11 October 2026
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/filters/adjustments/height-map-frequencies-mapper
+- Category: Filters > Adjustments
+- Purpose: Splits a heightmap into two maps, one for large-scale variations and one for small-scale variations.
+- Inputs: not stated.
+- Parameters: Relief (range 0.0 to 32.0, controls the detail size of the Displacement output). Type and default not stated.
+- Copernicus nearest: Cop filterfrequencies (fit: approximate)
+- Mapping status: documented_only
+
+## 60. Highpass
+
+- Date: 11 October 2026
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/filters/adjustments/highpass
+- Category: Filters > Adjustments
+- Purpose: Removes large luminance differences with a highpass filter, for example when cleaning a texture for tiling.
+- Grayscale variant: Highpass Grayscale, for grayscale inputs.
+- Inputs: not stated.
+- Parameters: Radius (range 0.0 to 64.0; smaller values remove small differences, larger values remove large areas). Type and default not stated.
+- Copernicus nearest: Cop filterfrequencies (fit: approximate)
+- Mapping status: documented_only
+
+## 61. Histogram Range
+
+- Date: 11 October 2026
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/filters/adjustments/histogram-range
+- Category: Filters > Adjustments
+- Purpose: Reduces and or moves the range of a grayscale input to remap the tonal transitions.
+- Inputs: not stated.
+- Parameters: Range (range 0.0 to 1.0, how much the range is reduced, like moving the Levels min and max sliders inward), Position (range 0.0 to 1.0, offsets the reduction to a different midpoint). Types and defaults not stated.
+- Copernicus nearest: Cop histogram (fit: approximate)
+- Mapping status: documented_only
+
+## 62. Histogram Scan
+
+- Date: 11 October 2026
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/filters/adjustments/histogram-scan
+- Category: Filters > Adjustments
+- Purpose: Remaps the contrast and brightness of a grayscale input, and can grow or shrink masks.
+- Inputs: not stated.
+- Parameters: Position (range 0.0 to 1.0; the default is 0 on the page, which suggests starting at 0.5), Contrast (range 0.0 to 1.0), Invert Position (Boolean). Types not stated.
+- Copernicus nearest: Cop histogram (fit: approximate)
+- Mapping status: documented_only
+
+## 63. Histogram Scan Non-Uniform
+
+- Date: 11 October 2026
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/filters/adjustments/histogram-scan-non-uniform
+- Category: Filters > Adjustments
+- Purpose: Per-pixel version of Histogram Scan, for more intricate contrast and transitions in masks.
+- Inputs: Input (Grayscale), Position Map (Grayscale), Contrast Map (Grayscale).
+- Parameters: Use Position Input (toggle), position (range 0.0 to 1.0), Use Contrast Input (toggle), contrast (range 0.0 to 1.0). Defaults not stated.
+- Copernicus nearest: Cop histogram (fit: approximate)
+- Mapping status: documented_only
+
+## 64. Histogram Select
+
+- Date: 11 October 2026
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/filters/adjustments/histogram-select
+- Category: Filters > Adjustments
+- Purpose: Sets a grayscale position and fades a selection range around it, with contrast controlling the sharpness of that range.
+- Inputs: not stated.
+- Parameters: Position (range 0.0 to 1.0, centre of the selection), Range (range 0.0 to 1.0, width of the selection), Contrast (range 0.0 to 1.0, contrast and falloff). Types and defaults not stated.
+- Copernicus nearest: Cop histogram (fit: approximate)
+- Mapping status: documented_only
+
+## 65. Histogram Shift
+
+- Date: 11 October 2026
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/filters/adjustments/histogram-shift
+- Category: Filters > Adjustments
+- Purpose: Shifts the whole tonal range of an image by a set amount, wrapping values around at the range limits.
+- Inputs: not stated.
+- Parameters: Position (range 0.0 to 1.0, where 1.0 is a full rotation and equal to 0.0). Type and default not stated.
+- Copernicus nearest: Cop histogram (fit: approximate)
+- Mapping status: documented_only
+
+## 66. Invert
+
+- Date: 11 October 2026
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/filters/adjustments/invert
+- Category: Filters > Adjustments
+- Purpose: Inverts the colours of the input.
+- Grayscale variant: Invert Grayscale, for grayscale inputs.
+- Inputs: not stated.
+- Parameters: Invert (Boolean, toggles the effect on or off). Default not stated.
+- Copernicus nearest: Cop invert (fit: close)
+- Mapping status: documented_only
+
+## 67. Lighting Cancel High Frequencies
+
+- Date: 11 October 2026
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/filters/adjustments/lighting-cancel-high-frequencies
+- Category: Filters > Adjustments
+- Purpose: Cancels small high-frequency lighting details, and suits full-colour images better than Highpass because it desaturates less.
+- Inputs: not stated.
+- Parameters: Intensity (range 0.0 to 1.0, strength), Radius (range 0.0 to 10.0, size of the lighting details to cancel). Types and defaults not stated.
+- Copernicus nearest: Cop filterfrequencies (fit: approximate)
+- Mapping status: documented_only
+
+## 68. Lighting Cancel Low Frequencies
+
+- Date: 11 October 2026
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/filters/adjustments/lighting-cancel-low-frequencies
+- Category: Filters > Adjustments
+- Purpose: Works like a Highpass node but does not desaturate the final result.
+- Inputs: not stated.
+- Parameters: Cancellation Radius (range 0.0 to 64.0, radius of the highpass effect). Type and default not stated.
+- Copernicus nearest: Cop filterfrequencies (fit: approximate)
+- Mapping status: documented_only
+
+## 69. Luminance Highpass
+
+- Date: 11 October 2026
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/filters/adjustments/luminance-highpass
+- Category: Filters > Adjustments
+- Purpose: Removes lighting information by applying a highpass filter to the luminance of the input.
+- Inputs: not stated.
+- Parameters: Radius (range 0.0 to 64.0, smaller values remove smaller lighting details). Type and default not stated.
+- Copernicus nearest: Cop filterfrequencies (fit: approximate)
+- Mapping status: documented_only
+
+## 70. Min Max
+
+- Date: 11 October 2026
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/filters/adjustments/min-max
+- Category: Filters > Adjustments
+- Purpose: Finds the brightest and darkest values of a grayscale input and returns them as values, a more granular manual alternative to Auto Levels.
+- Inputs: a grayscale input (name not given).
+- Parameters: none listed on the fetched page.
+- Copernicus nearest: Cop statistics (fit: approximate)
+- Mapping status: documented_only
+
+## 71. Pow
+
+- Date: 11 October 2026
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/filters/adjustments/pow
+- Category: Filters > Adjustments
+- Purpose: Raises the input to a given exponent, a simpler alternative to adjusting the Levels midpoint.
+- Inputs: not stated. The page says to use the Color or Grayscale version according to the input.
+- Parameters: exponent (range 0.0 to 10.0). Type and default not stated.
+- Copernicus nearest: Cop gamma (fit: close)
+- Mapping status: documented_only
+
+## 72. Quantize (page title Quantize Color (Simple))
+
+- Date: 11 October 2026
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/filters/adjustments/quantize
+- Category: Filters > Adjustments
+- Purpose: Reduces the colour range to a set number of values, which introduces banding.
+- Inputs: not stated.
+- Parameters: Quantize Red Channel, Quantize Green Channel, Quantize Blue Channel, Quantize Alpha Channel (Integer, number of steps per channel). Ranges and defaults not stated.
+- Copernicus nearest: Cop quantize (fit: close)
+- Mapping status: documented_only
+
+## 73. Replace Color
+
+- Date: 11 October 2026
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/filters/adjustments/replace-color
+- Category: Filters > Adjustments
+- Purpose: Shifts the hue of the Source Color toward the Target Color.
+- Inputs: not stated.
+- Parameters: Source Color (colour value), Target Color (colour value). Defaults and ranges not stated.
+- Copernicus nearest: Cop colorcorrect (fit: approximate)
+- Mapping status: documented_only
+
+## 74. Replace Color Range
+
+- Date: 11 October 2026
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/filters/adjustments/replace-color-range
+- Category: Filters > Adjustments
+- Purpose: Replaces a source colour with a target colour, with range and falloff controls.
+- Inputs: not stated.
+- Parameters: Source Color, Target Color (colour values), Source Range (number, range 0.0 to 1.0), Threshold (number, range 0.0 to 1.0). Defaults not stated.
+- Copernicus nearest: Cop colorcorrect (fit: approximate)
+- Mapping status: documented_only
+
+## 75. Threshold
+
+- Date: 11 October 2026
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/filters/adjustments/threshold
+- Category: Filters > Adjustments
+- Purpose: Outputs white for pixels that pass a comparison against a luminance threshold, a faster and more precise alternative to Histogram Scan with its contrast fixed at maximum.
+- Inputs: not stated.
+- Parameters: Threshold (range 0.0 to 1.0, luminance value compared against), Mode (Greater, Greater or equal, Lower, Lower or equal). Type and default not stated.
+- Copernicus nearest: Cop clamp (fit: approximate). No step or threshold node was found in cop_names.txt.
+- Mapping status: documented_only
+
+## Totals and checks
+
+- Nodes written: 75 sections (9 atomic, 5 blurs, 9 blending, 6 effects warp and distance, 17 transforms, 29 adjustments).
+- Official pages read: 75 node pages plus the blend modes page, all on experienceleague.adobe.com. The node library index is listed above. The Experience League atomic node index and the HelpX copies returned HTTP 404 or 403, so they were not used.
+- Mappings with no Copernicus equivalent: 3D Texture Offset, Clone (Filter Node), Chrominance Extract, HDR Range Viewer (none, 4 sections).
+- Mappings that use legacy COP2 names: Levels (Cop2 levels), Radial Blur (Cop2 radialblur).
+- Every mapping on this page: status documented_only.

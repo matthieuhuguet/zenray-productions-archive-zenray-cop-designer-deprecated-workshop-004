@@ -1,0 +1,27 @@
+# reactiondiffusion_block_begin
+
+- Label: Reaction-Diffusion Block Begin
+- Category: Copernicus (`Cop`), Houdini 22.0.368
+- Inputs: 0 to 10
+- Parameters: 3 (exact, read from Houdini by hython)
+- Used by the height graph: no
+
+## Feature summary (web, SideFX reference)
+
+- Source: https://www.sidefx.com/docs/houdini/nodes/cop/reactiondiffusion_block_begin.html
+- Summary (EN): Reaction-Diffusion Block Begin marks the start of a 2D Reaction-Diffusion simulation block, a simulation of two chemicals reacting and diffusing. It takes the inputs that start and drive the solve, and pairs with the Reaction-Diffusion Block End that closes the block. Most inputs are read only on the initial frame unless Continuous Activation is on.
+- Résumé (FR) : Ce nœud ouvre un bloc de simulation Réaction-Diffusion à deux chimiques, qui doit être fermé par Reaction-Diffusion Block End.
+
+- Inputs meaning: ["activation: activation pattern that starts the reaction", "alpha: Alpha coefficient of the reaction, read on the initial frame only", "beta: Beta coefficient, read on the initial frame only", "gamma: Gamma coefficient, read on the initial frame only", "scale: reaction scale, read on the initial frame only", "coefficient: diffusion coefficients, read on the initial frame only", "boundary: reaction boundary that lets the reaction grow into an SDF shape, read on the initial frame only", "feedback: cable of values fed back into each solve iteration; its structure must exactly match the Block End input; read on the initial frame only", "passthrough: optional cable of layers and VDBs computed outside the simulation and read every frame, useful for animated sources", "adjacency: optional cable of adjacency data computed outside the simulation and read every frame; wiring it makes the block run over adjacency"]
+
+- Key parameters: ["Signature: Activation (Mono) interprets the activation as a mono pattern to start the reaction, ideally high-contrast noise; Chemical (UV) continues the reaction from raw chemical values and is used to stack several blocks", "Block Path: points to the matching Reaction-Diffusion Block End, which must be at the same network level", "Continuous Activation: when on, the activation pattern acts as a constant source every frame; when off, it is evaluated only on the first frame"]
+
+- Caveats: ["Operations that do not depend on previous frames should go before Block Begin so they cook only once; post-processing that does not need to feed back should go after Block End.", "Time Shift cannot be used inside Copernicus blocks when block inputs must cook at different times; use Time Pack before Block Begin and wire the result in as a cable.", "Passthrough inputs cannot depend on the results of the simulation.", "Activation, coefficients, boundary and feedback are read only on the initial frame, unless Continuous Activation is on for activation."]
+
+## Parameters (exact, from the installed Houdini)
+
+| parameter | label | type | default | range | menu tokens |
+|---|---|---|---|---|---|
+| `signature` | Signature | String | ["default"] |  |  |
+| `blockpath` | Block Path | String | [""] |  |  |
+| `continuousactivation` | Continuous Activation | Toggle | false |  |  |

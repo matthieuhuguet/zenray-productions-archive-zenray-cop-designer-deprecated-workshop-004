@@ -1,0 +1,26 @@
+#!/bin/bash
+# 11 October 2026 01:05 : keeps the window optimizer alive. Checks every 15 seconds; relaunches it when it is not running and its state is not done.
+# EN: usage: watchdog.sh RUN_DIR HYTHON SKILL_DIR MAX_EVALS. Gives up after 40 relaunches so a broken setup cannot loop forever.
+# FR : garde l'optimiseur en vie. Vérifie toutes les 15 secondes ; relance s'il ne tourne plus et si l'état n'est pas terminé.
+RUN_DIR="$1"; HY="$2"; SK="$3"; MAX="$4"; TARGET="${5:-window_height}"
+mkdir -p "$RUN_DIR"
+LOG="$RUN_DIR/watchdog.log"
+RELAUNCH=0
+export ZR_PY3=/usr/bin/python3
+while true; do
+  STATE=$(python3 -c "import json; print(json.load(open('$RUN_DIR/state.json')).get('status','none'))" 2>/dev/null)
+  if [ "$STATE" = "done" ]; then
+    echo "$(date '+%d %B %Y %H:%M:%S') state done, watchdog stops" >> "$LOG"
+    break
+  fi
+  if ! pgrep -f "optimize.py --run-dir $RUN_DIR" > /dev/null; then
+    RELAUNCH=$((RELAUNCH + 1))
+    if [ "$RELAUNCH" -gt 40 ]; then
+      echo "$(date '+%d %B %Y %H:%M:%S') $RELAUNCH relaunches, stopping" >> "$LOG"
+      break
+    fi
+    echo "$(date '+%d %B %Y %H:%M:%S') launch $RELAUNCH (state $STATE)" >> "$LOG"
+    "$HY" "$SK/optimize.py" --run-dir "$RUN_DIR" --max-evals "$MAX" --target "$TARGET" >> "$RUN_DIR/optimizer.log" 2>&1 &
+  fi
+  sleep 15
+done

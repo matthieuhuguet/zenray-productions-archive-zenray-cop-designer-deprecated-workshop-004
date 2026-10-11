@@ -1,0 +1,100 @@
+# pyro_turbulence
+
+- Label: Pyro Turbulence Force
+- Category: Copernicus (`Cop`), Houdini 22.0.368
+- Inputs: 0 to 5
+- Parameters: 76 (exact, read from Houdini by hython)
+- Used by the height graph: no
+
+## Feature summary (web, SideFX reference)
+
+- Source: https://www.sidefx.com/docs/houdini/nodes/cop/pyro_turbulence.html
+- Summary (EN): Pyro Turbulence applies a noise-driven turbulent force to a velocity VDB, either replacing the incoming velocities or adding to them. The effect can be masked by threshold, control or axis-based fields. It is part of COP Pyro.
+- Résumé (FR) : Ce nœud ajoute une turbulence bruitée au champ de vitesse d'une simulation pyro, avec des masques optionnels.
+
+- Inputs meaning: ["v: Vector VDB containing the original velocities", "threshold: optional Float or Vector VDB used as a sharp threshold mask; a Vector VDB contributes its length", "control: optional Float or Vector VDB used as a smooth control mask; a Vector VDB contributes its length"]
+
+- Key parameters: ["Operation: Set (replaces the velocities) or Force (adds to them)", "Amplitude and Amplitude Scale: overall strength and anisotropic scaling of the force", "Element Size and Element Scale: size of the base noise features and their anisotropic scaling", "Pulse Duration: time in seconds for the base noise level to fully change", "Attenuation: how the intensity gradually decreases", "Seed: initial noise offset", "Use Curl Noise: divergence-free curl noise, mostly kept by pressure projection, suited to smooth motion; regular noise is faster and better for adding energy", "Fractal group (Max Octaves, Lacunarity, Roughness): number of turbulence levels relative to Element Size, scale between octaves, contribution of each octave", "Mask by Threshold Field: sharp on/off masking, with Range controls to soften the transition", "Mask by Control Field: smooth mask on the strength of the effect", "Mask along Axis: limits the effect to a world-space range along an axis, without a mask VDB"]
+
+- Caveats: ["Requires DOP-level permissions. Not available in Houdini Core.", "This turbulence differs from the Pyro Solver SOP turbulence by a factor of about 12, so settings do not transfer directly.", "Roughness below 1 keeps smaller features from overwhelming larger ones.", "Use threshold fields for sharp transitions and control fields for smooth ones.", "The page does not specify the exact behaviour of Attenuation, Pulse Duration or the mask range controls beyond these descriptions."]
+
+## Parameters (exact, from the installed Houdini)
+
+| parameter | label | type | default | range | menu tokens |
+|---|---|---|---|---|---|
+| `signature` | Signature | String | ["auto"] |  |  |
+| `activation` | Activation | Int | [1] | 0 .. 1 (strict) |  |
+| `folder1` |  | FolderSet |  |  |  |
+| `operation` | Operation | Menu | 1 |  | set, add |
+| `amp` | Amplitude | Float | [0.1] | 0.0 .. 1.0 |  |
+| `amptype` | Amplitude Type | Menu | 0 |  | BUTTONS_decompose_transforms |
+| `ampscalex` | Amplitude Scale | Float | 1.0 | 0.0 .. 10.0 |  |
+| `ampscaley` | Amplitude Scale | Float | 1.0 | 0.0 .. 10.0 |  |
+| `ampscalez` | Amplitude Scale | Float | 1.0 | 0.0 .. 10.0 |  |
+| `elementsize` | Element Size | Float | [0.1] | 0.0 .. 1.0 |  |
+| `elementtype` | Element Type | Menu | 0 |  | BUTTONS_decompose_transforms |
+| `elementscalex` | Element Scale | Float | 1.0 | 0.0 .. 10.0 |  |
+| `elementscaley` | Element Scale | Float | 1.0 | 0.0 .. 10.0 |  |
+| `elementscalez` | Element Scale | Float | 1.0 | 0.0 .. 10.0 |  |
+| `pulseduration` | Pulse Duration | Float | [1.0] | 0.0 .. 10.0 (strict) |  |
+| `oct` | Max Octaves | Int | [3] | 1 .. 8 (strict) |  |
+| `lac` | Lacunarity | Float | [2.01234] | 0.0 .. 4.0 (strict) |  |
+| `rough` | Roughness | Float | [0.5] | 0.0 .. 1.0 (strict) |  |
+| `atten` | Attenuation | Float | [1.0] | 0.0 .. 1.0 (strict) |  |
+| `seed` | Seed | Float | [0.0] | 0.0 .. 100.0 |  |
+| `curlnoise` | Use Curl Noise | Toggle | true |  |  |
+| `usethreshold` | Threshold Volume | Toggle | false |  |  |
+| `folder2` |  | FolderSet |  |  |  |
+| `thresholdrangemin` | Threshold Range | Float | 0.01 | 0.0 .. 10.0 |  |
+| `thresholdrangemax` | Threshold Range | Float | 0.0 | 0.0 .. 10.0 |  |
+| `folder7` |  | FolderSet |  |  |  |
+| `remapthreshold` | Remap Threshold | Toggle | false |  |  |
+| `thresholdramp` | Threshold Ramp | Ramp | 2 |  |  |
+| `usecontrol` | Control Volume | Toggle | false |  |  |
+| `folder3` |  | FolderSet |  |  |  |
+| `controlrangemin` | Control Range | Float | 0.0 | 0.0 .. 10.0 |  |
+| `controlrangemax` | Control Range | Float | 1.0 | 0.0 .. 10.0 |  |
+| `folder6` |  | FolderSet |  |  |  |
+| `remapcontrol` | Remap Control | Toggle | false |  |  |
+| `controlramp` | Control Ramp | Ramp | 2 |  |  |
+| `useanglecontrol` | Use Angle Control | Toggle | false |  |  |
+| `folder8` |  | FolderSet |  |  |  |
+| `angledirx` | Angle Direction | Int | 0 | -1 .. 1 |  |
+| `anglediry` | Angle Direction | Int | 1 | -1 .. 1 |  |
+| `angledirz` | Angle Direction | Int | 0 | -1 .. 1 |  |
+| `angle` | Spread Angle | Float | [90.0] | 0.0 .. 180.0 (strict) |  |
+| `folder9` |  | FolderSet |  |  |  |
+| `remapanglecontrol` | Remap Angle Control | Toggle | false |  |  |
+| `anglecontrolramp` | Angle Control Ramp | Ramp | 2 |  |  |
+| `useaxiscontrol` | Use Axis Control | Toggle | false |  |  |
+| `folder4` |  | FolderSet |  |  |  |
+| `axiscontroldir` | Direction | Menu | 1 |  | x, y, z |
+| `axiscontrolmin` | Axis Range | Float | 0.0 | 0.0 .. 1.0 |  |
+| `axiscontrolmax` | Axis Range | Float | 1.0 | 0.0 .. 1.0 |  |
+| `folder5` |  | FolderSet |  |  |  |
+| `remapaxiscontrol` | Remap Axis Control | Toggle | false |  |  |
+| `axiscontrolramp` | Axis Control Ramp | Ramp | 2 |  |  |
+| `thresholdramp1pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `thresholdramp1value` | Value | Float | [0.0] | 0.0 .. 10.0 |  |
+| `thresholdramp1interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `thresholdramp2pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `thresholdramp2value` | Value | Float | [0.0] | 0.0 .. 10.0 |  |
+| `thresholdramp2interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `controlramp1pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `controlramp1value` | Value | Float | [0.0] | 0.0 .. 10.0 |  |
+| `controlramp1interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `controlramp2pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `controlramp2value` | Value | Float | [0.0] | 0.0 .. 10.0 |  |
+| `controlramp2interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `anglecontrolramp1pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `anglecontrolramp1value` | Value | Float | [0.0] | 0.0 .. 10.0 |  |
+| `anglecontrolramp1interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `anglecontrolramp2pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `anglecontrolramp2value` | Value | Float | [0.0] | 0.0 .. 10.0 |  |
+| `anglecontrolramp2interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `axiscontrolramp1pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `axiscontrolramp1value` | Value | Float | [0.0] | 0.0 .. 10.0 |  |
+| `axiscontrolramp1interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `axiscontrolramp2pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `axiscontrolramp2value` | Value | Float | [0.0] | 0.0 .. 10.0 |  |
+| `axiscontrolramp2interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |

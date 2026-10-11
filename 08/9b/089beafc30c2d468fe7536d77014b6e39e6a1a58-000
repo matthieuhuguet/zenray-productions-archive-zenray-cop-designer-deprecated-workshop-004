@@ -1,0 +1,29 @@
+# sdfadjust
+
+- Label: SDF Adjust
+- Category: Copernicus (`Cop`), Houdini 22.0.368
+- Inputs: 0 to 1
+- Parameters: 5 (exact, read from Houdini by hython)
+- Used by the height graph: no
+
+## Feature summary (web, SideFX reference)
+
+- Source: https://www.sidefx.com/docs/houdini/nodes/cop/sdfadjust.html
+- Summary (EN): SDF Adjust modifies a Mono signed distance field layer to reshape its shape, with settings for iso offset, outline, absolute value and invert. It has one input and one output, both named sdf.
+- Résumé (FR) : Le nœud SDF Adjust retouche une couche SDF mono pour en modifier la forme, avec décalage d'isovaleur, contour, valeur absolue et inversion.
+
+- Inputs meaning: ["sdf: the SDF Mono layer to adjust"]
+
+- Key parameters: ["Iso Offset: crossing point treated as the border; higher values enlarge the shape, lower values shrink it", "Outline: makes a hollow thin outline; the value sets the border thickness by taking the absolute value and subtracting it", "Absolute Value: converts negative values to positive, leaving only a thin border", "Invert: swaps positive and negative values"]
+
+- Caveats: ["The page lists no explicit caveats", "The page does not say how other input types are handled"]
+
+## Parameters (exact, from the installed Houdini)
+
+| parameter | label | type | default | range | menu tokens |
+|---|---|---|---|---|---|
+| `isooffset` | Iso Offset | Float | [0.0] | -1.0 .. 1.0 |  |
+| `doonion` | Outline | Toggle | false |  |  |
+| `onion` | Outline | Float | [0.01] | 0.0 .. 1.0 (strict) |  |
+| `abs` | Absolute Value | Toggle | false |  |  |
+| `invert` | Invert | Toggle | false |  |  |

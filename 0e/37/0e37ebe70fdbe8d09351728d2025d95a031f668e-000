@@ -1,0 +1,1258 @@
+# Substance 3D Designer: generator and noise nodes (web documentation)
+
+- Date of retrieval: 11 October 2026
+- Scope: Texture generators > Noises and Texture generators > Patterns, as listed in the official node library.
+- Official index: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/node-library
+- Method: the official index was read first, then each node page on Experience League. helpx.adobe.com pages returned HTTP 403 to WebFetch, so the Experience League copies were used instead.
+- Substance 3D Designer is not installed on this machine. Nothing below was run or measured inside Designer.
+- Mapping status: every mapping is `documented_only`. The nearest Copernicus node is a documentation-level judgement, based on the local Copernicus notes in `/Users/zenray/.claude/skills/zenray-cop-designer/docs/cop/<name>.md` and on the names in `/Users/zenray/.claude/skills/zenray-cop-designer/inventory/cop_names.txt`. No mapping has been verified in Houdini.
+- Wording: "exact" means the Copernicus node does the same job. "approximate" means it is the closest available node and differs in a documented way. "none" means no Copernicus node is a reasonable match.
+- No node is invented. Every name below appears on the official index, and each section cites the page it was read from.
+- Totals: 137 nodes written (89 under Noises, 48 under Patterns). Mapping judgement: 3 exact in purpose, 112 approximate, 22 none. All 137 mappings are `documented_only`.
+
+## Noises (Texture generators > Noises)
+
+### 3D Perlin Noise
+
+- Category: Texture generators > Noises
+- Purpose: Creates volumetric Perlin noise sampled from a Position Map input.
+- Main parameters: Scale, Size, Offset, Distortion Intensity, Contrast, Enable Tiling.
+- Nearest Copernicus node: `Cop fractalnoise3d`, approximate (Copernicus has no plain 3D Perlin node).
+- Mapping status: documented_only
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/texture-generators/noises/3d-perlin-noise
+
+### 3D Perlin Noise Fractal
+
+- Category: Texture generators > Noises
+- Purpose: Generates fractal 3D Perlin noise from a Position Map input.
+- Main parameters: Scale, Size, Offset, Min Level, Max Level, Roughness.
+- Nearest Copernicus node: `Cop fractalnoise3d`, approximate (closest fractal 3D noise, without the Perlin level controls).
+- Mapping status: documented_only
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/texture-generators/noises/3d-perlin-noise-fractal
+
+### 3D Ridged Noise Fractal
+
+- Category: Texture generators > Noises
+- Purpose: Produces layered ridged noise patterns in 3D space from a position input.
+- Main parameters: Scale, Distortion Intensity, Min Level, Max Level, Roughness, Lacunarity.
+- Nearest Copernicus node: `Cop fractalnoise3d`, approximate (no ridged variant is documented for the Copernicus fractal noise nodes).
+- Mapping status: documented_only
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/texture-generators/noises/3d-ridged-noise-fractal
+
+### 3D Simplex Noise
+
+- Category: Texture generators > Noises
+- Purpose: Generates procedural 3D simplex noise from a baked Position Map, intended for the GPU engine.
+- Main parameters: Scale, Size.
+- Nearest Copernicus node: `Cop fractalnoise3d`, approximate (gradient noise of the same family, but no simplex variant is documented in Copernicus).
+- Mapping status: documented_only
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/texture-generators/noises/3d-simplex-noise
+
+### 3D Voronoi
+
+- Category: Texture generators > Noises
+- Purpose: Generates 3D Voronoi noise based on a Position Map input.
+- Main parameters: Scale, Size, Distance Mode, Style, Enable Tiling, Disorder.
+- Nearest Copernicus node: `Cop worleynoise3d`, approximate (Voronoi and Worley are both distance-to-point cell noises, but the parameter sets differ).
+- Mapping status: documented_only
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/texture-generators/noises/3d-voronoi
+
+### 3D Voronoi Fractal
+
+- Category: Texture generators > Noises
+- Purpose: Generates fractal 3D Voronoi noise based on a Position Map input.
+- Main parameters: Scale, Style, Distance Mode, Blend Mode, Max Level, Enable Tiling.
+- Nearest Copernicus node: `Cop worleynoise3d`, approximate (no fractal Worley node is documented in Copernicus).
+- Mapping status: documented_only
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/texture-generators/noises/3d-voronoi-fractal
+
+### 3D Worley Noise
+
+- Category: Texture generators > Noises
+- Purpose: Generates a versatile 3D Worley noise from an input Position map.
+- Main parameters: Scale, Size, Mode, Minkowski Number, Style, Border Width.
+- Nearest Copernicus node: `Cop worleynoise3d`, exact in purpose (3D Worley cellular noise). Parameter names differ, so check each setting.
+- Mapping status: documented_only
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/texture-generators/noises/3d-worley-noise
+
+### Anisotropic Noise
+
+- Category: Texture generators > Noises
+- Purpose: Generates grayscale noise of randomly colored strips that fade into one another.
+- Main parameters: X amount, Y amount, Smoothness, Smoothness interpolation, Disorder, Non-square expansion.
+- Nearest Copernicus node: none. No Copernicus node produces strip-based anisotropic noise (`Cop phasornoise` is wave-based, a different pattern).
+- Mapping status: documented_only
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/texture-generators/noises/anisotropic-noise
+
+### Blue Noise Fast
+
+- Category: Texture generators > Noises
+- Purpose: Produces a simple, fast, pixel-scale noise.
+- Main parameters: Rotation (0.0 to 1.0, changes the internal calculations).
+- Nearest Copernicus node: `Cop randommono`, approximate (per-pixel grain noise, without the blue-noise spectrum control).
+- Mapping status: documented_only
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/texture-generators/noises/blue-noise-fast
+- Note: the page text contained instructions addressed to the reader asking for a particular reply format. They were web content, not part of the task, and were ignored.
+
+### BnW Spots 1
+
+- Category: Texture generators > Noises
+- Purpose: Generates a rough black-and-white spot noise as a grayscale bitmap.
+- Main parameters: Scale, Disorder, Disorder speed, Roughness, Tile offset, Non-square expansion.
+- Nearest Copernicus node: `Cop cellularnoise`, approximate (cell-based noise, not spot-based).
+- Mapping status: documented_only
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/texture-generators/noises/bnw-spots-1
+
+### Cells 1
+
+- Category: Texture generators > Noises
+- Purpose: Generates a grayscale cell noise with user-selected patterns overlaid using a Max blend.
+- Main parameters: Scale, Disorder, Pattern, Pattern size, Angle, Luminance random.
+- Nearest Copernicus node: `Cop cellpattern`, approximate (Cell Pattern builds cells with spacing and bevel; the pattern overlay has no direct equivalent).
+- Mapping status: documented_only
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/texture-generators/noises/cells-1
+
+### Clouds 1
+
+- Category: Texture generators > Noises
+- Purpose: Generates a rough, cloud-like grayscale noise texture.
+- Main parameters: Scale, Disorder, Disorder speed, Disorder anisotropy, Disorder anisotropy angle, Tile offset.
+- Nearest Copernicus node: `Cop cloudnoise3d`, approximate (3D puffy cloud noise, not the 2D grid of this node).
+- Mapping status: documented_only
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/texture-generators/noises/clouds-1
+
+### Creased
+
+- Category: Texture generators > Noises
+- Purpose: Generates cloth-like noise that works as a heightmap, suited to semi-directional patterns with large-scale variation.
+- Main parameters: Scale, Warp Intensity, Disorder, Non Square Expansion.
+- Nearest Copernicus node: none (no Copernicus node reproduces cloth-like warped creases directly; `Cop curlnoise` gives a direction field, a different output).
+- Mapping status: documented_only
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/texture-generators/noises/creased
+
+### Crystal 1
+
+- Category: Texture generators > Noises
+- Purpose: Creates Voronoi-style cellular noise with sharper, more angular distance patterns.
+- Main parameters: Scale, Disorder, Non Square Expansion.
+- Nearest Copernicus node: `Cop crystalnoise`, exact in purpose (sharp, angular Worley-type noise in image coordinates).
+- Mapping status: documented_only
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/texture-generators/noises/crystal-1
+
+### Cells 2
+
+- Category: Texture generators > Noises
+- Purpose: Generates a binary cell mask with adjustable wall thickness.
+- Main parameters: Scale, Edge width, Invert, Disorder, Disorder speed, Non-square expansion.
+- Nearest Copernicus node: `Cop cellularnoise`, approximate (bevelled cell noise; the binary mask and wall-width control are not documented on that node).
+- Mapping status: documented_only
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/texture-generators/noises/cells-2
+
+### Cells 3
+
+- Category: Texture generators > Noises
+- Purpose: Creates a variant of walled cell noise where intersecting discs form cells with thin, unevenly soft walls.
+- Main parameters: Scale, Hardness, Disorder, Pattern size, Angle, Tile offset.
+- Nearest Copernicus node: `Cop cellpattern`, approximate (cell pattern with spacing and bevel, without the disc overlay).
+- Mapping status: documented_only
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/texture-generators/noises/cells-3
+
+### Cells 4
+
+- Category: Texture generators > Noises
+- Purpose: Generates a grayscale noise where each cell gets a flat colour.
+- Main parameters: Scale, Disorder, Disorder speed, Color source, Pseudorandom seed, Non-square expansion.
+- Nearest Copernicus node: `Cop cellularnoise`, approximate (cell noise; the per-cell colour source has no documented equivalent on that node).
+- Mapping status: documented_only
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/texture-generators/noises/cells-4
+
+### Clouds 2
+
+- Category: Texture generators > Noises
+- Purpose: Generates a rough, varied cloud noise as a grayscale bitmap.
+- Main parameters: Scale, Disorder, Disorder speed, Disorder anisotropy, Disorder anisotropy angle, Tile offset.
+- Nearest Copernicus node: `Cop cloudnoise3d`, approximate (3D puffy cloud noise, not a 2D grid).
+- Mapping status: documented_only
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/texture-generators/noises/clouds-2
+
+### Clouds 3
+
+- Category: Texture generators > Noises
+- Purpose: Generates a rough, variant cloud-like grayscale noise bitmap.
+- Main parameters: Scale, Disorder, Disorder speed, Disorder anisotropy, Disorder anisotropy angle, Tile offset.
+- Nearest Copernicus node: `Cop cloudnoise3d`, approximate (3D puffy cloud noise, not a 2D grid).
+- Mapping status: documented_only
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/texture-generators/noises/clouds-3
+
+### Crystal 2
+
+- Category: Texture generators > Noises
+- Purpose: Creates an angular, fold-like pattern useful for marble or cloth detail.
+- Main parameters: Scale, Disorder, Non Square Expansion.
+- Nearest Copernicus node: `Cop crystalnoise`, approximate (sharp angular Worley noise; the fold-like look is not documented there).
+- Mapping status: documented_only
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/texture-generators/noises/crystal-2
+
+### Directional Noise 1
+
+- Category: Texture generators > Noises
+- Purpose: Generates a grayscale directional noise pattern.
+- Main parameters: Scale, Disorder, Disorder speed, Angle, Angle random, Tile offset.
+- Nearest Copernicus node: `Cop phasornoise`, approximate (wave-like directional noise; Copernicus has no direct directional noise node).
+- Mapping status: documented_only
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/texture-generators/noises/directional-noise-1
+
+### Directional Noise 2
+
+- Category: Texture generators > Noises
+- Purpose: Generates a variation of directional noise with adjustable scale, angle, and disorder.
+- Main parameters: Scale, Disorder, Disorder speed, Disorder anisotropy, Angle, Angle random.
+- Nearest Copernicus node: `Cop phasornoise`, approximate (wave-like directional noise).
+- Mapping status: documented_only
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/texture-generators/noises/directional-noise-2
+
+### Directional Noise 3
+
+- Category: Texture generators > Noises
+- Purpose: Generates a grayscale directional noise, a variation of the Directional noise family.
+- Main parameters: Scale, Disorder, Disorder speed, Disorder anisotropy, Disorder anisotropy angle, Angle.
+- Nearest Copernicus node: `Cop phasornoise`, approximate (wave-like directional noise).
+- Mapping status: documented_only
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/texture-generators/noises/directional-noise-3
+
+### Directional Noise 4
+
+- Category: Texture generators > Noises
+- Purpose: Generates a directional noise pattern as a grayscale bitmap.
+- Main parameters: Scale, Disorder, Disorder speed, Disorder anisotropy, Angle, Angle random.
+- Nearest Copernicus node: `Cop phasornoise`, approximate (wave-like directional noise).
+- Mapping status: documented_only
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/texture-generators/noises/directional-noise-4
+
+### Dirt 1
+
+- Category: Texture generators > Noises
+- Purpose: Generates a grainy, dirt-like grayscale noise pattern.
+- Main parameters: Scale, Disorder, Disorder speed, Disorder anisotropy, Disorder anisotropy angle, Tile offset.
+- Nearest Copernicus node: `Cop fractalnoise`, approximate (layered noise; the dirt grain is not documented there).
+- Mapping status: documented_only
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/texture-generators/noises/dirt-1
+
+### Dirt 2
+
+- Category: Texture generators > Noises
+- Purpose: Generates a grainy, variant Dirt noise as a grayscale bitmap.
+- Main parameters: Scale, Disorder, Disorder speed, Disorder anisotropy, Disorder anisotropy angle, Tile offset.
+- Nearest Copernicus node: `Cop fractalnoise`, approximate.
+- Mapping status: documented_only
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/texture-generators/noises/dirt-2
+
+### Dirt 3
+
+- Category: Texture generators > Noises
+- Purpose: Generates a grainy, variation of the Dirt noise as a grayscale bitmap.
+- Main parameters: Scale, Disorder, Disorder speed, Disorder anisotropy, Disorder anisotropy angle, Tile offset.
+- Nearest Copernicus node: `Cop fractalnoise`, approximate.
+- Mapping status: documented_only
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/texture-generators/noises/dirt-3
+
+### Dirt 4
+
+- Category: Texture generators > Noises
+- Purpose: Generates a grainy, dirt-like noise pattern as a grayscale bitmap.
+- Main parameters: Scale, Disorder, Disorder speed, Disorder anisotropy, Disorder anisotropy angle, Tile offset.
+- Nearest Copernicus node: `Cop fractalnoise`, approximate.
+- Mapping status: documented_only
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/texture-generators/noises/dirt-4
+
+### Dirt 5
+
+- Category: Texture generators > Noises
+- Purpose: Generates a grainy, varied noise pattern as a grayscale bitmap.
+- Main parameters: Scale, Disorder, Disorder speed, Disorder anisotropy, Disorder anisotropy angle, Tile offset.
+- Nearest Copernicus node: `Cop fractalnoise`, approximate.
+- Mapping status: documented_only
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/texture-generators/noises/dirt-5
+
+### Dirt Gradient
+
+- Category: Texture generators > Noises
+- Purpose: Generates a grainy dirt noise with a directional falloff gradient.
+- Main parameters: Disorder, Disorder speed, Disorder anisotropy, Disorder anisotropy angle, Non-square expansion.
+- Nearest Copernicus node: `Cop fractalnoise`, approximate (the directional falloff is not documented there).
+- Mapping status: documented_only
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/texture-generators/noises/dirt-gradient
+
+### Directional Scratches
+
+- Category: Texture generators > Noises
+- Purpose: Creates randomly scattered scratch textures whose direction and size you can adjust.
+- Main parameters: Scale, Disorder, Disorder speed, Disorder anisotropy, Disorder anisotropy angle, Angle, Angle random, Pattern amount, Pattern size, Tile offset. Two reads of the page gave slightly different lists; this one is merged from both and must be confirmed in Designer.
+- Nearest Copernicus node: `Cop grunge_leakingstreaks`, approximate (streak-shaped layered noise; no scratch generator is documented in Copernicus).
+- Mapping status: documented_only
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/texture-generators/noises/directional-scratches
+
+### BnW Spots 2
+
+- Category: Texture generators > Noises
+- Purpose: Generates a variation of rough black-and-white spot noise as a grayscale bitmap.
+- Main parameters: Scale, Disorder, Disorder speed, Disorder anisotropy, Disorder anisotropy angle, Tile offset.
+- Nearest Copernicus node: `Cop cellularnoise`, approximate (cell-based noise, not spot-based).
+- Mapping status: documented_only
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/texture-generators/noises/bnw-spots-2
+
+### BnW Spots 3
+
+- Category: Texture generators > Noises
+- Purpose: Generates a grayscale noise pattern that is a variation of the rougher BnW spots noises.
+- Main parameters: Scale, Disorder, Disorder speed, Disorder anisotropy, Disorder anisotropy angle, Tile offset.
+- Nearest Copernicus node: `Cop cellularnoise`, approximate (cell-based noise, not spot-based).
+- Mapping status: documented_only
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/texture-generators/noises/bnw-spots-3
+
+### Fluid
+
+- Category: Texture generators > Noises
+- Purpose: Generates a flowing or falling fluid pattern useful for rain, leaks, and other gravity-driven liquids.
+- Main parameters: Scale, Disorder, Warp Intensity, Pattern Size, Non Square Expansion.
+- Nearest Copernicus node: `Cop grunge_drips`, approximate (drip-shaped layered noise; no flowing-fluid node is documented in Copernicus).
+- Mapping status: documented_only
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/texture-generators/noises/fluid
+
+### Fractal Sum Base
+
+- Category: Texture generators > Noises
+- Purpose: Generates a grayscale fractal sum noise bitmap that can be animated.
+- Main parameters: Disorder, Disorder speed, Non-square expansion.
+- Nearest Copernicus node: `Cop fractalnoise`, approximate (same layering principle; the Substance fractal sum parameters are not documented there).
+- Mapping status: documented_only
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/texture-generators/noises/fractal-sum-base
+
+### Fractal Sum 1
+
+- Category: Texture generators > Noises
+- Purpose: Generates a grayscale noise bitmap as a variation of the fractal sum noises.
+- Main parameters: Disorder, Disorder speed, Non-square expansion.
+- Nearest Copernicus node: `Cop fractalnoise`, approximate.
+- Mapping status: documented_only
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/texture-generators/noises/fractal-sum-1
+
+### Fractal Sum 2
+
+- Category: Texture generators > Noises
+- Purpose: Generates a grayscale variation of the fractal sum noise.
+- Main parameters: Disorder, Disorder speed, Non-square expansion.
+- Nearest Copernicus node: `Cop fractalnoise`, approximate.
+- Mapping status: documented_only
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/texture-generators/noises/fractal-sum-2
+
+### Fractal Sum 3
+
+- Category: Texture generators > Noises
+- Purpose: Generates a variation of the fractal sum noise as a grayscale bitmap.
+- Main parameters: Disorder, Disorder speed, Non-square expansion.
+- Nearest Copernicus node: `Cop fractalnoise`, approximate.
+- Mapping status: documented_only
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/texture-generators/noises/fractal-sum-3
+
+### Fractal Sum 4
+
+- Category: Texture generators > Noises
+- Purpose: Generates a variation of the fractal sum noise as a grayscale bitmap.
+- Main parameters: Disorder, Disorder speed, Non-square expansion.
+- Nearest Copernicus node: `Cop fractalnoise`, approximate.
+- Mapping status: documented_only
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/texture-generators/noises/fractal-sum-4
+
+### Fur 1
+
+- Category: Texture generators > Noises
+- Purpose: Generates a straight-fur type of noise.
+- Main parameters: Scale, Disorder, Non Square Expansion.
+- Nearest Copernicus node: none (no Copernicus node produces straight fibre noise).
+- Mapping status: documented_only
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/texture-generators/noises/fur-1
+
+### Fur 2
+
+- Category: Texture generators > Noises
+- Purpose: Generates a wavy, fur-like noise pattern.
+- Main parameters: Scale, Waves Scale, Waves Rotation, Non Square Expansion.
+- Nearest Copernicus node: `Cop phasornoise`, approximate (wave-like noise from phasor kernels).
+- Mapping status: documented_only
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/texture-generators/noises/fur-2
+
+### Fur 3
+
+- Category: Texture generators > Noises
+- Purpose: Generates a spreading, bristle-type noise.
+- Main parameters: Scale, Disorder, Waves Amount, Non Square Expansion.
+- Nearest Copernicus node: `Cop phasornoise`, approximate (wave-like noise; bristle look not documented there).
+- Mapping status: documented_only
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/texture-generators/noises/fur-3
+
+### Gaussian Noise
+
+- Category: Texture generators > Noises
+- Purpose: Generates a smooth grayscale noise made from blended gradients that follow a bell-curve distribution.
+- Main parameters: Scale, Disorder, Disorder speed, Disorder anisotropy, Disorder anisotropy angle, Tile offset.
+- Nearest Copernicus node: `Cop fractalnoise`, approximate (smooth layered noise; the Gaussian blending is not documented there).
+- Mapping status: documented_only
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/texture-generators/noises/gaussian-noise
+
+### Gaussian Spots 1
+
+- Category: Texture generators > Noises
+- Purpose: Produces a smooth grayscale spot noise, based on Gaussian noise, with narrower gradients.
+- Main parameters: Scale, Disorder, Disorder speed, Disorder anisotropy, Disorder anisotropy angle, Tile offset.
+- Nearest Copernicus node: `Cop bubblenoise`, approximate (soft blob-like noise; the Gaussian spot model is not documented there).
+- Mapping status: documented_only
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/texture-generators/noises/gaussian-spots-1
+
+### Gaussian Spots 2
+
+- Category: Texture generators > Noises
+- Purpose: Generates narrower, higher-frequency Gaussian spot noise as a grayscale bitmap.
+- Main parameters: Scale, Disorder, Disorder speed, Disorder anisotropy, Disorder anisotropy angle, Tile offset.
+- Nearest Copernicus node: `Cop bubblenoise`, approximate (soft blob-like noise).
+- Mapping status: documented_only
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/texture-generators/noises/gaussian-spots-2
+
+### Perlin Noise
+
+- Category: Texture generators > Noises
+- Purpose: Creates a smooth grayscale noise texture.
+- Main parameters: Scale, Disorder, Disorder speed, Tile offset, Non-square expansion.
+- Nearest Copernicus node: `Cop fractalnoise`, approximate (2D layered noise; Copernicus has no plain 2D Perlin node).
+- Mapping status: documented_only
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/texture-generators/noises/perlin-noise
+
+### Liquid
+
+- Category: Texture generators > Noises
+- Purpose: Creates a liquid-like noise effect by warping a variant of Gaussian Noise with itself.
+- Main parameters: Scale, Disorder, Warp Intensity, Non Square Expansion.
+- Nearest Copernicus node: `Cop curlnoise`, approximate (flow-like warped noise; Copernicus curl noise is a direction field, not a warped height).
+- Mapping status: documented_only
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/texture-generators/noises/liquid
+
+### Messy Fibers 1
+
+- Category: Texture generators > Noises
+- Purpose: Generates a variation of the Messy fibers structured noise as a grayscale bitmap.
+- Main parameters: Scale, Disorder, Angle, Angle random, Lines number, Tile offset.
+- Nearest Copernicus node: none (no Copernicus node produces randomly placed fibre lines).
+- Mapping status: documented_only
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/texture-generators/noises/messy-fibers-1
+
+### Messy Fibers 2
+
+- Category: Texture generators > Noises
+- Purpose: Generates a grayscale structured noise of messy fibers, as a variation of the Messy fibers noise family.
+- Main parameters: Scale, Disorder, Angle, Angle random, Lines number, Tile offset.
+- Nearest Copernicus node: none (no Copernicus node produces randomly placed fibre lines).
+- Mapping status: documented_only
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/texture-generators/noises/messy-fibers-2
+
+### Messy Fibers 3
+
+- Category: Texture generators > Noises
+- Purpose: Generates a grayscale fiber-thread noise, a variation of the Messy fibers structured noises.
+- Main parameters: Scale, Disorder, Angle, Angle random, Luminance random, Tile offset.
+- Nearest Copernicus node: none (no Copernicus node produces randomly placed fibre lines).
+- Mapping status: documented_only
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/texture-generators/noises/messy-fibers-3
+
+### Microscope View
+
+- Category: Texture generators > Noises
+- Purpose: Creates a distorted noise pattern resembling microorganisms seen through a microscope.
+- Main parameters: Scale, Warp Intensity, Disorder, Non Square Expansion.
+- Nearest Copernicus node: `Cop cellularnoise`, approximate (organic cell-like noise; the microscope look is not documented there).
+- Mapping status: documented_only
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/texture-generators/noises/microscope-view
+
+### Moisture Noise
+
+- Category: Texture generators > Noises
+- Purpose: Generates a grayscale noise of scattered discs that add or subtract from a base gray to create a spongy, moisture-like texture.
+- Main parameters: Scale, Disorder, Pattern size, Pattern angle, Global opacity, Tile offset.
+- Nearest Copernicus node: `Cop grunge_moisture`, approximate (spotted damp, sponge-like layered noise; the disc model is not documented there).
+- Mapping status: documented_only
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/texture-generators/noises/moisture-noise
+
+### Plasma
+
+- Category: Texture generators > Noises
+- Purpose: Generates a variant of Gaussian Noise with longer dark streaks as valleys.
+- Main parameters: Scale, Disorder, Non Square Expansion.
+- Nearest Copernicus node: `Cop fractalnoise`, approximate (layered noise; the streak valleys are not documented there).
+- Mapping status: documented_only
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/texture-generators/noises/plasma
+
+### Caustics
+
+- Category: Texture generators > Noises
+- Purpose: Generates projected caustics from a height map and a light direction.
+- Main parameters: Photon Grid Size, Surface Height Scale, Surface Height Position, Surface IOR, Photon Size, Dispersion.
+- Nearest Copernicus node: `Cop bubblenoise`, approximate (the local Copernicus note names sharp caustics as a use; no light-projection model is documented there).
+- Mapping status: documented_only
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/texture-generators/noises/caustics
+
+### Voronoi
+
+- Category: Texture generators > Noises
+- Purpose: Creates a cellular noise pattern by projecting 3D Voronoi noise onto a 2D image.
+- Main parameters: Scale, Size, Disorder, Distance Mode, Style, Invert.
+- Nearest Copernicus node: `Cop worleynoise`, approximate (2D cellular distance noise; the 3D projection is not documented there).
+- Mapping status: documented_only
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/texture-generators/noises/voronoi
+
+### Voronoi Fractal
+
+- Category: Texture generators > Noises
+- Purpose: Generates fractal 3D Voronoi noise mapped to a 2D image using a Z-down orthographic projection.
+- Main parameters: Scale, Size, Distance Mode, Blend Mode, Style, Enable Tiling.
+- Nearest Copernicus node: `Cop worleynoise`, approximate (no fractal Worley node is documented in Copernicus).
+- Mapping status: documented_only
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/texture-generators/noises/voronoi-fractal
+
+### Waveform 1
+
+- Category: Texture generators > Noises
+- Purpose: Generates a grayscale noise bitmap of horizontal patterns stacked into a waveform-like shape.
+- Main parameters: Samples, Function, Roughness, Scale, Amplitude min., Amplitude max.
+- Nearest Copernicus node: `Cop phasornoise`, approximate (wave-like noise from phasor kernels; the stacked-waveform model is not documented there).
+- Mapping status: documented_only
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/texture-generators/noises/waveform-1
+
+### White Noise
+
+- Category: Texture generators > Noises
+- Purpose: Generates white noise using uniform, Gaussian, or triangle histogram shapes.
+- Main parameters: Noise distribution, Disorder, Disorder speed.
+- Nearest Copernicus node: `Cop randommono`, approximate (random per-pixel values; Min/Max range and Float Ramp can shape the distribution, but the three histogram shapes are not documented as presets).
+- Mapping status: documented_only
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/texture-generators/noises/white-noise
+
+### White Noise Fast
+
+- Category: Texture generators > Noises
+- Purpose: A faster version of White Noise that trades some quality for performance.
+- Main parameters: none listed on the page.
+- Nearest Copernicus node: `Cop randommono`, approximate.
+- Mapping status: documented_only
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/texture-generators/noises/white-noise-fast
+- Note: the page text contained formatting and licensing instructions addressed to the reader. They were web content, not part of the task, and were ignored.
+
+### Grunge Concrete
+
+- Category: Texture generators > Noises
+- Purpose: Generates a grunge map that resembles the height map of a concrete surface.
+- Main parameters: Balance, Contrast, Invert, Non Square Expansion, Base Noisiness, Dirt Specks Opacity.
+- Nearest Copernicus node: none for concrete. The closest generic layered grunge node is `Cop grunge_layerednoise`, which is not a concrete model.
+- Mapping status: documented_only
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/texture-generators/noises/grunge-concrete
+
+### Grunge Damas
+
+- Category: Texture generators > Noises
+- Purpose: Generates a grunge map resembling a Damascus steel pattern.
+- Main parameters: Balance, Contrast, Invert, Non Square Expansion, Distortion, Divisions.
+- Nearest Copernicus node: none for Damascus steel. The closest generic layered grunge node is `Cop grunge_layerednoise`, approximate.
+- Mapping status: documented_only
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/texture-generators/noises/grunge-damas
+
+### Grunge Galvanic Large
+
+- Category: Texture generators > Noises
+- Purpose: Creates a grunge texture that resembles the surface pattern of galvanized steel.
+- Main parameters: Balance, Contrast, Invert, Non Square Expansion, Warp Intensity, Ridge Detail Opacity.
+- Nearest Copernicus node: `Cop grunge_galvanizedsteel`, approximate (same galvanized-steel subject; parameter set differs).
+- Mapping status: documented_only
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/texture-generators/noises/grunge-galvanic-large
+
+### Grunge Galvanic Small
+
+- Category: Texture generators > Noises
+- Purpose: Generates a grunge map resembling the pattern of densely galvanised steel.
+- Main parameters: Balance, Contrast, Invert, Non Square Expansion, Crispness, Dirt.
+- Nearest Copernicus node: `Cop grunge_galvanizedsteel`, approximate.
+- Mapping status: documented_only
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/texture-generators/noises/grunge-galvanic-small
+
+### Grunge Leaks
+
+- Category: Texture generators > Noises
+- Purpose: Generates a grunge map that resembles drips across a greasy surface.
+- Main parameters: Balance, Contrast, Invert, Non Square Expansion, Drip Length, Shape Contrast.
+- Nearest Copernicus node: `Cop grunge_drips`, approximate (drip-shaped layered noise).
+- Mapping status: documented_only
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/texture-generators/noises/grunge-leaks
+
+### Grunge Leaky Paint
+
+- Category: Texture generators > Noises
+- Purpose: Generates a grunge map that mimics paint dripping through leaks.
+- Main parameters: Balance, Contrast, Invert, Non Square Expansion, Leak Intensity, Leak Scale.
+- Nearest Copernicus node: `Cop grunge_leakingstreaks`, approximate (leaking streaks with base and secondary layers).
+- Mapping status: documented_only
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/texture-generators/noises/grunge-leaky-paint
+
+**Note on Grunge Map 001 to 015.**
+
+The fifteen Grunge Map pages returned near-identical summaries through WebFetch: each describes a complex, combined noise map for procedural texturing that is slow to compute. The per-page parameter lists below are recorded as reported. Disorder (005) and Cracks (010, 011) were the only differences seen. Each entry must be checked against its own page in Designer before any mapping is relied on.
+
+### Grunge Map 001
+
+- Category: Texture generators > Noises
+- Purpose: Generates a complex, combined noise map that works as a detailed procedural texture, though it is slow to compute.
+- Main parameters (as reported): Balance, Contrast, Invert, Brush Pattern, Non Square Expansion.
+- Nearest Copernicus node: `Cop grunge_layerednoise`, approximate (layered noise building block; the Substance map is not documented as a Copernicus equivalent).
+- Mapping status: documented_only
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/texture-generators/noises/grunge-map-001
+
+### Grunge Map 002
+
+- Category: Texture generators > Noises
+- Purpose: Generates a complex, combined noise map that works as a detailed procedural texture, though it is slow to compute.
+- Main parameters (as reported): Balance, Contrast, Invert, Brush Pattern, Non Square Expansion.
+- Nearest Copernicus node: `Cop grunge_layerednoise`, approximate (layered noise building block; the Substance map is not documented as a Copernicus equivalent).
+- Mapping status: documented_only
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/texture-generators/noises/grunge-map-002
+
+### Grunge Map 003
+
+- Category: Texture generators > Noises
+- Purpose: Generates a complex, combined noise map that works as a detailed procedural texture, though it is slow to compute.
+- Main parameters (as reported): Balance, Contrast, Invert, Brush Pattern, Non Square Expansion.
+- Nearest Copernicus node: `Cop grunge_layerednoise`, approximate (layered noise building block; the Substance map is not documented as a Copernicus equivalent).
+- Mapping status: documented_only
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/texture-generators/noises/grunge-map-003
+
+### Grunge Map 004
+
+- Category: Texture generators > Noises
+- Purpose: Generates a complex, combined noise map that works as a detailed procedural texture, though it is slow to compute.
+- Main parameters (as reported): Balance, Contrast, Invert, Brush Pattern, Non Square Expansion.
+- Nearest Copernicus node: `Cop grunge_layerednoise`, approximate (layered noise building block; the Substance map is not documented as a Copernicus equivalent).
+- Mapping status: documented_only
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/texture-generators/noises/grunge-map-004
+
+### Grunge Map 005
+
+- Category: Texture generators > Noises
+- Purpose: Generates a complex, combined noise map that works as a detailed procedural texture, though it is slow to compute.
+- Main parameters (as reported): Balance, Contrast, Disorder, Invert, Brush Pattern, Non Square Expansion.
+- Nearest Copernicus node: `Cop grunge_layerednoise`, approximate (layered noise building block; the Substance map is not documented as a Copernicus equivalent).
+- Mapping status: documented_only
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/texture-generators/noises/grunge-map-005
+
+### Grunge Map 006
+
+- Category: Texture generators > Noises
+- Purpose: Generates a complex, combined noise map that works as a detailed procedural texture, though it is slow to compute.
+- Main parameters (as reported): Balance, Contrast, Invert, Brush Pattern, Non Square Expansion.
+- Nearest Copernicus node: `Cop grunge_layerednoise`, approximate (layered noise building block; the Substance map is not documented as a Copernicus equivalent).
+- Mapping status: documented_only
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/texture-generators/noises/grunge-map-006
+
+### Grunge Map 007
+
+- Category: Texture generators > Noises
+- Purpose: Generates a complex, combined noise map that works as a detailed procedural texture, though it is slow to compute.
+- Main parameters (as reported): Balance, Contrast, Invert, Brush Pattern, Non Square Expansion.
+- Nearest Copernicus node: `Cop grunge_layerednoise`, approximate (layered noise building block; the Substance map is not documented as a Copernicus equivalent).
+- Mapping status: documented_only
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/texture-generators/noises/grunge-map-007
+
+### Grunge Map 008
+
+- Category: Texture generators > Noises
+- Purpose: Generates a complex, combined noise map that works as a detailed procedural texture, though it is slow to compute.
+- Main parameters (as reported): Balance, Contrast, Invert, Brush Pattern, Non Square Expansion.
+- Nearest Copernicus node: `Cop grunge_layerednoise`, approximate (layered noise building block; the Substance map is not documented as a Copernicus equivalent).
+- Mapping status: documented_only
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/texture-generators/noises/grunge-map-008
+
+### Grunge Map 009
+
+- Category: Texture generators > Noises
+- Purpose: Generates a complex, combined noise map that works as a detailed procedural texture, though it is slow to compute.
+- Main parameters (as reported): Balance, Contrast, Invert, Brush Pattern, Non Square Expansion.
+- Nearest Copernicus node: `Cop grunge_layerednoise`, approximate (layered noise building block; the Substance map is not documented as a Copernicus equivalent).
+- Mapping status: documented_only
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/texture-generators/noises/grunge-map-009
+
+### Grunge Map 010
+
+- Category: Texture generators > Noises
+- Purpose: Generates a complex, combined noise map that works as a detailed procedural texture, though it is slow to compute.
+- Main parameters (as reported): Cracks, Balance, Contrast, Invert, Brush Pattern, Non Square Expansion.
+- Nearest Copernicus node: `Cop grunge_layerednoise`, approximate (layered noise building block; the Substance map is not documented as a Copernicus equivalent).
+- Mapping status: documented_only
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/texture-generators/noises/grunge-map-010
+
+### Grunge Map 011
+
+- Category: Texture generators > Noises
+- Purpose: Generates a complex, combined noise map that works as a detailed procedural texture, though it is slow to compute.
+- Main parameters (as reported): Cracks, Balance, Contrast, Invert, Brush Pattern, Non Square Expansion.
+- Nearest Copernicus node: `Cop grunge_layerednoise`, approximate (layered noise building block; the Substance map is not documented as a Copernicus equivalent).
+- Mapping status: documented_only
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/texture-generators/noises/grunge-map-011
+
+### Grunge Map 012
+
+- Category: Texture generators > Noises
+- Purpose: Generates a complex, combined noise map that works as a detailed procedural texture, though it is slow to compute.
+- Main parameters (as reported): Balance, Contrast, Invert, Brush Pattern, Non Square Expansion.
+- Nearest Copernicus node: `Cop grunge_layerednoise`, approximate (layered noise building block; the Substance map is not documented as a Copernicus equivalent).
+- Mapping status: documented_only
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/texture-generators/noises/grunge-map-012
+
+### Grunge Map 013
+
+- Category: Texture generators > Noises
+- Purpose: Generates a complex, combined noise map that works as a detailed procedural texture, though it is slow to compute.
+- Main parameters (as reported): Balance, Contrast, Invert, Brush Pattern, Non Square Expansion.
+- Nearest Copernicus node: `Cop grunge_layerednoise`, approximate (layered noise building block; the Substance map is not documented as a Copernicus equivalent).
+- Mapping status: documented_only
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/texture-generators/noises/grunge-map-013
+
+### Grunge Map 014
+
+- Category: Texture generators > Noises
+- Purpose: Generates a complex, combined noise map that works as a detailed procedural texture, though it is slow to compute.
+- Main parameters (as reported): Balance, Contrast, Invert, Brush Pattern, Non Square Expansion.
+- Nearest Copernicus node: `Cop grunge_layerednoise`, approximate (layered noise building block; the Substance map is not documented as a Copernicus equivalent).
+- Mapping status: documented_only
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/texture-generators/noises/grunge-map-014
+
+### Grunge Map 015
+
+- Category: Texture generators > Noises
+- Purpose: Generates a complex, combined noise map that works as a detailed procedural texture, though it is slow to compute.
+- Main parameters (as reported): Balance, Contrast, Invert, Brush Pattern, Non Square Expansion.
+- Nearest Copernicus node: `Cop grunge_layerednoise`, approximate (layered noise building block; the Substance map is not documented as a Copernicus equivalent).
+- Mapping status: documented_only
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/texture-generators/noises/grunge-map-015
+
+### Grunge Rough Dirty
+
+- Category: Texture generators > Noises
+- Purpose: Generates a grunge map resembling rough, dirty grunge map with fine parallel scratches.
+- Main parameters: Balance, Contrast, Invert, Non Square Expansion, Main Grunge Intensity, Invert Scratches.
+- Nearest Copernicus node: `Cop grunge_layerednoise`, approximate (generic layered distress; no rough-dirty variant is documented in Copernicus).
+- Mapping status: documented_only
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/texture-generators/noises/grunge-rough-dirty
+
+### Grunge Rust Fine
+
+- Category: Texture generators > Noises
+- Purpose: Generates a grunge map resembling fine grunge rust overlay.
+- Main parameters: Balance, Contrast, Invert, Non Square Expansion, Base Grunge Contrast, Base Warp Intensity.
+- Nearest Copernicus node: `Cop grunge_rust`, approximate (rust texture from stacked noise layers; the fine-overlay controls are not documented there).
+- Mapping status: documented_only
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/texture-generators/noises/grunge-rust-fine
+
+### Grunge Scratches Dirty
+
+- Category: Texture generators > Noises
+- Purpose: Generates a grunge map resembling dirty surface covered in fine scratches.
+- Main parameters: Balance, Contrast, Invert, Non Square Expansion, Base Grunge Intensity, Scratches Intensity.
+- Nearest Copernicus node: `Cop grunge_leakingstreaks`, approximate (streak-shaped layered noise; no scratch generator is documented in Copernicus).
+- Mapping status: documented_only
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/texture-generators/noises/grunge-scratches-dirty
+
+### Grunge Scratches Fine
+
+- Category: Texture generators > Noises
+- Purpose: Generates a grunge map resembling finely scratched clean surface.
+- Main parameters: Balance, Contrast, Invert, Non Square Expansion, Scratches Amount, Sharpen Intensity.
+- Nearest Copernicus node: `Cop grunge_leakingstreaks`, approximate (streak-shaped layered noise; no scratch generator is documented in Copernicus).
+- Mapping status: documented_only
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/texture-generators/noises/grunge-scratches-fine
+
+### Grunge Scratches Rough
+
+- Category: Texture generators > Noises
+- Purpose: Generates a grunge map resembling worn, dusty texture with rough scratches.
+- Main parameters: Balance, Contrast, Invert, Non Square Expansion, Scratch Quantity, Scratch Tiling.
+- Nearest Copernicus node: `Cop grunge_leakingstreaks`, approximate (streak-shaped layered noise; no scratch generator is documented in Copernicus).
+- Mapping status: documented_only
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/texture-generators/noises/grunge-scratches-rough
+
+### Grunge Shavings
+
+- Category: Texture generators > Noises
+- Purpose: Generates a grunge map resembling shavings scattered on a surface.
+- Main parameters: Balance, Contrast, Invert, Non Square Expansion, Scratch Spots Amount, Scratch Spots Tiling.
+- Nearest Copernicus node: `Cop grunge_sheets`, approximate (layered sheet-like noise; the shavings look is not documented there).
+- Mapping status: documented_only
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/texture-generators/noises/grunge-shavings
+
+### Grunge Splashes Dusty
+
+- Category: Texture generators > Noises
+- Purpose: Generates a grunge map resembling liquid splashes on a dirty surface.
+- Main parameters: Balance, Contrast, Invert, Non Square Expansion, Splashes Quantity, Splashes Distortion.
+- Nearest Copernicus node: `Cop grunge_drips`, approximate (drip-shaped layered noise; no splash model is documented in Copernicus).
+- Mapping status: documented_only
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/texture-generators/noises/grunge-splashes-dusty
+
+### Grunge Spots
+
+- Category: Texture generators > Noises
+- Purpose: Generates a grunge map resembling fine splattered spots.
+- Main parameters: Balance, Contrast, Invert, Non Square Expansion, Details, Coverage.
+- Nearest Copernicus node: `Cop grunge_moldspots`, approximate (spotted layered noise).
+- Mapping status: documented_only
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/texture-generators/noises/grunge-spots
+
+### Grunge Spots Dirty
+
+- Category: Texture generators > Noises
+- Purpose: Generates a grunge map resembling spots of dirt.
+- Main parameters: Balance, Contrast, Invert, Non Square Expansion, Coverage, Scale.
+- Nearest Copernicus node: `Cop grunge_moldspots`, approximate (spotted layered noise; the dirt look is not documented there).
+- Mapping status: documented_only
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/texture-generators/noises/grunge-spots-dirty
+
+
+## Patterns (Texture generators > Patterns)
+
+### 3D Linear Gradient
+
+- Category: Texture generators > Patterns
+- Purpose: Generates a volumetric black-to-white gradient between two points in 3D space, for the GPU engine.
+- Main parameters: Points Position Mode, Point 1, Point 2, Contrast.
+- Nearest Copernicus node: `Cop ramp`, approximate (ramp is a 2D linear or radial gradient, not a 3D position gradient).
+- Mapping status: documented_only
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/texture-generators/patterns/3d-linear-gradient
+
+### 3D Volume Mask
+
+- Category: Texture generators > Patterns
+- Purpose: Generates a cube, cylinder or sphere primitive driven by a Position input map.
+- Main parameters: Shape, Scale, Size, Position Input, Rotation, Feather Width.
+- Nearest Copernicus node: none (Copernicus has no 3D volume primitive; `Cop sdfshape` is 2D only).
+- Mapping status: documented_only
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/texture-generators/patterns/3d-volume-mask
+
+### Alveolus
+
+- Category: Texture generators > Patterns
+- Purpose: Generates a soft-sphere pattern that can alternatively produce hexagon tiles.
+- Main parameters: Tiling, Gradient Filled Cells, Interstice Width, Non Square Expansion.
+- Nearest Copernicus node: `Cop hextile`, approximate (hexagonal cells; the soft-sphere look is not documented there).
+- Mapping status: documented_only
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/texture-generators/patterns/alveolus
+
+### Arc Pavement
+
+- Category: Texture generators > Patterns
+- Purpose: Generates a Parisian arc pavement pattern that standard tile nodes cannot produce.
+- Main parameters: Scale, Pattern Amount, Arcs Amount, Pattern, Pattern Width, Pattern Height.
+- Nearest Copernicus node: none (the closest tile layout, `Cop tilepattern`, is rectangular only).
+- Mapping status: documented_only
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/texture-generators/patterns/arc-pavement
+
+### Brick 1
+
+- Category: Texture generators > Patterns
+- Purpose: Generates a simple brick pattern with adjustable tiling, edge softness and gap size.
+- Main parameters: Tiling, Edge Smoothness, Interstice Width, Non Square Expansion.
+- Nearest Copernicus node: `Cop tilepattern`, approximate (brick bonds are documented there; the softness control is not).
+- Mapping status: documented_only
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/texture-generators/patterns/brick-1
+
+### Brick 2
+
+- Category: Texture generators > Patterns
+- Purpose: Generates a simple brick pattern with adjustable edge softness, gap size and tiling.
+- Main parameters: Tiling, Edge Smoothness, Interstice Width, Non Square Expansion.
+- Nearest Copernicus node: `Cop tilepattern`, approximate (brick bonds are documented there; the softness control is not).
+- Mapping status: documented_only
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/texture-generators/patterns/brick-2
+
+### Brick Generator
+
+- Category: Texture generators > Patterns
+- Purpose: Generates a detailed man-made brick pattern with extensive customisation.
+- Main parameters: Bricks, Bevel, Keep Ratio, Gap, Middle Size, Height.
+- Nearest Copernicus node: `Cop tilepattern`, approximate (brick bonds are documented there; the bevel and middle-size controls are not).
+- Mapping status: documented_only
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/texture-generators/patterns/brick-generator
+
+### Checker 1
+
+- Category: Texture generators > Patterns
+- Purpose: Generates a simple checker pattern with obvious contrast and tiling, useful for test cases.
+- Main parameters: Tiling, Rotate 45 Degrees, Non Square Expansion.
+- Nearest Copernicus node: `Cop checkerboard`, exact in purpose (alternating squares); check the 45 degree rotation option.
+- Mapping status: documented_only
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/texture-generators/patterns/checker-1
+
+### Cube 3D
+
+- Category: Texture generators > Patterns
+- Purpose: Generates a shaded grayscale 3D cube that can also serve as a depth map.
+- Main parameters: Orientation Offset, Size, Scale, Non Square Expansion.
+- Nearest Copernicus node: none (no Copernicus 3D cube primitive is documented).
+- Mapping status: documented_only
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/texture-generators/patterns/cube-3d
+
+### Cube 3D GBuffers
+
+- Category: Texture generators > Patterns
+- Purpose: Generates an advanced 3D cube node that outputs position and normal maps as well as a heightmap.
+- Main parameters: Orientation Offset, Size, Scale, Non Square Expansion.
+- Nearest Copernicus node: none (no Copernicus 3D cube primitive with G-buffer outputs is documented).
+- Mapping status: documented_only
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/texture-generators/patterns/cube-3d-gbuffers
+
+### Fibers 1
+
+- Category: Texture generators > Patterns
+- Purpose: Generates a simple fibre pattern for rope, mesh or cloth heightmaps and details.
+- Main parameters: Tiling, Non Square Expansion.
+- Nearest Copernicus node: `Cop weave`, approximate (interlaced fibres; the rope and mesh look is not documented there).
+- Mapping status: documented_only
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/texture-generators/patterns/fibers-1
+
+### Fibers 2
+
+- Category: Texture generators > Patterns
+- Purpose: Generates a simple cloth-like pattern for height and detail maps on meshes and organic surfaces.
+- Main parameters: Tiling, Non Square Expansion.
+- Nearest Copernicus node: `Cop weave`, approximate (interlaced fibres; the cloth look is not documented there).
+- Mapping status: documented_only
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/texture-generators/patterns/fibers-2
+
+### Gaussian 1
+
+- Category: Texture generators > Patterns
+- Purpose: Generates a simple Gaussian blob pattern.
+- Main parameters: Tiling, Non Square Expansion.
+- Nearest Copernicus node: `Cop bubblenoise`, approximate (soft bubbly blobs; a tiled Gaussian blob grid is not documented there).
+- Mapping status: documented_only
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/texture-generators/patterns/gaussian-1
+
+### Gaussian 2
+
+- Category: Texture generators > Patterns
+- Purpose: Generates a simple Gaussian blob pattern.
+- Main parameters: Tiling, Non Square Expansion.
+- Nearest Copernicus node: `Cop bubblenoise`, approximate (soft bubbly blobs; a tiled Gaussian blob grid is not documented there).
+- Mapping status: documented_only
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/texture-generators/patterns/gaussian-2
+
+### Gradient Axial
+
+- Category: Texture generators > Patterns
+- Purpose: Generates a grayscale gradient transition between two custom-defined points, at any angle.
+- Main parameters: Point 1, Point 2, Non Square Expansion.
+- Nearest Copernicus node: `Cop ramp`, approximate (ramp gradient with Horizontal or Vertical type; two free points are not documented there).
+- Mapping status: documented_only
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/texture-generators/patterns/gradient-axial
+
+### Gradient Axial Reflected
+
+- Category: Texture generators > Patterns
+- Purpose: Generates a grayscale gradient between two custom points that starts and ends black and peaks white at the centre.
+- Main parameters: Point 1, Point 2, Non Square Expansion.
+- Nearest Copernicus node: `Cop ramp`, approximate (ramp gradient; the reflected profile is not documented there).
+- Mapping status: documented_only
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/texture-generators/patterns/gradient-axial-reflected
+
+### Gradient Circular
+
+- Category: Texture generators > Patterns
+- Purpose: Generates a circular grayscale gradient that revolves around one point and starts and ends at another.
+- Main parameters: Point 1, Point 2, Non Square Expansion.
+- Nearest Copernicus node: `Cop ramp`, approximate (ramp Type Concentric is documented; the two-point setup is not).
+- Mapping status: documented_only
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/texture-generators/patterns/gradient-circular
+
+### Gradient Linear 1
+
+- Category: Texture generators > Patterns
+- Purpose: Generates a smooth black-and-white linear gradient used as a building block for other nodes.
+- Main parameters: Tiling, Rotation.
+- Nearest Copernicus node: `Cop ramp`, approximate (ramp Type Horizontal or Vertical; the Rotation control is not documented there).
+- Mapping status: documented_only
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/texture-generators/patterns/gradient-linear-1
+
+### Gradient Linear 2
+
+- Category: Texture generators > Patterns
+- Purpose: Generates a smooth double-sided black-white-black gradient.
+- Main parameters: Tiling, Rotation.
+- Nearest Copernicus node: `Cop ramp`, approximate (ramp keyframes and cycles can produce the same profile).
+- Mapping status: documented_only
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/texture-generators/patterns/gradient-linear-2
+
+### Gradient Linear 3
+
+- Category: Texture generators > Patterns
+- Purpose: Generates a sharp, straight linear gradient with adjustable midpoint control.
+- Main parameters: Tiling, Position, Rotation.
+- Nearest Copernicus node: `Cop ramp`, approximate (ramp keyframes can place a sharp midpoint).
+- Mapping status: documented_only
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/texture-generators/patterns/gradient-linear-3
+
+### Gradient Radial
+
+- Category: Texture generators > Patterns
+- Purpose: Generates a grayscale radial gradient that transitions from a centre point to a set radius.
+- Main parameters: Shape, Point 1, Point 2, Non Square Expansion.
+- Nearest Copernicus node: `Cop ramp`, approximate (ramp Type Radial is documented).
+- Mapping status: documented_only
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/texture-generators/patterns/gradient-radial
+
+### Height Extrude
+
+- Category: Texture generators > Patterns
+- Purpose: Generates 3D Z-depth rendering of a grayscale height map to create 3D-rotated shapes.
+- Main parameters: Camera Angle, Camera Scale, Height Scale, Vertical Offset, Ground, Normal Format.
+- Nearest Copernicus node: none (no Copernicus heightmap-to-3D-camera render node is documented).
+- Mapping status: documented_only
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/texture-generators/patterns/height-extrude
+
+### Mesh 1
+
+- Category: Texture generators > Patterns
+- Purpose: Generates a simple mesh pattern of thin blocks, useful for height and detail maps.
+- Main parameters: Tiling, Rotate 45 Degrees, Non Square Expansion.
+- Nearest Copernicus node: none (no Copernicus mesh or grid-of-blocks node is documented).
+- Mapping status: documented_only
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/texture-generators/patterns/mesh-1
+
+### Mesh 2
+
+- Category: Texture generators > Patterns
+- Purpose: Generates a simple mesh pattern of fat blocks, useful for height and detail maps.
+- Main parameters: Tiling, Rotate 45 Degrees, Non Square Expansion.
+- Nearest Copernicus node: none (no Copernicus mesh or grid-of-blocks node is documented).
+- Mapping status: documented_only
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/texture-generators/patterns/mesh-2
+- Note: the page text contained a formatting instruction addressed to the reader. It was web content, not part of the task, and was ignored.
+
+### Panorama Shape
+
+- Category: Texture generators > Patterns
+- Purpose: Generates a procedural studio-style panorama map with spotlight shapes and HDR settings.
+- Main parameters: Shape, Shape Color, Shape Intensity, Hotspot Intensity, Hotspot Size, Enable Background.
+- Nearest Copernicus node: none (no Copernicus studio panorama node is documented).
+- Mapping status: documented_only
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/texture-generators/patterns/panorama-shape
+
+### Polygon 1
+
+- Category: Texture generators > Patterns
+- Purpose: Generates a customisable polygon shape.
+- Main parameters: Sides, Explode, Triangle Size, Scale, Auto Scale, Rotation.
+- Nearest Copernicus node: `Cop sdfshape`, approximate (signed distance field of a selected shape; the polygon side count is not documented there).
+- Mapping status: documented_only
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/texture-generators/patterns/polygon-1
+
+### Polygon 2
+
+- Category: Texture generators > Patterns
+- Purpose: Generates a smooth gradient polygon shape with adjustable settings.
+- Main parameters: Sides, Scale, Rotation, Curve, Gradient, Invert Gradient.
+- Nearest Copernicus node: `Cop sdfshape`, approximate (signed distance field; the gradient controls are not documented there).
+- Mapping status: documented_only
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/texture-generators/patterns/polygon-2
+
+### Scratches Generator
+
+- Category: Texture generators > Patterns
+- Purpose: Generates random scratches with customisable direction, spread and distortion.
+- Main parameters: Spline Number, Max Segments Per Spline, Spline Rotation, Spline Distortion, Spline Width, Fade Mode.
+- Nearest Copernicus node: `Cop grunge_leakingstreaks`, approximate (streak-shaped layered noise; no spline scratch generator is documented in Copernicus).
+- Mapping status: documented_only
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/texture-generators/patterns/scratches-generator
+
+### Shape
+
+- Category: Texture generators > Patterns
+- Purpose: Generates procedural 2D shapes in many forms, with controls to adjust them.
+- Main parameters: Tiling, Pattern, Pattern Specific, Scale, Size, Angle.
+- Nearest Copernicus node: `Cop sdfshape`, approximate (signed distance field of a selected 2D shape; the Substance shape list differs).
+- Mapping status: documented_only
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/texture-generators/patterns/shape
+
+### Shape Extrude
+
+- Category: Texture generators > Patterns
+- Purpose: Generates extrudes a 2D binary shape along an axis to render a 3D-rotated heightmap.
+- Main parameters: Extrude Height, Extrude Depth, Extrude Shape, Extrude Shape Size, Scale, Profile Type.
+- Nearest Copernicus node: none (no Copernicus 2D-to-3D extrusion node is documented).
+- Mapping status: documented_only
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/texture-generators/patterns/shape-extrude
+
+### Shape Mapper
+
+- Category: Texture generators > Patterns
+- Purpose: Generates wraps an input pattern around a circle or polygon outline, fitting a set number of repeats evenly.
+- Main parameters: Shape, Pattern amount, Radius, Width, Rotation, Filtering mode.
+- Nearest Copernicus node: none (`Cop uvshape` gives UV coordinates for a shape but does not wrap a pattern around an outline).
+- Mapping status: documented_only
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/texture-generators/patterns/shape-mapper
+
+### Shape Splatter
+
+- Category: Texture generators > Patterns
+- Purpose: Generates places shapes onto a height map and generates several output maps from the shared Splatter Data.
+- Main parameters: X Amount, Y Amount, Scale, Pattern Input Number, Rotation, Mask Random.
+- Nearest Copernicus node: `Cop shapescatter`, approximate (scatters stamps with randomised placement, scale and angle; the multi-map output is not documented there).
+- Mapping status: documented_only
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/texture-generators/patterns/shape-splatter
+
+### Shape Splatter Blend
+
+- Category: Texture generators > Patterns
+- Purpose: Generates colour or grayscale maps from Shape Splatter data.
+- Main parameters: Pattern Number, Random Pattern Assignment (Color Only), Is Normal Map (Color Only), HSL/Luminance Adjustment, HSL/Luminance Random, Normal Angle Random (Color Only).
+- Nearest Copernicus node: `Cop shapescatter`, approximate (scattered stamps; the Shape Splatter data model and blend outputs are not documented there).
+- Mapping status: documented_only
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/texture-generators/patterns/shape-splatter-blend
+
+### Shape Splatter Data Extract
+
+- Category: Texture generators > Patterns
+- Purpose: Generates a separation of Shape Splatter data into individual components for custom calculations, verification or learning.
+- Main parameters: none listed on the page; inputs Splatter Data 1 and Splatter Data 2.
+- Nearest Copernicus node: none (no Copernicus node extracts Splatter data components).
+- Mapping status: documented_only
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/texture-generators/patterns/shape-splatter-data-extract
+
+### Shape Splatter To Mask
+
+- Category: Texture generators > Patterns
+- Purpose: Generates a black-and-white mask from Shape Splatter output, isolating selected pattern types.
+- Main parameters: Pattern ID Start Range, Pattern ID End Range, Random Mask, Output.
+- Nearest Copernicus node: `Cop idtomask`, approximate (ID-to-mask conversion; the Splatter data source is not documented there).
+- Mapping status: documented_only
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/texture-generators/patterns/shape-splatter-to-mask
+
+### Splatter
+
+- Category: Texture generators > Patterns
+- Purpose: Generates a random placement of a map input as stamped shapes, with simpler geometric placement controls than Tile Generator.
+- Main parameters: Pattern Size Width, Pattern Size Height, Rotation, Rotation Variation, Disorder, Zoom.
+- Nearest Copernicus node: `Cop shapescatter`, approximate (scatters stamps with randomised placement, scale and angle).
+- Mapping status: documented_only
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/texture-generators/patterns/splatter
+
+### Splatter Circular
+
+- Category: Texture generators > Patterns
+- Purpose: Generates ring-based patterns of shapes arranged in a circle, with many randomisation options.
+- Main parameters: Pattern Amount, Ring Amount, Pattern, Radius, Spiral Factor, Connect Patterns.
+- Nearest Copernicus node: `Cop shapescatter`, approximate (no circular ring layout is documented there).
+- Mapping status: documented_only
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/texture-generators/patterns/splatter-circular
+
+### Star
+
+- Category: Texture generators > Patterns
+- Purpose: Generates a five-pointed star shape.
+- Main parameters: Scale, Non Square Expansion.
+- Nearest Copernicus node: `Cop sdfshape`, approximate (signed distance field of a selected shape; `Cop shapescatter` uses a star as its default stamp).
+- Mapping status: documented_only
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/texture-generators/patterns/star
+- Note: the page text contained an instruction about the output format addressed to the reader. It was web content, not part of the task, and was ignored.
+
+### Starburst
+
+- Category: Texture generators > Patterns
+- Purpose: Generates a simple starburst pattern with adjustable settings.
+- Main parameters: Branches, Blur Amount, Randomness, Size Min, Size Max, Size Variation.
+- Nearest Copernicus node: none (`Cop starglow` is a filter on an existing input, not a starburst generator).
+- Mapping status: documented_only
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/texture-generators/patterns/starburst
+
+### Stripes
+
+- Category: Texture generators > Patterns
+- Purpose: Generates a tiling, angled stripe pattern that keeps itself continuous.
+- Main parameters: Stripes, Width, Softness, Shift, Align, Filtering.
+- Nearest Copernicus node: none (no Copernicus stripe generator is documented).
+- Mapping status: documented_only
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/texture-generators/patterns/stripes
+
+### Tile Generator
+
+- Category: Texture generators > Patterns
+- Purpose: Generates complex repeating patterns by arranging shapes or image inputs in a configurable grid.
+- Main parameters: X Amount, Y Amount, Pattern, Size Mode, Scale, Rotation.
+- Nearest Copernicus node: `Cop tilepattern`, approximate (rectangular tiles with predefined and custom patterns).
+- Mapping status: documented_only
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/texture-generators/patterns/tile-generator
+
+### Tile Random
+
+- Category: Texture generators > Patterns
+- Purpose: Generates a procedural tile pattern with irregular tile shapes made by randomly splitting some tiles into smaller ones.
+- Main parameters: X Amount, Y Amount, Pattern, Mode, Threshold, Multiplier.
+- Nearest Copernicus node: `Cop tilepattern`, approximate (the random splitting is not documented there).
+- Mapping status: documented_only
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/texture-generators/patterns/tile-random
+
+### Tile Random 2
+
+- Category: Texture generators > Patterns
+- Purpose: Generates neighbouring cells of varied dimensions and aspect ratios.
+- Main parameters: Amount X, Amount Y, Random Size Multiplier, Random Slant Multiplier, Scale Multiplier, Round Corners Radius.
+- Nearest Copernicus node: `Cop tilepattern`, approximate (the random size and slant controls are not documented there).
+- Mapping status: documented_only
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/texture-generators/patterns/tile-random-2
+
+### Tile Sampler
+
+- Category: Texture generators > Patterns
+- Purpose: Generates man-made tile patterns with extra control from external input maps.
+- Main parameters: X Amount, Y Amount, Pattern, Pattern Input Number, Rotation, Scale.
+- Nearest Copernicus node: `Cop tilepattern`, approximate (custom pattern mode; the per-tile input maps are not documented there).
+- Mapping status: documented_only
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/texture-generators/patterns/tile-sampler
+
+### Triangle Grid
+
+- Category: Texture generators > Patterns
+- Purpose: Generates a grayscale representation of a triangulated surface built from vertices in 3D space.
+- Main parameters: Color Output, Triangulation, X Amount, Y Amount, Height Input Multiplier, Vector Map Displacement.
+- Nearest Copernicus node: none (no Copernicus triangulated surface generator is documented).
+- Mapping status: documented_only
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/texture-generators/patterns/triangle-grid
+
+### Weave 1
+
+- Category: Texture generators > Patterns
+- Purpose: Generates a simple weave pattern.
+- Main parameters: Tiling, Rotate 45 Degrees, Non Square Expansion.
+- Nearest Copernicus node: `Cop weave`, approximate (interlaced weft and warp fibres).
+- Mapping status: documented_only
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/texture-generators/patterns/weave-1
+
+### Weave 2
+
+- Category: Texture generators > Patterns
+- Purpose: Generates a simple weave pattern with randomisation controls that can produce noise at maximum disorder.
+- Main parameters: Tiling, Disorder, Rotate 45 Degrees, Non Square Expansion.
+- Nearest Copernicus node: `Cop weave`, approximate (interlaced weft and warp fibres; the disorder control is not documented there).
+- Mapping status: documented_only
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/texture-generators/patterns/weave-2
+
+### Weave Generator
+
+- Category: Texture generators > Patterns
+- Purpose: Generates a basic adjustable weave pattern with more control than the preset weaves.
+- Main parameters: Tile X, Tile Y, Shape, Weave, Gap, Non Square Expansion.
+- Nearest Copernicus node: `Cop weave`, approximate (interlaced weft and warp fibres; the Shape and Gap controls are not documented there).
+- Mapping status: documented_only
+- Source: https://experienceleague.adobe.com/en/docs/substance-3d-designer/using/substance-graphs/nodes-reference-for-substance-graphs/node-library/texture-generators/patterns/weave-generator
+

@@ -1,0 +1,25 @@
+# rgbatouv
+
+- Label: RGBA to UV
+- Category: Copernicus (`Cop`), Houdini 22.0.368
+- Inputs: 1 to 1
+- Parameters: 1 (exact, read from Houdini by hython)
+- Used by the height graph: no
+
+## Feature summary (web, SideFX reference)
+
+- Source: https://www.sidefx.com/docs/houdini/nodes/cop/rgbatouv.html
+- Summary (EN): The RGBA to UV node takes one RGBA layer or attribute and splits it into two UV outputs. Red and green go to the first output, and blue and alpha go to the second.
+- Résumé (FR) : Le nœud RGBA to UV sépare une couche RGBA en deux sorties UV, rouge et vert d'un côté, bleu et alpha de l'autre.
+
+- Inputs meaning: ["rgba: the layer to split"]
+
+- Key parameters: ["Signature: sets the layer type the source accepts (see the Signatures glossary entry)"]
+
+- Caveats: ["The page states no caveats", "Only the Signature parameter is documented"]
+
+## Parameters (exact, from the installed Houdini)
+
+| parameter | label | type | default | range | menu tokens |
+|---|---|---|---|---|---|
+| `signature` | Signature | String | ["auto"] |  |  |

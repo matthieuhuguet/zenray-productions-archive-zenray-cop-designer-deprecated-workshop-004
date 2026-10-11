@@ -1,0 +1,66 @@
+# raytrace
+
+- Label: Ray Trace
+- Category: Copernicus (`Cop`), Houdini 22.0.368
+- Inputs: 0 to 5
+- Parameters: 42 (exact, read from Houdini by hython)
+- Used by the height graph: no
+
+## Feature summary (web, SideFX reference)
+
+- Source: https://www.sidefx.com/docs/houdini/nodes/cop/raytrace.html
+- Summary (EN): Ray Trace casts rays from a per-pixel origin and direction map against input geometry, and reports the first hit with its position and geometric normal. It can bake maps such as occlusion, cavity, curvature, thickness, edge and rounded normal by tracing secondary rays, and it can write geometry attribute values at each hit into output layers. The page does not state its internal name; the Copernicus index links raytrace.html.
+- Résumé (FR) : Ce nœud lance des rayons contre une géométrie pour trouver le premier impact, et peut cuire des cartes comme l'occlusion ou la courbure.
+
+- Inputs meaning: ["geometry: mesh to trace against", "origins: RGB map of the positions rays start from", "directions: RGB map of the orientations rays travel along; pixels with zero direction cast no ray", "tracesets: ID layer assigning each ray a trace set, so it only hits matching geometry", "lengths: mono layer of ray lengths; unused when Ray Length Mode is Endless"]
+
+- Key parameters: ["Tracer: the backend, shown according to the available hardware", "Ray Bias: offsets each ray origin along its direction", "Face Culling: ignores primary-ray hits on front or back faces, or uses all polygons", "Visibility Culling: same for secondary rays, such as those used for occlusion", "Trace Direction: forward, reverse or both", "Ray Length Mode / Ray Length: custom maximum length, or Endless", "Trace Set Attribute: geometry attribute matched against the tracesets layer", "Map toggles (Occlusion, Cavity, Curvature, Thickness, Edge, Rounded Normal): each bakes its map when enabled, with its own sample count and settings such as Max Distance, Bias, Radius or Cusp Angle", "Custom Attributes: number of attributes to rasterize, with each name and output type"]
+
+- Caveats: ["Optix is available only on NVIDIA hardware.", "When a map toggle is off, its output is a Null layer.", "Noisy maps need more samples; a smaller Max Distance is faster but less accurate.", "In Endless mode, rays that point at nothing are not fired.", "Custom attributes must be integers or floats with four or fewer components, and their names must match attributes on the geometry; they can be Point, Vertex or Primitive attributes.", "Trace-set filtering works only when the tracesets IDs match the geometry's Trace Set Attribute values."]
+
+## Parameters (exact, from the installed Houdini)
+
+| parameter | label | type | default | range | menu tokens |
+|---|---|---|---|---|---|
+| `tracer` | Tracer | String | [""] |  |  |
+| `raybias` | Ray Bias | Float | [0.001] | 0.0 .. 1.0 |  |
+| `faceculling` | Face Culling | Menu | 0 |  | noculling, backface, frontface |
+| `visibilityculling` | Visibility Culling | Menu | 0 |  | noculling, backface, frontface |
+| `tracedirection` | Trace Direction | Menu | 0 |  | bidirectional, forward, backward |
+| `raylengthmode` | Ray Length Mode | Menu | 1 |  | custom, endless |
+| `raylength` | Ray Length | Float | [1.0] | 0.0 .. 5.0 |  |
+| `usetraceset` | Trace Set Attribute | Toggle | false |  |  |
+| `tracesetattrib` | Trace Set Attribute | String | [""] |  |  |
+| `occlusion` |  | FolderSet |  |  |  |
+| `doocclusion` | Occlusion | Toggle | true |  |  |
+| `occlusionsamples` | Occlusion Samples | Int | [64] | 1 .. 100 (strict) |  |
+| `useocclusionmaxdist` | Max Distance | Toggle | false |  |  |
+| `occlusionmaxdist` | Max Distance | Float | [100.0] | 0.0 .. 1000.0 (strict) |  |
+| `cavity` |  | FolderSet |  |  |  |
+| `docavity` | Cavity | Toggle | true |  |  |
+| `cavitysamples` | Cavity Samples | Int | [16] | 1 .. 100 (strict) |  |
+| `usecavitymaxdist` | Max Distance | Toggle | false |  |  |
+| `cavitymaxdist` | Max Distance | Float | [100.0] | 0.0 .. 1000.0 (strict) |  |
+| `cavitybias` | Bias | Float | [0.5] | 0.0 .. 1.0 (strict) |  |
+| `curvature` |  | FolderSet |  |  |  |
+| `docurvature` | Curvature | Toggle | true |  |  |
+| `curvaturesamples` | Curvature Samples | Int | [16] | 1 .. 100 (strict) |  |
+| `curvaturescale` | Curvature Scale | Float | [1.0] | 0.0 .. 1.0 |  |
+| `curvaturemaxdist` | Max Distance | Float | [0.1] | 0.0 .. 1.0 (strict) |  |
+| `curvaturebias` | Bias | Float | [0.5] | 0.0 .. 1.0 (strict) |  |
+| `thickness` |  | FolderSet |  |  |  |
+| `dothickness` | Thickness | Toggle | true |  |  |
+| `thicknesssamples` | Thickness Samples | Int | [16] | 1 .. 100 (strict) |  |
+| `edge` |  | FolderSet |  |  |  |
+| `doedge` | Edge | Toggle | true |  |  |
+| `edgesamples` | Edge Samples | Int | [4] | 1 .. 100 (strict) |  |
+| `edgemode` | Mode | Menu | 0 |  | both, concave, convex |
+| `edgeradius` | Radius | Float | [0.01] | 0.0 .. 1.0 (strict) |  |
+| `edgecuspangle` | Cusp Angle | Float | [30.0] | 0.0 .. 90.0 |  |
+| `roundednormal` |  | FolderSet |  |  |  |
+| `doroundednormal` | Rounded Normal | Toggle | true |  |  |
+| `roundednormalsamples` | Rounded Normal Samples | Int | [4] | 1 .. 100 (strict) |  |
+| `roundednormalmode` | Mode | Menu | 0 |  | both, concave, convex |
+| `roundednormalradius` | Radius | Float | [0.01] | 0.0 .. 1.0 (strict) |  |
+| `roundednormalcuspangle` | Cusp Angle | Float | [30.0] | 0.0 .. 90.0 |  |
+| `attribs` | Custom Attributes | Folder | 0 |  |  |

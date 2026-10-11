@@ -1,0 +1,25 @@
+# Journal, zenray-cop-designer (append only, never rewritten)
+
+Each entry: date in English, what was asked, what was decided, what was measured. Corrections are new entries that cite the old one.
+
+## 11 October 2026 : first request, build overnight, Substance and Copernicus
+
+- 11 October 2026, request (Matthieu, paraphrased): build a Python tool that reproduces the reference height as well as possible and that produces REAL Copernicus nodes (not a PNG export), focused on the height graph only; document every Copernicus feature from the web; code until morning; resume through a cron every 15 seconds if the code stops; use workflows or Haiku subagents; the tool must use only the functions of the platform.
+- 11 October 2026, decision: the tool writes its own graph format (IR) and compiles it into real `copnet` nodes with hython. A Python file cannot be turned into a graph automatically; the designer writes the graph directly, so the nodes are the real ones.
+- 11 October 2026, decision: the node inventory is read from the installed Houdini 22.0.368 (384 Copernicus nodes, 10 064 parameters), not from memory or from a web list. Web pages are used for summaries only.
+- 11 October 2026, measured: the designer's window graph equals the SimpleHeight L05 export with maximum difference 0.0. Baseline EQUIV 0.373.
+- 11 October 2026, measured and rejected: an EQUIV-driven search reached 0.61 by adding fine streaks; the planche looked worse. Decision: the search objective became statistical, inside look limits. Lesson: a score that the search can see is a score it will game.
+- 11 October 2026, not possible: strict identity with the reference, under the no-copy rule and with random placement of chips.
+- 11 October 2026, watchdog: cron tools cannot run below 60 seconds, so a background watchdog checks every 15 seconds and relaunches the optimizer.
+- 11 October 2026, open: Substance Designer is not installed; its mapping is documented, not executed. Look limits wait for Matthieu's validation.
+
+## 11 October 2026 : v2 search pushed against its look limits, gradient weight lowered
+
+- 11 October 2026, measured: v2 (run window_opt_2) reached score 0.162 and EQUIV 0.471 with grain gain, grain length and chip size all on their look limits. The planche showed speckled dust and fine scratches. Cause: the gradient term (weight 0.25) rewards high-frequency energy. Decision: weight 0.05, run window_opt_3. v2 kept as evidence.
+
+## 11 October 2026 : documentation complete for the function nodes, spot checks, Substance mapping
+
+- 11 October 2026, measured: 372 of 372 Copernicus function nodes have an exact parameter table from Houdini and a SideFX web summary (status ok). The 12 names left over are network containers (dopnet, sopnet, vopnet...) and two Paint internals, which have no Copernicus page (HTTP 404). They are excluded and listed with reasons, not hidden.
+- 11 October 2026, measured: three summaries (fractalnoise, streakblur, heighttonormal) re-checked against the live SideFX pages: all three match.
+- 11 October 2026, measured: Substance Designer mapping written from the local Copernicus page (read in full) and the Adobe Experience League node reference; helpx.adobe.com returned HTTP 403. Status documented_only: 3 exact in purpose, 112 approximate, 22 without equivalent (generators).
+- 11 October 2026, measured: optimizer v3 at 517 evaluations, global score 0.328, still running under watchdog.

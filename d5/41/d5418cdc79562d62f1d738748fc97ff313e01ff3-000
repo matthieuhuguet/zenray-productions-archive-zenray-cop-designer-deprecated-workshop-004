@@ -1,0 +1,102 @@
+# onnx
+
+- Label: ONNX Inference
+- Category: Copernicus (`Cop`), Houdini 22.0.368
+- Inputs: 0 to 2048
+- Parameters: 78 (exact, read from Houdini by hython)
+- Used by the height graph: no
+
+## Feature summary (web, SideFX reference)
+
+- Source: https://www.sidefx.com/docs/houdini/nodes/cop/onnx.html
+- Summary (EN): Runs a pre-trained ONNX machine learning model on its input layers and produces the model's outputs as new layers. It converts image pixels into the 1D tensor layout the model expects, then converts the results back into layers.
+- Résumé (FR) : Exécute un modèle ONNX pré-entraîné sur des calques d'entrée et renvoie ses sorties sous forme de nouveaux calques, les pixels étant convertis en tenseurs puis reconvertis en images.
+
+- Inputs meaning: ["n_input#: source layers for inference; the number is set by Number of Inputs on the Input and Output tab and can change dynamically"]
+
+- Key parameters: ["Execution Provider: Automatic, CPU, CUDA, DirectML (Windows only) or CoreML (macOS only)", "Model File: the .onnx file to load; Setup Shapes from Model reads the file and fills the input and output settings", "Input/Output Tensor Shape: a 3x3 table giving the shape the model requires (for example components, width, height); the total must match the data size", "Tensor Order (YX or XY): whether pixels are unpacked horizontally or vertically", "Collate Channels Separately: stores channels as rrrgggbbb when on, or rgbrgbrgb when off", "Flip Input/Output Vertically: converts between bottom-left and top-left origin for 2D models", "Resample Size: resizes an input to the model's expected dimensions; -1 preserves aspect ratio", "Brightness Multiplier: scales values, for example x255 on input and x1/255 on output, for models using 0 to 255 integers", "Max Batch Size: splits inputs into batches to reduce peak memory use; applies only to the first dynamic dimension"]
+
+- Caveats: ["Input and output order must match the ONNX model, because the node does not match them by name.", "Only tensor types are supported; other ONNX input and output types are not.", "A warning appears if an input size does not match the model's expected size; use Resample Size to fix it.", "An error appears if Model File is set but the input and output information is empty; setting the other Model parameters resolves it.", "CUDA requires NVIDIA's CUDA and cuDNN packages to be installed separately.", "Device ID has no effect with CPU inference.", "Deduce Output Shapes from Data String requires the Model tab to be populated first."]
+
+## Parameters (exact, from the installed Houdini)
+
+| parameter | label | type | default | range | menu tokens |
+|---|---|---|---|---|---|
+| `stdswitcher1` |  | FolderSet |  |  |  |
+| `modelfile` | Model File | String | [""] |  |  |
+| `reload` | Reload Model | Button |  |  |  |
+| `setupshapes` | Set Up Shapes from Model | Button |  |  |  |
+| `domaxbatch` | Max Batch Size | Toggle | false |  |  |
+| `maxbatch` | Max Batch Size | Int | [65536] | 1 .. 1000000000 |  |
+| `provider` | Execution Provider | Menu | 0 |  |  |
+| `deviceid` | Device ID | Int | [0] | 0 .. 10 |  |
+| `model_inputs` | Number of Inputs | Folder | 1 |  |  |
+| `model_outputs` | Number of Outputs | Folder | 1 |  |  |
+| `node_inputs` | Number of Inputs | Folder | 1 |  |  |
+| `output_deduceshape` | Deduce Output Shapes from Data String | Button |  |  |  |
+| `node_outputs` | Number of Outputs | Folder | 1 |  |  |
+| `model_input_name1` | Name | String | [""] |  |  |
+| `model_input_data1` | Data | String | [""] |  |  |
+| `model_input_dtype1` | Input Tensor Element Data Type | Menu | 0 |  | float32, float16, int32, int8, uint8, int64, float64, bool |
+| `model_input_shape11` | Input Tensor Shape | Int | 1 | 0 .. 10 |  |
+| `model_input_shape12` | Input Tensor Shape | Int | 0 | 0 .. 10 |  |
+| `model_input_shape13` | Input Tensor Shape | Int | 0 | 0 .. 10 |  |
+| `model_input_shape14` | Input Tensor Shape | Int | 0 | 0 .. 10 |  |
+| `model_input_shape15` | Input Tensor Shape | Int | 0 | 0 .. 10 |  |
+| `model_input_shape16` | Input Tensor Shape | Int | 0 | 0 .. 10 |  |
+| `model_input_shape17` | Input Tensor Shape | Int | 0 | 0 .. 10 |  |
+| `model_input_shape18` | Input Tensor Shape | Int | 0 | 0 .. 10 |  |
+| `model_input_shape19` | Input Tensor Shape | Int | 0 | 0 .. 10 |  |
+| `model_input_volorder1` | Tensor Order | Menu | 0 |  | yx, xy |
+| `model_input_channelfirst1` | Collate Channels Separately | Toggle | true |  |  |
+| `model_input_customchannel1` | Channel Size | Toggle | false |  |  |
+| `model_input_channelsize1` | Channel Size | Int | [3] | 1 .. 4 (strict) |  |
+| `model_output_name1` | Name | String | [""] |  |  |
+| `model_output_dtype1` | Output Tensor Element Data Type | Menu | 0 |  | float32, float16, int32, int8, uint8, int64, float64, bool |
+| `model_output_shape11` | Output Tensor Shape | Int | 1 | 0 .. 10 |  |
+| `model_output_shape12` | Output Tensor Shape | Int | 0 | 0 .. 10 |  |
+| `model_output_shape13` | Output Tensor Shape | Int | 0 | 0 .. 10 |  |
+| `model_output_shape14` | Output Tensor Shape | Int | 0 | 0 .. 10 |  |
+| `model_output_shape15` | Output Tensor Shape | Int | 0 | 0 .. 10 |  |
+| `model_output_shape16` | Output Tensor Shape | Int | 0 | 0 .. 10 |  |
+| `model_output_shape17` | Output Tensor Shape | Int | 0 | 0 .. 10 |  |
+| `model_output_shape18` | Output Tensor Shape | Int | 0 | 0 .. 10 |  |
+| `model_output_shape19` | Output Tensor Shape | Int | 0 | 0 .. 10 |  |
+| `model_output_volorder1` | Tensor Order | Menu | 0 |  | yx, xy |
+| `model_output_channelfirst1` | Collate Channels Separately | Toggle | true |  |  |
+| `model_output_customchannel1` | Channel Size | Toggle | false |  |  |
+| `model_output_channelsize1` | Channel Size | Int | [3] | 1 .. 4 (strict) |  |
+| `node_input_name1` | Name | String | [""] |  |  |
+| `input1_type` | Type | Menu | 2 |  | float, float2, float3, float4, geo, unknown |
+| `inputrgbatreatment1` | RGBA Treatment | Menu | 1 |  | preservergba, discarda |
+| `node_input_volorder1` | Tensor Order | Menu | 0 |  | yx, xy |
+| `input_flip1` | Flip Input Vertically | Toggle | false |  |  |
+| `node_input_channelfirst1` | Collate Channels Separately | Toggle | false |  |  |
+| `resample_enable1` | Resample Size | Toggle | false |  |  |
+| `resample_size11` | Resample Size | Int | -1 | 0 .. 10 |  |
+| `resample_size12` | Resample Size | Int | -1 | 0 .. 10 |  |
+| `resample_filter1` | Filter | Menu | 2 |  | point, bilinear, box, triangle, cubic, mitchell, bspline |
+| `input_brightenable1` | Brightness Multiplier | Toggle | false |  |  |
+| `input_brightscale1` | Brightness Multiplier | Float | [1.0] | 0.0 .. 255.0 (strict) |  |
+| `input_scalemenu1` | Scale Menu | String | [""] |  | noscale, bright255, inv255 |
+| `node_output_name1` | Name | String | [""] |  |  |
+| `output1_type` | Type | Menu | 0 |  | auto, float, float2, float3, float4, geo, unknown |
+| `node_output_data1` | Data | String | [""] |  |  |
+| `node_output_autodeduce1` | Auto Deduce Output Shape | Toggle | true |  |  |
+| `node_output_shape11` | Output Tensor Shape | Int | 1 | 0 .. 10 |  |
+| `node_output_shape12` | Output Tensor Shape | Int | -1 | 0 .. 10 |  |
+| `node_output_shape13` | Output Tensor Shape | Int | 3 | 0 .. 10 |  |
+| `node_output_shape14` | Output Tensor Shape | Int | 0 | 0 .. 10 |  |
+| `node_output_shape15` | Output Tensor Shape | Int | 0 | 0 .. 10 |  |
+| `node_output_shape16` | Output Tensor Shape | Int | 0 | 0 .. 10 |  |
+| `node_output_shape17` | Output Tensor Shape | Int | 0 | 0 .. 10 |  |
+| `node_output_shape18` | Output Tensor Shape | Int | 0 | 0 .. 10 |  |
+| `node_output_shape19` | Output Tensor Shape | Int | 0 | 0 .. 10 |  |
+| `node_output_volorder1` | Tensor Order | Menu | 0 |  | yx, xy |
+| `output_flip1` | Flip Output Vertically | Toggle | false |  |  |
+| `node_output_channelfirst1` | Collate Channels Separately | Toggle | false |  |  |
+| `node_output_customchannel1` | Channel Size | Toggle | false |  |  |
+| `node_output_channelsize1` | Channel Size | Int | [3] | 1 .. 4 (strict) |  |
+| `output_brightenable1` | Brightness Multiplier | Toggle | false |  |  |
+| `output_brightscale1` | Brightness Multiplier | Float | [1.0] | 0.0 .. 255.0 (strict) |  |
+| `output_scalemenu1` | Scale Menu | String | [""] |  | noscale, bright255, inv255 |

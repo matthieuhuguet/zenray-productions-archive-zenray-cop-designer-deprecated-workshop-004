@@ -1,0 +1,31 @@
+# vdbvisualizetree
+
+- Label: VDB Visualize Tree
+- Category: Copernicus (`Cop`), Houdini 22.0.368
+- Inputs: 1 to 1
+- Parameters: 7 (exact, read from Houdini by hython)
+- Used by the height graph: no
+
+## Feature summary (web, SideFX reference)
+
+- Source: https://www.sidefx.com/docs/houdini/nodes/cop/vdbvisualizetree.html
+- Summary (EN): Builds a geometry visualizing the topology of a VDB, showing which regions are active, since a VDB is only defined where it has been activated. Output is geometry.
+- Résumé (FR) : Dessine la topologie d'un VDB (feuilles, nœuds internes et tuiles actives) pour voir quelles régions sont réellement activées.
+
+- Inputs meaning: ["src: a Float, Vector or Integer VDB whose topology is converted into a tree"]
+
+- Key parameters: ["Signature: the VDB type the source accepts", "Leaf Nodes: drawn in blue, as wireframe or solid boxes", "Internal Nodes: non-leaf nodes as wireframe or solid boxes; first internal level green, others orange", "Active Tiles: active nodes holding the default empty value; positive values red, negative values white", "Points: described as one point at the centre of each node, but the section lists Wireframe Boxes and Solid Boxes as its options"]
+
+- Caveats: ["The Points section lists Wireframe Boxes and Solid Boxes, which does not match its description of single points; the page does not explain this, so check the output in Houdini"]
+
+## Parameters (exact, from the installed Houdini)
+
+| parameter | label | type | default | range | menu tokens |
+|---|---|---|---|---|---|
+| `signature` | Signature | String | ["auto"] |  |  |
+| `drawleafnodes` | Draw Leaf Nodes | Toggle | true |  |  |
+| `leafmode` | Leaf Nodes | Menu | 0 |  | wirebox, box |
+| `drawinternalnodes` | Draw Internal Nodes | Toggle | false |  |  |
+| `internalmode` | Internal Nodes | Menu | 0 |  | wirebox, box |
+| `drawtiles` | Draw Active Tiles | Toggle | true |  |  |
+| `tilemode` | Active Tiles | Menu | 1 |  | points, wirebox, box |

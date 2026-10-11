@@ -1,0 +1,42 @@
+# ripple_block_end
+
+- Label: Ripple Block End
+- Category: Copernicus (`Cop`), Houdini 22.0.368
+- Inputs: 0 to 2
+- Parameters: 18 (exact, read from Houdini by hython)
+- Used by the height graph: no
+
+## Feature summary (web, SideFX reference)
+
+- Source: https://www.sidefx.com/docs/houdini/nodes/cop/ripple_block_end.html
+- Summary (EN): Ripple Block End marks the end of a Ripple simulation block in Copernicus and must be paired with a Ripple Block Begin. When Simulate is on, its outputs feed back into its inputs, creating the simulation loop.
+- Résumé (FR) : Le nœud Ripple Block End referme un bloc de simulation de vagues et renvoie ses résultats dans la boucle quand Simulate est activé.
+
+- Inputs meaning: ["height: the wave height", "feedback: cable of the current feedback data routed back into the input; its structure must match the initial structure set on the Block Begin"]
+
+- Key parameters: ["Simulate: turns on the feedback loop", "Reset Simulation: clears the whole simulation cache when Simulate is on", "Time Scale: scales time inside the block; above 1 speeds up, below 1 slows down", "Substeps: divides each frame into this many substeps, for accuracy and stability with fast ripples", "Iterations: number of iterations when not simulating", "Live Simulation: interactive, non-deterministic mode independent of the playbar, not cached", "Caching, Start Frame, Cached Frames, Checkpoint Rate: frame caching controls", "Wave Speed: how fast ripples travel across pixels", "Conservation: how much wave velocity is kept over time; 1 keeps all velocity, values outside 0 to 1 are clamped", "Spring: strength of the force pulling pixels back toward rest (called Rest Spring in the introduction)"]
+
+- Caveats: ["Requires DOP-level permissions: not in Houdini Core, only in Houdini FX, Apprentice, Indie and Education", "Compiled COP networks do not support simulation", "Live Simulation does not save results; use a Stash COP to keep them", "When Live Simulation is on, Start Frame, Cached Frames and Checkpoint Rate no longer apply"]
+
+## Parameters (exact, from the installed Houdini)
+
+| parameter | label | type | default | range | menu tokens |
+|---|---|---|---|---|---|
+| `folder3` |  | FolderSet |  |  |  |
+| `simulate` | Simulate | Toggle | true |  |  |
+| `resimulate` | Reset Simulation | Button |  |  |  |
+| `timescale` | Time Scale | Float | [1.0] | 0.0 .. 10.0 |  |
+| `iterations` | Iterations | Int | [1] | 0 .. 10 (strict) |  |
+| `substeps` | Substeps | Int | [1] | 1 .. 10 |  |
+| `startframe` | Start Frame | Int | [1] | 1 .. 1001 |  |
+| `continuouscook` | Live Simulation | Toggle | false |  |  |
+| `continuouscook_toggle` | Toggle Live Simulation | Button |  |  |  |
+| `continuouscook_tick` | Live Tick | Int | [0] | 0 .. 10 |  |
+| `folder2` |  | FolderSet |  |  |  |
+| `cachedframes` | Cached Frames | Int | [10] | 1 .. 1001 |  |
+| `checkpointframes` | Checkpoint Rate | Int | [24] | 0 .. 100 |  |
+| `cacheenabled` | Cache Simulation | Toggle | true |  |  |
+| `folder1` |  | FolderSet |  |  |  |
+| `wavespeed` | Wave Speed | Float | [10.0] | 0.0 .. 1.0 |  |
+| `conservation` | Conservation | Float | [1.0] | 0.0 .. 1.0 |  |
+| `spring` | Spring | Float | [0.0] | 0.0 .. 1.0 |  |

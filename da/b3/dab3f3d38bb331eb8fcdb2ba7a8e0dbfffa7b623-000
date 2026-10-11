@@ -1,0 +1,45 @@
+# rasterizegeo
+
+- Label: Rasterize Geometry
+- Category: Copernicus (`Cop`), Houdini 22.0.368
+- Inputs: 0 to 2
+- Parameters: 21 (exact, read from Houdini by hython)
+- Used by the height graph: no
+
+## Feature summary (web, SideFX reference)
+
+- Source: https://www.sidefx.com/docs/houdini/nodes/cop/rasterizegeo.html
+- Summary (EN): Rasterize Geometry rasterizes polygon geometry onto a layer and can also rasterize geometry attributes such as alpha, position, normals, UVs and depth. The page does not show its file name; the Copernicus node index lists Rasterize Geometry as rasterizegeo.html, so the identity is strong but inferred.
+- Résumé (FR) : Ce nœud rastérise de la géométrie polygonale sur un calque et peut transporter ses attributs, comme l'alpha, les normales ou les UV.
+
+- Inputs meaning: ["camera_ref: optional camera metadata, typically from a Camera Import node; without it the node uses the COPnet resolution, sits at the origin and looks down the negative Z axis", "geometry: polygon geometry to rasterize, usually from a SOP Import COP"]
+
+- Key parameters: ["Quick Setups: one-click Alpha, Position, Normal, UV or Depth from Eye attributes, or move output layers to canonical space", "Border: sampling outside the layer boundaries, defaults to the layer border property", "Depth Mode: rasterize data from the minimum or maximum depth sample", "Face Culling: No Culling, Backface or Frontface", "Number of Attributes: Output Type, Name (special tokens intrinsic:alpha, intrinsic:depth_ndc and intrinsic:depth_eye generate layers), Optional flag falling back to a layer defined by size_ref, and Default Value"]
+
+- Caveats: ["The geometry must be polygons. Packed geometry and volumes are not supported.", "Attributes must be an integer, or a float with 4 or fewer components, to be rasterized.", "The Normal and UV quick setups require those attributes to exist on the input geometry.", "With camera_ref connected, the layer is generated at the camera focus plane; the page suggests Match Camera to move it back to the origin.", "The Optional fallback refers to a size_ref input that the page does not list among the node's inputs.", "The Rasterize Setup COP can change the space in which rasterization happens, such as UV space."]
+
+## Parameters (exact, from the installed Houdini)
+
+| parameter | label | type | default | range | menu tokens |
+|---|---|---|---|---|---|
+| `quicksetup` |  | Menu | 0 |  | menu, alpha, position, origp, normal, uv, deptheye |
+| `resetorig` | Move to Origin | Toggle | false |  |  |
+| `border` | Border | Menu | 0 |  | auto, constant, clamp, mirror, wrap |
+| `depthmode` | Depth Mode | Menu | 0 |  | min, max |
+| `faceculling` | Face Culling | Menu | 0 |  | noculling, backface, frontface |
+| `attributes` | Number of Attributes | Folder | 0 |  |  |
+| `name1` | Name | String | ["P"] |  |  |
+| `attribmenu1` | Attribute Menu | String | ["0"] |  |  |
+| `outtype1` | Output Type | Menu | 2 |  | float, vector2, vector3, vector4, int |
+| `optional1` | Optional | Toggle | false |  |  |
+| `f1_def1` | Default Value | Float | [1.0] | 0.0 .. 10.0 |  |
+| `f2_def11` | Default Value | Float | 1.0 | 0.0 .. 10.0 |  |
+| `f2_def12` | Default Value | Float | 1.0 | 0.0 .. 10.0 |  |
+| `f3_def1r` | Default Value | Float | 1.0 | 0.0 .. 10.0 |  |
+| `f3_def1g` | Default Value | Float | 1.0 | 0.0 .. 10.0 |  |
+| `f3_def1b` | Default Value | Float | 1.0 | 0.0 .. 10.0 |  |
+| `f4_def1r` | Default Value | Float | 1.0 | 0.0 .. 10.0 |  |
+| `f4_def1g` | Default Value | Float | 1.0 | 0.0 .. 10.0 |  |
+| `f4_def1b` | Default Value | Float | 1.0 | 0.0 .. 10.0 |  |
+| `f4_def1a` | Default Value | Float | 1.0 | 0.0 .. 10.0 |  |
+| `i_def1` | Default Value | Int | [0] | 0 .. 10 |  |

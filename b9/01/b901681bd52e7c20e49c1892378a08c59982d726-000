@@ -1,0 +1,30 @@
+# slopedir
+
+- Label: Slope Direction
+- Category: Copernicus (`Cop`), Houdini 22.0.368
+- Inputs: 1 to 1
+- Parameters: 6 (exact, read from Houdini by hython)
+- Used by the height graph: no
+
+## Feature summary (web, SideFX reference)
+
+- Source: https://www.sidefx.com/docs/houdini/nodes/cop/slopedir.html
+- Summary (EN): Slope Direction converts a height layer, which represents a nominal height, into a UV layer that shows the direction of the slope. Its values are larger where the slope is steeper.
+- Résumé (FR) : Le nœud Slope Direction transforme une carte de hauteur en couche UV indiquant la direction de la pente, plus forte là où elle est plus raide.
+
+- Inputs meaning: ["height: a Mono layer or Float VDB representing a heightmap"]
+
+- Key parameters: ["Signature: the layer type the source accepts", "Space: Image, Pixel or Local, the space in which the slope is computed", "Angle: rotates the computed direction; 90 makes directions circle around hills instead of climbing them", "Scale: adjusts the direction magnitude globally", "Read Pixels outside Image: reads boundary derivatives outside the image, useful for seamless wrap textures", "Kernel Size: widens the derivative distance, which removes stepping artefacts on slowly varying values"]
+
+- Caveats: ["The slope direction is always expressed in the frame of the layer or VDB: for a layer, (1,0) points along increasing pixels across its width; for a VDB, (0,0,1) points along increasing voxels through its depth"]
+
+## Parameters (exact, from the installed Houdini)
+
+| parameter | label | type | default | range | menu tokens |
+|---|---|---|---|---|---|
+| `signature` | Signature | String | ["auto"] |  |  |
+| `space` | Space | Menu | 0 |  | image, pixel, local |
+| `angle` | Angle | Float | [0.0] | -180.0 .. 180.0 |  |
+| `scale` | Scale | Float | [1.0] | 0.0 .. 1.0 |  |
+| `readoutside` | Read Pixels outside Image | Toggle | true |  |  |
+| `kernel` | Kernel Size | Int | [1] | 1 .. 64 (strict) |  |

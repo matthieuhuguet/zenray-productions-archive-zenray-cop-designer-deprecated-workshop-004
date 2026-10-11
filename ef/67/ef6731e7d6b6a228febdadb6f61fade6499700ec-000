@@ -1,0 +1,40 @@
+# pyro_lightambient
+
+- Label: Pyro Light Ambient
+- Category: Copernicus (`Cop`), Houdini 22.0.368
+- Inputs: 1 to 4
+- Parameters: 16 (exact, read from Houdini by hython)
+- Used by the height graph: no
+
+## Feature summary (web, SideFX reference)
+
+- Source: https://www.sidefx.com/docs/houdini/nodes/cop/pyro_lightambient.html
+- Summary (EN): Builds a light field storing how much environment light reaches each voxel of a density VDB. The density shadows the light, and the result can be chained with other light nodes and passed to Rasterize Volume to render the VDB as lit smoke. Available since 21.0.
+- Résumé (FR) : Pyro Light Ambient calcule la lumière d'environnement atteignant chaque voxel d'un VDB de densité, la densité projetant son ombre, pour un rendu de fumée éclairée.
+
+- Inputs meaning: ["density: Float VDB that occludes light; its topology defines the light field", "mipmap (optional): Float VDB MipMap from Pyro Packed MipMap; computed internally if omitted", "light (optional): Vector VDB with existing illumination; new light is added to it for chaining", "envmap (optional): RGB layer holding the environment map in polar coordinates"]
+
+- Key parameters: ["Exposed Color: tint of light on voxels exposed to the surroundings (normally white)", "Occluded Color: light color in shadowed voxels (normally black); white occluded with dark exposed gives a self-lit look suited to clouds", "Intensity: linear brightness", "Exposure: exponential brightness; each +1 doubles brightness", "Density Scale: how fast density occludes light", "Environment Map Offset: rotation of the environment map around the Y axis", "Steps Per MipMap: tracing steps before moving to the next MipMap level for occlusion rays", "Max Steps: maximum samples per occlusion ray", "Environment Map Resolution: resolution the environment map is resampled to, to avoid aliasing from few rays", "MipMap Level: starting level; level 1 computes at half resolution and interpolates back, which the page says is more than eight times faster"]
+
+- Caveats: ["Requires DOP-level permissions; not in Houdini Core, only in Houdini FX, Apprentice, Indie and Education", "Starting at MipMap level 1 trades resolution for speed, since light is computed at half resolution then interpolated"]
+
+## Parameters (exact, from the installed Houdini)
+
+| parameter | label | type | default | range | menu tokens |
+|---|---|---|---|---|---|
+| `folder1` |  | FolderSet |  |  |  |
+| `ambientexposedr` | Exposed Color | Float | 1.0 | 0.0 .. 1.0 |  |
+| `ambientexposedg` | Exposed Color | Float | 1.0 | 0.0 .. 1.0 |  |
+| `ambientexposedb` | Exposed Color | Float | 1.0 | 0.0 .. 1.0 |  |
+| `ambientoccludedr` | Occluded Color | Float | 0.0 | 0.0 .. 1.0 |  |
+| `ambientoccludedg` | Occluded Color | Float | 0.0 | 0.0 .. 1.0 |  |
+| `ambientoccludedb` | Occluded Color | Float | 0.0 | 0.0 .. 1.0 |  |
+| `intensity` | Intensity | Float | [1.0] | 0.0 .. 10.0 |  |
+| `exposure` | Exposure | Float | [0.0] | -10.0 .. 10.0 |  |
+| `densityscale` | Density Scale | Float | [1.0] | 0.0 .. 10.0 |  |
+| `envmapoff` | Environment Map Offset | Float | [0.0] | -180.0 .. 180.0 |  |
+| `folder0` |  | FolderSet |  |  |  |
+| `steppermip` | Steps Per MipMap | Int | [4] | 0 .. 10 |  |
+| `maxstep` | Max Steps | Int | [256] | 0 .. 256 |  |
+| `envmapres` | Environment Map Resolution | Int | [100] | 8 .. 100 |  |
+| `miplevel` | MipMap Level | Int | [1] | 0 .. 1 |  |

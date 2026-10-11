@@ -1,0 +1,26 @@
+# Review checklist and premortem, zenray-cop-designer (11 October 2026)
+
+Read this first in the morning. Each risk has its check.
+
+| # | Risk | Check (command or file) | Status on 11 October 2026 |
+|---|---|---|---|
+| 1 | The search games its objective (streaks, blur) | look at the best planche: `Heights/SimpleHeight/versions/` and `runs/window_opt_2/best.png` | objective statistical, look limits set; planche to review |
+| 2 | Look limits are my judgment, not Matthieu's | `tool/optimize_window.py` SPACE | awaiting validation |
+| 3 | A node is missing from the documentation | `docs/cop/COVERAGE.md` | see the coverage file |
+| 4 | A web summary describes another node | open 3 random pages in `docs/cop/` and compare with the SideFX page | not yet sampled |
+| 5 | A parameter name is wrong in the graph | `python3 tool/test_designer.py` and `hython tool/hou_compile.py` (read-back) | 25 tests pass, compile exact |
+| 6 | Houdini reports a silent error | `problems` in the compile report, node `errors()` | checked on each compile |
+| 7 | Watchdog relaunch loop | `runs/window_opt_2/watchdog.log` (stops after 40 relaunches) | to check |
+| 8 | Optimizer stuck in a local optimum | `runs/window_opt_2/optimizer.log`, round lines | to check |
+| 9 | Substance Designer mapping wrong | `docs/substance_designer/` status documented_only | never executed |
+| 10 | Live Houdini session disturbed | the tool only uses hython headless; the live hip is untouched | ok by design |
+| 11 | Project folder grows | scratch.png is overwritten each evaluation; only best files kept | ok |
+| 12 | Claim of "perfect" reproduction | the report gives numbers and planches, never a yes or no | rule |
+
+Commands for the morning:
+
+```bash
+python3 ~/.claude/skills/zenray-cop-designer/tool/test_designer.py
+tail -3 /Users/zenray/Create/Build/Productions/ZenRayHoudini/LouisianaBayou/Heights/CopDesigner/runs/window_opt_2/optimizer.log
+cat /Users/zenray/Create/Build/Productions/ZenRayHoudini/LouisianaBayou/Heights/CopDesigner/runs/window_opt_2/watchdog.log
+```

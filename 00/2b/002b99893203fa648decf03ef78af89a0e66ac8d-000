@@ -1,0 +1,37 @@
+# turingpatterns
+
+- Label: Turing Patterns
+- Category: Copernicus (`Cop`), Houdini 22.0.368
+- Inputs: 1 to 3
+- Parameters: 13 (exact, read from Houdini by hython)
+- Used by the height graph: no
+
+## Feature summary (web, SideFX reference)
+
+- Source: https://www.sidefx.com/docs/houdini/nodes/cop/turingpatterns.html
+- Summary (EN): Creates stripe and spot patterns from an input by alternating blur and sharpen passes over several iterations, so the patterns follow the form of the original input. It is meant for organic patterns without a complex simulation, unlike the Reaction-Diffusion nodes. Output is pattern. Available since Houdini 22.0.
+- Résumé (FR) : Ce nœud crée des motifs de rayures et de taches en alternant flou et netteté sur plusieurs itérations, sans simulation complexe, à partir de la forme de l'image source.
+
+- Inputs meaning: ["source: the layer or VDB the filter is applied to.", "radius: optional per-pixel layer or VDB that scales the blur amount.", "mask: optional per-pixel mask that scales the Mask parameter."]
+
+- Key parameters: [{"name": "Signature", "meaning": "The layer type the source accepts."}, {"name": "Mask", "meaning": "How much of the new value mixes with the original. Default 1 uses only the new value."}, {"name": "Toggle RGB / Red / Green / Blue / Alpha", "meaning": "Chooses which channels the effect applies to."}, {"name": "Filter", "meaning": "Box or Gaussian (default). Sets how the blur averages nearby pixels."}, {"name": "Read Pixels outside Image", "meaning": "Includes pixels beyond the image edge, as determined by the border type."}, {"name": "Units", "meaning": "Image space or pixels, for interpreting the radius."}, {"name": "Iterations", "meaning": "Number of blur-and-sharpen passes."}, {"name": "Radius", "meaning": "The blur radius."}, {"name": "Power", "meaning": "Sharpening amplitude. Higher values expand and solidify the pattern."}, {"name": "Gain", "meaning": "Multiplies the brightness of the original pixels."}, {"name": "Scale", "meaning": "Scales the blur radius along a specific axis."}]
+
+- Caveats: ["The page gives no default values or valid ranges for Iterations, Radius, Power, Gain or Scale.", "It does not explain how Power and Gain interact with each other or with Iterations.", "The input description refers to the blur amount, but the parameter is named Radius, and the page does not clarify the link.", "No performance information is given. The page shows example images only."]
+
+## Parameters (exact, from the installed Houdini)
+
+| parameter | label | type | default | range | menu tokens |
+|---|---|---|---|---|---|
+| `signature` | Signature | String | ["auto"] |  |  |
+| `mask` | Mask | Float | [1.0] | 0.0 .. 1.0 |  |
+| `scopergba` | Channel Scope | Int | [15] | 0 .. 10 |  |
+| `filter` | Filter | Menu | 1 |  | box, gaussian |
+| `readoutside` | Read Pixels outside Image | Toggle | true |  |  |
+| `units` | Units | Menu | 0 |  | image, pixels |
+| `iterations` | Iterations | Int | [20] | 0 .. 20 (strict) |  |
+| `radius` | Radius | Float | [0.02] | 0.01 .. 0.25 (strict) |  |
+| `radius_pixel` | Radius | Float | [3.0] | 0.0 .. 25.0 (strict) |  |
+| `power` | Power | Float | [15.0] | 0.0 .. 30.0 (strict) |  |
+| `gain` | Gain | Float | [1.0] | 0.0 .. 3.0 |  |
+| `scalesx` | Scale | Float | 1.0 | 0.0 .. 1.0 (strict) |  |
+| `scalesy` | Scale | Float | 1.0 | 0.0 .. 1.0 (strict) |  |

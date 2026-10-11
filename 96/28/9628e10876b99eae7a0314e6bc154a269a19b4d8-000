@@ -1,0 +1,141 @@
+# shapescatter
+
+- Label: Scatter Shapes
+- Category: Copernicus (`Cop`), Houdini 22.0.368
+- Inputs: 0 to 12
+- Parameters: 117 (exact, read from Houdini by hython)
+- Used by the height graph: no
+
+## Feature summary (web, SideFX reference)
+
+- Source: https://www.sidefx.com/docs/houdini/nodes/cop/shapescatter.html
+- Summary (EN): The page at this URL, titled Scatter Shapes, documents the node named shapescatter. It scatters stamps across an image with randomisation of placement, scale, angle, colour and more, and places a star pattern by default when no stamps input is connected.
+- Résumé (FR) : Le nœud Shape Scatter, titré Scatter Shapes sur sa page officielle, disperse des tampons sur une image avec des variations de position, d'échelle, d'angle et de couleur.
+
+- Inputs meaning: ["size_ref: sets the output image size and metadata", "density: rejection sampling of the stamps", "jitter: random position offsets", "direction: stamp angle direction, for example from Slope Direction", "angle: rotates stamps", "scale: multiplies uniform scale", "stretch: multiplies non-uniform scale", "color: tints stamps", "alpha: multiplies stamp alpha", "sort: depth-based sorting", "select: chooses which stamps to use", "stamps: up to 10 stamps"]
+
+- Key parameters: ["Stamps X / Stamps Y: number of stamps along each axis", "Scatter Seed: seeds the randomness of jitter, density, angle, scale and stretch", "Density: rejection sampling; 0.8 gives each stamp a 20 percent chance to disappear", "Jitter: random position offset per grid point", "Angle: rotation in degrees, with Uniform, Variance, Min/Max and Round to Multiples modes", "Stretch X / Stretch Y: non-uniform scale", "Blend Method: how overlapping stamps combine (Add, Multiply, Maximum, Depth-Sorted Over, etc.)", "Stamp Color / Stamp Alpha: Uniform, Variance or Random from Ramp", "Mode: stamp selection, Cycle, Random, Layer Select or Limit Selection", "Grid Type: Grid or Hexagonal, with Scale, Offset and Angle"]
+
+- Caveats: ["Depth-Sorted Over has a performance cost and handles partially transparent stamps poorly", "Wiring the sort input overrides the sort behaviour of the Blend Method", "With Do Tiled enabled, Grid Angle is clamped to 90 degrees and Grid Offset and Scale snap to divisors of Stamps X or Y", "The page is inconsistent: the select input says Layer Sort, but the parameter is labelled Layer Select"]
+
+## Parameters (exact, from the installed Houdini)
+
+| parameter | label | type | default | range | menu tokens |
+|---|---|---|---|---|---|
+| `signature` | Signature | String | ["default"] |  |  |
+| `linkstamps` | Link Stamps | Toggle | true |  |  |
+| `stampsxy` | Stamps | Int | [10] | 1 .. 300 (strict) |  |
+| `stampsx` | Stamps X | Int | [5] | 1 .. 300 (strict) |  |
+| `stampsy` | Stamps Y | Int | [10] | 1 .. 300 (strict) |  |
+| `folder11` |  | FolderSet |  |  |  |
+| `seed` | Scatter Seed | Int | [0] | 0 .. 100 |  |
+| `folderscale` |  | FolderSet |  |  |  |
+| `stampscaling` | Stamp Scaling | Menu | 1 |  | image, tile |
+| `scalemask` | Scale Layer Mask | Float | [1.0] | 0.0 .. 1.0 (strict) |  |
+| `scalemode` | Scale Mode | Menu | 0 |  | uniform, variance, minmax |
+| `scale` | Image Scale | Float | [0.1] | 0.0 .. 1.0 |  |
+| `scale_tile` | Tile Scale | Float | [1.0] | 0.0 .. 2.0 |  |
+| `scalevariance` | Scale Variance | Float | [0.5] | 0.0 .. 1.0 (strict) |  |
+| `minscale` | Min Value | Float | [0.5] | 0.0 .. 10.0 |  |
+| `maxscale` | Max Value | Float | [1.5] | 0.0 .. 10.0 |  |
+| `folderjitter` |  | FolderSet |  |  |  |
+| `jittermask` | Jitter Layer Mask | Float | [1.0] | 0.0 .. 1.0 (strict) |  |
+| `relaxstrength` | Jitter Layer Strength | Float | [1.0] | 0.0 .. 5.0 (strict) |  |
+| `applyjitterlate` | Post-Jitter | Toggle | false |  |  |
+| `jitter` | Jitter | Float | [0.0] | 0.0 .. 5.0 (strict) |  |
+| `jittertype` | Jitter Type | Menu | 0 |  | BUTTONS_decompose_transforms |
+| `jitterscalex` | Jitter Scale | Float | 1.0 | 0.0 .. 5.0 (strict) |  |
+| `jitterscaley` | Jitter Scale | Float | 1.0 | 0.0 .. 5.0 (strict) |  |
+| `folderrotation` |  | FolderSet |  |  |  |
+| `anglemask` | Angle Layer Mask | Float | [1.0] | 0.0 .. 1.0 (strict) |  |
+| `directionmask` | Direction Layer Mask | Float | [1.0] | 0.0 .. 1.0 (strict) |  |
+| `angle` | Angle | Float | [0.0] | 0.0 .. 360.0 |  |
+| `anglemode` | Angle Mode | Menu | 0 |  | uniform, variance, minmax |
+| `anglevariance` | Angle Variance | Float | [0.0] | -180.0 .. 180.0 |  |
+| `minangle` | Min Value | Float | [-180.0] | -180.0 .. 180.0 |  |
+| `maxangle` | Max Value | Float | [180.0] | -180.0 .. 180.0 |  |
+| `roundto` | Round To | Toggle | false |  |  |
+| `roundtomultiples` | Round to Multiples | Float | [45.0] | 1.0 .. 360.0 (strict) |  |
+| `folderstretch` |  | FolderSet |  |  |  |
+| `stretchmask` | Stretch Layer Mask | Float | [1.0] | 0.0 .. 1.0 (strict) |  |
+| `stretchmode` | Stretch Mode | Menu | 0 |  | uniform, variance, minmax |
+| `stretchx` | Stretch X | Float | [1.0] | 0.0 .. 2.0 |  |
+| `stretchy` | Stretch Y | Float | [1.0] | 0.0 .. 2.0 |  |
+| `randompercomp` | Random per Component | Toggle | false |  |  |
+| `stretchvariancex` | Stretch Variance | Float | 0.5 | 0.0 .. 1.0 (strict) |  |
+| `stretchvariancey` | Stretch Variance | Float | 0.5 | 0.0 .. 1.0 (strict) |  |
+| `minstretchx` | Min Value | Float | 0.0 | 0.0 .. 10.0 |  |
+| `minstretchy` | Min Value | Float | 0.0 | 0.0 .. 10.0 |  |
+| `maxstretchx` | Max Value | Float | 1.0 | 0.0 .. 10.0 |  |
+| `maxstretchy` | Max Value | Float | 1.0 | 0.0 .. 10.0 |  |
+| `folderdensity` |  | FolderSet |  |  |  |
+| `densitymask` | Density Layer Mask | Float | [1.0] | 0.0 .. 1.0 (strict) |  |
+| `density` | Density | Float | [1.0] | 0.0 .. 1.0 |  |
+| `blend` | Blend Method | Menu | 1 |  | sorted, unsorted, add, subtract, multiply, max, min |
+| `usesortlayer` | Use Sort Layer | Toggle | true |  |  |
+| `treatmonoasalpha` | Treat Mono as Alpha | Toggle | false |  |  |
+| `foldercolor` |  | FolderSet |  |  |  |
+| `colorseed` | Color Seed | Int | [0] | 0 .. 100 |  |
+| `colormask` | Color Layer Mask | Float | [1.0] | 0.0 .. 1.0 (strict) |  |
+| `colorr` | Stamp Color | Float | 1.0 | 0.0 .. 1.0 (strict) |  |
+| `colorg` | Stamp Color | Float | 1.0 | 0.0 .. 1.0 (strict) |  |
+| `colorb` | Stamp Color | Float | 1.0 | 0.0 .. 1.0 (strict) |  |
+| `colormode` | Color Mode | Menu | 0 |  | uniform, variance, ramp |
+| `colorramp` | Color Ramp | Ramp | 5 |  |  |
+| `huevariance` | Hue | Float | [0.0] | -180.0 .. 180.0 |  |
+| `saturationvariance` | Saturation | Float | [0.0] | -1.0 .. 1.0 |  |
+| `valuevariance` | Value | Float | [0.0] | -1.0 .. 1.0 |  |
+| `folder2` |  | FolderSet |  |  |  |
+| `alphamask` | Alpha Layer Mask | Float | [1.0] | 0.0 .. 1.0 (strict) |  |
+| `alpha` | Stamp Alpha | Float | [1.0] | 0.0 .. 1.0 (strict) |  |
+| `alphamode` | Alpha Mode | Menu | 0 |  | uniform, variance, ramp |
+| `alphavariance` | Alpha Variance | Float | [0.0] | -1.0 .. 1.0 |  |
+| `alpharamp` | Alpha Ramp | Ramp | 2 |  |  |
+| `backgroundfolder` |  | FolderSet |  |  |  |
+| `bgr` | Background Color | Float | 0.0 | 0.0 .. 1.0 |  |
+| `bgg` | Background Color | Float | 0.0 | 0.0 .. 1.0 |  |
+| `bgb` | Background Color | Float | 0.0 | 0.0 .. 1.0 |  |
+| `bgalpha` | Background Alpha | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `folder0` |  | FolderSet |  |  |  |
+| `selectmode` | Mode | Menu | 1 |  | cycle, random, layer |
+| `limitstamps` | Limit Selection | Toggle | false |  |  |
+| `stampcount` | Limit Selection | Int | [2] | 1 .. 10 |  |
+| `selectseed` | Select Seed | Int | [0] | 0 .. 50 |  |
+| `gridtype` | Grid Type | Menu | 0 |  | grid, hex |
+| `dotiled` | Do Tiled | Toggle | true |  |  |
+| `gridscalex` | Scale | Float | 1.0 | -1.0 .. 1.0 |  |
+| `gridscaley` | Scale | Float | 1.0 | -1.0 .. 1.0 |  |
+| `gridoffsetx` | Offset | Float | 0.0 | -1.0 .. 1.0 |  |
+| `gridoffsety` | Offset | Float | 0.0 | -1.0 .. 1.0 |  |
+| `gridangle` | Angle | Float | [0.0] | -180.0 .. 180.0 |  |
+| `colorramp1pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `colorramp1cr` | Color | Float | 0.0 | 0.0 .. 10.0 |  |
+| `colorramp1cg` | Color | Float | 0.0 | 0.0 .. 10.0 |  |
+| `colorramp1cb` | Color | Float | 0.0 | 0.0 .. 10.0 |  |
+| `colorramp1interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `colorramp2pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `colorramp2cr` | Color | Float | 0.0 | 0.0 .. 10.0 |  |
+| `colorramp2cg` | Color | Float | 0.0 | 0.0 .. 10.0 |  |
+| `colorramp2cb` | Color | Float | 0.0 | 0.0 .. 10.0 |  |
+| `colorramp2interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `colorramp3pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `colorramp3cr` | Color | Float | 0.0 | 0.0 .. 10.0 |  |
+| `colorramp3cg` | Color | Float | 0.0 | 0.0 .. 10.0 |  |
+| `colorramp3cb` | Color | Float | 0.0 | 0.0 .. 10.0 |  |
+| `colorramp3interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `colorramp4pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `colorramp4cr` | Color | Float | 0.0 | 0.0 .. 10.0 |  |
+| `colorramp4cg` | Color | Float | 0.0 | 0.0 .. 10.0 |  |
+| `colorramp4cb` | Color | Float | 0.0 | 0.0 .. 10.0 |  |
+| `colorramp4interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `colorramp5pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `colorramp5cr` | Color | Float | 0.0 | 0.0 .. 10.0 |  |
+| `colorramp5cg` | Color | Float | 0.0 | 0.0 .. 10.0 |  |
+| `colorramp5cb` | Color | Float | 0.0 | 0.0 .. 10.0 |  |
+| `colorramp5interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `alpharamp1pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `alpharamp1value` | Value | Float | [0.0] | 0.0 .. 10.0 |  |
+| `alpharamp1interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `alpharamp2pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `alpharamp2value` | Value | Float | [0.0] | 0.0 .. 10.0 |  |
+| `alpharamp2interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |

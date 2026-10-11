@@ -1,0 +1,71 @@
+# sdftomono
+
+- Label: SDF to Mono
+- Category: Copernicus (`Cop`), Houdini 22.0.368
+- Inputs: 0 to 1
+- Parameters: 47 (exact, read from Houdini by hython)
+- Used by the height graph: no
+
+## Feature summary (web, SideFX reference)
+
+- Source: https://www.sidefx.com/docs/houdini/nodes/cop/sdftomono.html
+- Summary (EN): SDF to Mono converts a 2D signed distance field into a mono grayscale layer, to make a black-and-white image or use the field as a mask. Its parameters control the background, shape, outline, shadow and the field itself.
+- Résumé (FR) : Le nœud SDF to Mono convertit un champ de distance signé 2D en couche mono en niveaux de gris, utilisable comme image ou comme masque.
+
+- Inputs meaning: ["sdf: the SDF mono layer to convert; the output is one mono layer"]
+
+- Key parameters: ["Background: Background Value, Iso Range, Number of Cycles, Remap Ramp", "Shape: Draw Shape, Shape Value, Iso Distance, Remap Ramp", "Outline: Draw Outline, Outline Value, Outline Width, Alignment (inside, outside or centered)", "Shadowing: Draw Shadowing, Shadow Value, Shadow Density, Shadow Falloff", "SDF: Iso Offset, Onion Skin, Smooth, Anti-Aliasing, Invert"]
+
+- Caveats: ["Shadows appear only if Shadow Value differs from Background Value", "Background Value and Shape Value remap the distance field only when their menu is changed from Constant to Iso Distance", "To convert a mono layer back into an SDF, use the Mono to SDF node"]
+
+## Parameters (exact, from the installed Houdini)
+
+| parameter | label | type | default | range | menu tokens |
+|---|---|---|---|---|---|
+| `signature` | Signature | Float | [0.0] | 0.0 .. 10.0 |  |
+| `folder3` |  | FolderSet |  |  |  |
+| `bgvalue` | Background Value | Float | [0.0] | 0.0 .. 1.0 |  |
+| `bgvaluemode` | Background Value Mode | Menu | 0 |  | 0, 1 |
+| `bgvalueisorangex` | Iso Range | Float | 0.0 | 0.0 .. 1.0 |  |
+| `bgvalueisorangey` | Iso Range | Float | 1.0 | 0.0 .. 1.0 |  |
+| `bgcycles` | Number of Cycles | Float | [1.0] | 0.0 .. 10.0 (strict) |  |
+| `bgmethod` | Outside Range | Menu | 0 |  | clamp, mirror, repeat |
+| `bgvalueramp` | Remap Ramp | Ramp | 2 |  |  |
+| `folder2` |  | FolderSet |  |  |  |
+| `drawshape` | Draw Shape | Toggle | true |  |  |
+| `shapevalue` | Shape Value | Float | [1.0] | 0.0 .. 1.0 (strict) |  |
+| `shapevaluemode` | Shape Value Mode | Menu | 0 |  | 0, 1 |
+| `shapevalueiso` | Iso Distance | Float | [1.0] | 0.0 .. 2.0 (strict) |  |
+| `shaperamptype` | Ramp Type | Menu | 0 |  | horizontal, vertical |
+| `shaperotate` | Rotate | Float | [0.0] | -180.0 .. 180.0 |  |
+| `shapevalueramp` | Remap Ramp | Ramp | 2 |  |  |
+| `folder4` |  | FolderSet |  |  |  |
+| `drawoutline` | Draw Outline | Toggle | false |  |  |
+| `outlinevalue` | Outline Value | Float | [1.0] | 0.0 .. 1.0 (strict) |  |
+| `outlinewidth` | Outline Width | Float | [0.001] | 0.0 .. 0.01 (strict) |  |
+| `outlinemode` | Alignment | Menu | 0 |  | inside, outside, center |
+| `folder5` |  | FolderSet |  |  |  |
+| `drawshadowing` | Draw Shadowing | Toggle | false |  |  |
+| `shadowdensity` | Shadow Density | Float | [1.0] | 0.0 .. 1.0 (strict) |  |
+| `shadowfalloff` | Shadow Falloff | Float | [0.05] | 0.0 .. 1.0 (strict) |  |
+| `shadowvalue` | Shadow Value | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `folder0` |  | FolderSet |  |  |  |
+| `iso` | Iso Offset | Float | [0.0] | -1.0 .. 1.0 |  |
+| `doonion` | Onion Skin | Toggle | false |  |  |
+| `onion` | Onion Skin | Float | [0.01] | 0.0 .. 0.1 (strict) |  |
+| `dosmooth` | Smooth | Toggle | false |  |  |
+| `smooth` | Smooth | Float | [0.01] | 0.0 .. 0.1 (strict) |  |
+| `doaa` | Anti-Aliasing | Toggle | true |  |  |
+| `invert` | Invert | Toggle | false |  |  |
+| `bgvalueramp1pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `bgvalueramp1value` | Value | Float | [0.0] | 0.0 .. 10.0 |  |
+| `bgvalueramp1interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `bgvalueramp2pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `bgvalueramp2value` | Value | Float | [0.0] | 0.0 .. 10.0 |  |
+| `bgvalueramp2interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `shapevalueramp1pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `shapevalueramp1value` | Value | Float | [0.0] | 0.0 .. 10.0 |  |
+| `shapevalueramp1interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `shapevalueramp2pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `shapevalueramp2value` | Value | Float | [0.0] | 0.0 .. 10.0 |  |
+| `shapevalueramp2interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |

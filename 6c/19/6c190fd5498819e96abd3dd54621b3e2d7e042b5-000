@@ -1,0 +1,34 @@
+# uvmapbyid
+
+- Label: UV Map by ID
+- Category: Copernicus (`Cop`), Houdini 22.0.368
+- Inputs: 1 to 1
+- Parameters: 10 (exact, read from Houdini by hython)
+- Used by the height graph: no
+
+## Feature summary (web, SideFX reference)
+
+- Source: https://www.sidefx.com/docs/houdini/nodes/cop/uvmapbyid.html
+- Summary (EN): Generates a separate UV map for each connected ID island in an ID layer. The resulting UVs can be used with UV Sample COP to texture those islands, or with UV Transform COP to adjust their mapping.
+- Résumé (FR) : Ce nœud crée une carte UV distincte pour chaque île d'identifiants d'une couche ID, pour texturer chaque île séparément avec UV Sample.
+
+- Inputs meaning: ["id: ID layer whose islands are used to generate the UVs."]
+
+- Key parameters: [{"name": "Mode", "meaning": "What each pixel outputs: its position within the island's UV map, or the island's bounding-box centre, minimum, maximum or size."}, {"name": "UV Space", "meaning": "Texture runs 0 to 1 and stretches to fit the bounding box. Image runs -1 to 1, framing the island while keeping pixels square."}, {"name": "Auto Scale", "meaning": "Whether the UV map is scaled to fit the island's bounding box."}, {"name": "U Border / V Border", "meaning": "How out-of-range coordinates are handled: Clamp, Mirror, Wrap or Extend."}, {"name": "U Shift / V Shift", "meaning": "Offsets the coordinates before the border mode is applied."}, {"name": "U Cycles / V Cycles", "meaning": "Multiplies the coordinates. With Wrap, this can create repeating tiles."}, {"name": "Zero Negative IDs", "meaning": "Sets negative IDs to zero so they stop forming their own islands."}]
+
+- Caveats: ["Negative IDs form their own connected islands by default, which can cause unwanted results if they mark invalid IDs. Enable Zero Negative IDs to avoid this.", "The page does not describe default parameter values.", "The uvscale output can feed UV Sample to adjust filtering for island size."]
+
+## Parameters (exact, from the installed Houdini)
+
+| parameter | label | type | default | range | menu tokens |
+|---|---|---|---|---|---|
+| `mode` | Mode | Menu | 0 |  | uvmap, center, min, max, size |
+| `uvspace` | UV Space | Menu | 1 |  | texture, image |
+| `autoscale` | Auto Scale | Menu | 1 |  | none, fit |
+| `uborder` | U Border | Menu | 0 |  | clamp, mirror, wrap |
+| `ushift` | U Shift | Float | [0.0] | -1.0 .. 1.0 |  |
+| `ucycle` | U Cycles | Float | [1.0] | 0.0 .. 10.0 |  |
+| `vborder` | V Border | Menu | 0 |  | clamp, mirror, wrap |
+| `vshift` | V Shift | Float | [0.0] | -1.0 .. 1.0 |  |
+| `vcycle` | V Cycles | Float | [1.0] | 0.0 .. 10.0 |  |
+| `zeroinvalid` | Zero Negative IDs | Toggle | false |  |  |

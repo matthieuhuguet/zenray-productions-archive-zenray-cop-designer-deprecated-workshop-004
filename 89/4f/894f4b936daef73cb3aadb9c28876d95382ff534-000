@@ -1,0 +1,134 @@
+# previewmaterial
+
+- Label: Preview Material
+- Category: Copernicus (`Cop`), Houdini 22.0.368
+- Inputs: 0 to 22
+- Parameters: 110 (exact, read from Houdini by hython)
+- Used by the height graph: no
+
+## Feature summary (web, SideFX reference)
+
+- Source: https://www.sidefx.com/docs/houdini/nodes/cop/previewmaterial.html
+- Summary (EN): The Preview Material node applies a standard preview material to incoming geometry so you can see how a material looks. With no geometry connected it creates a built-in proxy shape, and textures wired into its inputs override the material's layers.
+- Résumé (FR) : Le nœud Preview Material applique un matériau d'aperçu standard à une géométrie, avec un proxy intégré si rien n'est branché, et ses entrées remplacent les couches du matériau.
+
+- Inputs meaning: ["geo (optional; a proxy is used if unwired)", "basecolor", "metalness", "specular", "spec_color", "roughness", "coat", "coat_color", "coat_roughness", "sheen", "sheen_color", "sheen_roughness", "emission", "emission_color", "opacity", "normal", "height", "transmission", "transmission_color", "sss_amount", "sss_color", "sss_radius"]
+
+- Key parameters: ["Signature: Geometry input, or a grid (Metadata) matching the input size and orientation", "UDIM List: tiles cooked for preview: Use Context, Explicit, Automatic or Disabled", "Geometry: proxy shape when no geo is wired: Grid, Sphere, Box, Tube, Torus or Shader Ball", "Translate / Rotate / Scale / UV Scale / Divisions: proxy placement, UV tiling and refinement", "Default Color and Tint With Cd: base colour when basecolor is unwired, optionally tinted by Cd", "Default and scale parameters (Metalness, Specular, Roughness, Coat, Sheen, Emission, Opacity): fallback values and scaling of incoming layers", "Normal Map Scale and Height Scale: normal and displacement strength; Height Scale is often needed because height maps range 0 to 1", "Index of Refraction: specular and transmission calculations"]
+
+- Caveats: ["The geometry needs a uv attribute and ideally MikkT tangents, otherwise normal maps may display incorrectly.", "Transmission and subsurface parameters apply to Karma only.", "The USD parameters (Base Asset Path, Base Primitive Path) are for Solaris and not meant for artistic adjustment.", "The page does not state the internal name cop previewmaterial; the match rests on the page title and file name."]
+
+## Parameters (exact, from the installed Houdini)
+
+| parameter | label | type | default | range | menu tokens |
+|---|---|---|---|---|---|
+| `signature` | Signature | String | ["auto"] |  |  |
+| `setudimlist` | UDIM List | Menu | 0 |  | context, explicit, auto, off |
+| `udimlist` | UDIM List | String | [""] |  |  |
+| `udimcoveragethreshold` | Coverage Threshold | Float | [0.01] | 0.0 .. 0.1 (strict) |  |
+| `geotype` | Geometry | Menu | 0 |  | grid, sphere, box, tube, torus, shaderball |
+| `tx` | Translate | Float | 0.0 | -1.0 .. 1.0 |  |
+| `ty` | Translate | Float | 0.0 | -1.0 .. 1.0 |  |
+| `tz` | Translate | Float | 0.0 | -1.0 .. 1.0 |  |
+| `rx` | Rotate | Float | 0.0 | 0.0 .. 360.0 |  |
+| `ry` | Rotate | Float | 0.0 | 0.0 .. 360.0 |  |
+| `rz` | Rotate | Float | 0.0 | 0.0 .. 360.0 |  |
+| `geoscale` | Scale | Float | [1.0] | 0.0 .. 10.0 |  |
+| `geouvscale` | UV Scale | Float | [1.0] | 0.0 .. 10.0 |  |
+| `geores` | Divisions | Int | [10] | 2 .. 100 |  |
+| `geowaviness` | Waviness | Float | [0.0] | 0.0 .. 1.0 |  |
+| `georemovecaps` | Remove Caps | Toggle | false |  |  |
+| `geobevel` | Bevel | Toggle | false |  |  |
+| `geobevelshape` | Shape | Menu | 2 |  | crease, chamfer, round |
+| `geobeveloffset` | Bevel Size | Float | [0.1] | 0.0 .. 1.0 (strict) |  |
+| `default_basecolorr` | Default Color | Float | 1.0 | 0.0 .. 1.0 |  |
+| `default_basecolorg` | Default Color | Float | 1.0 | 0.0 .. 1.0 |  |
+| `default_basecolorb` | Default Color | Float | 1.0 | 0.0 .. 1.0 |  |
+| `tintwithcdswitch` | Tint With Cd | Toggle | true |  |  |
+| `folder8` |  | FolderSet |  |  |  |
+| `default_metalness` | Default Metalness | Float | [0.0] | 0.0 .. 1.0 |  |
+| `metalnessscale` | Metalness Scale | Float | [1.0] | 0.0 .. 1.0 |  |
+| `folder0` |  | FolderSet |  |  |  |
+| `default_specular` | Default Specular | Float | [1.0] | 0.0 .. 1.0 |  |
+| `default_spec_colorr` | Default Specular Color | Float | 1.0 | 0.0 .. 1.0 |  |
+| `default_spec_colorg` | Default Specular Color | Float | 1.0 | 0.0 .. 1.0 |  |
+| `default_spec_colorb` | Default Specular Color | Float | 1.0 | 0.0 .. 1.0 |  |
+| `default_specular_roughness` | Default Roughness | Float | [0.5] | 0.0 .. 1.0 |  |
+| `specularroughnessscale` | Roughness Scale | Float | [1.0] | 0.0 .. 1.0 |  |
+| `specular_IOR` | Index of Refraction | Float | [1.5] | 0.0 .. 3.0 |  |
+| `folder1` |  | FolderSet |  |  |  |
+| `default_coat_amount` | Default Coat | Float | [0.0] | 0.0 .. 1.0 |  |
+| `default_coat_colorr` | Default Color | Float | 1.0 | 0.0 .. 1.0 |  |
+| `default_coat_colorg` | Default Color | Float | 1.0 | 0.0 .. 1.0 |  |
+| `default_coat_colorb` | Default Color | Float | 1.0 | 0.0 .. 1.0 |  |
+| `default_coat_roughness` | Default Roughness | Float | [0.3] | 0.0 .. 1.0 |  |
+| `coatroughnessscale` | Roughness Scale | Float | [1.0] | 0.0 .. 1.0 |  |
+| `folder2` |  | FolderSet |  |  |  |
+| `default_sheen_amount` | Default Sheen | Float | [0.0] | 0.0 .. 1.0 |  |
+| `default_sheen_colorr` | Default Color | Float | 1.0 | 0.0 .. 1.0 |  |
+| `default_sheen_colorg` | Default Color | Float | 1.0 | 0.0 .. 1.0 |  |
+| `default_sheen_colorb` | Default Color | Float | 1.0 | 0.0 .. 1.0 |  |
+| `default_sheen_roughness` | Default Roughness | Float | [0.25] | 0.0 .. 1.0 |  |
+| `sheenroughnessscale` | Roughness Scale | Float | [1.0] | 0.0 .. 1.0 |  |
+| `folder3` |  | FolderSet |  |  |  |
+| `default_emission_amount` | Default Emission | Float | [0.0] | 0.0 .. 1.0 |  |
+| `emissionscale` | Emission Scale | Float | [1.0] | 0.0 .. 1.0 |  |
+| `default_emission_colorr` | Default Color | Float | 1.0 | 0.0 .. 1.0 |  |
+| `default_emission_colorg` | Default Color | Float | 1.0 | 0.0 .. 1.0 |  |
+| `default_emission_colorb` | Default Color | Float | 1.0 | 0.0 .. 1.0 |  |
+| `folder7` |  | FolderSet |  |  |  |
+| `normalmap_scale` | Normal Map Scale | Float | [1.0] | 0.0 .. 1.0 |  |
+| `karma_mikkt` | MikkT Tangent Space | Toggle | false |  |  |
+| `heightscale` | Height Scale | Float | [1.0] | 0.0 .. 1.0 |  |
+| `folder5` |  | FolderSet |  |  |  |
+| `default_transmission_amount` | Default Transmission | Float | [0.0] | 0.0 .. 1.0 |  |
+| `default_transmission_colorr` | Default Color | Float | 1.0 | 0.0 .. 1.0 |  |
+| `default_transmission_colorg` | Default Color | Float | 1.0 | 0.0 .. 1.0 |  |
+| `default_transmission_colorb` | Default Color | Float | 1.0 | 0.0 .. 1.0 |  |
+| `folder4` |  | FolderSet |  |  |  |
+| `default_sss_amount` | Default Subsurface | Float | [0.0] | 0.0 .. 1.0 |  |
+| `default_sss_colorr` | Default Color | Float | 1.0 | 0.0 .. 1.0 |  |
+| `default_sss_colorg` | Default Color | Float | 0.0 | 0.0 .. 1.0 |  |
+| `default_sss_colorb` | Default Color | Float | 0.0 | 0.0 .. 1.0 |  |
+| `default_sss_radiusr` | Default Radius | Float | 1.0 | 0.0 .. 1.0 |  |
+| `default_sss_radiusg` | Default Radius | Float | 0.0 | 0.0 .. 1.0 |  |
+| `default_sss_radiusb` | Default Radius | Float | 0.0 | 0.0 .. 1.0 |  |
+| `sss_radius_scale` | Radius Scale | Float | [1.0] | 0.0 .. 1.0 |  |
+| `folder6` |  | FolderSet |  |  |  |
+| `default_opacity_amount` | Default Opacity | Float | [1.0] | 0.0 .. 1.0 |  |
+| `opacityscale` | Opacity Scale | Float | [1.0] | 0.0 .. 1.0 |  |
+| `folder9` |  | FolderSet |  |  |  |
+| `shader_baseassetpath` | Base Asset Path | String | ["$HH/usd/materials/basic_materials/basic_materials.usd"] |  |  |
+| `shader_baseprimpath` | Base Primitive Path | String | ["/Other/CopPreviewMaterial"] |  |  |
+| `basecolor` | Color Texture | String | [""] |  |  |
+| `metalness` | Amount Texture | String | [""] |  |  |
+| `specular` | Specular Texture | String | [""] |  |  |
+| `spec_color` | Color Texture | String | [""] |  |  |
+| `roughness` | Roughness Texture | String | [""] |  |  |
+| `coat` | Amount Texture | String | [""] |  |  |
+| `coat_color` | Color Texture | String | [""] |  |  |
+| `coat_roughness` | Roughness Texture | String | [""] |  |  |
+| `sheen` | Amount Texture | String | [""] |  |  |
+| `sheen_color` | Color Texture | String | [""] |  |  |
+| `sheen_roughness` | Roughness Texture | String | [""] |  |  |
+| `emission` | Amount Texture | String | [""] |  |  |
+| `emission_color` | Color Texture | String | [""] |  |  |
+| `normal` | Normal Texture | String | [""] |  |  |
+| `height` | Height Texture | String | [""] |  |  |
+| `transmission` | Amount Texture | String | [""] |  |  |
+| `transmission_color` | Color Texture | String | [""] |  |  |
+| `sss_amount` | Amount Texture | String | [""] |  |  |
+| `sss_color` | Color Texture | String | [""] |  |  |
+| `sss_radius` | Radius Texture | String | [""] |  |  |
+| `opacity` | Amount Texture | String | [""] |  |  |
+| `folder10` |  | FolderSet |  |  |  |
+| `folder11` |  | FolderSet |  |  |  |
+| `folder12` |  | FolderSet |  |  |  |
+| `folder13` |  | FolderSet |  |  |  |
+| `folder14` |  | FolderSet |  |  |  |
+| `folder15` |  | FolderSet |  |  |  |
+| `folder16` |  | FolderSet |  |  |  |
+| `folder17` |  | FolderSet |  |  |  |
+| `folder18` |  | FolderSet |  |  |  |
+| `folder19` |  | FolderSet |  |  |  |
+| `spare_cableinput` | Input Override Port | String | [""] |  |  |

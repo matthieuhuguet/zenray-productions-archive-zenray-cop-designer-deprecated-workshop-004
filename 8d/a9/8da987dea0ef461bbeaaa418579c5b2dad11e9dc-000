@@ -1,0 +1,24 @@
+# pointmerge
+
+- Label: Point Merge
+- Category: Copernicus (`Cop`), Houdini 22.0.368
+- Inputs: 0 to 2048
+- Parameters: 0 (exact, read from Houdini by hython)
+- Used by the height graph: no
+
+## Feature summary (web, SideFX reference)
+
+- Source: https://www.sidefx.com/docs/houdini/nodes/cop/pointmerge.html
+- Summary (EN): The Point Merge node combines several point cloud geometries into one by gathering the points of all its inputs into a single output point cloud.
+- Résumé (FR) : Le nœud Point Merge fusionne plusieurs nuages de points en un seul, en reprenant les attributs du premier entrant ; la page ne documente aucun paramètre.
+
+- Inputs meaning: ["basepoints: geometry inputs; each input's points are appended to form the final point cloud"]
+
+- Key parameters: ["None documented; the Parameters section of the page is empty."]
+
+- Caveats: ["The output uses the attributes of the first input.", "Only points are output.", "The page does not explain how attributes from the other inputs are handled.", "Available since Houdini 22.0."]
+
+## Parameters (exact, from the installed Houdini)
+
+| parameter | label | type | default | range | menu tokens |
+|---|---|---|---|---|---|

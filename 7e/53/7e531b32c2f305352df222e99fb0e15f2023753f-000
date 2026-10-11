@@ -1,0 +1,92 @@
+# __STAMP__ : the whitepaint height (painted clapboards with peeling paint) as a designer graph (IR).
+# EN: boards from the measured row profile (shared helpers of window_height), exposed paint as dark holes, horizontal fibres.
+# FR : planches (profil mesuré, helpers partagés), peinture écaillée en trous sombres, fibres horizontales. Aucun pixel importé.
+import json
+import os
+import sys
+
+HERE = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, HERE)
+from cop_graph import Graph  # noqa: E402
+import window_height as WH  # noqa: E402  # EN: shared helpers, one definition. FR : helpers partagés.
+
+REF = '/Users/zenray/Create/Build/Productions/ZenRayHoudini/LouisianaBayou/Heights/refs/whitepaint_height_ref.png'
+MEASURES = '/Users/zenray/Create/Build/Productions/ZenRayHoudini/LouisianaBayou/Heights/CopDesigner/measures/whitepaint.json'
+
+# EN: start values from the first planche (no search yet). FR : valeurs de départ, avant toute recherche.
+DEFAULTS = {
+    'seam_min_depth': 25.0,
+    'hole_t0': 0.60, 'hole_w': 0.03, 'hole_depth': 0.20, 'hole_cover': 0.20, 'hole_elementsize': 0.06,
+    'grain_gain': 0.08, 'grain_width': 0.03, 'grain_length': 110.0, 'grain_elementsize': 0.006,
+    'mean_trim': 0.0,
+}
+
+# EN: name, lower bound, upper bound, first step. FR : bornes et pas de recherche.
+SPACE = [
+    ('hole_t0', 0.50, 0.72, 0.02),
+    ('hole_w', 0.005, 0.10, 0.01),
+    ('hole_depth', 0.03, 0.40, 0.05),
+    ('hole_cover', 0.05, 0.40, 0.05),
+    ('hole_elementsize', 0.02, 0.15, 0.02),
+    ('grain_gain', 0.02, 0.20, 0.02),
+    ('grain_width', 0.01, 0.10, 0.01),
+    ('grain_length', 40.0, 200.0, 20.0),
+    ('grain_elementsize', 0.003, 0.02, 0.003),
+    ('mean_trim', -0.05, 0.05, 0.01),
+]
+
+
+def build(P, measures=None):
+    if measures is None:
+        with open(MEASURES, encoding='utf-8') as fh:
+            measures = json.load(fh)
+    g = Graph('WhitepaintHeight')
+
+    # W1 : boards, from the measured row profile and joints
+    g.add('W_y', 'ramp', tag='W1_boards', params=WH.coord_params('y'))
+    g.add('W_boards', 'remap', ['W_y'], tag='W1_boards', params={
+        'inputmin': 0.0, 'inputmax': 1.0, 'outputmin': 0.0, 'outputmax': 1.0, 'useramp': 1,
+        'ramp': {'basis': 'linear', 'keys': WH.band_keys(measures, P['seam_min_depth'])}})
+    base = 'W_boards'
+
+    # W2 : exposed wood, dark holes in the paint, mean kept by a matching lift
+    g.add('W_hole_noise', 'fractalnoise', tag='W2_holes', params={
+        'elementsize': P['hole_elementsize'], 'oct': 4.0, 'rough': 0.55, 'amp': 0.5, 'center': 0.5})
+    g.add('W_hole_mask', 'remap', ['W_hole_noise'], tag='W2_holes', params={
+        'inputmin': P['hole_t0'], 'inputmax': P['hole_t0'] + P['hole_w'], 'outputmin': 0.0, 'outputmax': 1.0,
+        'useramp': 1, 'ramp': {'basis': 'linear', 'keys': WH.smoothstep_keys()}})
+    depth = P['hole_depth']
+    shift = depth * P['hole_cover']
+    # EN: remap sends input 0 to outputmin: sound paint (mask 0) must map to 0 and holes (mask 1) to -depth.
+    # FR : le remap envoie 0 vers outputmin : peinture saine à 0, trous à -depth (corrigé le 11 October 2026).
+    g.add('W_hole_delta', 'remap', ['W_hole_mask'], tag='W2_holes', params={
+        'inputmin': 0.0, 'inputmax': 1.0, 'outputmin': 0.0, 'outputmax': -depth, 'useramp': 0})
+    g.add('W_plate', 'remap', [base], tag='W2_holes', params={
+        'inputmin': 0.0, 'inputmax': 1.0, 'outputmin': shift, 'outputmax': 1.0 + shift, 'useramp': 0})
+    g.add('W_holes', 'blend', ['W_plate', 'W_hole_delta'], tag='W2_holes', params={'mode': 3})
+    base = 'W_holes'
+
+    # W3 : horizontal fibres, symmetric around the mean so the mean does not move
+    g.add('W_grain_noise', 'fractalnoise', tag='W3_grain', params={
+        'elementsize': P['grain_elementsize'], 'oct': 3.0, 'rough': 0.6, 'amp': 0.5, 'center': 0.5})
+    g.add('W_grain_streak', 'streakblur', ['W_grain_noise'], tag='W3_grain', params={
+        'dirtype': 0, 'dirx': 1.0, 'diry': 0.0, 'units': 1, 'length_pixels': P['grain_length']})
+    w, span = P['grain_width'], P['grain_gain']
+    g.add('W_grain_delta', 'remap', ['W_grain_streak'], tag='W3_grain', params={
+        'inputmin': 0.5 - w, 'inputmax': 0.5 + w, 'outputmin': -span / 2.0, 'outputmax': span / 2.0, 'useramp': 0})
+    g.add('W_grain', 'blend', [base, 'W_grain_delta'], tag='W3_grain', params={'mode': 3})
+    base = 'W_grain'
+
+    # W4 : level calibration (identity at mean_trim 0)
+    trim = P['mean_trim']
+    g.add('W_level', 'remap', [base], tag='W4_level', params={
+        'inputmin': 0.0, 'inputmax': 1.0, 'outputmin': -trim, 'outputmax': 1.0 - trim, 'useramp': 0})
+    g.set_output('W_level')
+    return g
+
+
+if __name__ == '__main__':
+    out = sys.argv[1] if len(sys.argv) > 1 else '/Users/zenray/Create/Build/Productions/ZenRayHoudini/LouisianaBayou/Heights/CopDesigner/runs/whitepaint_start.json'
+    graph = build(dict(DEFAULTS))
+    graph.save(out)
+    print('graph written', out, 'nodes', len(graph.order))

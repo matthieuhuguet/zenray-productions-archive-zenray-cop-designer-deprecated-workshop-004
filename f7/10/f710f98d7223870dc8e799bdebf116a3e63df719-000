@@ -1,0 +1,74 @@
+# reactiondiffusion_block_end
+
+- Label: Reaction-Diffusion Block End
+- Category: Copernicus (`Cop`), Houdini 22.0.368
+- Inputs: 1 to 2
+- Parameters: 50 (exact, read from Houdini by hython)
+- Used by the height graph: no
+
+## Feature summary (web, SideFX reference)
+
+- Source: https://www.sidefx.com/docs/houdini/nodes/cop/reactiondiffusion_block_end.html
+- Summary (EN): Reaction-Diffusion Block End closes a Reaction-Diffusion simulation block and produces a 2D pattern from two chemicals that react and diffuse. It pairs with Reaction-Diffusion Block Begin, which provides the chemical input. The page body shows only the display name; the internal name is confirmed by the Copernicus nodes index entry.
+- Résumé (FR) : Ce nœud ferme un bloc de simulation Réaction-Diffusion et produit un motif 2D à partir de deux chimiques qui réagissent et diffusent.
+
+- Inputs meaning: ["chemical: input chemical data from the Reaction-Diffusion Block Begin COP", "feedback: cable carrying the current feedback data, fed back into the simulation; its structure must match the initial structure set on the block begin"]
+
+- Key parameters: ["Signature: Pattern (Mono) for a remapped, corrected output, or Chemical (UV) for raw chemical values", "Model: Gray-Scott (two reaction parameters, Alpha/Feed and Beta/Kill) or Kenjiro Maginu (three reaction parameters, Alpha, Beta and Gamma)", "Preset: fills in reaction parameters for named pattern styles, such as Spots, Worms or Labyrinth for Gray-Scott", "Simulate: feeds outputs back into inputs for a feedback loop; Reset Simulation clears the cache", "Iterations and Iterations per Step: number of iterations in non-simulation mode and per step", "Live Simulation: interactive mode that runs independently of the playbar and is not cached", "Time Scale and Substeps: reaction speed and number of substeps per simulated frame", "Caching (Start Frame, Cached Frames, Checkpoint Rate): frame caching during Simulate", "Switch to Raw Values: off is recommended, so parameters are normalized to reduce instability", "Scale Multiplier: changes pattern size by adjusting the reaction rate relative to diffusion", "Diffusion A / Diffusion B: how fast each chemical diffuses; the two models use different typical ratios", "Boundary inputs (Invert Boundary, Boundary Threshold, Boundary Smoothing): shape growth within an SDF boundary", "Output Correction (Invert, Normalize Model, Clamp Minimum, Clamp Maximum): active only with Pattern (Mono)"]
+
+- Caveats: ["Compiled COP networks do not support simulation.", "The reaction is sensitive to parameter changes and can become unstable or die out.", "The solver is resolution-sensitive: doubling the resolution may require about four times the Substeps, or a quarter of the Time Scale.", "Live Simulation does not save results, so use a Stash COP to keep them; its caching parameters do not apply.", "Chemical (UV) output is raw and offers no colour control, so it may look unfriendly.", "The activation mask must sit inside a valid area of the boundary, or the reaction cannot grow.", "Alpha, beta and gamma inputs on the Block Begin COP override the matching parameters on this node."]
+
+## Parameters (exact, from the installed Houdini)
+
+| parameter | label | type | default | range | menu tokens |
+|---|---|---|---|---|---|
+| `signature` | Signature | String | ["default"] |  |  |
+| `model` | Model | Menu | 0 |  | 0, 1 |
+| `presetsgs` | Preset | Menu | 5 |  | smallwaves, bigwaves, spots, blinkyblobs, worms, labyrinth, negatons, chaosnegatons, chaos |
+| `presetskm` | Preset | Menu | 2 |  | blobsandspots, wormy, abstract, noisy, brusselator, foamy, oily, nearlychaos, movingbrusselator |
+| `folder3` |  | FolderSet |  |  |  |
+| `simulate` | Simulate | Toggle | true |  |  |
+| `resimulate` | Reset Simulation | Button |  |  |  |
+| `iterations` | Iterations | Int | [10] | 1 .. 700 |  |
+| `iterationsperstep` | Iterations per Step | Int | [50] | 1 .. 100 |  |
+| `continuouscook` | Live Simulation | Toggle | false |  |  |
+| `continuouscook_toggle` | Toggle Live Simulation | Button |  |  |  |
+| `continuouscook_tick` | Live Tick | Int | [0] | 0 .. 10 |  |
+| `cacheenabled` | Cache Simulation | Toggle | true |  |  |
+| `timescale` | Time Scale | Float | [1.0] | 0.0 .. 1.0 |  |
+| `substeps` | Substeps | Int | [1] | 1 .. 10 (strict) |  |
+| `startframe` | Start Frame | Int | [1] | 1 .. 1001 |  |
+| `folder0` |  | FolderSet |  |  |  |
+| `cachedframes` | Cached Frames | Int | [10] | 1 .. 1001 |  |
+| `checkpointframes` | Checkpoint Rate | Int | [24] | 0 .. 100 |  |
+| `folder2` |  | FolderSet |  |  |  |
+| `enableraw` | Switch to Raw Values | Toggle | false |  |  |
+| `folder4` |  | FolderSet |  |  |  |
+| `kill` | Normalized Alpha (Kill) | Float | [0.3707] | 0.0 .. 1.0 |  |
+| `killraw` | Alpha Raw (Kill) | Float | [0.06] | 0.045 .. 0.07 |  |
+| `feed` | Normalized Beta (Feed) | Float | [0.3] | 0.0 .. 1.0 |  |
+| `feedraw` | Beta Raw (Feed) | Float | [0.037] | 0.01 .. 0.1 |  |
+| `folder1` |  | FolderSet |  |  |  |
+| `alpha` | Normalized Alpha | Float | [0.375] | 0.0 .. 1.0 |  |
+| `alpharaw` | Alpha Raw | Float | [0.75] | 0.6 .. 1.0 |  |
+| `beta` | Normalized Beta | Float | [0.174] | 0.0 .. 1.0 |  |
+| `betaraw` | Beta Raw | Float | [0.287] | 0.2 .. 0.7 |  |
+| `gamma` | Normalized Gamma | Float | [0.54] | 0.0 .. 1.0 |  |
+| `gammaraw` | Gamma Raw | Float | [1.54] | 1.0 .. 2.0 |  |
+| `reactionscale` | Scale Multiplier | Float | [1.0] | 0.5 .. 15.0 |  |
+| `folder6` |  | FolderSet |  |  |  |
+| `gsdiffa` | Diffusion A | Float | [1.0] | 0.0 .. 1.0 |  |
+| `gsdiffb` | Diffusion B | Float | [0.5] | 0.0 .. 1.0 |  |
+| `kmdiffa` | Diffusion A | Float | [1.0] | 0.0 .. 1.0 |  |
+| `kmdiffb` | Diffusion B | Float | [1.0] | 0.0 .. 1.0 |  |
+| `folder5` |  | FolderSet |  |  |  |
+| `invertboundary` | Invert Boundary | Toggle | false |  |  |
+| `boundarythreshold` | Boundary Threshold | Float | [0.0] | -0.5 .. 1.5 |  |
+| `boundarysmoothing` | Boundary Smoothing | Float | [0.0] | 0.0 .. 0.05 |  |
+| `folder7` |  | FolderSet |  |  |  |
+| `invertpattern` | Invert | Toggle | false |  |  |
+| `normalize` | Normalize Model | Toggle | true |  |  |
+| `post_doclampmin` | Clamp Minimum | Toggle | false |  |  |
+| `post_minimum` | Clamp Minimum | Float | [0.0] | 0.0 .. 1.0 |  |
+| `post_doclampmax` | Clamp Maxmimum | Toggle | false |  |  |
+| `post_maximum` | Clamp Maximum | Float | [1.0] | 0.0 .. 1.0 |  |

@@ -1,0 +1,91 @@
+# pyro_disturbance
+
+- Label: Pyro Disturbance Force
+- Category: Copernicus (`Cop`), Houdini 22.0.368
+- Inputs: 0 to 5
+- Parameters: 67 (exact, read from Houdini by hython)
+- Used by the height graph: no
+
+## Feature summary (web, SideFX reference)
+
+- Source: https://www.sidefx.com/docs/houdini/nodes/cop/pyro_disturbance.html
+- Summary (EN): Applies disturbance to a velocity VDB to break up still air. It adds small noisy forces to a smoke or fire velocity field; the forces cancel out over time, so overall motion and shape are preserved. Output is v, the disturbed Vector VDB.
+- Résumé (FR) : Pyro Disturbance ajoute de petites forces bruitées à un champ de vitesse pour casser l'air immobile, en conservant le mouvement global.
+
+- Inputs meaning: ["v: Vector VDB of the incoming velocities", "threshold (optional): Float or Vector VDB limiting where the effect applies; a Vector VDB is read by its length", "control (optional): Float or Vector VDB smoothly scaling the effect; a Vector VDB is read by its length"]
+
+- Key parameters: ["Operation: Set replaces velocities with the disturbance; Add adds it to existing velocity; Rotate turns existing velocities toward random directions without changing their length", "Mode: Continuous gives each voxel its own random vector for voxel-scale detail; Block-Based layers blockwise-constant noise for larger structured patterns", "Disturbance (Strength): force strength; with Rotate, the speed at which vectors turn", "Reference Scale: normalizes the force against scene and voxel size; set once for the scene scale", "Block Size, Pulse Length: largest noise block and hold time of each pattern (Block-Based only)", "Max Octaves, Lacunarity, Roughness: number of noise layers, block-size ratio, amplitude ratio (Block-Based only)", "Mask by Threshold Field, Mask by Control Field, Mask along Axis: spatial limits on the effect"]
+
+- Caveats: ["Requires DOP-level permissions; not in Houdini Core, only in Houdini FX, Apprentice, Indie and Education", "In Continuous mode, a very small voxel size can produce a noisy, undesirable look", "Using density as the threshold input keeps the disturbance out of empty areas so visible smoke is not affected"]
+
+## Parameters (exact, from the installed Houdini)
+
+| parameter | label | type | default | range | menu tokens |
+|---|---|---|---|---|---|
+| `signature` | Signature | String | ["auto"] |  |  |
+| `activation` | Activation | Int | [1] | 0 .. 1 (strict) |  |
+| `folder1` |  | FolderSet |  |  |  |
+| `operation` | Operation | Menu | 1 |  | set, add, rotate |
+| `mode` | Mode | Menu | 1 |  | cont, blocks |
+| `disturbance` | Disturbance | Float | [0.5] | 0.0 .. 1.0 |  |
+| `refscale` | Reference Scale | Float | [0.2] | 0.0 .. 1.0 (strict) |  |
+| `blocksize` | Block Size | Float | [0.2] | 0.0 .. 1.0 (strict) |  |
+| `pulselength` | Pulse Duration | Float | [0.2] | 0.0 .. 1.0 (strict) |  |
+| `oct` | Max Octaves | Int | [3] | 1 .. 8 (strict) |  |
+| `lac` | Lacunarity | Float | [2.01234] | 0.0 .. 4.0 (strict) |  |
+| `rough` | Roughness | Float | [0.5] | 0.0 .. 1.0 (strict) |  |
+| `usethreshold` | Threshold Volume | Toggle | false |  |  |
+| `folder2` |  | FolderSet |  |  |  |
+| `thresholdrangemin` | Threshold Range | Float | 0.01 | 0.0 .. 10.0 |  |
+| `thresholdrangemax` | Threshold Range | Float | 0.0 | 0.0 .. 10.0 |  |
+| `folder7` |  | FolderSet |  |  |  |
+| `remapthreshold` | Remap Threshold | Toggle | false |  |  |
+| `thresholdramp` | Threshold Ramp | Ramp | 2 |  |  |
+| `usecontrol` | Control Volume | Toggle | false |  |  |
+| `folder3` |  | FolderSet |  |  |  |
+| `controlrangemin` | Control Range | Float | 0.0 | 0.0 .. 10.0 |  |
+| `controlrangemax` | Control Range | Float | 1.0 | 0.0 .. 10.0 |  |
+| `folder6` |  | FolderSet |  |  |  |
+| `remapcontrol` | Remap Control | Toggle | false |  |  |
+| `controlramp` | Control Ramp | Ramp | 2 |  |  |
+| `useanglecontrol` | Use Angle Control | Toggle | false |  |  |
+| `folder8` |  | FolderSet |  |  |  |
+| `angledirx` | Angle Direction | Int | 0 | -1 .. 1 |  |
+| `anglediry` | Angle Direction | Int | 1 | -1 .. 1 |  |
+| `angledirz` | Angle Direction | Int | 0 | -1 .. 1 |  |
+| `angle` | Spread Angle | Float | [90.0] | 0.0 .. 180.0 (strict) |  |
+| `folder9` |  | FolderSet |  |  |  |
+| `remapanglecontrol` | Remap Angle Control | Toggle | false |  |  |
+| `anglecontrolramp` | Angle Control Ramp | Ramp | 2 |  |  |
+| `useaxiscontrol` | Use Axis Control | Toggle | false |  |  |
+| `folder4` |  | FolderSet |  |  |  |
+| `axiscontroldir` | Direction | Menu | 1 |  | x, y, z |
+| `axiscontrolmin` | Axis Range | Float | 0.0 | 0.0 .. 1.0 |  |
+| `axiscontrolmax` | Axis Range | Float | 1.0 | 0.0 .. 1.0 |  |
+| `folder5` |  | FolderSet |  |  |  |
+| `remapaxiscontrol` | Remap Axis Control | Toggle | false |  |  |
+| `axiscontrolramp` | Axis Control Ramp | Ramp | 2 |  |  |
+| `thresholdramp1pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `thresholdramp1value` | Value | Float | [0.0] | 0.0 .. 10.0 |  |
+| `thresholdramp1interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `thresholdramp2pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `thresholdramp2value` | Value | Float | [0.0] | 0.0 .. 10.0 |  |
+| `thresholdramp2interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `controlramp1pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `controlramp1value` | Value | Float | [0.0] | 0.0 .. 10.0 |  |
+| `controlramp1interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `controlramp2pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `controlramp2value` | Value | Float | [0.0] | 0.0 .. 10.0 |  |
+| `controlramp2interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `anglecontrolramp1pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `anglecontrolramp1value` | Value | Float | [0.0] | 0.0 .. 10.0 |  |
+| `anglecontrolramp1interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `anglecontrolramp2pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `anglecontrolramp2value` | Value | Float | [0.0] | 0.0 .. 10.0 |  |
+| `anglecontrolramp2interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `axiscontrolramp1pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `axiscontrolramp1value` | Value | Float | [0.0] | 0.0 .. 10.0 |  |
+| `axiscontrolramp1interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `axiscontrolramp2pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `axiscontrolramp2value` | Value | Float | [0.0] | 0.0 .. 10.0 |  |
+| `axiscontrolramp2interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |

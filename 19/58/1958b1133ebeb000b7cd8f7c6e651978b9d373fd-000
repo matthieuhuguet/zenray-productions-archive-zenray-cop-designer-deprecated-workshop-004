@@ -1,0 +1,332 @@
+# tilepattern
+
+- Label: Tile Pattern
+- Category: Copernicus (`Cop`), Houdini 22.0.368
+- Inputs: 0 to 3
+- Parameters: 308 (exact, read from Houdini by hython)
+- Used by the height graph: no
+
+## Feature summary (web, SideFX reference)
+
+- Source: https://www.sidefx.com/docs/houdini/nodes/cop/tilepattern.html
+- Summary (EN): Creates rectangular tiles that form texture patterns such as brick bonds, herringbone or basketweave. It offers predefined pattern types and a Custom Pattern mode for building your own layouts.
+- Résumé (FR) : Ce nœud génère des pavages de carreaux (appareillages de briques, chevrons, vannerie) avec un mode Custom Pattern pour dessiner ses propres dispositions.
+
+- Inputs meaning: ["size_ref: reference layer that sets the output image size and metadata.", "pointmask: optional mask that scales the amount of points.", "stamp0: optional scaling input for stamping."]
+
+- Key parameters: [{"name": "Pattern Size", "meaning": "Area the tiles must cover. The page says it should usually be the size of the image."}, {"name": "Pattern Type", "meaning": "Selects a predefined bond or pattern, or Custom Pattern."}, {"name": "Mode", "meaning": "In Custom Pattern: Seamless, Tile Count or Tile Size, which control how tile count and size are defined."}, {"name": "Shape Class / Shape", "meaning": "Chooses the shape drawn in each tile (Basic, Marker or Compound)."}, {"name": "Draw As", "meaning": "Filled, Distance, Gradient or Outline."}, {"name": "Tile Value / Background Value", "meaning": "Value inside and outside the shape."}, {"name": "Row Offset / Row Slide Offset", "meaning": "Shifts tiles horizontally, for example to create brick-wall offsets."}, {"name": "Rotate Pattern / Rotate Tile", "meaning": "Rotates the whole pattern or each tile."}, {"name": "Uniform Scale / Horizontal Scale / Vertical Scale / Inset", "meaning": "Controls tile size and edge dilation."}, {"name": "Prune Tiles", "meaning": "Removes tiles by order, threshold, or every Nth row, column or tile."}, {"name": "Split Tiles", "meaning": "Splits tiles iteratively based on a threshold, number of splits and orientation ratio."}]
+
+- Caveats: ["The page does not explain how the pattern is generated internally, so the exact tiling math is not covered.", "Clip to Size only matters when Pattern Size is smaller than the image.", "Turning off Inset can still leave faint lines. The page suggests disabling Anti-Aliasing and setting Shape Edge Filter to 0.", "Changing Seed changes the random variation.", "The Pattern Expression syntax is described with limited examples."]
+
+## Parameters (exact, from the installed Houdini)
+
+| parameter | label | type | default | range | menu tokens |
+|---|---|---|---|---|---|
+| `folder01` |  | FolderSet |  |  |  |
+| `folder4` |  | FolderSet |  |  |  |
+| `tiledsizex` | Pattern Size | Float | 2.0 | -1.0 .. 1.0 |  |
+| `tiledsizey` | Pattern Size | Float | 2.0 | -1.0 .. 1.0 |  |
+| `cliptosize` | Clip to Size | Toggle | true |  |  |
+| `patterntype` | Pattern Type | Menu | 0 |  | stackbond, headerbond, stretcherbond, flemishbond, americanbond, monkbond, englishbond, denglishbond, windmill, crosshatch, basketwave, hopscotch, herringbonen1, herringbone32, frenchpattern, custom |
+| `patternmode` | Mode | Menu | 0 |  | seamless, tilecount, tilesize |
+| `stackbond_div` | Divisions | Int | [10] | 1 .. 24 (strict) |  |
+| `stackbond_rows` | Rows | Int | [10] | 1 .. 24 (strict) |  |
+| `stackbond_cols` | Columns | Int | [10] | 1 .. 24 (strict) |  |
+| `stackbond_tilewidth` | Tile Width | Float | [0.2] | 0.0 .. 1.0 (strict) |  |
+| `stackbond_tileheight` | Tile Height | Float | [0.2] | 0.0 .. 1.0 (strict) |  |
+| `headerbond_div` | Divisions | Int | [6] | 1 .. 24 (strict) |  |
+| `headerbond_rows` | Rows | Int | [10] | 1 .. 64 (strict) |  |
+| `headerbond_cols` | Columns | Int | [10] | 1 .. 64 (strict) |  |
+| `headerbond_tilewidth` | Tile Width | Float | [0.2] | 0.0 .. 1.0 (strict) |  |
+| `headerbond_tileheight` | Tile Height | Float | [0.2] | 0.0 .. 1.0 (strict) |  |
+| `stretcherbond_div` | Divisions | Int | [6] | 1 .. 24 (strict) |  |
+| `stretcherbond_rows` | Rows | Int | [10] | 1 .. 64 (strict) |  |
+| `stretcherbond_cols` | Columns | Int | [5] | 1 .. 64 (strict) |  |
+| `stretcherbond_tilewidth` | Tile Width | Float | [0.4] | 0.0 .. 2.0 (strict) |  |
+| `stretcherbond_tileheight` | Tile Height | Float | [0.2] | 0.0 .. 2.0 (strict) |  |
+| `flemishbond_div` | Divisions | Int | [6] | 1 .. 24 (strict) |  |
+| `flemishbond_rows` | Rows | Int | [10] | 1 .. 64 (strict) |  |
+| `flemishbond_cols` | Columns | Int | [10] | 1 .. 64 (strict) |  |
+| `flemishbond_tilewidth` | Tile Width | Float | [0.266667] | 0.0 .. 2.0 (strict) |  |
+| `flemishbond_tileheight` | Tile Height | Float | [0.2] | 0.0 .. 2.0 (strict) |  |
+| `americanbond_div` | Divisions | Int | [6] | 1 .. 24 (strict) |  |
+| `americanbond_rows` | Rows | Int | [10] | 1 .. 64 (strict) |  |
+| `americanbond_cols` | Columns | Int | [5] | 1 .. 64 (strict) |  |
+| `americanbond_tilewidth` | Tile Width | Float | [0.4] | 0.0 .. 2.0 (strict) |  |
+| `americanbond_tileheight` | Tile Height | Float | [0.2] | 0.0 .. 2.0 (strict) |  |
+| `monkbond_div` | Divisions | Int | [6] | 1 .. 24 (strict) |  |
+| `monkbond_rows` | Rows | Int | [10] | 1 .. 64 (strict) |  |
+| `monkbond_cols` | Columns | Int | [5] | 1 .. 64 (strict) |  |
+| `monkbond_tilewidth` | Tile Width | Float | [0.4] | 0.0 .. 2.0 (strict) |  |
+| `monkbond_tileheight` | Tile Height | Float | [0.2] | 0.0 .. 2.0 (strict) |  |
+| `englishbond_div` | Divisions | Int | [6] | 1 .. 24 (strict) |  |
+| `englishbond_rows` | Rows | Int | [10] | 1 .. 64 (strict) |  |
+| `englishbond_cols` | Columns | Int | [5] | 1 .. 64 (strict) |  |
+| `englishbond_tilewidth` | Tile Width | Float | [0.4] | 0.0 .. 2.0 (strict) |  |
+| `englishbond_tileheight` | Tile Height | Float | [0.2] | 0.0 .. 2.0 (strict) |  |
+| `denglishbond_div` | Divisions | Int | [4] | 1 .. 12 (strict) |  |
+| `denglishbond_rows` | Rows | Int | [8] | 1 .. 64 (strict) |  |
+| `denglishbond_cols` | Columns | Int | [4] | 1 .. 64 (strict) |  |
+| `denglishbond_tilewidth` | Tile Width | Float | [0.5] | 0.0 .. 2.0 (strict) |  |
+| `denglishbond_tileheight` | Tile Height | Float | [0.25] | 0.0 .. 2.0 (strict) |  |
+| `windmill_div` | Divisions | Int | [10] | 1 .. 24 (strict) |  |
+| `windmill_rows` | Rows | Int | [10] | 1 .. 64 (strict) |  |
+| `windmill_cols` | Columns | Int | [10] | 1 .. 64 (strict) |  |
+| `windmill_tilewidth` | Tile Width | Float | [0.2] | 0.0 .. 2.0 (strict) |  |
+| `windmill_tileheight` | Tile Height | Float | [0.2] | 0.0 .. 2.0 (strict) |  |
+| `windmill_iris` | Iris | Float | [0.5] | 0.0 .. 1.0 (strict) |  |
+| `crosshatch_div` | Divisions | Int | [6] | 1 .. 24 (strict) |  |
+| `crosshatch_rows` | Rows | Int | [10] | 1 .. 24 (strict) |  |
+| `crosshatch_cols` | Columns | Int | [10] | 1 .. 24 (strict) |  |
+| `crosshatch_tilewidth` | Tile Width | Float | [0.2] | 0.0 .. 1.0 (strict) |  |
+| `crosshatch_tileheight` | Tile Height | Float | [0.2] | 0.0 .. 1.0 (strict) |  |
+| `crosshatch_rowdiv` | Row Divisions | Int | [1] | 0 .. 3 (strict) |  |
+| `crosshatch_coldiv` | Column Divisions | Int | [1] | 0 .. 3 (strict) |  |
+| `basketwave_div` | Divisions | Int | [5] | 1 .. 24 (strict) |  |
+| `basketwave_rows` | Rows | Int | [10] | 1 .. 24 (strict) |  |
+| `basketwave_cols` | Columns | Int | [10] | 1 .. 24 (strict) |  |
+| `basketwave_tilewidth` | Tile Width | Float | [0.2] | 0.0 .. 1.0 (strict) |  |
+| `basketwave_tileheight` | Tile Height | Float | [0.2] | 0.0 .. 1.0 (strict) |  |
+| `basketwave_rowthickness` | Row Thickness | Float | [0.5] | 0.0 .. 1.0 (strict) |  |
+| `basketwave_colthickness` | Column Thickness | Float | [0.5] | 0.0 .. 1.0 (strict) |  |
+| `basketwave_drawsquarebonds` | Draw Square Bonds | Toggle | false |  |  |
+| `hopscotch_div` | Divisions | Int | [2] | 1 .. 6 (strict) |  |
+| `hopscotch_rows` | Rows | Int | [10] | 1 .. 24 (strict) |  |
+| `hopscotch_cols` | Columns | Int | [10] | 1 .. 24 (strict) |  |
+| `hopscotch_tilewidth` | Tile Width | Float | [0.2] | 0.0 .. 1.0 (strict) |  |
+| `hopscotch_tileheight` | Tile Height | Float | [0.2] | 0.0 .. 1.0 (strict) |  |
+| `herringbonen1_div` | Divisions | Int | [5] | 1 .. 12 (strict) |  |
+| `herringbonen1_tilecount` | Tile Count | Int | [10] | 1 .. 24 (strict) |  |
+| `herringbonen1_tilesize` | Tile Size | Float | [0.2] | 0.0 .. 1.0 (strict) |  |
+| `herringbonen1_ration` | N | Int | [2] | 2 .. 10 (strict) |  |
+| `herringbone32_div` | Divisions | Int | [3] | 1 .. 12 (strict) |  |
+| `herringbone32_tilecount` | Tile Count | Int | [12] | 1 .. 24 (strict) |  |
+| `herringbone32_tilesize` | Tile Size | Float | [0.166667] | 0.0 .. 1.0 (strict) |  |
+| `frenchpattern_div` | Divisions | Int | [3] | 1 .. 12 (strict) |  |
+| `frenchpattern_rows` | Rows | Int | [3] | 1 .. 12 (strict) |  |
+| `frenchpattern_cols` | Columns | Int | [3] | 1 .. 12 (strict) |  |
+| `frenchpattern_tilewidth` | Tile Width | Float | [0.666666] | 0.0 .. 2.0 (strict) |  |
+| `frenchpattern_tileheight` | Tile Height | Float | [0.666666] | 0.0 .. 2.0 (strict) |  |
+| `flippattern` | Flip Pattern | Toggle | false |  |  |
+| `useexpr` | Use Epxression | Toggle | false |  |  |
+| `expr` | Pattern Expression | String | ["// Pattern Syntax: Rows and Columns repeat until the image is fully tiled.\n// Each row is definied in a new line using the following format:\n// [row_offset] [row_height] | [col_width1] [col_width2] ...\n//\n// Use the additional flags followed by a value for advanced pattern creation:\n// [row_offset] [row_height] -s #.# | [col_width1 -h #.# -o #.# -v # -r #.#] [col_width2] ... -r #\n// -s (or  slide): Continous offset for each row that is multiplied by the row number.\n// -h (or  height): This will overwrite the height of the column in the row, ignoring row height.\n// -o (or  offset): The vertical offset of a column in the row.\n// -v (or  visible): Whenever the column in the row is visible or not.\n// -r (or  rotate): The rotation of the column in the row.\n// -r (or  reflect): When columns need to repeat, start always from the first entry or from the last.\n\n[0.0] [0.2] | [0.2]"] |  |  |
+| `nrows` | Number of Rows | Folder | 1 |  |  |
+| `folder8` |  | FolderSet |  |  |  |
+| `shapeclass` | Shape Class | Menu | 0 |  | basic, marker, compound |
+| `useaspectratio` | Stretch Shape | Toggle | true |  |  |
+| `basictype` | Basic Shapes | String | ["rect"] |  | circle, diamond, line, rect, regpolygon, spiral, squircle, star, trapezoid, triangle, circlewave |
+| `markertype` | Markers | String | ["masterisk"] |  | masterisk, mcheck, mchevron, mclobber, mcross, minfinity, mring, mt, mtag |
+| `compoundtype` | Compund Shapes | String | ["archway"] |  | archway, arrow, cross, egg, fishscale, horseshoe, moon, octagondot, roundedx, vesica |
+| `folder10` |  | FolderSet |  |  |  |
+| `circle_radius` | Radius | Float | [1.0] | 0.0 .. 1.0 (strict) |  |
+| `circle_doarc` | Arc | Toggle | false |  |  |
+| `circle_arc` | Arc | Float | [1.0] | 0.0 .. 1.0 (strict) |  |
+| `circle_dothickness` | Thickness | Toggle | false |  |  |
+| `circle_thickness` | Thickness | Float | [1.0] | 0.0 .. 1.0 (strict) |  |
+| `circle_roundends` | Round Ends | Toggle | false |  |  |
+| `circle_quadratic` | Quadratic Circle | Toggle | false |  |  |
+| `diamond_sizex` | Size | Float | 2.0 | 0.0 .. 1.0 (strict) |  |
+| `diamond_sizey` | Size | Float | 2.0 | 0.0 .. 1.0 (strict) |  |
+| `line_length` | Length | Float | [1.6] | 0.0 .. 2.0 (strict) |  |
+| `line_usepoints` | Use Points | Toggle | false |  |  |
+| `line_pt0x` | Start Point | Float | -1.0 | 0.0 .. 1.0 |  |
+| `line_pt0y` | Start Point | Float | 0.0 | 0.0 .. 1.0 |  |
+| `line_pt1x` | End Point | Float | 1.0 | 0.0 .. 1.0 |  |
+| `line_pt1y` | End Point | Float | 0.0 | 0.0 .. 1.0 |  |
+| `line_addthickness` | Add Thickness | Toggle | false |  |  |
+| `line_sthickness` | Start Thickness | Float | [0.2] | 0.0 .. 1.0 (strict) |  |
+| `line_ethickness` | End Thickness | Float | [0.2] | 0.0 .. 1.0 (strict) |  |
+| `line_dobulge` | Bulge | Toggle | false |  |  |
+| `line_bulge` | Bulge | Float | [0.0] | -1.0 .. 1.0 (strict) |  |
+| `rect_sizex` | Size | Float | 2.0 | 0.0 .. 1.0 (strict) |  |
+| `rect_sizey` | Size | Float | 2.0 | 0.0 .. 1.0 (strict) |  |
+| `rect_round` | Round Corners | Toggle | false |  |  |
+| `rect_roundness` | Round Corners | Float | [0.5] | 0.0 .. 1.0 (strict) |  |
+| `rect_doseproundness` | Separate Controls | Toggle | false |  |  |
+| `rect_tlroundness` | Top Left | Float | [0.5] | 0.0 .. 1.0 (strict) |  |
+| `rect_trroundness` | Top Right | Float | [0.5] | 0.0 .. 1.0 (strict) |  |
+| `rect_blroundness` | Bottom Left | Float | [0.5] | 0.0 .. 1.0 (strict) |  |
+| `rect_brroundness` | Bottom Right | Float | [0.5] | 0.0 .. 1.0 (strict) |  |
+| `regpolygon_radius` | Radius | Float | [1.0] | 0.0 .. 1.0 (strict) |  |
+| `regpolygon_sides` | Number of Sides | Int | [6] | 3 .. 10 (strict) |  |
+| `spiral_radius` | Radius | Float | [1.0] | 0.0 .. 1.0 (strict) |  |
+| `spiral_arclen` | Arc Bend | Float | [0.85] | 0.0 .. 1.0 (strict) |  |
+| `spiral_arcnum` | Number of Arcs | Int | [8] | 1 .. 12 (strict) |  |
+| `squircle_radius` | Radius | Float | [1.0] | 0.0 .. 1.0 (strict) |  |
+| `squircle_blend` | Blend | Float | [5.0] | 0.0 .. 10.0 (strict) |  |
+| `star_radius` | Radius | Float | [1.0] | 0.0 .. 1.0 (strict) |  |
+| `star_sides` | Number of Sides | Int | [5] | 3 .. 10 (strict) |  |
+| `star_anglefactor` | Angle Factor | Float | [3.0] | 2.0 .. 10.0 (strict) |  |
+| `trapezoid_height` | Height | Float | [1.0] | 0.0 .. 1.0 (strict) |  |
+| `trapezoid_blength` | Bottom Length | Float | [1.0] | 0.0 .. 1.0 (strict) |  |
+| `trapezoid_tlength` | Top Length | Float | [0.25] | 0.0 .. 1.0 (strict) |  |
+| `triangle_width` | Width | Float | [0.5] | 0.0 .. 1.0 (strict) |  |
+| `triangle_height` | Height | Float | [1.0] | 0.0 .. 1.0 (strict) |  |
+| `triangle_usepoints` | Use Points | Toggle | false |  |  |
+| `triangle_pt0x` | Point 0 | Float | -1.0 | 0.0 .. 1.0 |  |
+| `triangle_pt0y` | Point 0 | Float | -1.0 | 0.0 .. 1.0 |  |
+| `triangle_pt1x` | Point 1 | Float | -1.0 | 0.0 .. 1.0 |  |
+| `triangle_pt1y` | Point 1 | Float | 1.0 | 0.0 .. 1.0 |  |
+| `triangle_pt2x` | Point 2 | Float | 1.0 | 0.0 .. 1.0 |  |
+| `triangle_pt2y` | Point 2 | Float | -1.0 | 0.0 .. 1.0 |  |
+| `circlewave_arc` | Arc | Float | [0.5] | 0.0 .. 1.0 (strict) |  |
+| `circlewave_freq` | Element Size | Float | [6.0] | 0.0 .. 10.0 (strict) |  |
+| `folder11` |  | FolderSet |  |  |  |
+| `marker_asterisk_size` | Size | Float | [1.0] | 0.0 .. 1.0 (strict) |  |
+| `marker_check_size` | Size | Float | [0.7] | 0.0 .. 1.0 (strict) |  |
+| `marker_chevron_size` | Size | Float | [1.0] | 0.0 .. 1.0 (strict) |  |
+| `marker_clobber_size` | Size | Float | [0.9] | 0.0 .. 1.0 (strict) |  |
+| `marker_cross_size` | Size | Float | [1.0] | 0.0 .. 1.0 (strict) |  |
+| `marker_infinity_size` | Size | Float | [0.85] | 0.0 .. 1.0 (strict) |  |
+| `marker_ring_size` | Size | Float | [1.0] | 0.0 .. 1.0 (strict) |  |
+| `marker_tag_size` | Size | Float | [1.0] | 0.0 .. 1.0 (strict) |  |
+| `marker_t_size` | Size | Float | [1.0] | 0.0 .. 1.0 (strict) |  |
+| `folder12` |  | FolderSet |  |  |  |
+| `archway_width` | Width | Float | [1.0] | 0.0 .. 1.0 (strict) |  |
+| `archway_height` | Height | Float | [1.0] | 0.0 .. 1.0 (strict) |  |
+| `arrow_length` | Length | Float | [2.0] | 0.0 .. 2.0 (strict) |  |
+| `arrow_usepoints` | Use Points | Toggle | false |  |  |
+| `arrow_pt0x` | Start Point | Float | -1.0 | 0.0 .. 1.0 |  |
+| `arrow_pt0y` | Start Point | Float | 0.0 | 0.0 .. 1.0 |  |
+| `arrow_pt1x` | End Point | Float | 1.0 | 0.0 .. 1.0 |  |
+| `arrow_pt1y` | End Point | Float | 0.0 | 0.0 .. 1.0 |  |
+| `arrow_shaft_thickness` | Shaft Thickness | Float | [0.2] | 0.0 .. 1.0 (strict) |  |
+| `arrow_head_thickness` | Head Thickness | Float | [0.4] | 0.0 .. 1.0 (strict) |  |
+| `arrow_head_ratio` | Head Ratio | Float | [0.3] | 0.0 .. 1.0 (strict) |  |
+| `cross_size` | Cross Size | Float | [1.0] | 0.0 .. 1.0 (strict) |  |
+| `cross_inset` | Cross Inset | Float | [0.6] | 0.0 .. 1.0 (strict) |  |
+| `cross_bevel` | Cross Bevel | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `egg_radius` | Radius | Float | [0.6] | 0.0 .. 1.0 (strict) |  |
+| `egg_roundness` | Roundness | Float | [0.2] | 0.0 .. 1.0 (strict) |  |
+| `fishscale_thickness` | Thickness | Float | [0.2] | 0.0 .. 1.0 (strict) |  |
+| `horseshoe_size` | Size | Float | [0.7] | 0.0 .. 1.0 (strict) |  |
+| `horseshoe_separation` | Separation | Float | [0.4] | 0.0 .. 1.0 (strict) |  |
+| `horseshoe_length` | Length | Float | [0.45] | 0.0 .. 1.0 (strict) |  |
+| `horseshoe_thickness` | Thickness | Float | [0.25] | 0.0 .. 1.0 (strict) |  |
+| `moon_outter_radius` | Outter Radius | Float | [1.0] | 0.0 .. 1.0 (strict) |  |
+| `moon_inner_radius` | Inner Radius | Float | [0.5] | 0.0 .. 1.0 (strict) |  |
+| `moon_inner_offset` | Inner Offset | Float | [0.75] | 0.0 .. 1.0 (strict) |  |
+| `octagondot_thickness` | Thickness | Float | [0.1] | 0.0 .. 1.0 (strict) |  |
+| `roundedx_size` | Size | Float | [1.6] | 0.0 .. 2.0 (strict) |  |
+| `roundedx_width` | Width | Float | [0.2] | 0.0 .. 1.0 (strict) |  |
+| `vesica_radius` | Radius | Float | [1.0] | 0.0 .. 1.0 (strict) |  |
+| `vesica_roundness` | Roundness | Float | [0.35] | 0.0 .. 1.0 (strict) |  |
+| `folder13` |  | FolderSet |  |  |  |
+| `draw` | Draw As | Menu | 0 |  | filled, dist, gradient, outline |
+| `fadedist` | Fade Distance | Float | [0.25] | 0.0 .. 1.0 (strict) |  |
+| `gradientrotate` | Rotate | Float | [0.0] | -180.0 .. 180.0 |  |
+| `gradienttype` | Ramp Type | Menu | 0 |  | horizontal, vertical, radial, concentric |
+| `gradientramp` | Gradient Ramp | Ramp | 2 |  |  |
+| `outlinewidth` | Outline Width | Float | [0.1] | 0.0 .. 0.1 (strict) |  |
+| `cutout_edgefilter` | Shape Edge Filter | Float | [1.0] | 0.0 .. 2.0 (strict) |  |
+| `doaa` | Anti-Aliasing | Toggle | true |  |  |
+| `folder9` |  | FolderSet |  |  |  |
+| `filter` | Filter | Menu | 2 |  | point, bilinear, box, triangle, cubic, mitchell, bspline |
+| `blend` | Blend Method | Menu | 0 |  | sorted, unsorted, add, subtract, multiply, max, min |
+| `randstamporder` | Randomize Stamp Order | Toggle | false |  |  |
+| `randstamporderseed` | Randomize Stamp Order | Float | [0.0] | 0.0 .. 100.0 (strict) |  |
+| `folder5` |  | FolderSet |  |  |  |
+| `value` | Tile Value | Float | [1.0] | 0.0 .. 1.0 (strict) |  |
+| `value_mode` | Value Mode | Menu | 0 |  | uniform, varying |
+| `value_var` | Variation | Float | [1.0] | 0.0 .. 1.0 (strict) |  |
+| `value_seed` | Seed | Float | [0.0] | 0.0 .. 100.0 (strict) |  |
+| `bgvalue` | Background Value | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `folder1` |  | FolderSet |  |  |  |
+| `rowoffset` | Row Offset | Float | [0.0] | -2.0 .. 2.0 |  |
+| `coloffset` | Column Offset | Float | [0.0] | -2.0 .. 2.0 |  |
+| `rowslideoffset` | Row Slide Offset | Float | [0.0] | -2.0 .. 2.0 |  |
+| `rowslideoffset_mode` | Row Slide Offset Mode | Menu | 0 |  | uniform, varying |
+| `rowslideoffset_var` | Variation | Float | [1.0] | 0.0 .. 1.0 (strict) |  |
+| `rowslideoffset_seed` | Seed | Float | [0.0] | 0.0 .. 100.0 (strict) |  |
+| `doposjitter` | Uniform Jitter | Toggle | false |  |  |
+| `posjitter` | Uniform Jitter | Float | [0.1] | 0.0 .. 1.0 (strict) |  |
+| `dohposjitter` | Horizontal Jitter | Toggle | false |  |  |
+| `hposjitter` | Horizontal Jitter | Float | [0.1] | 0.0 .. 1.0 (strict) |  |
+| `dovposjitter` | Vertical Jitter | Toggle | false |  |  |
+| `vposjitter` | Vertical Jitter | Float | [0.1] | 0.0 .. 1.0 (strict) |  |
+| `posjitterseed` | Seed | Float | [0.0] | 0.0 .. 100.0 (strict) |  |
+| `folder3` |  | FolderSet |  |  |  |
+| `grotate` | Rotate Pattern | Float | [0.0] | -180.0 .. 180.0 |  |
+| `rotate` | Rotate Tile | Float | [0.0] | -180.0 .. 180.0 |  |
+| `rotate_mode` | Rotate Mode | Menu | 0 |  | uniform, varying |
+| `rotate_var` | Rotate Variation | Float | [45.0] | 0.0 .. 180.0 (strict) |  |
+| `rotate_seed` | Seed | Float | [0.0] | 0.0 .. 100.0 (strict) |  |
+| `rotate_chb` | Checkerboard Rotate | Toggle | false |  |  |
+| `orienttiles` | Orient Tiles | Toggle | false |  |  |
+| `folder2` |  | FolderSet |  |  |  |
+| `scale` | Uniform Scale | Float | [1.0] | 0.0 .. 1.0 (strict) |  |
+| `scale_mode` | Scale Mode | Menu | 0 |  | uniform, varying |
+| `scale_var` | Variation | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `scale_seed` | Seed | Float | [0.0] | 0.0 .. 100.0 (strict) |  |
+| `hscale` | Horizontal Scale | Float | [1.0] | 0.0 .. 1.0 (strict) |  |
+| `hscale_mode` | Horizontal Scale Mode | Menu | 0 |  | uniform, varying |
+| `hscale_var` | Variation | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `hscale_seed` | Seed | Float | [0.0] | 0.0 .. 100.0 (strict) |  |
+| `vscale` | Vertical Scale | Float | [1.0] | 0.0 .. 1.0 (strict) |  |
+| `vscale_mode` | Vertical Scale Mode | Menu | 0 |  | uniform, varying |
+| `vscale_var` | Variation | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `vscale_seed` | Seed | Float | [0.0] | 0.0 .. 100.0 (strict) |  |
+| `doinset` | Inset | Toggle | true |  |  |
+| `inset` | Inset | Float | [0.005] | 0.0 .. 0.2 (strict) |  |
+| `inset_mode` | Inset Mode | Menu | 0 |  | uniform, varying |
+| `inset_var` | Variation | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `inset_seed` | Seed | Float | [0.0] | 0.0 .. 100.0 (strict) |  |
+| `folder7` |  | FolderSet |  |  |  |
+| `dothresholdselection` | By Tile Order | Toggle | false |  |  |
+| `tileorder` | By Tile Order | Menu | 0 |  | none, rev, seed, shif |
+| `tilethreshold` | Threshold | Float | [0.5] | 0.0 .. 1.0 (strict) |  |
+| `reversethresholdselection` | Negate Selection | Toggle | false |  |  |
+| `thresholdrandseed` | Seed | Float | [0.0] | 0.0 .. 100.0 (strict) |  |
+| `thresholdshiftoffset` | Offset | Int | [0] | 0 .. 100 (strict) |  |
+| `doidselection` | Every Nth Tile | Toggle | false |  |  |
+| `idselection` | Every Nth Tile | Int | [2] | 2 .. 10 (strict) |  |
+| `reverseidselection` | Negate Selection | Toggle | false |  |  |
+| `dorowidselection` | Every Nth Row | Toggle | false |  |  |
+| `rowidselection` | Every Nth Row | Int | [2] | 2 .. 10 (strict) |  |
+| `reverserowidselection` | Negate Selection | Toggle | false |  |  |
+| `docolumnidselection` | Every Nth Column | Toggle | false |  |  |
+| `columnidselection` | Every Nth Column | Int | [2] | 2 .. 10 (strict) |  |
+| `reversecolumnidselection` | Negate Selection | Toggle | false |  |  |
+| `docheckerboard` | Checkerboard | Toggle | false |  |  |
+| `labelparm` | Label | Label |  |  |  |
+| `reversecheckerboard` | Negate Selection | Toggle | false |  |  |
+| `negate` | Negate Selection | Toggle | false |  |  |
+| `folder6` |  | FolderSet |  |  |  |
+| `splittiles` | Split Tiles | Toggle | false |  |  |
+| `dosplititer` | Enable Iterative Split | Toggle | false |  |  |
+| `nsplititers` | Iterations | Int | [3] | 1 .. 5 (strict) |  |
+| `doareathreshold` | Do Area Threshold | Toggle | false |  |  |
+| `areathreshold` | Area Threshold | Float | [0.01] | 0.0 .. 0.1 (strict) |  |
+| `splittreshold` | Split Treshold | Float | [0.25] | 0.0 .. 1.0 (strict) |  |
+| `nsplits` | Number of Splits | Int | [1] | 1 .. 10 (strict) |  |
+| `nsplits_mode` | Number of Splits Mode | Menu | 0 |  | uniform, varying |
+| `nsplits_var` | Variation | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `nsplits_seed` | Seed | Float | [0.0] | 0.0 .. 100.0 (strict) |  |
+| `splitjitter` | Jitter Scale | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `splitjitter_mode` | Jitter Scale Mode | Menu | 0 |  | uniform, varying |
+| `splitjitter_var` | Variation | Float | [1.0] | 0.0 .. 1.0 (strict) |  |
+| `splitjitter_seed` | Seed | Float | [0.0] | 0.0 .. 100.0 (strict) |  |
+| `split_orientratio` | Orient Ratio | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `splittresholdseed` | Seed | Float | [0.0] | 0.0 .. 100.0 (strict) |  |
+| `rowvisibility1` | Visible | Toggle | true |  |  |
+| `folder2_1` |  | FolderSet |  |  |  |
+| `rowoffset1` | Offset | Float | [0.0] | -1.0 .. 1.0 |  |
+| `rowreflect1` | Reflect Block | Toggle | false |  |  |
+| `rowslideoffset1` | Slide Offset | Float | [0.0] | -1.0 .. 1.0 |  |
+| `rowheight1` | Height | Float | [0.2] | 0.0 .. 1.0 (strict) |  |
+| `ncolumns1` | Number of Columns | Folder | 1 |  |  |
+| `colvisibility1_1` | Visible | Toggle | true |  |  |
+| `folder2_1_1` |  | FolderSet |  |  |  |
+| `colwidth1_1` | Width | Float | [0.2] | 0.0 .. 2.0 |  |
+| `docolheight1_1` | Height | Toggle | false |  |  |
+| `colheight1_1` | Height | Float | [0.2] | 0.0 .. 1.0 |  |
+| `docoloffset1_1` | Offset | Toggle | false |  |  |
+| `coloffset1_1` | Offset | Float | [0.0] | -1.0 .. 1.0 |  |
+| `docolrot1_1` | Rotate | Toggle | false |  |  |
+| `colrot1_1` | Rotate | Float | [0.0] | -180.0 .. 180.0 |  |
+| `gradientramp1pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `gradientramp1value` | Value | Float | [0.0] | 0.0 .. 10.0 |  |
+| `gradientramp1interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `gradientramp2pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `gradientramp2value` | Value | Float | [0.0] | 0.0 .. 10.0 |  |
+| `gradientramp2interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |

@@ -1,0 +1,51 @@
+# uvxform
+
+- Label: UV Transform
+- Category: Copernicus (`Cop`), Houdini 22.0.368
+- Inputs: 1 to 3
+- Parameters: 27 (exact, read from Houdini by hython)
+- Used by the height graph: no
+
+## Feature summary (web, SideFX reference)
+
+- Source: https://www.sidefx.com/docs/houdini/nodes/cop/uvxform.html
+- Summary (EN): Moves, rotates and scales the values of a UV layer in 2D. Each UV value is treated as an XY location and replaced by the transformed result. Pixels are not moved.
+- Résumé (FR) : Transforme les valeurs UV (translation, rotation, échelle) sans déplacer les pixels, avec une randomisation optionnelle par îlot grâce à l'entrée seed.
+
+- Inputs meaning: ["uv: UV layer of image or texture coordinates to transform", "uvscale: Mono layer holding the original filter scale, combined with the transforms", "seed: ID layer supplying a random seed; pixels sharing an ID get the same random transform"]
+
+- Key parameters: ["Pivot: local pivot for transformations", "Translate, Rotate (degrees), Uniform Scale, Scale (non-uniform): core transform controls", "Randomize group: Offset, Rotation, Uniform Scaling, Scale Min/Max, Uniform Scale Min/Max, Seed", "Fitting Method: None, Frame (uniform fit) or Stretch (non-uniform fit) to a rectangle set by Center and Size; per UV island when a seed input is connected"]
+
+- Caveats: ["The node does not move pixels; it only changes the UV values each pixel represents"]
+
+## Parameters (exact, from the installed Houdini)
+
+| parameter | label | type | default | range | menu tokens |
+|---|---|---|---|---|---|
+| `folder0` |  | FolderSet |  |  |  |
+| `px` | Pivot | Float | 0.0 | 0.0 .. 1.0 |  |
+| `py` | Pivot | Float | 0.0 | 0.0 .. 1.0 |  |
+| `tx` | Translate | Float | 0.0 | 0.0 .. 1.0 |  |
+| `ty` | Translate | Float | 0.0 | 0.0 .. 1.0 |  |
+| `rz` | Rotate | Float | [0.0] | -180.0 .. 180.0 |  |
+| `scale` | Uniform Scale | Float | [1.0] | 0.0 .. 10.0 |  |
+| `sx` | Scale | Float | 1.0 | 0.0 .. 1.0 |  |
+| `sy` | Scale | Float | 1.0 | 0.0 .. 1.0 |  |
+| `folder1` |  | FolderSet |  |  |  |
+| `rand_tx` | Offset | Float | 0.0 | -1.0 .. 1.0 |  |
+| `rand_ty` | Offset | Float | 0.0 | -1.0 .. 1.0 |  |
+| `rand_rz` | Rotation | Float | [0.0] | 0.0 .. 180.0 |  |
+| `rand_scaleuniform` | Uniform Scaling | Toggle | true |  |  |
+| `rand_scalemin` | Uniform Scale Min | Float | [1.0] | 0.0 .. 10.0 |  |
+| `rand_scalemax` | Uniform Scale Max | Float | [1.0] | 0.0 .. 10.0 |  |
+| `rand_sminx` | Scale Min | Float | 1.0 | -1.0 .. 1.0 |  |
+| `rand_sminy` | Scale Min | Float | 1.0 | -1.0 .. 1.0 |  |
+| `rand_smaxx` | Scale Max | Float | 1.0 | -1.0 .. 1.0 |  |
+| `rand_smaxy` | Scale Max | Float | 1.0 | -1.0 .. 1.0 |  |
+| `seed` | Seed | Int | [0] | 0 .. 10 |  |
+| `folder2` |  | FolderSet |  |  |  |
+| `fit` | Fitting Method | Menu | 0 |  | none, uniform, stretch |
+| `fit_px` | Center | Float | 0.0 | -1.0 .. 1.0 |  |
+| `fit_py` | Center | Float | 0.0 | -1.0 .. 1.0 |  |
+| `fit_sizex` | Size | Float | 2.0 | -1.0 .. 1.0 |  |
+| `fit_sizey` | Size | Float | 2.0 | -1.0 .. 1.0 |  |

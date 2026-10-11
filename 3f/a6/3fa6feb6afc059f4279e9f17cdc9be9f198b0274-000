@@ -1,0 +1,55 @@
+# ramp
+
+- Label: Ramp
+- Category: Copernicus (`Cop`), Houdini 22.0.368
+- Inputs: 0 to 3
+- Parameters: 31 (exact, read from Houdini by hython)
+- Used by the height graph: yes
+
+## Feature summary (web, SideFX reference)
+
+- Source: https://www.sidefx.com/docs/houdini/nodes/cop/ramp.html
+- Summary (EN): Ramp generates linear or radial gradient patterns shaped by keyframe points. Its Type parameter selects Horizontal, Vertical, Radial or Concentric, and cycles, phase and outside-range behaviour control repetition. Ramp Mono COP and Ramp RGB COP are variants that default to Mono and RGB signatures; their details are not documented on this page.
+- Résumé (FR) : Ce nœud crée des dégradés linéaires ou radiaux pilotés par des points clés, en mono ou en couleur.
+
+- Inputs meaning: ["size_ref: representative layer that sets the output image size and metadata", "pos: optional UV layer whose values replace the pixel image coordinates when computing the ramp", "ramp: optional per-pixel amount that overrides the Ramp parameter"]
+
+- Key parameters: ["Signature: Mono (float) or RGB (colour)", "Type: Horizontal and Vertical (linear), Radial (rays from a centre), Concentric (ripple rings)", "Number of Cycles: how many times the pattern repeats", "Phase: offsets where the pattern starts; 0 aligns the start with the first point", "Outside Range: Clamp at End, Repeat or Mirror", "Size Method: Framed to Display or Two Points", "Center, Rotation, Start Position, End Position: geometry controls whose meaning changes with Type (End Position is the crossover for Radial and the radius for Concentric)", "Ramp, Point No., Position, Color, Value: edit the keyframe points", "Interpolation: how values blend between a point and the next, per point"]
+
+- Caveats: ["Per-point Interpolation is discouraged; the page recommends the Interpolation for all points setting from the general ramp documentation.", "The page does not explain the Two Points size method.", "Ramp Mono COP and Ramp RGB COP are only mentioned; their details are not documented here.", "Ramp parameter editing mechanics are referenced to a separate page."]
+
+## Parameters (exact, from the installed Houdini)
+
+| parameter | label | type | default | range | menu tokens |
+|---|---|---|---|---|---|
+| `signature` | Signature | String | ["f3"] |  | f1, f3 |
+| `rampType` | Type | Menu | 0 |  | horizontal, vertical, radial, concentric |
+| `cycles` | Number of Cycles | Float | [1.0] | 0.0 .. 10.0 |  |
+| `phase` | Phase | Float | [0.0] | 0.0 .. 10.0 |  |
+| `method` | Outside Range | Menu | 0 |  | clamp, repeat, mirror |
+| `sizemethod` | Size Method | Menu | 0 |  | frame, twopt |
+| `centerx` | Center | Float | 0.0 | -1.0 .. 1.0 |  |
+| `centery` | Center | Float | 0.0 | -1.0 .. 1.0 |  |
+| `rotation` | Rotation | Float | [0.0] | 0.0 .. 360.0 |  |
+| `startposx` | Start Position | Float | 0.0 | -1.0 .. 1.0 |  |
+| `startposy` | Start Position | Float | 0.0 | -1.0 .. 1.0 |  |
+| `endposx` | End Position | Float | 1.0 | -1.0 .. 1.0 |  |
+| `endposy` | End Position | Float | 0.0 | -1.0 .. 1.0 |  |
+| `ramp` | Ramp | Ramp | 2 |  |  |
+| `rampmono` | Ramp | Ramp | 2 |  |  |
+| `ramp1pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `ramp1cr` | Color | Float | 0.0 | 0.0 .. 10.0 |  |
+| `ramp1cg` | Color | Float | 0.0 | 0.0 .. 10.0 |  |
+| `ramp1cb` | Color | Float | 0.0 | 0.0 .. 10.0 |  |
+| `ramp1interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `ramp2pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `ramp2cr` | Color | Float | 0.0 | 0.0 .. 10.0 |  |
+| `ramp2cg` | Color | Float | 0.0 | 0.0 .. 10.0 |  |
+| `ramp2cb` | Color | Float | 0.0 | 0.0 .. 10.0 |  |
+| `ramp2interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `rampmono1pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `rampmono1value` | Value | Float | [0.0] | 0.0 .. 10.0 |  |
+| `rampmono1interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `rampmono2pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `rampmono2value` | Value | Float | [0.0] | 0.0 .. 10.0 |  |
+| `rampmono2interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |

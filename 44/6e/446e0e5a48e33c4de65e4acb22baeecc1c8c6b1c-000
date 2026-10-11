@@ -1,0 +1,41 @@
+# pyro_lightscatter
+
+- Label: Pyro Light Scatter
+- Category: Copernicus (`Cop`), Houdini 22.0.368
+- Inputs: 2 to 3
+- Parameters: 17 (exact, read from Houdini by hython)
+- Used by the height graph: no
+
+## Feature summary (web, SideFX reference)
+
+- Source: https://www.sidefx.com/docs/houdini/nodes/cop/pyro_lightscatter.html
+- Summary (EN): Builds a light field representing the internal glow produced when light scatters inside a VDB's emission, so dense smoke can appear to glow from its core. Several instances can be chained; the result can feed Rasterize Volume to render lit smoke.
+- Résumé (FR) : Pyro Light Scatter calcule la lueur interne produite par la diffusion de la lumière dans l'émission d'un VDB, pour faire paraître la fumée dense lumineuse de son cœur.
+
+- Inputs meaning: ["density: Float VDB setting the scattering medium and the topology of the light field; light appears only where density is active", "emission: Float VDB used as the emission source, scaled and color-mapped before use", "light (optional): Vector VDB whose existing illumination is added to, allowing chained lights"]
+
+- Key parameters: ["Density Scale: multiplies density, so light is occluded more quickly", "Absorption: how much emitted light is absorbed by particles rather than scattered further", "Emission Scale: global multiplier on the emission VDB", "Emission Color Ramp: maps emission values to color", "Iterations: number of diffusion passes spreading the light; emission acts as a source term; usually stopped early for speed and look", "MipMap Level (Quality): computes scatter at reduced resolution; level 1 runs at half resolution with half the iterations, about 16 times faster, then interpolates back"]
+
+- Caveats: ["Requires DOP-level permissions; not in Houdini Core, only in Houdini FX, Apprentice, Indie and Education", "The light field exists only where density is active, so the density VDB defines its extent", "Iterations are typically limited rather than run to convergence, trading physical accuracy for speed and artistic control"]
+
+## Parameters (exact, from the installed Houdini)
+
+| parameter | label | type | default | range | menu tokens |
+|---|---|---|---|---|---|
+| `densityscale` | Density Scale | Float | [1.0] | 0.0 .. 10.0 |  |
+| `absorption` | Absorption | Float | [0.0] | 0.0 .. 1.0 |  |
+| `emitscale` | Emission Scale | Float | [100.0] | 0.0 .. 1000.0 |  |
+| `emitcdramp` | Emission Color Ramp | Ramp | 2 |  |  |
+| `iterations` | Iterations | Int | [30] | 2 .. 250 |  |
+| `folder0` |  | FolderSet |  |  |  |
+| `miplevel` | MipMap Level | Int | [1] | 0 .. 1 |  |
+| `emitcdramp1pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `emitcdramp1cr` | Color | Float | 0.0 | 0.0 .. 10.0 |  |
+| `emitcdramp1cg` | Color | Float | 0.0 | 0.0 .. 10.0 |  |
+| `emitcdramp1cb` | Color | Float | 0.0 | 0.0 .. 10.0 |  |
+| `emitcdramp1interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |
+| `emitcdramp2pos` | Position | Float | [0.0] | 0.0 .. 1.0 (strict) |  |
+| `emitcdramp2cr` | Color | Float | 0.0 | 0.0 .. 10.0 |  |
+| `emitcdramp2cg` | Color | Float | 0.0 | 0.0 .. 10.0 |  |
+| `emitcdramp2cb` | Color | Float | 0.0 | 0.0 .. 10.0 |  |
+| `emitcdramp2interp` | Interpolation | Menu | 1 |  | constant, linear, catmull-rom, monotonecubic, bezier, bspline, hermite |

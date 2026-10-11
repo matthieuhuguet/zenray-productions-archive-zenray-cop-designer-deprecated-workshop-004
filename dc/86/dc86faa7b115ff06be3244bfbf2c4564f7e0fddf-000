@@ -1,0 +1,42 @@
+# topnet
+
+- Label: TOP Network
+- Category: Copernicus (`Cop`), Houdini 22.0.368
+- Inputs: 0 to 0
+- Parameters: 26 (exact, read from Houdini by hython)
+- Used by the height graph: no
+
+## Feature summary
+
+NOT DOCUMENTED FROM THE WEB YET (status: missing). The parameter table below is still exact.
+
+## Parameters (exact, from the installed Houdini)
+
+| parameter | label | type | default | range | menu tokens |
+|---|---|---|---|---|---|
+| `cookcontrolssection` |  | FolderSet |  |  |  |
+| `generatestatic` | Generate Static Work Items | Button |  |  |  |
+| `cookbutton` | Cook Output Node | Button |  |  |  |
+| `dirtybutton` | Dirty All | Button |  |  |  |
+| `cancelbutton` | Cancel Cook | Button |  |  |  |
+| `taskgraphsection` |  | FolderSet |  |  |  |
+| `checkpointformat` | Checkpoint Format | Menu | 1 |  | 0, 1 |
+| `taskgraphfile` | Checkpoint File | String | ["$HIP/$HIPNAME.taskgraph.$F.py"] |  |  |
+| `savetaskgraph` | Save Checkpoint | Button |  |  |  |
+| `loadtaskgraph` | Load Checkpoint | Button |  |  |  |
+| `taskgraphautosave` | Auto-Save | Toggle | false |  |  |
+| `taskgraphsaverate` | Checkpoint Rate | Int | [10] | 1 .. 100 (strict) |  |
+| `checkpointfile` | Checkpoint File | String | ["$HIP/$HIPNAME.checkpoint.json"] |  |  |
+| `loadcheckpoint` | Load Checkpoint | Button |  |  |  |
+| `checkpointload` | Load Checkpoint | Menu | 0 |  | 0, 1 |
+| `checkpointenabled` | Checkpoint Enabled | Toggle | false |  |  |
+| `checkpointrate` | Checkpoint Rate | Int | [10] | 1 .. 100 (strict) |  |
+| `savegraphattribs` | Save Graph Attributes to .hip | Toggle | true |  |  |
+| `schedulersection` |  | FolderSet |  |  |  |
+| `topscheduler` | Default Scheduler | String | [""] |  |  |
+| `usedefaultlabel` | Use Default Label | Toggle | false |  |  |
+| `defaultlabel` | Default Item Label | String | ["$OS.`@pdg_index`"] |  |  |
+| `regenerationtype` | On Node Recook | Menu | 0 |  | 0, 1, 2 |
+| `evaluationtime` | Evaluation Time | Menu | 0 |  | 0, 1, 2 |
+| `customtime` | Custom Time | Int | [0] | 0 .. 10 |  |
+| `savescenefile` | Save Scene File if Required | Toggle | true |  |  |

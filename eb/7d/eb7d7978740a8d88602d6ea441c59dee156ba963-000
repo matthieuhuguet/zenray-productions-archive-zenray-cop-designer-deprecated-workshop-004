@@ -1,0 +1,172 @@
+# __STAMP__ : compiles a designer graph (IR) into REAL Copernicus nodes inside Houdini, then exports and reads everything back.
+# EN: importable (compile_graph) and runnable: hython hou_compile.py --graph g.json --png out.png --res 1254 [--hip h.hip].
+# Every parameter is written, read back and compared. Every node error is reported. Nothing fails silently.
+# FR : fonction réutilisable (compile_graph) et script. Chaque paramètre est écrit, relu, comparé ; chaque erreur remontée.
+import argparse
+import datetime
+import json
+import os
+import sys
+import time
+
+import hou
+
+HERE = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, HERE)
+from cop_catalog import Catalog  # noqa: E402
+from cop_graph import Graph  # noqa: E402
+
+BASIS = {'linear': 'Linear', 'monotone': 'MonotoneCubic', 'constant': 'Constant',
+         'catmullrom': 'CatmullRom', 'bezier': 'Bezier'}
+
+
+class CompileError(Exception):
+    pass
+
+
+def make_ramp(value):
+    # EN: a hou.Ramp from {"basis", "keys"}. FR : une rampe Houdini depuis basis et keys.
+    basis_name = BASIS[value.get('basis', 'linear')]
+    basis = getattr(hou.rampBasis, basis_name, None)
+    if basis is None:
+        raise CompileError('this Houdini has no ramp basis %s' % basis_name)
+    keys = value['keys']
+    return hou.Ramp([basis] * len(keys), [float(k[0]) for k in keys], [float(k[1]) for k in keys])
+
+
+def same_ramp(ramp, value, tol=1e-4):
+    keys = value['keys']
+    got_pos = list(ramp.keys())
+    got_val = list(ramp.values())
+    if len(got_pos) != len(keys):
+        return False
+    return all(abs(gp - float(k[0])) < tol and abs(gv - float(k[1])) < tol
+               for gp, gv, k in zip(got_pos, got_val, keys))
+
+
+def set_parm(node, pname, value, where, problems):
+    # EN: write, read back, compare. A refusal or a difference is recorded as a problem. FR : écrire, relire, comparer.
+    p = node.parm(pname)
+    if p is None:
+        problems.append('%s: Houdini has no parameter %s' % (where, pname))
+        return
+    try:
+        if isinstance(value, dict) and 'keys' in value:
+            p.set(make_ramp(value))
+            if not same_ramp(p.eval(), value):
+                problems.append('%s: ramp read back differs' % where)
+            return
+        if isinstance(value, (list, tuple)) and len(value) == 1:
+            value = value[0]
+        p.set(value)
+        if isinstance(value, str):
+            if p.evalAsString() != value:
+                problems.append('%s: string read back %r, wanted %r' % (where, p.evalAsString(), value))
+        elif isinstance(value, bool):
+            if int(p.eval()) != int(value):
+                problems.append('%s: toggle read back %r, wanted %r' % (where, p.eval(), value))
+        elif isinstance(value, int) and p.parmTemplate().type().name() == 'Menu':
+            if int(p.eval()) != value:
+                problems.append('%s: menu read back %r, wanted %r' % (where, p.eval(), value))
+        elif isinstance(value, (int, float)):
+            got = p.eval()
+            if abs(float(got) - float(value)) > 1e-6 * max(1.0, abs(float(value))):
+                problems.append('%s: read back %r, wanted %r' % (where, got, value))
+    except hou.Error as exc:
+        problems.append('%s: Houdini refused %r (%s)' % (where, value, str(exc)[:120]))
+
+
+def build(graph, net_name, problems):
+    old = hou.node('/obj/' + net_name)
+    if old is not None:
+        old.destroy()
+    net = hou.node('/obj').createNode('copnet', net_name)
+    made = {}
+    for nid in graph.order:
+        spec = graph.nodes[nid]
+        node = net.createNode(spec.type, nid)
+        if node.name() != nid:
+            problems.append('%s: Houdini renamed the node to %s' % (nid, node.name()))
+        made[nid] = node
+        for i, src in enumerate(spec.inputs):
+            node.setInput(i, made[src], 0)
+        for pname, value in spec.params.items():
+            set_parm(node, pname, value, nid, problems)
+        for msg in node.errors():
+            problems.append('%s: Houdini error: %s' % (nid, msg))
+    return net, made
+
+
+def layout(net, made, graph):
+    # EN: one network box per tag (one per layer), nodes laid out by Houdini. FR : une boîte par calque.
+    net.layoutChildren()
+    tags = {}
+    for nid in graph.order:
+        tags.setdefault(graph.nodes[nid].tag or 'untagged', []).append(made[nid])
+    for tag, nodes in tags.items():
+        box = net.createNetworkBox()
+        box.setComment(tag)
+        for n in nodes:
+            box.addNode(n)
+        box.fitAroundContents()
+
+
+def export(net, top, png, res, problems):
+    rop = net.createNode('rop_image', 'ExportHeight')
+    rop.setInput(0, top, 0)
+    rop.parm('copoutput').set(png)
+    rop.parm('colorconversion').set(2)   # EN: raw, values stay as computed. FR : brut, valeurs inchangées.
+    rop.parm('setres').set(1)
+    rop.parm('res1').set(res)
+    rop.parm('res2').set(res)
+    started = time.time()
+    rop.parm('execute').pressButton()
+    if not os.path.exists(png) or os.path.getmtime(png) < started - 1.0:
+        problems.append('export did not write %s' % png)
+    for msg in rop.errors():
+        problems.append('export: Houdini error: %s' % msg)
+
+
+def compile_graph(graph, png, res=1254, net_name='CopDesign', hip=None, catalog=None):
+    # EN: returns the list of problems (empty means every parameter was accepted and read back, and the export exists).
+    # FR : renvoie la liste des problèmes (vide = tout accepté, relu et exporté).
+    catalog = catalog or Catalog()
+    graph.check(catalog)
+    problems = []
+    hou.hipFile.clear()
+    net, made = build(graph, net_name, problems)
+    layout(net, made, graph)
+    if graph.output is None:
+        raise CompileError('graph has no output')
+    export(net, made[graph.output], png, res, problems)
+    if hip:
+        hou.hipFile.save(hip)
+    return problems
+
+
+def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument('--graph', required=True)
+    ap.add_argument('--png', required=True)
+    ap.add_argument('--res', type=int, default=1254)
+    ap.add_argument('--hip')
+    ap.add_argument('--report')
+    ap.add_argument('--net', default='CopDesign')
+    args = ap.parse_args(sys.argv[1:])
+    graph = Graph.load(args.graph)
+    t0 = time.time()
+    problems = compile_graph(graph, args.png, args.res, args.net, args.hip)
+    report = {'graph': args.graph, 'png': args.png, 'res': args.res, 'nodes': len(graph.order),
+              'houdini_version': hou.applicationVersionString(), 'problems': problems,
+              'seconds': round(time.time() - t0, 2), 'written': datetime.datetime.now().isoformat(timespec='seconds')}
+    if args.report:
+        with open(args.report, 'w', encoding='utf-8') as fh:
+            json.dump(report, fh, ensure_ascii=False, indent=1)
+    print(json.dumps({'ok': not problems, 'nodes': report['nodes'], 'problems': problems[:20],
+                      'seconds': report['seconds']}, ensure_ascii=False))
+    if problems:
+        sys.exit(1)
+
+
+if __name__ == '__main__':
+    main()

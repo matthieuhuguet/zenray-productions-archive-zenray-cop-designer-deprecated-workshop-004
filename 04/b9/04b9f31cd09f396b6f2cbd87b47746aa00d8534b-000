@@ -1,0 +1,26 @@
+# vdbposmap
+
+- Label: VDB Position Map
+- Category: Copernicus (`Cop`), Houdini 22.0.368
+- Inputs: 1 to 1
+- Parameters: 2 (exact, read from Houdini by hython)
+- Used by the height graph: no
+
+## Feature summary (web, SideFX reference)
+
+- Source: https://www.sidefx.com/docs/houdini/nodes/cop/vdbposmap.html
+- Summary (EN): Creates a Vector VDB in which each voxel holds its own position. It works on the topology of the input VDB, so the output matches that structure. Output: pos.
+- Résumé (FR) : Produit un VDB vectoriel où chaque voxel stocke sa position, exprimée en espace monde, image, texture ou voxel.
+
+- Inputs meaning: ["size_ref: Float or Vector VDB whose topology is used to compute voxel locations"]
+
+- Key parameters: ["Signature: the VDB type the source accepts", "Space: World (where the voxel appears in the viewport); Image (unrotated, untranslated location, voxel index scaled by voxel size); Texture (position relative to the VDB's current bounding box); Voxel (voxel index)"]
+
+- Caveats: ["Texture space is relative to the VDB's current bounding box; because VDBs often change size, these values are not very stable"]
+
+## Parameters (exact, from the installed Houdini)
+
+| parameter | label | type | default | range | menu tokens |
+|---|---|---|---|---|---|
+| `signature` | Signature | String | ["auto"] |  |  |
+| `space` | Space | Menu | 0 |  | world, image, texture, pixel |

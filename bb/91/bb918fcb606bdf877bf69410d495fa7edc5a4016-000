@@ -1,0 +1,56 @@
+# rasterizecurves
+
+- Label: Rasterize Curves
+- Category: Copernicus (`Cop`), Houdini 22.0.368
+- Inputs: 0 to 2
+- Parameters: 32 (exact, read from Houdini by hython)
+- Used by the height graph: no
+
+## Feature summary (web, SideFX reference)
+
+- Source: https://www.sidefx.com/docs/houdini/nodes/cop/rasterizecurves.html
+- Summary (EN): Rasterize Curves draws curves (polygonal, Bezier or NURBS) onto a COP layer and can rasterize arbitrary attributes carried by those curves. Without a camera reference it uses the COPnet resolution, sits at the origin, and looks down the negative Z axis.
+- Résumé (FR) : Ce nœud rastérise des courbes sur un calque COP et peut transporter des attributs comme l'alpha, la position ou les UV.
+
+- Inputs meaning: ["camera_ref: optional camera metadata that sets the view for the rasterization", "curves: curves to rasterize, usually from a SOP Import COP"]
+
+- Key parameters: ["Quick Setups: add Alpha, Position, Normal, UV or Depth from Eye; Move to Origin moves the output to canonical space", "Border: sampling behaviour outside the incoming layer bounds, defaults to the layer's border property", "Units: Image (default) or Pixels, which defines how curve width is measured", "Width / Width Attribute: output width; if the curves have a width attribute (default Width), the Width value is a multiplier", "Joints: Round (default) or Sharp; Max Joint Scale limits spikes at sharp corners", "Endpoints: Flat (default) or Round caps", "Scale V by Width: No Scaling (default), Average, Maximum or Minimum; Force Tilable V rounds V down to an integer", "Resample / Segment Length: smooths the input curves by breaking them into segments of a set length", "Treat Polygons As: Straight, Subdivision or Interpolating; Resample by Polygon Edge preserves corners", "Number of Attributes: name, output type, optional flag and Default Value; special tokens intrinsic:alpha, intrinsic:depth_ndc and intrinsic:depth_eye"]
+
+- Caveats: ["Only integer attributes, or float attributes with four or fewer components, can be rasterized.", "The Normal and UV quick setups require those attributes to exist on the input geometry.", "With Round endpoints, V values at the caps fall outside the 0-1 range because of interpolation.", "Depth from Eye is measured in Houdini units.", "With a camera connected, the layer is generated at the camera focus plane; Match Camera moves it to the origin.", "The Optional fallback refers to a size_ref input that the page's Inputs section does not list; check it in your Houdini version."]
+
+## Parameters (exact, from the installed Houdini)
+
+| parameter | label | type | default | range | menu tokens |
+|---|---|---|---|---|---|
+| `quicksetup` |  | Menu | 0 |  | menu, alpha, position, normal, uv, deptheye |
+| `resetorig` | Move to Origin | Toggle | false |  |  |
+| `border` | Border | Menu | 0 |  | auto, constant, clamp, mirror, wrap |
+| `units` | Units | Menu | 0 |  | image, pixels |
+| `width_pixel` | Width | Float | [3.0] | 0.0 .. 25.0 (strict) |  |
+| `width` | Width | Float | [0.1] | 0.0 .. 1.0 (strict) |  |
+| `widthattribute` | Width Attribute | String | ["width"] |  |  |
+| `joints` | Joints | Menu | 0 |  | round, sharp |
+| `maxjointscale` | Max Joint Scale | Float | [2.0] | 0.0 .. 10.0 (strict) |  |
+| `endpoints` | Endpoints | Menu | 0 |  | flat, round |
+| `vscaling` | Scale V by Width | Menu | 0 |  | noscaling, average, maximum, minimum |
+| `tilablev` | Force Tilable V | Toggle | false |  |  |
+| `doresample` | Resample | Toggle | false |  |  |
+| `maxseglen` | Segment Length | Float | [0.01] | 0.0 .. 1.0 (strict) |  |
+| `treatpolysas` | Treat Polygons As | Menu | 1 |  | straight, subd, interp |
+| `resamplebyedge` | Resample by Polygon Edge | Toggle | false |  |  |
+| `attributes` | Number of Attributes | Folder | 0 |  |  |
+| `name1` | Name | String | ["P"] |  |  |
+| `attribmenu1` | Attribute Menu | String | ["0"] |  |  |
+| `outtype1` | Output Type | Menu | 2 |  | float, vector2, vector3, vector4, int |
+| `optional1` | Optional | Toggle | false |  |  |
+| `f1_def1` | Default Value | Float | [1.0] | 0.0 .. 10.0 |  |
+| `f2_def11` | Default Value | Float | 1.0 | 0.0 .. 10.0 |  |
+| `f2_def12` | Default Value | Float | 1.0 | 0.0 .. 10.0 |  |
+| `f3_def1r` | Default Value | Float | 1.0 | 0.0 .. 10.0 |  |
+| `f3_def1g` | Default Value | Float | 1.0 | 0.0 .. 10.0 |  |
+| `f3_def1b` | Default Value | Float | 1.0 | 0.0 .. 10.0 |  |
+| `f4_def1r` | Default Value | Float | 1.0 | 0.0 .. 10.0 |  |
+| `f4_def1g` | Default Value | Float | 1.0 | 0.0 .. 10.0 |  |
+| `f4_def1b` | Default Value | Float | 1.0 | 0.0 .. 10.0 |  |
+| `f4_def1a` | Default Value | Float | 1.0 | 0.0 .. 10.0 |  |
+| `i_def1` | Default Value | Int | [0] | 0 .. 10 |  |
